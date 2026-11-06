@@ -594,12 +594,179 @@
     .lb-rank-top1 { color: #f59e0b !important; }
     .lb-rank-top2 { color: #cbd5e1 !important; }
     .lb-rank-top3 { color: #b45309 !important; }
+
+    /* 顶部全场大喇叭公报 (SSR 盲盒中奖特报) */
+    .mega-horn-banner {
+      background: linear-gradient(90deg, #991b1b, #d97706, #991b1b);
+      background-size: 200% 100%;
+      animation: hornBgGradient 3s ease infinite;
+      border: 1.5px solid #fbbf24;
+      border-radius: 10px;
+      padding: 6px 10px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.45);
+      position: relative;
+      overflow: hidden;
+      z-index: 100;
+    }
+    @keyframes hornBgGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .horn-icon-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .horn-icon {
+      font-size: 16px;
+      display: inline-block;
+      animation: hornShake 0.6s infinite ease-in-out alternate;
+    }
+    @keyframes hornShake {
+      from { transform: rotate(-8deg) scale(1); }
+      to { transform: rotate(10deg) scale(1.15); }
+    }
+    .horn-cycle-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #991b1b;
+      background: #fbbf24;
+      padding: 1px 5px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .horn-marquee-wrap {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+    .horn-marquee-text {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      white-space: nowrap;
+      animation: hornScroll 5s linear infinite;
+    }
+    @keyframes hornScroll {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .horn-close-btn {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* 盲盒抽奖动效与卡片样式 */
+    .gacha-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 6px;
+    }
+    .gacha-box-container {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px auto;
+      cursor: pointer;
+    }
+    .gacha-box-icon {
+      font-size: 68px;
+      filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.6));
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .gacha-box-shaking .gacha-box-icon {
+      animation: gachaShake 0.6s infinite ease-in-out;
+    }
+    @keyframes gachaShake {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+      15% { transform: translate(-4px, -2px) rotate(-8deg) scale(1.05); }
+      30% { transform: translate(4px, 1px) rotate(8deg) scale(1.1); }
+      45% { transform: translate(-5px, 2px) rotate(-6deg) scale(1.15); }
+      60% { transform: translate(5px, -1px) rotate(6deg) scale(1.15); }
+      75% { transform: translate(-2px, 1px) rotate(-3deg) scale(1.2); }
+      100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    }
+    .gacha-halo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(245, 158, 11, 0) 70%);
+      animation: gachaPulse 1.8s infinite ease-in-out;
+      pointer-events: none;
+    }
+    @keyframes gachaPulse {
+      0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.5; }
+    }
+    .gacha-result-card {
+      animation: gachaCardPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      width: 100%;
+    }
+    @keyframes gachaCardPop {
+      0% { opacity: 0; transform: scale(0.7) rotate(-4deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    .gacha-tier-glow-ssr {
+      border: 2px solid #f59e0b !important;
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.6), inset 0 0 12px rgba(245, 158, 11, 0.3) !important;
+    }
+    .gacha-tier-glow-s {
+      border: 2px solid #a855f7 !important;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.5) !important;
+    }
+    .btn-speedup {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(5, 150, 105, 0.35)) !important;
+      border-color: #34d399 !important;
+      color: #34d399 !important;
+      font-weight: 700 !important;
+    }
   </style>
 </head>
 <body>
 
   <div class="game-container" id="gameApp">
     
+    <!-- 顶部全场大喇叭公报 (抽出SSR级时全场播报3次) -->
+    <div id="megaHornBanner" class="mega-horn-banner hidden">
+      <div class="horn-icon-wrap">
+        <span class="horn-icon">📢</span>
+        <span id="hornCycleBadge" class="horn-cycle-badge">第 1/3 轮</span>
+      </div>
+      <div class="horn-marquee-wrap">
+        <div id="hornText" class="horn-marquee-text">【全网特报】恭喜破晓互娱在人才盲盒一发入魂，豪揽 SSR 顶流王牌！</div>
+      </div>
+      <button class="horn-close-btn" data-action="close-horn" title="关闭播报">✕</button>
+    </div>
+
     <!-- 顶部全网 MCN 综合实力天梯榜看板 -->
     <div id="mcnRankingBar" class="mcn-ranking-banner" data-action="open-leaderboard">
       <div class="mcn-rank-left">
@@ -753,17 +920,38 @@
 
       <!-- TAB 2: 主播矩阵与集训 -->
       <section id="tabStreamers" class="card-panel hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <span style="font-size: 14px; font-weight: 700; color: #fff;">🎙️ 旗下签约主播团队</span>
-          <div style="display: flex; gap: 6px;">
-            <button class="btn-icon" data-action="restore-all-streamers" style="color: #34d399; font-size: 11px;">
+          <div style="display: flex; gap: 5px;">
+            <button id="btnAllRest" class="btn-icon" data-action="restore-all-streamers" style="color: #34d399; font-size: 11px; padding: 4px 7px;">
               💆 全员休假
             </button>
-            <button class="btn-icon" data-action="open-recruit" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); font-size: 11px;">
+            <button class="btn-icon" data-action="open-blindbox" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.5); font-size: 11px; padding: 4px 7px; background: rgba(245, 158, 11, 0.12); font-weight: 700;">
+              🎁 盲盒猎头
+            </button>
+            <button class="btn-icon" data-action="open-recruit" style="color: #93c5fd; border-color: rgba(59, 130, 246, 0.4); font-size: 11px; padding: 4px 7px;">
               ➕ 签约市场
             </button>
           </div>
         </div>
+
+        <!-- 盲盒猎头专属推广卡片 (P0 级视觉吸睛) -->
+        <div class="card-subpanel" style="background: linear-gradient(135deg, rgba(201, 27, 27, 0.22), rgba(245, 158, 11, 0.22)); border: 1px solid rgba(245, 158, 11, 0.4); display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; margin-bottom: 8px; border-radius: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 26px; filter: drop-shadow(0 0 6px #f59e0b);">🎁</span>
+            <div>
+              <div style="font-size: 12.5px; font-weight: 800; color: #fbbf24; display: flex; align-items: center; gap: 5px;">
+                全网人才盲盒抽卡
+                <span class="badge badge-gold" style="font-size: 9px; padding: 1px 4px;">固定 35w/次</span>
+              </div>
+              <div style="font-size: 11px; color: #cbd5e1; margin-top: 1px;">随机招募未签约主播 · 出SSR全网大喇叭通报3次</div>
+            </div>
+          </div>
+          <button class="btn-small-upgrade" data-action="open-blindbox" style="background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; font-weight: 800; border: none; padding: 5px 12px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);">
+            开盲盒
+          </button>
+        </div>
+
         <div id="streamersList" style="display: flex; flex-direction: column; gap: 8px;"></div>
       </section>
 
@@ -1044,6 +1232,66 @@
       </div>
     </div>
 
+    <!-- 模态框 5: 盲盒抽奖弹窗 (人才盲盒猎头) -->
+    <div id="blindBoxModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 88vh; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 20px;">🎁</span>
+            <span style="font-size: 15px; font-weight: 800; color: #fff;">破晓猎头 · 人才盲盒</span>
+          </div>
+          <button class="btn-icon" data-action="close-blindbox" style="padding: 4px 8px; font-size: 13px;">✕</button>
+        </div>
+
+        <div style="font-size: 11.5px; color: #cbd5e1; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 7px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+          <span>💰 抽取消耗：<strong style="color: #fbbf24;">35.0w</strong> 流动资金</span>
+          <span id="blindBoxPoolCount" style="color: #94a3b8;">未签约储备: 22 位</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-around; font-size: 10.5px; padding: 6px 0 4px 0; color: #94a3b8; border-bottom: 1px dashed #24314c;">
+          <span style="color: #f59e0b; font-weight: 700;">SSR 10% (大喇叭)</span>
+          <span style="color: #a855f7; font-weight: 700;">S级 25%</span>
+          <span style="color: #38bdf8; font-weight: 700;">A级 35%</span>
+          <span style="color: #34d399; font-weight: 700;">B级 30%</span>
+        </div>
+
+        <!-- 盲盒互动展示区 -->
+        <div id="blindBoxStage" class="gacha-stage">
+          
+          <!-- 阶段 A: 未拆盲盒状态 -->
+          <div id="blindBoxIdleView" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; width: 100%;">
+            <div id="gachaBoxWrap" class="gacha-box-container" data-action="execute-blindbox">
+              <div class="gacha-halo"></div>
+              <span class="gacha-box-icon">🎁</span>
+            </div>
+            <div style="font-size: 12px; color: #e2e8f0;">
+              敲击金色盲盒，偶遇神秘天降主播！出 SSR 全网通报！
+            </div>
+            <button id="btnDrawBlindBox" class="btn-primary" data-action="execute-blindbox" style="width: 100%; padding: 11px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #ef4444); border: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); margin-top: 4px;">
+              🎲 立即开启盲盒 (35.0w)
+            </button>
+          </div>
+
+          <!-- 阶段 B: 拆盒开奖状态 -->
+          <div id="blindBoxResultView" class="hidden gacha-result-card" style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%;">
+            <div id="blindBoxResultCard" class="card-subpanel" style="width: 100%; display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 12px; background: #0f172a;">
+              <!-- 动态注入获得主播信息 -->
+            </div>
+            <div style="display: flex; gap: 8px; width: 100%; margin-top: 4px;">
+              <button id="btnDrawAgain" class="btn-primary" data-action="execute-blindbox" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, #f59e0b, #ef4444); border: none;">
+                🔄 再抽一次 (35w)
+              </button>
+              <button class="btn-icon" data-action="close-blindbox" style="flex: 1; padding: 10px; font-size: 12px;">
+                ✅ 收入麾下
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -1129,6 +1377,17 @@
       var baseFreq = 380 + Math.min(combo * 35, 650);
       playTone(baseFreq, 'sine', 0.15, 0.22);
     }
+    function playSSRTrumpetSound() {
+      if (!soundEnabled) return;
+      safeInitAudio();
+      // 华丽胜利小号四连音：C5(523.25) -> E5(659.25) -> G5(783.99) -> C6(1046.5)
+      var notes = [523.25, 659.25, 783.99, 1046.5];
+      notes.forEach(function(freq, idx) {
+        setTimeout(function() {
+          playTone(freq, 'sawtooth', 0.18, 0.26);
+        }, idx * 110);
+      });
+    }
 
     // =========================================================================
     // 2. 核心状态机与数据字典
@@ -1155,7 +1414,8 @@
       mcnRank: 98,
       powerScore: 118.5,
       liveCooldownRemaining: 0,
-      liveCooldownMax: 45
+      liveCooldownMax: 45,
+      staminaGlobalCooldown: 0
     };
 
     var weekStartSnapshot = {
@@ -1487,6 +1747,10 @@
         tag: '沉浸解压'
       }
     };
+
+    Object.keys(streamersMaster).forEach(function(k) {
+      streamersMaster[k].restCooldownRemaining = 0;
+    });
 
     // 拟人化主播专属矢量立绘肖像生成器
     function getPersonifiedAvatarSVG(s, size) {
@@ -1872,6 +2136,59 @@
       renderHeaderStats();
       onCooldownComplete();
       saveLocalData();
+    }
+
+    // =========================================================================
+    // 全场大喇叭公报活动广播引擎 (SSR 盲盒特报 3 次轮播)
+    // =========================================================================
+    var megaHornTimer = null;
+    var megaHornCycle = 0;
+
+    function triggerMegaHornAnnouncement(streamer) {
+      if (!streamer) return;
+      var banner = document.getElementById("megaHornBanner");
+      var badge = document.getElementById("hornCycleBadge");
+      var text = document.getElementById("hornText");
+      if (!banner || !badge || !text) return;
+
+      if (megaHornTimer) clearTimeout(megaHornTimer);
+      megaHornCycle = 1;
+
+      banner.classList.remove("hidden");
+      badge.innerText = "第 1/3 轮";
+      text.innerText = "📢【全网头条大喇叭】重磅轰动！破晓互娱在「人才盲盒」一发入魂！豪揽全网 SSR 顶流王牌【" + streamer.name + "】(" + streamer.title + ")！全网综合战力暴涨！亮了(9999)";
+
+      // 重启滚动动画
+      text.style.animation = 'none';
+      void text.offsetWidth;
+      text.style.animation = 'hornScroll 5s linear infinite';
+
+      playSSRTrumpetSound();
+
+      function nextCycle() {
+        if (megaHornCycle >= 3) {
+          banner.classList.add("hidden");
+          megaHornTimer = null;
+          return;
+        }
+        megaHornCycle++;
+        badge.innerText = "第 " + megaHornCycle + "/3 轮";
+        text.style.animation = 'none';
+        void text.offsetWidth;
+        text.style.animation = 'hornScroll 5s linear infinite';
+        
+        playTone(783.99, 'triangle', 0.15, 0.22);
+        megaHornTimer = setTimeout(nextCycle, 5000);
+      }
+
+      megaHornTimer = setTimeout(nextCycle, 5000);
+    }
+
+    function closeMegaHorn() {
+      if (megaHornTimer) clearTimeout(megaHornTimer);
+      megaHornTimer = null;
+      var banner = document.getElementById("megaHornBanner");
+      if (banner) banner.classList.add("hidden");
     }
 
     var ownedStreamers = ['su'];
@@ -2550,37 +2867,178 @@
     }
 
     // =========================================================================
-    // 6. 主播养成与签约市场
+    // 6. 主播养成、体力恢复冷却与签约市场
     // =========================================================================
+    var staminaTickerInterval = null;
+
+    function initStaminaTicker() {
+      if (staminaTickerInterval) clearInterval(staminaTickerInterval);
+      staminaTickerInterval = setInterval(function() {
+        var changed = false;
+
+        if (state.staminaGlobalCooldown > 0) {
+          state.staminaGlobalCooldown--;
+          changed = true;
+        }
+
+        ownedStreamers.forEach(function(sid) {
+          var s = streamersMaster[sid];
+          if (s && s.restCooldownRemaining > 0) {
+            s.restCooldownRemaining--;
+            changed = true;
+          }
+        });
+
+        if (state.activeTab === 'streamers') {
+          updateStreamersCooldownUI();
+        }
+      }, 1000);
+    }
+
+    function updateAllRestButton() {
+      var btn = document.getElementById("btnAllRest");
+      if (!btn) return;
+      var cd = state.staminaGlobalCooldown || 0;
+      if (cd > 0) {
+        btn.className = "btn-icon btn-speedup";
+        btn.style.color = "#34d399";
+        btn.innerHTML = '⚡ 团建清CD(5w) <span style="font-size: 10px;">⏳' + cd + 's</span>';
+        btn.setAttribute("data-action", "speedup-all-stamina");
+        btn.title = "消耗 5.0w 资金立即全员清空冷却并全员体力回满 100%";
+      } else {
+        btn.className = "btn-icon";
+        btn.style.color = "#34d399";
+        btn.innerHTML = '💆 全员休假';
+        btn.setAttribute("data-action", "restore-all-streamers");
+        btn.title = "全员放假恢复 100% 体力 (冷却 35s)";
+      }
+    }
+
+    function updateStreamersCooldownUI() {
+      updateAllRestButton();
+      ownedStreamers.forEach(function(sid) {
+        var s = streamersMaster[sid];
+        var btn = document.querySelector('button[data-action="speedup-streamer-stamina"][data-id="' + sid + '"]');
+        if (btn) {
+          if (s.restCooldownRemaining <= 0) {
+            renderStreamersList();
+          } else {
+            btn.innerHTML = '⚡ 私汤清CD(2w) <span style="font-size: 10px; opacity: 0.9;">⏳' + s.restCooldownRemaining + 's</span>';
+          }
+        }
+      });
+    }
+
     function restStreamer(id) {
       safeInitAudio();
       var s = streamersMaster[id];
-      if (s.stamina >= 100 && id !== 'ai01') {
-        showToast(s.name + " 体力充沛，无需休假！", "info");
+      if (!s) return;
+
+      if (id === 'ai01') {
+        showToast(s.name + " 是AI数字人，全天候零能耗无休！", "info");
         return;
       }
-      s.stamina = Math.min(100, s.stamina + 45);
+
+      if (s.restCooldownRemaining > 0) {
+        speedupStreamerStamina(id);
+        return;
+      }
+
+      if (s.stamina >= 100) {
+        showToast(s.name + " 体力充沛 (100%)，无需休假！", "info");
+        return;
+      }
+
+      s.stamina = Math.min(100, s.stamina + 50);
+      s.restCooldownRemaining = 25; // 25秒恢复冷却
+
       playCheerSound();
-      showToast(s.name + " 已休整完毕，体力恢复至 " + s.stamina + "%！", "success");
+      showToast(s.name + " 休整完毕，体力恢复至 " + s.stamina + "%！(进入 25s 休整冷却)", "success");
       renderStreamersList();
       renderLivePrep();
       saveLocalData();
     }
 
+    function speedupStreamerStamina(id) {
+      safeInitAudio();
+      var s = streamersMaster[id];
+      if (!s) return;
+
+      if (state.cash < 2.0) {
+        showToast("流动资金不足 2.0 万，无法预约私汤速成！", "alert");
+        playAlertSound();
+        return;
+      }
+
+      state.cash = Math.max(0, state.cash - 2.0);
+      s.restCooldownRemaining = 0;
+      s.stamina = 100;
+
+      playCoinSound();
+      setTimeout(playCheerSound, 100);
+      showToast("⚡ 钞能力生效！消耗 2.0w 资金，" + s.name + " 私汤休整完毕，冷却已清空且体力拉满至 100%！", "success");
+
+      renderStreamersList();
+      renderLivePrep();
+      renderHeaderStats();
+      saveLocalData();
+    }
+
     function restoreAllStreamers() {
       safeInitAudio();
+
+      if (state.staminaGlobalCooldown > 0) {
+        speedupAllStamina();
+        return;
+      }
+
       var count = 0;
       ownedStreamers.forEach(function(sid) {
         var s = streamersMaster[sid];
-        if (s && s.id !== 'ai01' && s.stamina < 100) {
+        if (s && s.id !== 'ai01') {
           s.stamina = 100;
+          s.restCooldownRemaining = 35; // 35秒冷却
           count++;
         }
       });
+
+      state.staminaGlobalCooldown = 35;
+
       playCheerSound();
-      showToast("全员放假调休！" + count + " 位主播体力均已满血恢复至 100%！", "success");
+      showToast("💆 全员放假调休！" + count + " 位主播体力均已满血恢复至 100%！(休假冷却 35s)", "success");
+
       renderStreamersList();
       renderLivePrep();
+      saveLocalData();
+    }
+
+    function speedupAllStamina() {
+      safeInitAudio();
+
+      if (state.cash < 5.0) {
+        showToast("流动资金不足 5.0 万，无法包场海岛团建！", "alert");
+        playAlertSound();
+        return;
+      }
+
+      state.cash = Math.max(0, state.cash - 5.0);
+      state.staminaGlobalCooldown = 0;
+
+      ownedStreamers.forEach(function(sid) {
+        var s = streamersMaster[sid];
+        if (s && s.id !== 'ai01') {
+          s.stamina = 100;
+          s.restCooldownRemaining = 0;
+        }
+      });
+
+      playCoinSound();
+      setTimeout(playCheerSound, 100);
+      showToast("⚡ 豪华团建包场！消耗 5.0w 资金，全员体力拉满 100%，所有主播冷却立即清空！", "success");
+
+      renderStreamersList();
+      renderLivePrep();
+      renderHeaderStats();
       saveLocalData();
     }
 
@@ -2641,6 +3099,7 @@
       var box = document.getElementById("streamersList");
       if (!box) return;
       box.innerHTML = "";
+      updateAllRestButton();
 
       ownedStreamers.forEach(function(sid) {
         var s = streamersMaster[sid];
@@ -2705,17 +3164,33 @@
           btnShoot.classList.add("btn-disabled");
         }
 
-        // 休假按钮 (带禁用态)
+        // 休假与冷却加速按钮
         var btnRest = document.createElement("button");
         btnRest.className = "btn-icon";
         btnRest.style.flex = "1";
         btnRest.style.padding = "6px 0";
-        btnRest.innerText = (s.stamina >= 100 && s.id !== 'ai01') ? "💆 体力已满" : "💆 休假恢复";
-        btnRest.setAttribute("data-action", "rest-streamer");
-        btnRest.setAttribute("data-id", s.id);
-        if (s.stamina >= 100 && s.id !== 'ai01') {
+
+        var cdSec = s.restCooldownRemaining || 0;
+        if (s.id === 'ai01') {
+          btnRest.innerText = "⚡ 永动机免休";
           btnRest.disabled = true;
           btnRest.classList.add("btn-disabled");
+        } else if (cdSec > 0) {
+          // 冷却中，支持消耗资金缩短冷却 / 清空冷却立满
+          btnRest.className = "btn-icon btn-speedup";
+          btnRest.innerHTML = '⚡ 私汤清CD(2w) <span style="font-size: 10px; opacity: 0.9;">⏳' + cdSec + 's</span>';
+          btnRest.setAttribute("data-action", "speedup-streamer-stamina");
+          btnRest.setAttribute("data-id", s.id);
+          btnRest.title = "消耗 2.0w 资金立即清空冷却并体力回满 100%";
+        } else if (s.stamina >= 100) {
+          btnRest.innerText = "💆 体力已满";
+          btnRest.disabled = true;
+          btnRest.classList.add("btn-disabled");
+        } else {
+          btnRest.innerText = "💆 休假恢复";
+          btnRest.setAttribute("data-action", "rest-streamer");
+          btnRest.setAttribute("data-id", s.id);
+          btnRest.title = "安排主播调休休假 (冷却 25s)";
         }
 
         btnRow.appendChild(btnTrain);
@@ -2839,6 +3314,183 @@
       renderLivePrep();
       renderHeaderStats();
       saveLocalData();
+    }
+
+    // =========================================================================
+    // 盲盒抽奖系统 (定额 35w 抽取主播，SSR 全场大喇叭通报 3 次)
+    // =========================================================================
+    var isDrawingBlindBox = false;
+
+    function openBlindBoxModal() {
+      safeInitAudio();
+      var modal = document.getElementById("blindBoxModal");
+      if (!modal) return;
+      
+      var idleView = document.getElementById("blindBoxIdleView");
+      var resultView = document.getElementById("blindBoxResultView");
+      if (idleView) idleView.classList.remove("hidden");
+      if (resultView) resultView.classList.add("hidden");
+
+      updateBlindBoxUI();
+      modal.classList.remove("hidden");
+    }
+
+    function closeBlindBoxModal() {
+      var modal = document.getElementById("blindBoxModal");
+      if (modal) modal.classList.add("hidden");
+      renderStreamersList();
+      renderLivePrep();
+      renderHeaderStats();
+    }
+
+    function updateBlindBoxUI() {
+      var unowned = Object.keys(streamersMaster).filter(function(id) {
+        return ownedStreamers.indexOf(id) === -1;
+      });
+      var countEl = document.getElementById("blindBoxPoolCount");
+      if (countEl) countEl.innerText = "未签约储备: " + unowned.length + " 位";
+
+      var btnDraw = document.getElementById("btnDrawBlindBox");
+      var btnAgain = document.getElementById("btnDrawAgain");
+
+      var canDraw = (state.cash >= 35.0 && unowned.length > 0);
+
+      [btnDraw, btnAgain].forEach(function(btn) {
+        if (!btn) return;
+        if (!canDraw) {
+          btn.disabled = true;
+          btn.classList.add("btn-disabled");
+          if (unowned.length === 0) {
+            btn.innerText = "🎉 已集齐签约全网所有主播！";
+          } else {
+            btn.innerText = "🎲 资金不足 (需 35.0w)";
+          }
+        } else {
+          btn.disabled = false;
+          btn.classList.remove("btn-disabled");
+          btn.innerText = (btn === btnAgain) ? "🔄 再抽一次 (35w)" : "🎲 立即开启盲盒 (35.0w)";
+        }
+      });
+    }
+
+    function executeBlindBoxDraw() {
+      safeInitAudio();
+      if (isDrawingBlindBox) return;
+
+      if (state.cash < 35.0) {
+        showToast("流动资金不足 35.0 万，无法开启人才盲盒！", "alert");
+        playAlertSound();
+        return;
+      }
+
+      var unowned = Object.keys(streamersMaster).filter(function(id) {
+        return ownedStreamers.indexOf(id) === -1;
+      });
+
+      if (unowned.length === 0) {
+        showToast("您已集齐签约全网所有 24 位顶级主播！", "info");
+        return;
+      }
+
+      isDrawingBlindBox = true;
+      state.cash = Math.max(0, state.cash - 35.0);
+      renderHeaderStats();
+
+      // 按梯队分类未签约人才池
+      var tierPools = { SSR: [], S: [], A: [], B: [] };
+      unowned.forEach(function(id) {
+        var s = streamersMaster[id];
+        if (tierPools[s.tier]) tierPools[s.tier].push(s);
+        else tierPools.B.push(s);
+      });
+
+      var roll = Math.random() * 100;
+      var targetTier = 'B';
+      if (roll < 10) targetTier = 'SSR';
+      else if (roll < 35) targetTier = 'S';
+      else if (roll < 70) targetTier = 'A';
+      else targetTier = 'B';
+
+      // 回退兜底：如果选中的目标层级已无未签约主播，寻找可用的最近层级
+      var candidateTier = targetTier;
+      if (tierPools[candidateTier].length === 0) {
+        var priorityOrder = ['SSR', 'S', 'A', 'B'];
+        for (var i = 0; i < priorityOrder.length; i++) {
+          if (tierPools[priorityOrder[i]].length > 0) {
+            candidateTier = priorityOrder[i];
+            break;
+          }
+        }
+      }
+
+      var chosenStreamer = tierPools[candidateTier][Math.floor(Math.random() * tierPools[candidateTier].length)];
+      ownedStreamers.push(chosenStreamer.id);
+
+      // 拆盲盒交互动画
+      var boxWrap = document.getElementById("gachaBoxWrap");
+      if (boxWrap) boxWrap.classList.add("gacha-box-shaking");
+      playCoinSound();
+
+      setTimeout(function() {
+        if (boxWrap) boxWrap.classList.remove("gacha-box-shaking");
+
+        var idleView = document.getElementById("blindBoxIdleView");
+        var resultView = document.getElementById("blindBoxResultView");
+        var cardBox = document.getElementById("blindBoxResultCard");
+
+        if (idleView) idleView.classList.add("hidden");
+        if (resultView) resultView.classList.remove("hidden");
+
+        var glowClass = chosenStreamer.tier === 'SSR' ? 'gacha-tier-glow-ssr' : (chosenStreamer.tier === 'S' ? 'gacha-tier-glow-s' : '');
+        var tierBadgeHtml = '<span class="badge tier-' + chosenStreamer.tier.toLowerCase() + '" style="font-size: 11px; padding: 2px 7px; font-weight: 900;">' + chosenStreamer.tier + ' 级</span>';
+
+        cardBox.className = "card-subpanel " + glowClass;
+        cardBox.innerHTML =
+          '<div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #24314c; padding-bottom: 8px;">' +
+            '<div style="display: flex; align-items: center; gap: 8px;">' +
+              getPersonifiedAvatarSVG(chosenStreamer, 52) +
+              '<div>' +
+                '<div style="font-size: 14px; font-weight: 800; color: #fff;">' + escapeHTML(chosenStreamer.name) + ' ' + tierBadgeHtml + '</div>' +
+                '<div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">' + escapeHTML(chosenStreamer.title) + ' · ' + escapeHTML(chosenStreamer.tag) + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.4;">' + escapeHTML(chosenStreamer.desc) + '</div>' +
+          '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-top: 2px;">' +
+            '<div class="card-subpanel" style="padding: 4px;">' +
+              '<div style="color: #94a3b8; font-size: 10px;">带货力</div>' +
+              '<div style="color: #fbbf24; font-weight: 800; font-size: 13px;">' + chosenStreamer.sales + '</div>' +
+            '</div>' +
+            '<div class="card-subpanel" style="padding: 4px;">' +
+              '<div style="color: #94a3b8; font-size: 10px;">初始体力</div>' +
+              '<div style="color: #34d399; font-weight: 800; font-size: 13px;">' + (chosenStreamer.id === 'ai01' ? '∞' : chosenStreamer.stamina + '%') + '</div>' +
+            '</div>' +
+            '<div class="card-subpanel" style="padding: 4px;">' +
+              '<div style="color: #94a3b8; font-size: 10px;">心理韧性</div>' +
+              '<div style="color: #38bdf8; font-weight: 800; font-size: 13px;">' + chosenStreamer.resilience + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="font-size: 11px; color: #fbbf24; background: rgba(245, 158, 11, 0.1); padding: 5px 8px; border-radius: 6px;">' +
+            '⚡ 专属绝技: ' + escapeHTML(chosenStreamer.ultName) +
+          '</div>';
+
+        if (chosenStreamer.tier === 'SSR') {
+          triggerMegaHornAnnouncement(chosenStreamer);
+          showToast("🎉【金色传说】一发入魂！恭喜抽中 SSR 顶流王牌【" + chosenStreamer.name + "】！全网大喇叭通报 3 轮！", "success");
+        } else {
+          playCheerSound();
+          showToast("招募成功！" + chosenStreamer.tier + " 级主播【" + chosenStreamer.name + "】加盟破晓互娱！", "success");
+        }
+
+        updateMCNRank(true);
+        updateBlindBoxUI();
+        renderStreamersList();
+        renderLivePrep();
+        renderHeaderStats();
+        saveLocalData();
+
+        isDrawingBlindBox = false;
+      }, 700);
     }
 
     // =========================================================================
@@ -3228,6 +3880,7 @@
             state.endless = Boolean(parsed.state.endless);
             state.mcnRank = Math.max(1, Math.min(100, parseInt(parsed.state.mcnRank, 10) || 98));
             state.liveCooldownRemaining = Math.max(0, parseInt(parsed.state.liveCooldownRemaining, 10) || 0);
+            state.staminaGlobalCooldown = Math.max(0, parseInt(parsed.state.staminaGlobalCooldown, 10) || 0);
 
             if (parsed.state.facilities && typeof parsed.state.facilities === 'object') {
               state.facilities.studio = Math.max(0, Math.min(4, parseInt(parsed.state.facilities.studio, 10) || 0));
@@ -3245,6 +3898,7 @@
                   if (isFinite(ps.sales)) streamersMaster[sid].sales = Math.max(0, Number(ps.sales));
                   if (isFinite(ps.stamina)) streamersMaster[sid].stamina = Math.max(0, Math.min(100, Number(ps.stamina)));
                   if (isFinite(ps.resilience)) streamersMaster[sid].resilience = Math.max(0, Number(ps.resilience));
+                  if (isFinite(ps.restCooldownRemaining)) streamersMaster[sid].restCooldownRemaining = Math.max(0, Number(ps.restCooldownRemaining));
                 }
               });
             }
@@ -3318,6 +3972,19 @@
         closeLeaderboardModal();
       } else if (action === 'skip-cooldown') {
         skipCooldown();
+      } else if (action === 'open-blindbox') {
+        openBlindBoxModal();
+      } else if (action === 'close-blindbox') {
+        closeBlindBoxModal();
+      } else if (action === 'execute-blindbox') {
+        executeBlindBoxDraw();
+      } else if (action === 'close-horn') {
+        closeMegaHorn();
+      } else if (action === 'speedup-streamer-stamina') {
+        var id = el.getAttribute('data-id');
+        speedupStreamerStamina(id);
+      } else if (action === 'speedup-all-stamina') {
+        speedupAllStamina();
       }
     }
 
@@ -3367,6 +4034,7 @@
 
     function initGame() {
       loadLocalData();
+      initStaminaTicker();
       weekStartSnapshot = { cash: state.cash, fans: state.fans, pr: state.pr };
       renderHeaderStats();
       renderHall();
