@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-06T14:53:00Z",
+  "target": "d:\\tools4\\index.html",
+  "product": "MCN王牌经纪人 2.0 · 虎扑AI工坊",
+  "platform": "web",
+  "method": "dual-agent",
+  "assessments": {
+    "agent_a": "abdbe137-b45b-41ae-a4a0-517790f8ad93",
+    "agent_b": "impeccable detect (CLI AST engine)"
+  },
+  "health_score": {
+    "total": 28,
+    "max": 40,
+    "percentage": 70,
+    "band": "Good",
+    "heuristics": {
+      "visibility_of_system_status": 3,
+      "match_between_system_and_real_world": 4,
+      "user_control_and_freedom": 3,
+      "consistency_and_standards": 3,
+      "error_prevention": 2,
+      "recognition_rather_than_recall": 3,
+      "flexibility_and_efficiency": 2,
+      "aesthetic_and_minimalist_design": 3,
+      "error_recovery": 3,
+      "help_and_documentation": 2
+    }
+  },
+  "detector_summary": {
+    "total_anti_patterns": 64,
+    "top_issues": [
+      "undersized-ui-text (functional text below 11px floor)",
+      "dark-glow (colored box-shadow halo on dark ground)",
+      "cramped-padding (children flush against container border)",
+      "low-contrast (gradient buttons under 4.5:1 ratio)"
+    ]
+  },
+  "priority_issues": [
+    {
+      "severity": "P1",
+      "name": "Missing Visual Disabled States & Resource Affordances",
+      "command": "/impeccable harden"
+    },
+    {
+      "severity": "P1",
+      "name": "Fixed Scroll Container Constraint & Micro-Typography Strain",
+      "command": "/impeccable layout"
+    },
+    {
+      "severity": "P1",
+      "name": "Abrupt Week Progression & Missing Turn Settlement Card",
+      "command": "/impeccable delight"
+    },
+    {
+      "severity": "P2",
+      "name": "Irreversible Single-Tap Event Selection",
+      "command": "/impeccable harden"
+    },
+    {
+      "severity": "P2",
+      "name": "Prototype-Tier Emoji Aesthetics & Live Room Immersion",
+      "command": "/impeccable polish"
+    }
+  ]
+}

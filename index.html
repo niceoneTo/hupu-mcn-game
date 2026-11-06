@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>MCN王牌经纪人 2.0 · 虎扑AI工坊生产标准版</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #131b2e;
+      --card-sub: #19233c;
+      --card-inner: #0f172a;
+      --border: #2e3d60;
+      --border-accent: #3b82f6;
+      --text-main: #f8fafc;
+      --text-sub: #cbd5e1;
+      --text-muted: #94a3b8;
+      --hupu-red: #c91b1b;
+      --hupu-gold: #f59e0b;
+      --hupu-blue: #2563eb;
+      --hupu-green: #10b981;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      background-color: #0b0f19 !important;
+      color: #f8fafc !important;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 6px 4px 16px 4px;
+      line-height: 1.4;
+    }
+    .game-container {
+      width: 100%;
+      max-width: 480px;
+      background-color: #131b2e;
+      border: 1px solid #2e3d60;
+      border-radius: 16px;
+      padding: 10px 12px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+    .hidden {
+      display: none !important;
+    }
+
+    /* 顶栏与虎扑联合标 */
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #19233c;
+      border: 1px solid #2e3d60;
+      padding: 8px 12px;
+      border-radius: 12px;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hupu-tag {
+      background: #c91b1b;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 3px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .header-title {
+      font-weight: 800;
+      font-size: 15px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .badge-blue { background: rgba(37, 99, 235, 0.25); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.4); }
+    .badge-red { background: rgba(201, 27, 27, 0.25); color: #f87171; border: 1px solid rgba(201, 27, 27, 0.4); }
+    .badge-green { background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-gold { background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+    /* 核心指标仪表盘 (严禁微型文字，清晰易读) */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      text-align: center;
+    }
+    .stat-box {
+      background: #19233c;
+      border: 1px solid #2e3d60;
+      border-radius: 10px;
+      padding: 8px 4px;
+    }
+    .stat-lbl {
+      font-size: 11px;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+    .stat-val {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 2px;
+    }
+    .val-gold { color: #fbbf24; }
+    .val-cyan { color: #38bdf8; }
+    .val-green { color: #34d399; }
+    .val-red { color: #f87171; }
+
+    /* 置顶主导航 Tabs */
+    .top-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      background: #19233c;
+      border: 1px solid #2e3d60;
+      padding: 4px;
+      border-radius: 12px;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 8px 0;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer !important;
+      touch-action: manipulation !important;
+      -webkit-tap-highlight-color: rgba(37, 99, 235, 0.4) !important;
+      user-select: auto !important;
+      -webkit-user-select: auto !important;
+      transition: all 0.12s;
+    }
+    .nav-item:active { transform: scale(0.95); }
+    .nav-item.active {
+      background: #c91b1b;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* 阶段通知条 */
+    .phase-bar {
+      background: linear-gradient(90deg, rgba(201, 27, 27, 0.15), rgba(37, 99, 235, 0.15));
+      border: 1px solid rgba(201, 27, 27, 0.35);
+      border-radius: 10px;
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #e2e8f0;
+    }
+
+    /* 动态 Toast (浮动居顶提示) */
+    .toast-bar {
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      line-height: 1.4;
+      animation: fadeIn 0.15s ease-out;
+      font-weight: 600;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    .toast-success { background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.6); color: #6ee7b7; }
+    .toast-alert { background: rgba(201, 27, 27, 0.35); border: 1px solid rgba(201, 27, 27, 0.7); color: #fca5a5; }
+    .toast-info { background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(37, 99, 235, 0.6); color: #93c5fd; }
+
+    /* 主内容滚动容器 (弹性高度自适应，杜绝 360px 局促双滚动) */
+    .main-scroll-panel {
+      min-height: 440px;
+      max-height: calc(100vh - 210px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-right: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .main-scroll-panel::-webkit-scrollbar { width: 5px; }
+    .main-scroll-panel::-webkit-scrollbar-thumb { background: #2e3d60; border-radius: 4px; }
+
+    /* 卡片与面板 */
+    .card-panel {
+      background: #19233c;
+      border: 1px solid #2e3d60;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-subpanel {
+      background: #101728;
+      border: 1px solid #24314c;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    /* 生产标准按钮体系 (跨端触控保障) */
+    button, [role="button"], .btn-icon, .btn-primary, .btn-danger, .btn-blue, .btn-small-upgrade, .opt-card, .barrage-bubble {
+      cursor: pointer !important;
+      touch-action: manipulation !important;
+      -webkit-tap-highlight-color: rgba(201, 27, 27, 0.4) !important;
+      user-select: auto !important;
+      -webkit-user-select: auto !important;
+      pointer-events: auto !important;
+    }
+
+    /* 严苛的禁用态 (Proactive Disabled Affordances) */
+    button:disabled, .btn-disabled {
+      opacity: 0.42 !important;
+      filter: grayscale(0.85) !important;
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+      box-shadow: none !important;
+      border-color: #334155 !important;
+      background: #1e293b !important;
+      color: #64748b !important;
+    }
+
+    .btn-icon {
+      background: #24304e;
+      color: #e2e8f0;
+      border: 1px solid #3b4b73;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.1s;
+    }
+    .btn-icon:active { transform: scale(0.94); background: #334155; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, #c91b1b, #991b1b);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+      transition: all 0.1s;
+    }
+    .btn-primary:active { transform: scale(0.97); filter: brightness(1.1); }
+
+    .btn-danger {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: all 0.1s;
+    }
+    .btn-danger:active { transform: scale(0.97); }
+
+    .btn-blue {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.1s;
+    }
+    .btn-blue:active { transform: scale(0.97); }
+
+    .btn-small-upgrade {
+      background: #c91b1b;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      min-height: 36px;
+      transition: all 0.1s;
+    }
+    .btn-small-upgrade:active { transform: scale(0.93); background: #991b1b; }
+
+    /* 弹幕主舞台 (带货实况对战) */
+    .barrage-stage {
+      width: 100%;
+      height: 230px;
+      background: #0f172a;
+      border: 1px solid #2e3d60;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .barrage-bubble {
+      position: absolute;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
+      transition: transform 0.08s;
+      z-index: 10;
+    }
+    .barrage-bubble:active { transform: scale(1.18) !important; }
+    .bubble-normal { background: rgba(16, 185, 129, 0.95); color: #fff; border: 1px solid #34d399; }
+    .bubble-whale { background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; border: 1px solid #fde047; }
+    .bubble-troll { background: rgba(201, 27, 27, 0.95); color: #fff; border: 1px solid #f87171; }
+    .bubble-flash { background: linear-gradient(135deg, #ea580c, #f59e0b); color: #fff; border: 1px solid #fde047; }
+
+    /* 商战决策卡片 (支持选中高亮与防误触) */
+    .opt-card {
+      background: #101728;
+      border: 1.5px solid #24314c;
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: left;
+      transition: all 0.12s;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .opt-card:active { transform: scale(0.98); background: #1e293b; }
+    .opt-card.selected {
+      border-color: #fbbf24 !important;
+      background: rgba(245, 158, 11, 0.12) !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 模态框 Overlay */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 16px;
+      animation: fadeIn 0.15s ease-out;
+    }
+    .modal-card {
+      width: 100%;
+      background: #19233c;
+      border: 1px solid #c91b1b;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.9);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-container" id="gameApp">
+    
+    <!-- 顶部状态栏 -->
+    <header class="header-bar">
+      <div class="brand-wrap">
+        <span class="hupu-tag">虎扑工坊</span>
+        <span class="header-title">破晓互娱 2.0</span>
+        <span id="destinyBadge" class="badge badge-blue">摸索期</span>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <button id="soundBtn" class="btn-icon" data-action="toggle-sound">🔊</button>
+        <button class="btn-icon" data-action="open-reset">🔄 重开</button>
+      </div>
+    </header>
+
+    <!-- 核心指标仪表盘 (4列规范排版) -->
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-lbl">周数进度</div>
+        <div id="valWeek" class="stat-val">第 1 / 12 周</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-lbl">流动资金</div>
+        <div id="valCash" class="stat-val val-gold">100.0 万</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-lbl">全网粉丝</div>
+        <div id="valFans" class="stat-val val-cyan">20.0 万</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-lbl">JRs口碑</div>
+        <div id="valPR" class="stat-val val-green">80 分</div>
+      </div>
+    </div>
+
+    <!-- 顶部常驻导航 Tabs -->
+    <nav class="top-nav" id="topNav">
+      <button id="tabBtn-hall" class="nav-item active" data-action="switch-tab" data-tab="hall">
+        <span style="font-size: 15px;">🏢</span>
+        <span>运营大厅</span>
+      </button>
+      <button id="tabBtn-streamers" class="nav-item" data-action="switch-tab" data-tab="streamers">
+        <span style="font-size: 15px;">🎙️</span>
+        <span>主播集训</span>
+      </button>
+      <button id="tabBtn-live" class="nav-item" data-action="switch-tab" data-tab="live">
+        <span style="font-size: 15px;">🔥</span>
+        <span>周末带货</span>
+      </button>
+      <button id="tabBtn-events" class="nav-item" data-action="switch-tab" data-tab="events">
+        <span style="font-size: 15px;">📰</span>
+        <span>商战决策</span>
+      </button>
+    </nav>
+
+    <!-- 阶段提示横幅 -->
+    <div class="phase-bar">
+      <span id="phaseHintText">📅 工作日：提升设施与集训主播，筹备周末直播</span>
+      <span id="phaseBadgeText" style="background: rgba(201, 27, 27, 0.35); color: #fca5a5; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700;">日常经营</span>
+    </div>
+
+    <!-- 动态消息 Toast -->
+    <div id="toast" class="toast-bar toast-info hidden"></div>
+
+    <!-- 主内容面板 (弹性视口自适应) -->
+    <main class="main-scroll-panel">
+      
+      <!-- TAB 1: 运营大厅 -->
+      <section id="tabHall" class="card-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 14px; font-weight: 700; color: #fff;">🏢 公司财务与运营</span>
+          <span id="hallStatusBadge" style="font-size: 12px; color: #34d399; font-weight: 600;">健康盈利中</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px;">
+          <div class="card-subpanel">累积总流水: <span id="valTotalRevenue" style="color: #fbbf24; font-weight: 800;">0 万</span></div>
+          <div class="card-subpanel">签约主播: <span id="valStreamerCount" style="color: #38bdf8; font-weight: 800;">1 位</span></div>
+        </div>
+
+        <!-- 硬件设施升级区 (含前置禁用态保障) -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 13px; font-weight: 700; color: #cbd5e1;">⚙️ 核心基础设施升级</div>
+
+          <div class="card-subpanel" style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                🎙️ 专业级直播间 <span id="lvlStudio" class="badge badge-blue">Lv.1</span>
+              </div>
+              <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">带货成单基础流水 +25%</div>
+            </div>
+            <button id="btnUpgradeStudio" class="btn-small-upgrade" data-action="upgrade" data-type="studio">
+              升级 <span id="costStudio">20w</span>
+            </button>
+          </div>
+
+          <div class="card-subpanel" style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                📦 自建质检供应链 <span id="lvlSupply" class="badge badge-green">Lv.0</span>
+              </div>
+              <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">降低退货率，每周自动恢复3点口碑</div>
+            </div>
+            <button id="btnUpgradeSupply" class="btn-small-upgrade" data-action="upgrade" data-type="supplyChain">
+              升级 <span id="costSupply">35w</span>
+            </button>
+          </div>
+
+          <div class="card-subpanel" style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #fff;">
+                📡 舆情反商战雷达 <span id="lvlRadar" class="badge badge-gold">Lv.0</span>
+              </div>
+              <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">削弱对手黑粉打压伤害 40%</div>
+            </div>
+            <button id="btnUpgradeRadar" class="btn-small-upgrade" data-action="upgrade" data-type="prRadar">
+              升级 <span id="costRadar">30w</span>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn-primary" data-action="switch-tab" data-tab="live" style="margin-top: 4px;">
+          <span>🔥</span> 准备就绪，进入周末直播带货！
+        </button>
+      </section>
+
+      <!-- TAB 2: 主播矩阵与集训 -->
+      <section id="tabStreamers" class="card-panel hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 14px; font-weight: 700; color: #fff;">🎙️ 旗下签约主播团队</span>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-icon" data-action="restore-all-streamers" style="color: #34d399; font-size: 11px;">
+              💆 全员休假
+            </button>
+            <button class="btn-icon" data-action="open-recruit" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.4); font-size: 11px;">
+              ➕ 签约市场
+            </button>
+          </div>
+        </div>
+        <div id="streamersList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+      </section>
+
+      <!-- TAB 3: 周末直播带货敏捷对战区 -->
+      <section id="tabLive" class="card-panel hidden">
+        
+        <!-- 准备界面 -->
+        <div id="livePrepView" style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 6px;">
+            <div>
+              <h3 style="font-size: 14px; font-weight: 700; color: #fff;">🔴 周末直播带货实况战</h3>
+              <p style="font-size: 12px; color: #94a3b8; margin-top: 2px;">15秒高能带货：秒上链接，火速踢出恶意黑粉！</p>
+            </div>
+            <span class="badge badge-gold">15s 挑战</span>
+          </div>
+
+          <div>
+            <label style="font-size: 12px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 6px;">指定出战首发主播：</label>
+            <div id="liveSelectBox" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
+          </div>
+
+          <div class="card-subpanel" style="font-size: 12px; display: flex; flex-direction: column; gap: 4px; color: #cbd5e1;">
+            <div style="color: #34d399;">🟢 绿色弹幕：成单入账并累加连击</div>
+            <div style="color: #fbbf24;">🟡 榜一大哥：打赏爆发超额 GMV</div>
+            <div style="color: #f87171;">🔴 红色黑粉：快速踢出！超时扣除 JRs 口碑</div>
+            <div style="color: #fbbf24;">⚡ 绝技满额：释放主播专属全屏清场大招</div>
+          </div>
+
+          <button id="btnStartLive" class="btn-primary" data-action="start-live">
+            <span>🚀</span> 开启全网带货直播！
+          </button>
+        </div>
+
+        <!-- 实时战斗对战界面 -->
+        <div id="liveBattleView" class="hidden" style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #19233c; border: 1px solid #2e3d60; padding: 6px 10px; border-radius: 10px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span id="battleStreamerAvatar" style="font-size: 22px;">💄</span>
+              <div>
+                <div id="battleStreamerName" style="font-size: 13px; font-weight: 700; color: #fff;">苏晚晴</div>
+                <div style="font-size: 11px; color: #fbbf24; font-weight: 700;">连击: <span id="comboVal">0</span>x</div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 11px; color: #94a3b8;">本场流水 GMV</div>
+              <div id="battleGMV" style="font-size: 14px; font-weight: 800; color: #34d399;">+0.0 万</div>
+            </div>
+            <div style="background: rgba(201, 27, 27, 0.25); border: 1px solid rgba(201, 27, 27, 0.5); color: #fca5a5; padding: 4px 8px; border-radius: 8px; font-family: monospace; font-weight: 700; font-size: 13px;">
+              <span id="battleTimer">15.0</span>s
+            </div>
+          </div>
+
+          <!-- 绝技蓄力条 -->
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="flex: 1; background: #0f172a; height: 8px; border-radius: 99px; overflow: hidden; border: 1px solid #334155;">
+              <div id="ultBar" style="background: linear-gradient(90deg, #f59e0b, #c91b1b); height: 100%; width: 0%; transition: width 0.15s;"></div>
+            </div>
+            <button id="ultBtn" class="btn-icon" data-action="trigger-ult" disabled style="font-size: 11px; padding: 4px 8px;">
+              ⚡ 绝技
+            </button>
+          </div>
+
+          <!-- 弹幕交互舞台 -->
+          <div class="barrage-stage" id="barrageStage">
+            <div id="feverGlow" style="position: absolute; inset: 0; pointer-events: none; transition: all 0.3s;"></div>
+            <div id="barrageTrack" style="position: absolute; inset: 0;"></div>
+          </div>
+        </div>
+
+        <!-- 战报结算界面 -->
+        <div id="liveResultView" class="hidden" style="display: flex; flex-direction: column; gap: 8px; text-align: center;">
+          <h3 style="font-size: 15px; font-weight: 800; color: #34d399;">🎉 周末直播战报大捷！</h3>
+          
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; font-size: 12px;">
+            <div class="card-subpanel">
+              <div style="color: #94a3b8; font-size: 11px;">入账流水 GMV</div>
+              <div id="resGMV" style="color: #fbbf24; font-weight: 800; font-size: 13px; margin-top: 2px;">0.0w</div>
+            </div>
+            <div class="card-subpanel">
+              <div style="color: #94a3b8; font-size: 11px;">新增粉丝</div>
+              <div id="resFans" style="color: #38bdf8; font-weight: 800; font-size: 13px; margin-top: 2px;">+0.0w</div>
+            </div>
+            <div class="card-subpanel">
+              <div style="color: #94a3b8; font-size: 11px;">最高连击</div>
+              <div id="resMaxCombo" style="color: #34d399; font-weight: 800; font-size: 13px; margin-top: 2px;">0x</div>
+            </div>
+          </div>
+
+          <button class="btn-blue" data-action="switch-tab" data-tab="events" style="margin-top: 4px;">
+            <span>📰</span> 战果清点完毕，进入本周行业商战决策！
+          </button>
+        </div>
+      </section>
+
+      <!-- TAB 4: 商战与舆情决策区 (核心防误触两步确认) -->
+      <section id="tabEvents" class="card-panel hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span id="evTag" class="badge badge-gold">行业风向</span>
+          <span id="evWeekHint" style="font-size: 11px; color: #94a3b8;">第 1 周商战决策</span>
+        </div>
+
+        <h3 id="evTitle" style="font-size: 14px; font-weight: 700; color: #fff;">
+          办公选址与初创战略姿态
+        </h3>
+
+        <p id="evDesc" style="font-size: 12px; color: #cbd5e1; line-height: 1.5;">
+          离开前东家天娱传媒后，你手里握着100万启动资金。办公选址将定义你的初创姿态。
+        </p>
+
+        <!-- 选项列表 -->
+        <div id="evOptionsBox" style="display: flex; flex-direction: column; gap: 8px;"></div>
+
+        <!-- 决策确认机制 (P1级防误触) -->
+        <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 6px;">
+          <div id="evProjectedInfo" class="card-subpanel hidden" style="font-size: 12px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);"></div>
+          <button id="btnConfirmEventChoice" class="btn-primary" data-action="confirm-event-choice" disabled>
+            <span>👉</span> 请先轻触上方卡片选择一项决策方案
+          </button>
+        </div>
+      </section>
+
+      <!-- 终局结算界面 -->
+      <section id="tabEndgame" class="card-panel hidden">
+        <div style="text-align: center;">
+          <div id="endIcon" style="font-size: 32px;">🏆</div>
+          <h2 id="endTitle" style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 4px;">季度业绩终局大结算</h2>
+          <div id="endRating" style="font-size: 13px; font-weight: 700; color: #fbbf24; margin-top: 2px;">评价等级：SSS · 全球传媒帝国</div>
+        </div>
+
+        <div id="endNarrative" class="card-subpanel" style="font-size: 12px; color: #cbd5e1; line-height: 1.55;"></div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; font-size: 12px;">
+          <div class="card-subpanel">
+            <div style="color: #94a3b8; font-size: 11px;">最终资金</div>
+            <div id="endCash" style="color: #fbbf24; font-weight: 800; margin-top: 2px;">0w</div>
+          </div>
+          <div class="card-subpanel">
+            <div style="color: #94a3b8; font-size: 11px;">最终粉丝</div>
+            <div id="endFans" style="color: #38bdf8; font-weight: 800; margin-top: 2px;">0w</div>
+          </div>
+          <div class="card-subpanel">
+            <div style="color: #94a3b8; font-size: 11px;">JRs口碑</div>
+            <div id="endPR" style="color: #34d399; font-weight: 800; margin-top: 2px;">0分</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <button id="endlessBtn" class="btn-blue" data-action="enter-endless" style="flex: 1; background: linear-gradient(135deg, #047857, #065f46);">
+            🌟 开启无尽模式
+          </button>
+          <button class="btn-icon" data-action="open-reset" style="flex: 1; padding: 10px; font-size: 13px;">
+            🔄 重开新局
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- 模态框 1: 重开确认弹窗 -->
+    <div id="resetModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div style="font-size: 14px; font-weight: 700; color: #fff;">⚠️ 确定要重新开始吗？</div>
+        <div style="font-size: 12px; color: #cbd5e1;">重开新局将清空当前存档记录并重置至第 1 周初始状态。</div>
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <button class="btn-danger" data-action="execute-reset" style="flex: 1; padding: 9px;">确认重开</button>
+          <button class="btn-icon" data-action="close-reset" style="flex: 1; padding: 9px;">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 模态框 2: 签约市场弹窗 -->
+    <div id="recruitModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 420px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <span style="font-size: 14px; font-weight: 700; color: #fff;">🌟 人才经纪市场</span>
+          <button class="btn-icon" data-action="close-recruit" style="padding: 4px 8px;">✕</button>
+        </div>
+        <div id="marketList" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 320px;"></div>
+      </div>
+    </div>
+
+    <!-- 模态框 3: 周度战报结算卡片 (Peak-End 情绪闭环高潮) -->
+    <div id="weekRecapModal" class="modal-overlay hidden">
+      <div class="modal-card" style="border-color: #f59e0b; max-height: 450px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <span style="font-size: 15px; font-weight: 800; color: #fbbf24;">📅 第 <span id="recapWeekNum">1</span> 周 · 经营战报总结</span>
+          <span class="badge badge-gold">周结报告</span>
+        </div>
+
+        <div style="font-size: 12px; color: #e2e8f0; line-height: 1.45;" id="recapChoiceNarrative">
+          【决策生效】顺利入驻科技产业园，品牌专业形象树立。
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center;">
+          <div class="card-subpanel">
+            <div style="color: #94a3b8; font-size: 11px;">资金结余</div>
+            <div id="recapCash" style="color: #fbbf24; font-weight: 800; font-size: 13px; margin-top: 2px;">100.0w</div>
+            <div id="recapCashDelta" style="font-size: 11px; color: #34d399; margin-top: 1px;">+0.0w</div>
+          </div>
+          <div class="card-subpanel">
+            <div style="color: #94a3b8; font-size: 11px;">全网粉丝</div>
+            <div id="recapFans" style="color: #38bdf8; font-weight: 800; font-size: 13px; margin-top: 2px;">20.0w</div>
+            <div id="recapFansDelta" style="font-size: 11px; color: #34d399; margin-top: 1px;">+0.0w</div>
+          </div>
+          <div class="card-subpanel">
+            <div style="color: #94a3b8; font-size: 11px;">JRs口碑</div>
+            <div id="recapPR" style="color: #34d399; font-weight: 800; font-size: 13px; margin-top: 2px;">80分</div>
+            <div id="recapPRDelta" style="font-size: 11px; color: #fbbf24; margin-top: 1px;">持平</div>
+          </div>
+        </div>
+
+        <div class="card-subpanel" style="background: rgba(201, 27, 27, 0.15); border: 1px solid rgba(201, 27, 27, 0.4); font-size: 12px; line-height: 1.5; color: #e2e8f0;">
+          <div style="font-weight: 700; color: #fca5a5; margin-bottom: 3px;">🔥 步行街 JRs 热议神评：</div>
+          <div id="recapHupuComment">“这波商业绝杀给9.8分，直接把前东家脸打肿了！亮了(2480)”</div>
+        </div>
+
+        <button class="btn-primary" data-action="confirm-next-week" style="margin-top: 4px; padding: 11px;">
+          <span>🚀</span> 开启第 <span id="recapNextWeekNum">2</span> 周新经营！
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // 0. 全局异常兜底保护 (Production-Standard Fail-Safe Error Trap)
+    // =========================================================================
+    window.onerror = function(msg, url, line) {
+      console.warn("MCN Runtime Notice:", msg, "at line", line);
+      return true;
+    };
+
+    // =========================================================================
+    // 1. Web Audio 原生合成音效引擎 (无异常阻断保障)
+    // =========================================================================
+    var audioCtx = null;
+    var soundEnabled = true;
+
+    function safeInitAudio() {
+      try {
+        if (!audioCtx) {
+          var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(function() {});
+        }
+      } catch (e) {}
+    }
+
+    document.addEventListener('touchstart', safeInitAudio, { passive: true, once: true });
+    document.addEventListener('click', safeInitAudio, { passive: true, once: true });
+
+    function toggleSound() {
+      safeInitAudio();
+      soundEnabled = !soundEnabled;
+      var btn = document.getElementById("soundBtn");
+      if (btn) btn.innerText = soundEnabled ? "🔊" : "🔇";
+      showToast(soundEnabled ? "音效已开启" : "音效已静音", "info");
+      if (soundEnabled) playCoinSound();
+    }
+
+    function playTone(freq, type, duration, startVol) {
+      if (!soundEnabled) return;
+      try {
+        safeInitAudio();
+        if (!audioCtx) return;
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.type = type || 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(startVol || 0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function playCoinSound() {
+      playTone(987.77, 'sine', 0.12, 0.2);
+      setTimeout(function() { playTone(1318.51, 'sine', 0.2, 0.25); }, 60);
+    }
+    function playCheerSound() {
+      playTone(523.25, 'triangle', 0.1, 0.2);
+      setTimeout(function() { playTone(659.25, 'triangle', 0.12, 0.2); }, 70);
+      setTimeout(function() { playTone(783.99, 'triangle', 0.18, 0.25); }, 140);
+    }
+    function playAlertSound() {
+      playTone(220.0, 'sawtooth', 0.25, 0.2);
+    }
+    function playComboSound(combo) {
+      var baseFreq = 380 + Math.min(combo * 35, 650);
+      playTone(baseFreq, 'sine', 0.15, 0.22);
+    }
+
+    // =========================================================================
+    // 2. 核心状态机与数据字典
+    // =========================================================================
+    var state = {
+      week: 1,
+      maxWeek: 12,
+      cash: 100.0,
+      fans: 20.0,
+      pr: 80.0,
+      revenueTotal: 0.0,
+      destiny: 'none',
+      revengeScore: 0,
+      rogueScore: 0,
+      techScore: 0,
+      selectedStreamerId: 'su',
+      activeTab: 'hall',
+      facilities: {
+        studio: 1,
+        supplyChain: 0,
+        prRadar: 0
+      },
+      endless: false
+    };
+
+    var weekStartSnapshot = {
+      cash: 100.0,
+      fans: 20.0,
+      pr: 80.0
+    };
+
+    var facilityCosts = {
+      studio: [20, 45, 80, 150],
+      supplyChain: [35, 70, 120, 200],
+      prRadar: [30, 60, 100, 180]
+    };
+
+    var streamersMaster = {
+      su: {
+        id: 'su',
+        name: '苏晚晴',
+        title: '带货花旦',
+        avatar: '💄',
+        sales: 78,
+        stamina: 100,
+        resilience: 65,
+        desc: '原天娱美妆一姐，随你负气出走。成单转化率极高。',
+        ultName: '红颜绝杀 (全屏秒成单)',
+        cost: 0,
+        tag: '初始元老'
+      },
+      qiang: {
+        id: 'qiang',
+        name: '市井强哥',
+        title: '草根吃播',
+        avatar: '🎙️',
+        sales: 62,
+        stamina: 90,
+        resilience: 88,
+        desc: '地摊烤肉起家的接地气达人，抗压与抗黑粉能力极强。',
+        ultName: '兄弟情深 (粉丝暴涨爆灯)',
+        cost: 35,
+        tag: '高性价比'
+      },
+      ai01: {
+        id: 'ai01',
+        name: 'AI数字人·破晓01',
+        title: '算力达人',
+        avatar: '🤖',
+        sales: 85,
+        stamina: 100,
+        resilience: 100,
+        desc: '全天候24小时无休算力带货，零体力消耗，但需科技路线加成。',
+        ultName: '算法风暴 (GMV翻倍狂飙)',
+        cost: 80,
+        tag: '永动机'
+      },
+      luo: {
+        id: 'luo',
+        name: '罗老师',
+        title: '普法学者',
+        avatar: '⚖️',
+        sales: 70,
+        stamina: 80,
+        resilience: 95,
+        desc: '金牌法律博主，每次出战自动净化弹幕恶意，大幅提升JRs口碑。',
+        ultName: '法外狂徒终结 (免除商战攻击)',
+        cost: 60,
+        tag: '口碑护甲'
+      },
+      zhui: {
+        id: 'zhui',
+        name: '歪嘴龙王',
+        title: '短剧顶流',
+        avatar: '👑',
+        sales: 88,
+        stamina: 85,
+        resilience: 70,
+        desc: '爽文短剧现象级顶流，单场引爆流量能力极强，吸金怪兽。',
+        ultName: '龙王归来 (10连击狂热)',
+        cost: 110,
+        tag: '吸金霸主'
+      }
+    };
+
+    var ownedStreamers = ['su'];
+    var selectedEventOptionIndex = null;
+
+    // =========================================================================
+    // 3. 12 周经典商业舆情战役事件剧本
+    // =========================================================================
+    var weeklyEvents = [
+      {
+        week: 1,
+        tag: "创业初启",
+        title: "第 1 周：办公选址与初创姿态",
+        desc: "离开前东家天娱传媒后，你手里握着100万启动资金。办公选址将定义你的初创姿态。",
+        options: [
+          {
+            title: "1. 租下天娱大厦正对面的写字楼",
+            sub: "【商战修罗路线】资金-15w，复仇战意+5，抢夺前东家自然流量",
+            action: function() {
+              state.cash -= 15;
+              state.revengeScore += 5;
+              state.fans += 5;
+            }
+          },
+          {
+            title: "2. 入驻青年众创孵化园区",
+            sub: "【天命黑马路线】资金-5w，口碑+5，稳扎稳打深挖草根粉丝",
+            action: function() {
+              state.cash -= 5;
+              state.rogueScore += 5;
+              state.pr += 5;
+              state.fans += 3;
+            }
+          }
+        ]
+      },
+      {
+        week: 2,
+        tag: "恶性抹黑",
+        title: "第 2 周：前东家买水军黑粉爆破苏晚晴直播间",
+        desc: "首播大获成功引发天娱传媒妒忌，数十万恶意差评弹幕涌入直播间质疑带货质量！",
+        options: [
+          {
+            title: "1. 连夜公开质检报告与授权链路，强硬硬刚",
+            sub: "【口碑逆袭】口碑+10，粉丝+15w，资金消耗5w公关费",
+            action: function() {
+              state.cash -= 5;
+              state.pr += 10;
+              state.fans += 15;
+            }
+          },
+          {
+            title: "2. 开启自黑幽默抽奖模式，发金条平息争议",
+            sub: "【暴力破局】资金-20w，全网粉丝+35w",
+            action: function() {
+              state.cash -= 20;
+              state.fans += 35;
+            }
+          }
+        ]
+      },
+      {
+        week: 3,
+        tag: "破圈爆款",
+        title: "第 3 周：自制魔性洗脑神曲意外爆红全网",
+        desc: "旗下主播随意录制的几句洗脑BGM在短视频平台播放量突破5亿次！",
+        options: [
+          {
+            title: "1. 免费开放全网二创与商用，设立草根音乐公益金",
+            sub: "【口碑封神】全网零差评，粉丝+80w，口碑+15",
+            action: function() {
+              state.fans += 80;
+              state.pr += 15;
+              state.rogueScore += 3;
+            }
+          },
+          {
+            title: "2. 接受国际汽车大牌买断当全球主题曲",
+            sub: "【暴利成单】现金+80w，趁热度大赚一笔",
+            action: function() {
+              state.cash += 80;
+            }
+          }
+        ]
+      },
+      {
+        week: 4,
+        tag: "天命觉醒",
+        title: "第 4 周：天使轮顶级资本入局与路线定型",
+        desc: "破晓互娱已成为现象级黑马，多家顶级VC巨头带着数千万支票登门拜访！",
+        options: [
+          {
+            title: "1. 接受对赌协议，成立‘前东家围剿联盟’",
+            sub: "【商战修罗路线】资金+120w，复仇加成激活",
+            action: function() {
+              state.cash += 120;
+              state.revengeScore += 8;
+              state.destiny = 'revenge';
+            }
+          },
+          {
+            title: "2. 拒绝资本对赌，坚持走草根达人孵化",
+            sub: "【天命黑马路线】口碑+20，粉丝+60w，黑马路线激活",
+            action: function() {
+              state.pr += 20;
+              state.fans += 60;
+              state.rogueScore += 8;
+              state.destiny = 'rogue';
+            }
+          },
+          {
+            title: "3. 押注AI数智人全自动直播研发实验室",
+            sub: "【科技算力路线】资金-40w，算力路线激活",
+            action: function() {
+              state.cash -= 40;
+              state.techScore += 10;
+              state.destiny = 'tech';
+            }
+          }
+        ]
+      },
+      {
+        week: 5,
+        tag: "对手挖角",
+        title: "第 5 周：前东家开出天价违约金试图挖空团队",
+        desc: "前东家派出猎头暗中接触苏晚晴等核心，开出3倍天价签字费！",
+        options: [
+          {
+            title: "1. 拿出20%期权池，实行全员合伙人持股制",
+            sub: "主播忠诚度锁死，口碑+10，粉丝+20w",
+            action: function() {
+              state.pr += 10;
+              state.fans += 20;
+            }
+          },
+          {
+            title: "2. 录音取证反手起诉前东家不正当竞争",
+            sub: "前东家赔偿诉讼金+30w，粉丝+30w",
+            action: function() {
+              state.cash += 30;
+              state.fans += 30;
+              state.revengeScore += 5;
+            }
+          }
+        ]
+      },
+      {
+        week: 6,
+        tag: "年中大促",
+        title: "第 6 周：618 年中电商巅峰狂欢节",
+        desc: "电商全平台流量峰值到来，这是机构晋升头部巨头的生死战！",
+        options: [
+          {
+            title: "1. 砸重金买断全网开屏广告与流量投流",
+            sub: "投流费-60w，带来海量GMV转化与+150w粉丝",
+            action: function() {
+              state.cash = Math.max(0, state.cash - 60);
+              state.fans += 150;
+              state.revenueTotal += 200;
+            }
+          },
+          {
+            title: "2. 主打硬核不掺水‘JRs严选补贴’",
+            sub: "补贴-30w，口碑直接拉满至100分",
+            action: function() {
+              state.cash -= 30;
+              state.pr = 100;
+              state.fans += 90;
+            }
+          }
+        ]
+      },
+      {
+        week: 7,
+        tag: "黑客商战",
+        title: "第 7 周：直播带货中途遭遇恶性大规模 DDoS 攻击",
+        desc: "破晓互娱正播得火热，直播间网络突然遭遇超大流量攻击，画面卡顿掉线！",
+        options: [
+          {
+            title: "1. 启动高防云盾，悬赏百万揪出幕后黑客",
+            sub: "资金-25w，彻底击碎攻击，口碑+15",
+            action: function() {
+              state.cash -= 25;
+              state.pr += 15;
+              state.techScore += 5;
+            }
+          },
+          {
+            title: "2. 主播开启手机热点‘露天抗压直播’",
+            sub: "粉丝感召爆棚！粉丝+70w，口碑+10",
+            action: function() {
+              state.fans += 70;
+              state.pr += 10;
+              state.rogueScore += 5;
+            }
+          }
+        ]
+      },
+      {
+        week: 8,
+        tag: "供应链危机",
+        title: "第 8 周：第三方代工厂被竞争对手恶意买断断供",
+        desc: "爆款商品面临无货可发，数十万订单面临延期违约退款风险！",
+        options: [
+          {
+            title: "1. 紧急空运调配进口原料，全额自掏腰包赔付用户",
+            sub: "赔付资金-40w，JRs交口称赞破晓担当，口碑+20",
+            action: function() {
+              state.cash -= 40;
+              state.pr = Math.min(100, state.pr + 20);
+            }
+          },
+          {
+            title: "2. 联合源头农户产地直发，开辟助农绿色通道",
+            sub: "成本极低，官媒重点表扬，粉丝+120w",
+            action: function() {
+              state.fans += 120;
+              state.pr = Math.min(100, state.pr + 15);
+              state.cash += 30;
+            }
+          }
+        ]
+      },
+      {
+        week: 9,
+        tag: "行业出海",
+        title: "第 9 周：TikTok 国际版与海外电商出海风口",
+        desc: "国内流量见顶，东南亚与北美海外直播带货红利正在疯狂爆发！",
+        options: [
+          {
+            title: "1. 组建多语种出海直播战队，席卷海外市场",
+            sub: "出海拓展费-50w，全网海外粉丝暴增+260w",
+            action: function() {
+              state.cash -= 50;
+              state.fans += 260;
+              state.revenueTotal += 120;
+            }
+          },
+          {
+            title: "2. 授权AI数字人技术给海外MCN收取高额技术授权费",
+            sub: "科技净利润+150w，口碑+5",
+            action: function() {
+              state.cash += 150;
+              state.pr += 5;
+              state.techScore += 10;
+            }
+          }
+        ]
+      },
+      {
+        week: 10,
+        tag: "致命一击",
+        title: "第 10 周：掌握前东家财务造假与偷税漏税核心内幕",
+        desc: "前东家深陷债务危机，当初投奔你的核心当家整理出了天娱长达三年的暗账明细。",
+        options: [
+          {
+            title: "1. 全盘提交证监会与税务稽查部门，发起致命清算",
+            sub: "【终极商战】彻底击溃前东家天娱，天娱宣告破产！",
+            action: function() {
+              state.revengeScore += 15;
+              state.cash += 100;
+            }
+          },
+          {
+            title: "2. 保持企业家体面，以白菜价全资收购前东家优质资产",
+            sub: "吞并对手全部主播与摄影棚，全网粉丝+300w",
+            action: function() {
+              state.fans += 300;
+              state.cash -= 30;
+            }
+          }
+        ]
+      },
+      {
+        week: 11,
+        tag: "超级春晚",
+        title: "第 11 周：国家级总台春晚官方发来压轴演出邀约",
+        desc: "旗下艺人获邀登上亿万人瞩目的殿堂级晚会舞台，这是晋升国民级艺术家的门票。",
+        options: [
+          {
+            title: "1. 停播一周全力打磨精品节目，登顶国家大舞台",
+            sub: "口碑拉满100分，全网粉丝+500w，获得国家级荣誉背书",
+            action: function() {
+              state.pr = 100;
+              state.fans += 500;
+            }
+          },
+          {
+            title: "2. 晚会后台同步开设独家揭秘直播带货",
+            sub: "营收现金+350w，粉丝+200w",
+            action: function() {
+              state.cash += 350;
+              state.fans += 200;
+            }
+          }
+        ]
+      },
+      {
+        week: 12,
+        tag: "荣耀巅峰",
+        title: "第 12 周：季度最终决战与敲钟之夜",
+        desc: "12周时间已到，破晓互娱从一家小办公室，成长为行业瞩目的商业巨头！",
+        options: [
+          {
+            title: "★ 开启终极财务审计，揭晓虎扑 JRs 最终神级评价！",
+            sub: "根据三维数据与天命走向，揭晓最终职业结局！",
+            action: function() {
+              triggerEndingEvaluation();
+            }
+          }
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 4. 周末 15 秒直播实况战敏捷引擎
+    // =========================================================================
+    var liveSession = {
+      active: false,
+      timer: 15.0,
+      timerInterval: null,
+      spawnInterval: null,
+      streamer: null,
+      gmv: 0,
+      fansGain: 0,
+      combo: 0,
+      maxCombo: 0,
+      ultCharge: 0,
+      isFever: false,
+      feverTimer: null
+    };
+
+    function startLiveSession() {
+      safeInitAudio();
+      var s = streamersMaster[state.selectedStreamerId] || streamersMaster['su'];
+
+      if (s.stamina <= 0 && s.id !== 'ai01') {
+        showToast(s.name + " 已筋疲力尽，请先在主播集训中安排休假！", "alert");
+        playAlertSound();
+        return;
+      }
+
+      liveSession.active = true;
+      liveSession.timer = 15.0;
+      liveSession.streamer = s;
+      liveSession.gmv = 0;
+      liveSession.fansGain = 0;
+      liveSession.combo = 0;
+      liveSession.maxCombo = 0;
+      liveSession.ultCharge = 0;
+      liveSession.isFever = false;
+
+      document.getElementById("livePrepView").classList.add("hidden");
+      document.getElementById("liveResultView").classList.add("hidden");
+      document.getElementById("liveBattleView").classList.remove("hidden");
+
+      document.getElementById("battleStreamerAvatar").innerText = s.avatar;
+      document.getElementById("battleStreamerName").innerText = s.name;
+      document.getElementById("comboVal").innerText = "0";
+      document.getElementById("battleGMV").innerText = "+0.0 万";
+      document.getElementById("battleTimer").innerText = "15.0";
+      document.getElementById("ultBar").style.width = "0%";
+
+      var ultBtn = document.getElementById("ultBtn");
+      ultBtn.disabled = true;
+      ultBtn.innerText = "⚡ " + s.ultName.split(' ')[0];
+
+      var track = document.getElementById("barrageTrack");
+      track.innerHTML = "";
+
+      showToast("🔴 直播开始！点击粉丝成单，点击榜一大哥爆发，快速踢出黑粉！", "info");
+      playCheerSound();
+
+      liveSession.timerInterval = setInterval(function() {
+        liveSession.timer -= 0.1;
+        if (liveSession.timer <= 0) {
+          liveSession.timer = 0;
+          document.getElementById("battleTimer").innerText = "0.0";
+          endLiveSession();
+        } else {
+          document.getElementById("battleTimer").innerText = liveSession.timer.toFixed(1);
+        }
+      }, 100);
+
+      liveSession.spawnInterval = setInterval(function() {
+        spawnBarrageBubble();
+      }, 440);
+    }
+
+    function spawnBarrageBubble() {
+      if (!liveSession.active) return;
+      var track = document.getElementById("barrageTrack");
+      if (!track) return;
+
+      var rand = Math.random();
+      var type = 'normal';
+      var text = '🛒 粉丝成单';
+      var className = 'bubble-normal';
+
+      if (rand < 0.22) {
+        type = 'troll';
+        text = '🤬 恶意黑粉';
+        className = 'bubble-troll';
+      } else if (rand < 0.38) {
+        type = 'whale';
+        text = '👑 榜一大哥';
+        className = 'bubble-whale';
+      } else if (rand < 0.48) {
+        type = 'flash';
+        text = '⚡ 绝技能量';
+        className = 'bubble-flash';
+      }
+
+      var bubble = document.createElement("div");
+      bubble.className = "barrage-bubble " + className;
+      bubble.innerText = text;
+
+      var stageWidth = track.clientWidth || 340;
+      var stageHeight = track.clientHeight || 220;
+      var posX = Math.floor(Math.random() * (stageWidth - 110));
+      var posY = Math.floor(Math.random() * (stageHeight - 48));
+
+      bubble.style.left = posX + "px";
+      bubble.style.top = posY + "px";
+      bubble.setAttribute("data-action", "click-bubble");
+      bubble.setAttribute("data-type", type);
+
+      track.appendChild(bubble);
+
+      var lifeTime = (type === 'troll') ? 2200 : (type === 'whale' ? 1800 : 2500);
+
+      setTimeout(function() {
+        if (bubble && bubble.parentElement) {
+          if (type === 'troll') {
+            var dmg = state.facilities.prRadar > 0 ? 1 : 2;
+            state.pr = Math.max(0, state.pr - dmg);
+            renderHeaderStats();
+            playAlertSound();
+            showToast("黑粉未及时驱逐！JRs口碑 -" + dmg + " 分", "alert");
+          }
+          bubble.remove();
+        }
+      }, lifeTime);
+    }
+
+    function handleBubbleClick(el) {
+      if (!liveSession.active) return;
+      safeInitAudio();
+      var type = el.getAttribute("data-type");
+      var s = liveSession.streamer || streamersMaster['su'];
+      var multiplier = (1 + (s.sales / 100)) * (1 + (state.facilities.studio * 0.25));
+
+      if (type === 'normal') {
+        var base = (1.5 + Math.random() * 2) * multiplier;
+        liveSession.gmv += base;
+        liveSession.fansGain += 0.8;
+        liveSession.combo += 1;
+        liveSession.ultCharge = Math.min(100, liveSession.ultCharge + 10);
+        playComboSound(liveSession.combo);
+      } else if (type === 'whale') {
+        var whaleBase = (8 + Math.random() * 10) * multiplier;
+        liveSession.gmv += whaleBase;
+        liveSession.fansGain += 3.5;
+        liveSession.combo += 2;
+        liveSession.ultCharge = Math.min(100, liveSession.ultCharge + 20);
+        playCoinSound();
+        triggerFeverMode();
+      } else if (type === 'flash') {
+        liveSession.ultCharge = 100;
+        playCheerSound();
+        showToast("⚡ 能量充满！绝技随时准备就绪！", "success");
+      } else if (type === 'troll') {
+        liveSession.combo += 1;
+        playCoinSound();
+        showToast("击溃黑粉！守护了直播间口碑与尊严！", "success");
+      }
+
+      if (liveSession.combo > liveSession.maxCombo) {
+        liveSession.maxCombo = liveSession.combo;
+      }
+
+      document.getElementById("comboVal").innerText = liveSession.combo;
+      document.getElementById("battleGMV").innerText = "+" + liveSession.gmv.toFixed(1) + " 万";
+      document.getElementById("ultBar").style.width = liveSession.ultCharge + "%";
+
+      var ultBtn = document.getElementById("ultBtn");
+      if (liveSession.ultCharge >= 100) {
+        ultBtn.disabled = false;
+        ultBtn.style.background = "#c91b1b";
+        ultBtn.style.color = "#ffffff";
+      }
+
+      el.remove();
+    }
+
+    function triggerFeverMode() {
+      liveSession.isFever = true;
+      var glow = document.getElementById("feverGlow");
+      if (glow) glow.style.background = "rgba(245, 158, 11, 0.2)";
+      clearTimeout(liveSession.feverTimer);
+      liveSession.feverTimer = setTimeout(function() {
+        liveSession.isFever = false;
+        if (glow) glow.style.background = "transparent";
+      }, 3500);
+    }
+
+    function triggerUltSkill() {
+      if (!liveSession.active || liveSession.ultCharge < 100) return;
+      safeInitAudio();
+      liveSession.ultCharge = 0;
+      document.getElementById("ultBar").style.width = "0%";
+      var ultBtn = document.getElementById("ultBtn");
+      ultBtn.disabled = true;
+
+      var s = liveSession.streamer;
+      playCheerSound();
+      showToast("🔥 " + s.name + " 释放大招：" + s.ultName + "！", "success");
+
+      if (s.id === 'su') {
+        liveSession.gmv += 60;
+        liveSession.fansGain += 20;
+      } else if (s.id === 'qiang') {
+        liveSession.fansGain += 50;
+        liveSession.gmv += 30;
+      } else if (s.id === 'ai01') {
+        liveSession.gmv += 45;
+        state.pr = Math.min(100, state.pr + 5);
+      } else if (s.id === 'luo') {
+        state.pr = Math.min(100, state.pr + 12);
+        liveSession.gmv += 35;
+      } else if (s.id === 'zhui') {
+        liveSession.combo += 10;
+        liveSession.gmv += 40;
+      }
+
+      document.getElementById("battleGMV").innerText = "+" + liveSession.gmv.toFixed(1) + " 万";
+      renderHeaderStats();
+
+      var track = document.getElementById("barrageTrack");
+      if (track) track.innerHTML = "";
+    }
+
+    function endLiveSession() {
+      liveSession.active = false;
+      clearInterval(liveSession.timerInterval);
+      clearInterval(liveSession.spawnInterval);
+
+      if (liveSession.streamer && liveSession.streamer.id !== 'ai01') {
+        liveSession.streamer.stamina = Math.max(0, liveSession.streamer.stamina - 30);
+      }
+      state.cash += liveSession.gmv;
+      state.revenueTotal += liveSession.gmv;
+      state.fans += liveSession.fansGain;
+
+      document.getElementById("liveBattleView").classList.add("hidden");
+      document.getElementById("liveResultView").classList.remove("hidden");
+
+      document.getElementById("resGMV").innerText = liveSession.gmv.toFixed(1) + "w";
+      document.getElementById("resFans").innerText = "+" + liveSession.fansGain.toFixed(1) + "w";
+      document.getElementById("resMaxCombo").innerText = liveSession.maxCombo + "x";
+
+      renderHeaderStats();
+      saveLocalData();
+      playCheerSound();
+    }
+
+    // =========================================================================
+    // 5. 运营大厅设施升级逻辑 (带前置禁用态保障)
+    // =========================================================================
+    function upgradeFacility(type) {
+      safeInitAudio();
+      var curLvl = state.facilities[type];
+      var costArr = facilityCosts[type];
+      if (curLvl >= costArr.length) {
+        showToast("该设施已达到满级！", "info");
+        return;
+      }
+      var cost = costArr[curLvl];
+      if (state.cash < cost) {
+        showToast("流动资金不足，升级需 " + cost + " 万（当前缺 " + (cost - state.cash).toFixed(1) + " 万）！", "alert");
+        playAlertSound();
+        return;
+      }
+
+      state.cash -= cost;
+      state.facilities[type] += 1;
+      playCoinSound();
+      showToast("设施升级成功！核心战力大幅提升！", "success");
+      renderHall();
+      renderHeaderStats();
+      saveLocalData();
+    }
+
+    function renderHall() {
+      document.getElementById("valTotalRevenue").innerText = state.revenueTotal.toFixed(1) + " 万";
+      document.getElementById("valStreamerCount").innerText = ownedStreamers.length + " 位";
+
+      // 1. 直播间升级按钮
+      var studioLvl = state.facilities.studio;
+      var studioCost = facilityCosts.studio[studioLvl];
+      var btnStudio = document.getElementById("btnUpgradeStudio");
+      var lvlStudio = document.getElementById("lvlStudio");
+      if (lvlStudio) lvlStudio.innerText = "Lv." + studioLvl;
+      if (btnStudio) {
+        if (studioCost !== undefined) {
+          if (state.cash < studioCost) {
+            btnStudio.disabled = true;
+            btnStudio.classList.add("btn-disabled");
+            btnStudio.innerHTML = '升级 ' + studioCost + 'w <span style="font-size:11px; opacity:0.85;">(缺 ' + (studioCost - state.cash).toFixed(0) + 'w)</span>';
+          } else {
+            btnStudio.disabled = false;
+            btnStudio.classList.remove("btn-disabled");
+            btnStudio.innerText = '升级 ' + studioCost + 'w';
+          }
+        } else {
+          btnStudio.disabled = true;
+          btnStudio.classList.add("btn-disabled");
+          btnStudio.innerText = "已达满级";
+        }
+      }
+
+      // 2. 供应链升级按钮
+      var supplyLvl = state.facilities.supplyChain;
+      var supplyCost = facilityCosts.supplyChain[supplyLvl];
+      var btnSupply = document.getElementById("btnUpgradeSupply");
+      var lvlSupply = document.getElementById("lvlSupply");
+      if (lvlSupply) lvlSupply.innerText = "Lv." + supplyLvl;
+      if (btnSupply) {
+        if (supplyCost !== undefined) {
+          if (state.cash < supplyCost) {
+            btnSupply.disabled = true;
+            btnSupply.classList.add("btn-disabled");
+            btnSupply.innerHTML = '升级 ' + supplyCost + 'w <span style="font-size:11px; opacity:0.85;">(缺 ' + (supplyCost - state.cash).toFixed(0) + 'w)</span>';
+          } else {
+            btnSupply.disabled = false;
+            btnSupply.classList.remove("btn-disabled");
+            btnSupply.innerText = '升级 ' + supplyCost + 'w';
+          }
+        } else {
+          btnSupply.disabled = true;
+          btnSupply.classList.add("btn-disabled");
+          btnSupply.innerText = "已达满级";
+        }
+      }
+
+      // 3. 舆情雷达升级按钮
+      var radarLvl = state.facilities.prRadar;
+      var radarCost = facilityCosts.prRadar[radarLvl];
+      var btnRadar = document.getElementById("btnUpgradeRadar");
+      var lvlRadar = document.getElementById("lvlRadar");
+      if (lvlRadar) lvlRadar.innerText = "Lv." + radarLvl;
+      if (btnRadar) {
+        if (radarCost !== undefined) {
+          if (state.cash < radarCost) {
+            btnRadar.disabled = true;
+            btnRadar.classList.add("btn-disabled");
+            btnRadar.innerHTML = '升级 ' + radarCost + 'w <span style="font-size:11px; opacity:0.85;">(缺 ' + (radarCost - state.cash).toFixed(0) + 'w)</span>';
+          } else {
+            btnRadar.disabled = false;
+            btnRadar.classList.remove("btn-disabled");
+            btnRadar.innerText = '升级 ' + radarCost + 'w';
+          }
+        } else {
+          btnRadar.disabled = true;
+          btnRadar.classList.add("btn-disabled");
+          btnRadar.innerText = "已达满级";
+        }
+      }
+    }
+
+    // =========================================================================
+    // 6. 主播养成与签约市场
+    // =========================================================================
+    function restStreamer(id) {
+      safeInitAudio();
+      var s = streamersMaster[id];
+      if (s.stamina >= 100 && id !== 'ai01') {
+        showToast(s.name + " 体力充沛，无需休假！", "info");
+        return;
+      }
+      s.stamina = Math.min(100, s.stamina + 45);
+      playCheerSound();
+      showToast(s.name + " 已休整完毕，体力恢复至 " + s.stamina + "%！", "success");
+      renderStreamersList();
+      renderLivePrep();
+      saveLocalData();
+    }
+
+    function restoreAllStreamers() {
+      safeInitAudio();
+      var count = 0;
+      ownedStreamers.forEach(function(sid) {
+        var s = streamersMaster[sid];
+        if (s && s.id !== 'ai01' && s.stamina < 100) {
+          s.stamina = 100;
+          count++;
+        }
+      });
+      playCheerSound();
+      showToast("全员放假调休！" + count + " 位主播体力均已满血恢复至 100%！", "success");
+      renderStreamersList();
+      renderLivePrep();
+      saveLocalData();
+    }
+
+    function trainStreamer(id) {
+      safeInitAudio();
+      if (state.cash < 5) {
+        showToast("资金不足 5 万，无法开展集训！", "alert");
+        playAlertSound();
+        return;
+      }
+      var s = streamersMaster[id];
+      if (s.stamina < 15 && s.id !== 'ai01') {
+        showToast(s.name + " 体力不足 15%，无法集训，请先安排休假！", "alert");
+        playAlertSound();
+        return;
+      }
+      state.cash -= 5;
+      if (s.id !== 'ai01') s.stamina = Math.max(0, s.stamina - 15);
+      s.sales += 4;
+      s.resilience += 4;
+      playCoinSound();
+      showToast(s.name + " 话术与带货力提升至 " + s.sales + "！", "success");
+      renderStreamersList();
+      renderLivePrep();
+      renderHeaderStats();
+      saveLocalData();
+    }
+
+    function shootShortVideo(id) {
+      safeInitAudio();
+      var s = streamersMaster[id];
+      if (s.stamina < 15 && id !== 'ai01') {
+        showToast(s.name + " 体力不足 15%，无法拍摄！", "alert");
+        playAlertSound();
+        return;
+      }
+      if (id !== 'ai01') s.stamina -= 15;
+      var gain = (s.sales / 10) * 1.5;
+      state.fans += gain;
+      playCheerSound();
+      showToast("爆款短视频引爆，全网涨粉 +" + gain.toFixed(1) + " 万！", "success");
+      renderStreamersList();
+      renderLivePrep();
+      renderHeaderStats();
+      saveLocalData();
+    }
+
+    function selectLiveStreamer(id) {
+      state.selectedStreamerId = id;
+      renderLivePrep();
+      showToast("已指派 " + streamersMaster[id].name + " 为周末带货首发出战！", "info");
+      saveLocalData();
+    }
+
+    function renderStreamersList() {
+      var box = document.getElementById("streamersList");
+      if (!box) return;
+      box.innerHTML = "";
+
+      ownedStreamers.forEach(function(sid) {
+        var s = streamersMaster[sid];
+        var card = document.createElement("div");
+        card.className = "card-subpanel";
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+        card.style.gap = "6px";
+
+        var staminaColor = s.stamina > 50 ? "#34d399" : (s.stamina > 20 ? "#fbbf24" : "#f87171");
+
+        var topRow = document.createElement("div");
+        topRow.style.display = "flex";
+        topRow.style.justifyContent = "space-between";
+        topRow.style.alignItems = "center";
+        topRow.innerHTML = 
+          '<div style="display: flex; align-items: center; gap: 8px;">' +
+            '<span style="font-size: 24px;">' + s.avatar + '</span>' +
+            '<div>' +
+              '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + s.name + '</span> ' +
+              '<span class="badge badge-blue">' + s.title + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div style="font-size: 11px; color: #cbd5e1;">' +
+            '带货力: <strong style="color: #fbbf24;">' + s.sales + '</strong> | ' +
+            '体力: <strong style="color: ' + staminaColor + ';">' + (s.id === 'ai01' ? '∞' : s.stamina + '%') + '</strong>' +
+          '</div>';
+
+        var descRow = document.createElement("div");
+        descRow.style.fontSize = "11px";
+        descRow.style.color = "#94a3b8";
+        descRow.innerText = s.desc;
+
+        var btnRow = document.createElement("div");
+        btnRow.style.display = "flex";
+        btnRow.style.gap = "6px";
+        btnRow.style.marginTop = "4px";
+
+        // 集训按钮 (带禁用态)
+        var btnTrain = document.createElement("button");
+        btnTrain.className = "btn-icon";
+        btnTrain.style.flex = "1";
+        btnTrain.style.padding = "6px 0";
+        btnTrain.innerText = "📚 集训 (5w)";
+        btnTrain.setAttribute("data-action", "train-streamer");
+        btnTrain.setAttribute("data-id", s.id);
+        if (state.cash < 5 || (s.stamina < 15 && s.id !== 'ai01')) {
+          btnTrain.disabled = true;
+          btnTrain.classList.add("btn-disabled");
+        }
+
+        // 短视频按钮 (带禁用态)
+        var btnShoot = document.createElement("button");
+        btnShoot.className = "btn-icon";
+        btnShoot.style.flex = "1";
+        btnShoot.style.padding = "6px 0";
+        btnShoot.innerText = "🎬 拍短视频";
+        btnShoot.setAttribute("data-action", "shoot-video");
+        btnShoot.setAttribute("data-id", s.id);
+        if (s.stamina < 15 && s.id !== 'ai01') {
+          btnShoot.disabled = true;
+          btnShoot.classList.add("btn-disabled");
+        }
+
+        // 休假按钮 (带禁用态)
+        var btnRest = document.createElement("button");
+        btnRest.className = "btn-icon";
+        btnRest.style.flex = "1";
+        btnRest.style.padding = "6px 0";
+        btnRest.innerText = (s.stamina >= 100 && s.id !== 'ai01') ? "💆 体力已满" : "💆 休假恢复";
+        btnRest.setAttribute("data-action", "rest-streamer");
+        btnRest.setAttribute("data-id", s.id);
+        if (s.stamina >= 100 && s.id !== 'ai01') {
+          btnRest.disabled = true;
+          btnRest.classList.add("btn-disabled");
+        }
+
+        btnRow.appendChild(btnTrain);
+        btnRow.appendChild(btnShoot);
+        btnRow.appendChild(btnRest);
+
+        card.appendChild(topRow);
+        card.appendChild(descRow);
+        card.appendChild(btnRow);
+
+        box.appendChild(card);
+      });
+    }
+
+    function renderLivePrep() {
+      var box = document.getElementById("liveSelectBox");
+      if (!box) return;
+      box.innerHTML = "";
+
+      var activeS = streamersMaster[state.selectedStreamerId] || streamersMaster['su'];
+
+      ownedStreamers.forEach(function(sid) {
+        var s = streamersMaster[sid];
+        var isSel = (state.selectedStreamerId === s.id);
+        var btn = document.createElement("button");
+        btn.className = "card-subpanel";
+        btn.style.textAlign = "left";
+        btn.style.display = "flex";
+        btn.style.alignItems = "center";
+        btn.style.gap = "8px";
+        btn.style.border = isSel ? "1.5px solid #c91b1b" : "1px solid #24314c";
+        btn.style.background = isSel ? "rgba(201, 27, 27, 0.22)" : "#101728";
+        btn.setAttribute("data-action", "select-live-streamer");
+        btn.setAttribute("data-id", s.id);
+
+        btn.innerHTML = 
+          '<span style="font-size: 22px;">' + s.avatar + '</span>' +
+          '<div>' +
+            '<div style="font-size: 12px; font-weight: 700; color: #fff;">' + s.name + '</div>' +
+            '<div style="font-size: 11px; color: #94a3b8;">带货 ' + s.sales + ' | 体 ' + (s.id === 'ai01' ? '∞' : s.stamina + '%') + '</div>' +
+          '</div>';
+        
+        box.appendChild(btn);
+      });
+
+      var startBtn = document.getElementById("btnStartLive");
+      if (activeS.stamina <= 0 && activeS.id !== 'ai01') {
+        startBtn.disabled = true;
+        startBtn.classList.add("btn-disabled");
+        startBtn.innerHTML = '<span>⚠️</span> 主播已力竭，请先在集训中休假';
+      } else {
+        startBtn.disabled = false;
+        startBtn.classList.remove("btn-disabled");
+        startBtn.innerHTML = '<span>🚀</span> 开启全网带货直播！';
+      }
+    }
+
+    function openRecruitModal() {
+      safeInitAudio();
+      var box = document.getElementById("marketList");
+      box.innerHTML = "";
+
+      var unowned = Object.keys(streamersMaster).filter(function(id) {
+        return ownedStreamers.indexOf(id) === -1;
+      });
+
+      if (unowned.length === 0) {
+        box.innerHTML = '<div style="color: #94a3b8; font-size: 13px; text-align: center; padding: 24px;">全网顶尖达人已全部归入破晓麾下！</div>';
+      } else {
+        unowned.forEach(function(id) {
+          var s = streamersMaster[id];
+          var item = document.createElement("div");
+          item.className = "card-subpanel";
+          item.style.display = "flex";
+          item.style.justifyContent = "space-between";
+          item.style.alignItems = "center";
+          item.style.gap = "8px";
+
+          var leftInfo = document.createElement("div");
+          leftInfo.style.display = "flex";
+          leftInfo.style.alignItems = "center";
+          leftInfo.style.gap = "8px";
+          leftInfo.innerHTML = 
+            '<span style="font-size: 24px;">' + s.avatar + '</span>' +
+            '<div>' +
+              '<div style="font-size: 13px; font-weight: 700; color: #fff;">' + s.name + ' <span class="badge badge-gold">' + s.tag + '</span></div>' +
+              '<div style="font-size: 11px; color: #94a3b8;">' + s.desc + '</div>' +
+            '</div>';
+
+          var recruitBtn = document.createElement("button");
+          recruitBtn.className = "btn-small-upgrade";
+          recruitBtn.style.background = "#c91b1b";
+          recruitBtn.innerText = "签约 " + s.cost + "w";
+          recruitBtn.setAttribute("data-action", "recruit-streamer");
+          recruitBtn.setAttribute("data-id", s.id);
+
+          if (state.cash < s.cost) {
+            recruitBtn.disabled = true;
+            recruitBtn.classList.add("btn-disabled");
+          }
+
+          item.appendChild(leftInfo);
+          item.appendChild(recruitBtn);
+          box.appendChild(item);
+        });
+      }
+
+      document.getElementById("recruitModal").classList.remove("hidden");
+    }
+
+    function closeRecruitModal() {
+      document.getElementById("recruitModal").classList.add("hidden");
+    }
+
+    function recruitStreamer(id) {
+      safeInitAudio();
+      var s = streamersMaster[id];
+      if (state.cash < s.cost) {
+        showToast("流动资金不足，无法支付 " + s.cost + " 万签约金！", "alert");
+        playAlertSound();
+        return;
+      }
+      state.cash -= s.cost;
+      ownedStreamers.push(id);
+      playCheerSound();
+      showToast("签约成功！顶流达人 " + s.name + " 正式加盟！", "success");
+      closeRecruitModal();
+      renderStreamersList();
+      renderLivePrep();
+      renderHeaderStats();
+      saveLocalData();
+    }
+
+    // =========================================================================
+    // 7. 舆情商战决策 (P1 级防误触两步确认机制)
+    // =========================================================================
+    function renderEventView() {
+      var curEv = weeklyEvents[Math.min(state.week - 1, weeklyEvents.length - 1)];
+      if (!curEv) return;
+
+      document.getElementById("evTag").innerText = curEv.tag;
+      document.getElementById("evWeekHint").innerText = "第 " + state.week + " 周商战决策";
+      document.getElementById("evTitle").innerText = curEv.title;
+      document.getElementById("evDesc").innerText = curEv.desc;
+
+      selectedEventOptionIndex = null;
+      var box = document.getElementById("evOptionsBox");
+      box.innerHTML = "";
+
+      var infoBox = document.getElementById("evProjectedInfo");
+      infoBox.classList.add("hidden");
+
+      var confirmBtn = document.getElementById("btnConfirmEventChoice");
+      confirmBtn.disabled = true;
+      confirmBtn.classList.add("btn-disabled");
+      confirmBtn.innerHTML = '<span>👉</span> 请先轻触上方卡片选择一项决策方案';
+
+      curEv.options.forEach(function(opt, idx) {
+        var btn = document.createElement("button");
+        btn.className = "opt-card";
+        btn.id = "evOpt-" + idx;
+        btn.setAttribute("data-action", "select-event-opt");
+        btn.setAttribute("data-index", idx);
+        btn.innerHTML = 
+          '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + opt.title + '</span>' +
+          '<span style="font-size: 11px; color: #38bdf8;">' + opt.sub + '</span>';
+        box.appendChild(btn);
+      });
+    }
+
+    function selectEventOption(idx) {
+      safeInitAudio();
+      selectedEventOptionIndex = idx;
+      var curEv = weeklyEvents[Math.min(state.week - 1, weeklyEvents.length - 1)];
+      if (!curEv || !curEv.options[idx]) return;
+
+      var opt = curEv.options[idx];
+
+      // 高亮选中的卡片
+      curEv.options.forEach(function(o, i) {
+        var card = document.getElementById("evOpt-" + i);
+        if (card) {
+          if (i === idx) {
+            card.classList.add("selected");
+          } else {
+            card.classList.remove("selected");
+          }
+        }
+      });
+
+      var infoBox = document.getElementById("evProjectedInfo");
+      infoBox.classList.remove("hidden");
+      infoBox.innerHTML = '<strong>当前选定方案：</strong>' + opt.title + '<br><span style="color:#94a3b8;">效果概览：' + opt.sub + '</span>';
+
+      var confirmBtn = document.getElementById("btnConfirmEventChoice");
+      confirmBtn.disabled = false;
+      confirmBtn.classList.remove("btn-disabled");
+      confirmBtn.innerHTML = '<span>✅</span> 确认执行该决策并生成周度战报';
+      playCoinSound();
+    }
+
+    function executeEventChoice() {
+      if (selectedEventOptionIndex === null) return;
+      safeInitAudio();
+      var curEv = weeklyEvents[Math.min(state.week - 1, weeklyEvents.length - 1)];
+      if (!curEv || !curEv.options[selectedEventOptionIndex]) return;
+
+      var opt = curEv.options[selectedEventOptionIndex];
+
+      // 执行动作
+      opt.action();
+
+      // 展现周度战报结算卡片
+      showWeekRecapModal(opt);
+    }
+
+    // =========================================================================
+    // 8. 周度战报结算模态框 (Weekly Turn Settlement Recap)
+    // =========================================================================
+    function showWeekRecapModal(chosenOpt) {
+      var modal = document.getElementById("weekRecapModal");
+      document.getElementById("recapWeekNum").innerText = state.week;
+      document.getElementById("recapNextWeekNum").innerText = state.week + 1;
+      document.getElementById("recapChoiceNarrative").innerText = "【本周战略决策已执行】" + chosenOpt.title;
+
+      var cashDelta = state.cash - weekStartSnapshot.cash;
+      var fansDelta = state.fans - weekStartSnapshot.fans;
+      var prDelta = state.pr - weekStartSnapshot.pr;
+
+      document.getElementById("recapCash").innerText = state.cash.toFixed(1) + "w";
+      document.getElementById("recapCashDelta").innerText = (cashDelta >= 0 ? "+" : "") + cashDelta.toFixed(1) + "w";
+      document.getElementById("recapCashDelta").style.color = cashDelta >= 0 ? "#34d399" : "#f87171";
+
+      document.getElementById("recapFans").innerText = state.fans.toFixed(1) + "w";
+      document.getElementById("recapFansDelta").innerText = (fansDelta >= 0 ? "+" : "") + fansDelta.toFixed(1) + "w";
+      document.getElementById("recapFansDelta").style.color = fansDelta >= 0 ? "#34d399" : "#f87171";
+
+      document.getElementById("recapPR").innerText = Math.round(state.pr) + "分";
+      document.getElementById("recapPRDelta").innerText = (prDelta >= 0 ? "+" : "") + Math.round(prDelta) + "分";
+      document.getElementById("recapPRDelta").style.color = prDelta >= 0 ? "#34d399" : "#f87171";
+
+      // 动态生成 JRs 步行街锐评
+      var comments = [
+        "“这波商业绝杀给9.8分，直接把前东家脸打肿了！亮了(2480)”",
+        "“步行街名宿实至名归，破晓互娱这波操作属于教科书级别！亮了(1892)”",
+        "“原以为要被商战打垮，结果反手一记绝杀逆风翻盘，实战利器！亮了(3210)”",
+        "“JRs大呼过瘾！这格局和手速，破晓互娱已经是年度黑马GOAT了！亮了(4155)”",
+        "“这运营思路太硬核了，前东家现在怕是肠子都悔青了！亮了(2770)”"
+      ];
+      var randComment = comments[Math.floor(Math.random() * comments.length)];
+      document.getElementById("recapHupuComment").innerText = randComment;
+
+      playCheerSound();
+      modal.classList.remove("hidden");
+    }
+
+    function confirmNextWeek() {
+      safeInitAudio();
+      document.getElementById("weekRecapModal").classList.add("hidden");
+      advanceToNextWeek();
+    }
+
+    function advanceToNextWeek() {
+      if (state.cash < 0) {
+        triggerBankruptcy("资金链彻底断裂，无法支付主播薪资与场地租金，宣告破产清算。");
+        return;
+      }
+      if (state.pr <= 0) {
+        triggerBankruptcy("JRs口碑彻底塌房至0分，全网抵制引发监管全面勒令关停。");
+        return;
+      }
+
+      state.week += 1;
+
+      // 自建供应链每周自动恢复 3 点口碑
+      if (state.facilities.supplyChain > 0) {
+        state.pr = Math.min(100, state.pr + 3 * state.facilities.supplyChain);
+      }
+
+      // 更新周初数据快照
+      weekStartSnapshot = {
+        cash: state.cash,
+        fans: state.fans,
+        pr: state.pr
+      };
+
+      saveLocalData();
+
+      if (state.week > state.maxWeek && !state.endless) {
+        triggerEndingEvaluation();
+        return;
+      }
+
+      renderHeaderStats();
+      showToast("📅 进入第 " + state.week + " 周！日常经营已开启，请筹备新一轮直播！", "info");
+      switchTab('hall');
+    }
+
+    // =========================================================================
+    // 9. 终局结算与虎扑评分体系
+    // =========================================================================
+    function triggerBankruptcy(reason) {
+      playAlertSound();
+      document.getElementById("tabHall").classList.add("hidden");
+      document.getElementById("tabStreamers").classList.add("hidden");
+      document.getElementById("tabLive").classList.add("hidden");
+      document.getElementById("tabEvents").classList.add("hidden");
+      document.getElementById("tabEndgame").classList.remove("hidden");
+
+      document.getElementById("endIcon").innerText = "💀";
+      document.getElementById("endTitle").innerText = "破晓互娱宣告破产清算";
+      document.getElementById("endRating").innerText = "虎扑JRs最终评级：1.8分 · 铁血翻车";
+      document.getElementById("endRating").style.color = "#f43f5e";
+      document.getElementById("endNarrative").innerText = reason + " 在血腥的MCN丛林法则面前，初出茅庐的你交出了一笔昂贵学费。JRs建议：重开新局再战！";
+
+      document.getElementById("endCash").innerText = state.cash.toFixed(1) + "w";
+      document.getElementById("endFans").innerText = state.fans.toFixed(1) + "w";
+      document.getElementById("endPR").innerText = Math.round(state.pr) + "分";
+      document.getElementById("endlessBtn").classList.add("hidden");
+    }
+
+    function triggerEndingEvaluation() {
+      playCheerSound();
+      document.getElementById("tabHall").classList.add("hidden");
+      document.getElementById("tabStreamers").classList.add("hidden");
+      document.getElementById("tabLive").classList.add("hidden");
+      document.getElementById("tabEvents").classList.add("hidden");
+      document.getElementById("tabEndgame").classList.remove("hidden");
+
+      document.getElementById("endCash").innerText = state.cash.toFixed(1) + "w";
+      document.getElementById("endFans").innerText = state.fans.toFixed(1) + "w";
+      document.getElementById("endPR").innerText = Math.round(state.pr) + "分";
+
+      var score = (state.cash * 0.4) + (state.fans * 0.3) + (state.pr * 0.3);
+      var endIcon = document.getElementById("endIcon");
+      var endRating = document.getElementById("endRating");
+      var endNarrative = document.getElementById("endNarrative");
+
+      if (score >= 260) {
+        endIcon.innerText = "👑";
+        endRating.innerText = "虎扑 JRs 最终神级评级：9.9 分 · 商业 GOAT";
+        endRating.style.color = "#fbbf24";
+        endNarrative.innerText = "全网封神！破晓互娱成为横跨电商、电竞与影视的全球第一传媒帝国。前东家天娱已被全资收购，昔日打压你的前老板如今在你的旗下端茶递水。步行街JRs全员亮评：‘这波什么水平？历史第一，毋庸置疑！’";
+      } else if (score >= 180) {
+        endIcon.innerText = "🏆";
+        endRating.innerText = "虎扑 JRs 最终评级：9.2 分 · 步行街名宿";
+        endRating.style.color = "#34d399";
+        endNarrative.innerText = "功成名就！破晓互娱成功登陆港交所敲钟上市，旗下达人矩阵稳居行业前三甲，牢牢守住了高口碑与充沛现金流，成为当代青年白手起家的商业范本！";
+      } else {
+        endIcon.innerText = "🎖️";
+        endRating.innerText = "虎扑 JRs 最终评级：7.5 分 · 合格主理人";
+        endRating.style.color = "#60a5fa";
+        endNarrative.innerText = "扎稳脚跟！破晓互娱在竞争惨烈的直播红海中杀出重围，虽未登顶顶流之巅，但实现了财务独立与健康盈利，未来依然大有可为！";
+      }
+
+      if (window.HupuBridge && window.HupuBridge.onGameEnd) {
+        window.HupuBridge.onGameEnd({ score: score, cash: state.cash, fans: state.fans, pr: state.pr });
+      }
+    }
+
+    function enterEndlessMode() {
+      state.endless = true;
+      document.getElementById("tabEndgame").classList.add("hidden");
+      showToast("🌟 已解锁自由无尽模式！您可以不受周数限制继续扩张商业帝国！", "success");
+      switchTab('hall');
+    }
+
+    // =========================================================================
+    // 10. UI 控制与持久化
+    // =========================================================================
+    function openResetModal() {
+      safeInitAudio();
+      document.getElementById("resetModal").classList.remove("hidden");
+    }
+
+    function closeResetModal() {
+      document.getElementById("resetModal").classList.add("hidden");
+    }
+
+    function executeReset() {
+      try {
+        localStorage.removeItem("mcn_game_v2_save");
+      } catch (e) {}
+      state.week = 1;
+      state.cash = 100.0;
+      state.fans = 20.0;
+      state.pr = 80.0;
+      state.revenueTotal = 0.0;
+      state.destiny = 'none';
+      state.revengeScore = 0;
+      state.rogueScore = 0;
+      state.techScore = 0;
+      state.selectedStreamerId = 'su';
+      state.activeTab = 'hall';
+      state.facilities = { studio: 1, supplyChain: 0, prRadar: 0 };
+      state.endless = false;
+      ownedStreamers = ['su'];
+
+      weekStartSnapshot = { cash: 100.0, fans: 20.0, pr: 80.0 };
+
+      closeResetModal();
+      initGame();
+      showToast("🔄 游戏已重置，返回第 1 周重新创业！", "info");
+      playCoinSound();
+    }
+
+    function switchTab(tabId) {
+      safeInitAudio();
+      state.activeTab = tabId;
+
+      document.getElementById("tabHall").classList.add("hidden");
+      document.getElementById("tabStreamers").classList.add("hidden");
+      document.getElementById("tabLive").classList.add("hidden");
+      document.getElementById("tabEvents").classList.add("hidden");
+      document.getElementById("tabEndgame").classList.add("hidden");
+
+      var tabs = ['hall', 'streamers', 'live', 'events'];
+      tabs.forEach(function(t) {
+        var btn = document.getElementById("tabBtn-" + t);
+        if (btn) {
+          if (t === tabId) {
+            btn.className = "nav-item active";
+          } else {
+            btn.className = "nav-item";
+          }
+        }
+      });
+
+      if (tabId === 'hall') {
+        document.getElementById("tabHall").classList.remove("hidden");
+        renderHall();
+      } else if (tabId === 'streamers') {
+        document.getElementById("tabStreamers").classList.remove("hidden");
+        renderStreamersList();
+      } else if (tabId === 'live') {
+        document.getElementById("tabLive").classList.remove("hidden");
+        renderLivePrep();
+      } else if (tabId === 'events') {
+        document.getElementById("tabEvents").classList.remove("hidden");
+        renderEventView();
+      }
+    }
+
+    function renderHeaderStats() {
+      document.getElementById("valWeek").innerText = "第 " + state.week + (state.endless ? " 周 (无尽)" : " / " + state.maxWeek + " 周");
+      document.getElementById("valCash").innerText = state.cash.toFixed(1) + " 万";
+      document.getElementById("valFans").innerText = state.fans.toFixed(1) + " 万";
+      document.getElementById("valPR").innerText = Math.round(state.pr) + " 分";
+
+      var badge = document.getElementById("destinyBadge");
+      if (state.destiny === "revenge") {
+        badge.innerText = "商战修罗";
+        badge.className = "badge badge-red";
+      } else if (state.destiny === "rogue") {
+        badge.innerText = "天命黑马";
+        badge.className = "badge badge-green";
+      } else if (state.destiny === "tech") {
+        badge.innerText = "科技算力";
+        badge.className = "badge badge-gold";
+      } else {
+        badge.innerText = "摸索期";
+        badge.className = "badge badge-blue";
+      }
+    }
+
+    function showToast(msg, type) {
+      var t = document.getElementById("toast");
+      if (!t) return;
+      t.innerText = msg;
+      t.classList.remove("hidden");
+
+      if (type === "alert") {
+        t.className = "toast-bar toast-alert";
+      } else if (type === "success") {
+        t.className = "toast-bar toast-success";
+      } else {
+        t.className = "toast-bar toast-info";
+      }
+
+      if (window._toastTimer) clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(function() {
+        t.classList.add("hidden");
+      }, 3000);
+    }
+
+    function saveLocalData() {
+      try {
+        localStorage.setItem("mcn_game_v2_save", JSON.stringify({
+          state: state,
+          ownedStreamers: ownedStreamers,
+          streamersMaster: streamersMaster
+        }));
+      } catch (e) {}
+    }
+
+    function loadLocalData() {
+      try {
+        var raw = localStorage.getItem("mcn_game_v2_save");
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed && parsed.state) {
+            state = parsed.state;
+            ownedStreamers = parsed.ownedStreamers || ['su'];
+            if (parsed.streamersMaster) {
+              streamersMaster = parsed.streamersMaster;
+            }
+          }
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 11. 生产级全局事件委托处理器 (Universal Touch & Click Delegation Engine)
+    // 彻底解决 iOS WKWebView / Android WebView 拦截或丢失 click 事件的问题
+    // =========================================================================
+    function handleActionDispatch(action, el) {
+      if (!action) return;
+
+      if (action === 'switch-tab') {
+        var tab = el.getAttribute('data-tab');
+        switchTab(tab);
+      } else if (action === 'upgrade') {
+        var type = el.getAttribute('data-type');
+        upgradeFacility(type);
+      } else if (action === 'toggle-sound') {
+        toggleSound();
+      } else if (action === 'open-reset') {
+        openResetModal();
+      } else if (action === 'close-reset') {
+        closeResetModal();
+      } else if (action === 'execute-reset') {
+        executeReset();
+      } else if (action === 'open-recruit') {
+        openRecruitModal();
+      } else if (action === 'close-recruit') {
+        closeRecruitModal();
+      } else if (action === 'recruit-streamer') {
+        var id = el.getAttribute('data-id');
+        recruitStreamer(id);
+      } else if (action === 'train-streamer') {
+        var id = el.getAttribute('data-id');
+        trainStreamer(id);
+      } else if (action === 'shoot-video') {
+        var id = el.getAttribute('data-id');
+        shootShortVideo(id);
+      } else if (action === 'rest-streamer') {
+        var id = el.getAttribute('data-id');
+        restStreamer(id);
+      } else if (action === 'restore-all-streamers') {
+        restoreAllStreamers();
+      } else if (action === 'select-live-streamer') {
+        var id = el.getAttribute('data-id');
+        selectLiveStreamer(id);
+      } else if (action === 'start-live') {
+        startLiveSession();
+      } else if (action === 'click-bubble') {
+        handleBubbleClick(el);
+      } else if (action === 'trigger-ult') {
+        triggerUltSkill();
+      } else if (action === 'enter-endless') {
+        enterEndlessMode();
+      } else if (action === 'select-event-opt') {
+        var idx = parseInt(el.getAttribute('data-index'), 10);
+        selectEventOption(idx);
+      } else if (action === 'confirm-event-choice') {
+        executeEventChoice();
+      } else if (action === 'confirm-next-week') {
+        confirmNextWeek();
+      }
+    }
+
+    var lastActionTimestamp = 0;
+
+    function onUniversalInteraction(e) {
+      var target = e.target;
+      while (target && target !== document.body && target !== document.documentElement) {
+        var action = target.getAttribute('data-action');
+        if (action) {
+          // 防抖保护 (避免 touchend 和 click 重复触发两次)
+          var now = Date.now();
+          if (now - lastActionTimestamp < 80) return;
+          lastActionTimestamp = now;
+
+          safeInitAudio();
+          handleActionDispatch(action, target);
+          return;
+        }
+        target = target.parentElement;
+      }
+    }
+
+    // 绑定跨端交互监听：支持 pointerup, touchend, 与标准 click
+    document.addEventListener('pointerup', onUniversalInteraction, { passive: true });
+    document.addEventListener('click', onUniversalInteraction, { passive: true });
+
+    // =========================================================================
+    // 12. 虎扑 AI 工坊云端扩展规范接口 (HupuBridge Standard Protocol)
+    // =========================================================================
+    window.HupuBridge = {
+      version: "2.1.0",
+      isHupuApp: function() {
+        return /hupu|kanqiu/i.test(navigator.userAgent);
+      },
+      onGameReady: function(cb) {
+        if (typeof cb === 'function') cb({ week: state.week, cash: state.cash, pr: state.pr });
+      },
+      onGameEnd: function(result) {
+        console.log("[HupuBridge] Game Completed:", result);
+      },
+      syncCloudSave: function(data) {
+        console.log("[HupuBridge] Cloud save payload ready:", data);
+      }
+    };
+
+    function initGame() {
+      loadLocalData();
+      weekStartSnapshot = { cash: state.cash, fans: state.fans, pr: state.pr };
+      renderHeaderStats();
+      renderHall();
+      renderStreamersList();
+      renderLivePrep();
+      renderEventView();
+      switchTab(state.activeTab || 'hall');
+    }
+
+    initGame();
+  </script>
+</body>
+</html>
