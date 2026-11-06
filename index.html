@@ -402,11 +402,231 @@
       gap: 12px;
       box-shadow: 0 16px 40px rgba(0,0,0,0.9);
     }
+
+    /* 顶部全网 MCN 综合实力实时排名看板 */
+    .mcn-ranking-banner {
+      background: linear-gradient(135deg, #131b2e 0%, #1e293b 50%, #1a1e36 100%);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      border-radius: 12px;
+      padding: 7px 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer !important;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(251, 191, 36, 0.2);
+      transition: all 0.2s ease;
+      touch-action: manipulation !important;
+    }
+    .mcn-ranking-banner:active {
+      transform: scale(0.985);
+      border-color: #fbbf24;
+    }
+    .mcn-ranking-banner.rank-shimmer {
+      animation: rankShimmer 0.9s ease;
+    }
+    @keyframes rankShimmer {
+      0% { box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
+      50% { box-shadow: 0 0 24px rgba(245, 158, 11, 0.75); border-color: #fde047; }
+      100% { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45); }
+    }
+    .mcn-rank-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .mcn-rank-trophy-wrap {
+      position: relative;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .mcn-rank-live-dot {
+      position: absolute;
+      top: -1px;
+      right: -2px;
+      width: 7px;
+      height: 7px;
+      background: #34d399;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #34d399;
+      animation: pulseGreen 1.8s infinite;
+    }
+    @keyframes pulseGreen {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.3); }
+    }
+    .mcn-rank-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+    .mcn-rank-title-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .mcn-rank-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #fbbf24;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .rank-badge-change {
+      font-size: 10px;
+      font-weight: 800;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 1px 5px;
+      border-radius: 99px;
+      animation: popIn 0.3s ease;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .mcn-rank-target {
+      font-size: 10.5px;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mcn-rank-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .mcn-rank-metric {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .mcn-rank-sublabel {
+      font-size: 9px;
+      color: #94a3b8;
+    }
+    .mcn-rank-number {
+      font-size: 15px;
+      font-weight: 900;
+      color: #f59e0b;
+      font-family: monospace, sans-serif;
+      text-shadow: 0 1px 4px rgba(245, 158, 11, 0.3);
+    }
+    .mcn-power-number {
+      font-size: 12px;
+      font-weight: 800;
+      color: #38bdf8;
+      font-family: monospace, sans-serif;
+    }
+    .mcn-rank-chevron {
+      font-size: 16px;
+      color: #64748b;
+      margin-left: 2px;
+    }
+
+    /* 拟人化主播头像系统 */
+    .avatar-personified {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      overflow: visible;
+      flex-shrink: 0;
+      background: #0f172a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .avatar-personified svg {
+      display: block;
+      border-radius: 10px;
+    }
+    .avatar-tier-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      font-size: 8.5px;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 4px;
+      line-height: 1;
+      border: 1px solid rgba(255,255,255,0.4);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .tier-ssr { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; }
+    .tier-s { background: linear-gradient(135deg, #a855f7, #6366f1); color: #fff; }
+    .tier-a { background: linear-gradient(135deg, #3b82f6, #06b6d4); color: #fff; }
+    .tier-b { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+
+    /* 天梯榜列表条目 */
+    .lb-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: #101728;
+      border: 1px solid #24314c;
+      font-size: 12px;
+    }
+    .lb-item-self {
+      background: rgba(245, 158, 11, 0.15) !important;
+      border: 1.5px solid #fbbf24 !important;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+    }
+    .lb-item-rival {
+      background: rgba(239, 68, 68, 0.12) !important;
+      border: 1px solid rgba(239, 68, 68, 0.4) !important;
+    }
+    .lb-rank-tag {
+      width: 28px;
+      font-weight: 900;
+      font-family: monospace;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+    .lb-rank-top1 { color: #f59e0b !important; }
+    .lb-rank-top2 { color: #cbd5e1 !important; }
+    .lb-rank-top3 { color: #b45309 !important; }
   </style>
 </head>
 <body>
 
   <div class="game-container" id="gameApp">
+    
+    <!-- 顶部全网 MCN 综合实力天梯榜看板 -->
+    <div id="mcnRankingBar" class="mcn-ranking-banner" data-action="open-leaderboard">
+      <div class="mcn-rank-left">
+        <div class="mcn-rank-trophy-wrap">
+          <span class="mcn-rank-trophy">🏆</span>
+          <span class="mcn-rank-live-dot"></span>
+        </div>
+        <div class="mcn-rank-info">
+          <div class="mcn-rank-title-row">
+            <span class="mcn-rank-title">全网MCN实力天梯榜</span>
+            <span id="rankChangeBadge" class="rank-badge-change hidden">▲ 0</span>
+          </div>
+          <div class="mcn-rank-target" id="rankTargetText">距第97名【飞鱼文化】差 6.5w 战力</div>
+        </div>
+      </div>
+      <div class="mcn-rank-right">
+        <div class="mcn-rank-metric">
+          <span class="mcn-rank-sublabel">实时排名</span>
+          <span id="mcnRankVal" class="mcn-rank-number">NO. 98</span>
+        </div>
+        <div class="mcn-rank-metric">
+          <span class="mcn-rank-sublabel">综合战力</span>
+          <span id="mcnPowerScore" class="mcn-power-number">118.5w</span>
+        </div>
+        <span class="mcn-rank-chevron">›</span>
+      </div>
+    </div>
     
     <!-- 顶部状态栏 -->
     <header class="header-bar">
@@ -572,6 +792,17 @@
             <div style="color: #fbbf24;">⚡ 绝技满额：释放主播专属全屏清场大招</div>
           </div>
 
+          <!-- 冷却提示 (当处于冷却中时动态显示) -->
+          <div id="livePrepCooldownBanner" class="card-subpanel hidden" style="background: rgba(15, 23, 42, 0.7); border: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; padding: 8px 10px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 15px;">⏳</span>
+              <span id="prepCooldownText" style="font-size: 11.5px; color: #cbd5e1;">供应链选品调优中，剩余 <strong id="prepCooldownSec" style="color: #fbbf24;">24s</strong></span>
+            </div>
+            <button class="btn-icon" data-action="skip-cooldown" style="font-size: 10.5px; padding: 2px 7px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">
+              ⚡ 加急 5w
+            </button>
+          </div>
+
           <button id="btnStartLive" class="btn-primary" data-action="start-live">
             <span>🚀</span> 开启全网带货直播！
           </button>
@@ -613,7 +844,7 @@
           </div>
         </div>
 
-        <!-- 战报结算界面 -->
+        <!-- 战报结算界面 (带冷却倒计时与自动更新机制) -->
         <div id="liveResultView" class="hidden" style="display: flex; flex-direction: column; gap: 8px; text-align: center;">
           <h3 style="font-size: 15px; font-weight: 800; color: #34d399;">🎉 周末直播战报大捷！</h3>
           
@@ -632,9 +863,31 @@
             </div>
           </div>
 
-          <button class="btn-blue" data-action="switch-tab" data-tab="events" style="margin-top: 4px;">
-            <span>📰</span> 战果清点完毕，进入本周行业商战决策！
-          </button>
+          <!-- 冷却倒计时模块 (排名越高冷却越少) -->
+          <div id="liveCooldownBox" class="card-subpanel" style="background: rgba(15, 23, 42, 0.7); border: 1px solid #334155; text-align: left; padding: 10px; display: flex; flex-direction: column; gap: 6px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 15px;">⏳</span>
+                <span style="font-size: 12px; font-weight: 700; color: #f8fafc;">机房选品调优中 (即将自动就绪)...</span>
+              </div>
+              <span id="cooldownTimerText" style="font-size: 13px; font-weight: 800; color: #fbbf24; font-family: monospace;">28s</span>
+            </div>
+            <div style="background: #0f172a; height: 6px; border-radius: 99px; overflow: hidden; border: 1px solid #1e293b;">
+              <div id="cooldownProgressBar" style="height: 100%; width: 100%; background: linear-gradient(90deg, #3b82f6, #34d399); transition: width 0.25s linear;"></div>
+            </div>
+            <div style="font-size: 10.5px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center;">
+              <span id="cooldownRankPerkText">🏷️ 排名 NO.98 特权：冷却 45s (排名越高开播越快)</span>
+              <button id="btnSkipCooldown" class="btn-icon" data-action="skip-cooldown" style="font-size: 10.5px; padding: 2px 7px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">
+                ⚡ 加急 5w
+              </button>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 6px; margin-top: 4px;">
+            <button class="btn-blue" data-action="switch-tab" data-tab="events" style="flex: 1; margin: 0; padding: 10px;">
+              <span>📰</span> 战果清点完毕，进入本周行业商战决策！
+            </button>
+          </div>
         </div>
       </section>
 
@@ -765,6 +1018,32 @@
       </div>
     </div>
 
+    <!-- 模态框 4: MCN 综合实力 100 强天梯榜弹窗 -->
+    <div id="leaderboardModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 85vh; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 20px;">🏆</span>
+            <span style="font-size: 15px; font-weight: 800; color: #fff;">全网 MCN 综合实力天梯榜</span>
+          </div>
+          <button class="btn-icon" data-action="close-leaderboard" style="padding: 4px 8px; font-size: 13px;">✕</button>
+        </div>
+
+        <div style="font-size: 11px; color: #cbd5e1; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 6px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <span>🎯 宿敌目标：前东家【天娱星耀】(NO.25)</span>
+          <span id="lbRivalGap" style="color: #fbbf24; font-weight: 700;">差距: 1081.5w</span>
+        </div>
+
+        <!-- 榜单列表容器 (滚动) -->
+        <div id="leaderboardList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: 4px 0; -webkit-overflow-scrolling: touch;"></div>
+
+        <div style="border-top: 1px solid #2e3d60; padding-top: 8px; font-size: 11px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center;">
+          <span id="lbPerkHint">💡 排名越高，带货冷却越少！</span>
+          <button class="btn-primary" data-action="close-leaderboard" style="padding: 6px 14px; font-size: 12px; margin: 0;">我知道了</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -872,7 +1151,11 @@
         supplyChain: 0,
         prRadar: 0
       },
-      endless: false
+      endless: false,
+      mcnRank: 98,
+      powerScore: 118.5,
+      liveCooldownRemaining: 0,
+      liveCooldownMax: 45
     };
 
     var weekStartSnapshot = {
@@ -887,73 +1170,706 @@
       prRadar: [30, 60, 100, 180]
     };
 
+    // =========================================================================
+    // 2. 拟人化主播人才库 (24位垂直细分领域主播矩阵)
+    // =========================================================================
     var streamersMaster = {
       su: {
         id: 'su',
         name: '苏晚晴',
+        tier: 'SSR',
         title: '带货花旦',
-        avatar: '💄',
         sales: 78,
         stamina: 100,
-        resilience: 65,
+        resilience: 68,
         desc: '原天娱美妆一姐，随你负气出走。成单转化率极高。',
         ultName: '红颜绝杀 (全屏秒成单)',
         cost: 0,
         tag: '初始元老'
       },
-      qiang: {
-        id: 'qiang',
-        name: '市井强哥',
-        title: '草根吃播',
-        avatar: '🎙️',
-        sales: 62,
-        stamina: 90,
-        resilience: 88,
-        desc: '地摊烤肉起家的接地气达人，抗压与抗黑粉能力极强。',
-        ultName: '兄弟情深 (粉丝暴涨爆灯)',
-        cost: 35,
-        tag: '高性价比'
+      dong: {
+        id: 'dong',
+        name: '董先生',
+        tier: 'SSR',
+        title: '东方文豪',
+        sales: 92,
+        stamina: 85,
+        resilience: 92,
+        desc: '双语哲思带货天花板，单场直播引爆全网文化共鸣。',
+        ultName: '人间烟火 (GMV与口碑双爆发)',
+        cost: 160,
+        tag: '文化双核'
+      },
+      yang: {
+        id: 'yang',
+        name: '疯狂小阳',
+        tier: 'SSR',
+        title: '整蛊顶流',
+        sales: 94,
+        stamina: 95,
+        resilience: 80,
+        desc: '全网搞笑整蛊带货第一人，戏剧效果拉满，粉丝涨势如潮。',
+        ultName: '魔性反向测评 (暴涨20连击)',
+        cost: 180,
+        tag: '流量黑洞'
+      },
+      zhui: {
+        id: 'zhui',
+        name: '歪嘴龙王',
+        tier: 'SSR',
+        title: '短剧战神',
+        sales: 88,
+        stamina: 85,
+        resilience: 75,
+        desc: '爽文短剧现象级顶流，单场引爆流量能力极强，吸金怪兽。',
+        ultName: '龙王归来 (10连击狂热)',
+        cost: 110,
+        tag: '吸金霸主'
       },
       ai01: {
         id: 'ai01',
         name: 'AI数字人·破晓01',
+        tier: 'SSR',
         title: '算力达人',
-        avatar: '🤖',
-        sales: 85,
+        sales: 86,
         stamina: 100,
         resilience: 100,
         desc: '全天候24小时无休算力带货，零体力消耗，但需科技路线加成。',
         ultName: '算法风暴 (GMV翻倍狂飙)',
-        cost: 80,
+        cost: 95,
         tag: '永动机'
       },
       luo: {
         id: 'luo',
         name: '罗老师',
+        tier: 'S',
         title: '普法学者',
-        avatar: '⚖️',
-        sales: 70,
+        sales: 72,
         stamina: 80,
-        resilience: 95,
+        resilience: 96,
         desc: '金牌法律博主，每次出战自动净化弹幕恶意，大幅提升JRs口碑。',
         ultName: '法外狂徒终结 (免除商战攻击)',
-        cost: 60,
+        cost: 65,
         tag: '口碑护甲'
       },
-      zhui: {
-        id: 'zhui',
-        name: '歪嘴龙王',
-        title: '短剧顶流',
-        avatar: '👑',
-        sales: 88,
+      liu: {
+        id: 'liu',
+        name: '刘教练',
+        tier: 'S',
+        title: '燃脂教头',
+        sales: 75,
+        stamina: 100,
+        resilience: 88,
+        desc: '全网燃脂跳操领操人，出战可鼓舞全员士气并延缓疲劳。',
+        ultName: '本草纲目 (全员体力上限回升)',
+        cost: 70,
+        tag: '全员激励'
+      },
+      qiang: {
+        id: 'qiang',
+        name: '市井强哥',
+        tier: 'S',
+        title: '草根吃播',
+        sales: 66,
+        stamina: 90,
+        resilience: 88,
+        desc: '地摊烤肉起家的接地气达人，抗压与抗黑粉能力极强。',
+        ultName: '兄弟情深 (粉丝暴涨爆灯)',
+        cost: 40,
+        tag: '高性价比'
+      },
+      meina: {
+        id: 'meina',
+        name: '步行街小美',
+        tier: 'S',
+        title: '虎扑女神',
+        sales: 76,
         stamina: 85,
+        resilience: 78,
+        desc: '步行街万千JRs公认白月光，互动率超高，极度吸睛。',
+        ultName: '直男斩 (打赏暴击翻倍)',
+        cost: 75,
+        tag: '人气王牌'
+      },
+      he: {
+        id: 'he',
+        name: '硬核老何',
+        tier: 'S',
+        title: '数码极客',
+        sales: 78,
+        stamina: 80,
+        resilience: 85,
+        desc: '全网公认拆机质检老法师，高单价数码带货神器。',
+        ultName: '芯片级拆解 (高客单爆发)',
+        cost: 68,
+        tag: '数码专家'
+      },
+      kun: {
+        id: 'kun',
+        name: '街球坤哥',
+        tier: 'S',
+        title: '球场名宿',
+        sales: 74,
+        stamina: 95,
+        resilience: 86,
+        desc: '路人王实战名宿，虎扑球友拥趸众多，运动潮牌带货王。',
+        ultName: '绝杀三分 (瞬间清屏成单)',
+        cost: 62,
+        tag: '运动风暴'
+      },
+      zhao: {
+        id: 'zhao',
+        name: '国风小昭',
+        tier: 'A',
+        title: '汉服非遗',
+        sales: 64,
+        stamina: 80,
         resilience: 70,
-        desc: '爽文短剧现象级顶流，单场引爆流量能力极强，吸金怪兽。',
-        ultName: '龙王归来 (10连击狂热)',
-        cost: 110,
-        tag: '吸金霸主'
+        desc: '古典妆造大师，东方美学弘扬者，高客单首饰与文创杀手。',
+        ultName: '霓裳羽衣 (口碑+8, GMV+25w)',
+        cost: 45,
+        tag: '传统美学'
+      },
+      chen: {
+        id: 'chen',
+        name: '反诈老陈',
+        tier: 'A',
+        title: '正义警官',
+        sales: 58,
+        stamina: 85,
+        resilience: 95,
+        desc: '连麦查房奇才，一身正气，极大压制直播间刷单与虚假黑粉。',
+        ultName: '国家反诈 (黑粉伤害减免90%)',
+        cost: 38,
+        tag: '浩然正气'
+      },
+      wei: {
+        id: 'wei',
+        name: '赶海阿伟',
+        tier: 'A',
+        title: '海味猎人',
+        sales: 60,
+        stamina: 90,
+        resilience: 80,
+        desc: '潮起潮落野生赶海狂魔，生鲜水产原产地直发代名词。',
+        ultName: '深海巨物 (生鲜大单连开)',
+        cost: 35,
+        tag: '原产地直发'
+      },
+      mao: {
+        id: 'mao',
+        name: '地下阿毛',
+        tier: 'A',
+        title: '说唱老将',
+        sales: 62,
+        stamina: 85,
+        resilience: 75,
+        desc: '节奏韵脚连击王，年轻潮流潮牌穿搭主力军。',
+        ultName: '爆单Freestyle (连击+8)',
+        cost: 42,
+        tag: '潮流先锋'
+      },
+      ling: {
+        id: 'ling',
+        name: '治愈兔兔',
+        tier: 'A',
+        title: '深夜声优',
+        sales: 56,
+        stamina: 85,
+        resilience: 72,
+        desc: '百万失眠年轻人的心灵港湾，助眠香薰与健康养生带货利器。',
+        ultName: '温润晚安 (粉丝粘度暴涨)',
+        cost: 36,
+        tag: '治愈陪伴'
+      },
+      che: {
+        id: 'che',
+        name: '车圈老刀',
+        tier: 'A',
+        title: '毒舌车评',
+        sales: 65,
+        stamina: 80,
+        resilience: 82,
+        desc: '专挑车企痛点锐评的硬汉，汽摩用品与户外装备霸主。',
+        ultName: '假一赔三 (客单价+30%)',
+        cost: 48,
+        tag: '硬核工业'
+      },
+      guang: {
+        id: 'guang',
+        name: '老广梁姑',
+        tier: 'A',
+        title: '养生煲汤',
+        sales: 58,
+        stamina: 85,
+        resilience: 85,
+        desc: '广东三十年煲汤秘传，药膳滋补与厨具用品复购王。',
+        ultName: '百年秘方 (复购率大增)',
+        cost: 34,
+        tag: '养生厨房'
+      },
+      suona: {
+        id: 'suona',
+        name: '民间唢呐哥',
+        tier: 'B',
+        title: '非遗名角',
+        sales: 48,
+        stamina: 90,
+        resilience: 85,
+        desc: '传统乐器之王一响，十万网友空降，围观热度极高。',
+        ultName: '百鸟朝凤 (瞬时热度翻倍)',
+        cost: 20,
+        tag: '传统艺能'
+      },
+      daxue: {
+        id: 'daxue',
+        name: '校园练习生',
+        tier: 'B',
+        title: '唱跳萌新',
+        sales: 42,
+        stamina: 95,
+        resilience: 60,
+        desc: '大学城里签约的活力小生，性价比极高，底薪便宜。',
+        ultName: '青春活力 (消耗极低)',
+        cost: 15,
+        tag: '萌新潜力'
+      },
+      baoshi: {
+        id: 'baoshi',
+        name: '翡翠小六',
+        tier: 'B',
+        title: '骨折砍王',
+        sales: 52,
+        stamina: 80,
+        resilience: 70,
+        desc: '天天在直播间跟货主吵架的砍价戏精，沉浸式捡漏。',
+        ultName: '骨折秒杀 (订单转化加成)',
+        cost: 26,
+        tag: '戏剧张力'
+      },
+      qishou: {
+        id: 'qishou',
+        name: '同城风火轮',
+        tier: 'B',
+        title: '城市跑腿',
+        sales: 45,
+        stamina: 100,
+        resilience: 90,
+        desc: '跑遍城市大街小巷的真实骑手，户外防晒劳保用品大热门。',
+        ultName: '准时必达 (体力消耗降低)',
+        cost: 18,
+        tag: '草根坚韧'
+      },
+      nong: {
+        id: 'nong',
+        name: '秦岭老农',
+        tier: 'B',
+        title: '大山土货',
+        sales: 46,
+        stamina: 90,
+        resilience: 88,
+        desc: '大山深处的质朴蜂农，天然农产品与纯手工山货代言人。',
+        ultName: '大山馈赠 (口碑+10)',
+        cost: 22,
+        tag: '纯朴助农'
+      },
+      xiuche: {
+        id: 'xiuche',
+        name: '老李修表匠',
+        tier: 'B',
+        title: '微雕工匠',
+        sales: 50,
+        stamina: 75,
+        resilience: 90,
+        desc: '无声解压老手艺，专治浮躁，慢直播带货的高端黑马。',
+        ultName: '精准校时 (零失误连击)',
+        cost: 25,
+        tag: '沉浸解压'
       }
     };
+
+    // 拟人化主播专属矢量立绘肖像生成器
+    function getPersonifiedAvatarSVG(s, size) {
+      if (!s) return '';
+      size = size || 44;
+      var tier = s.tier || 'B';
+      var id = s.id || 'su';
+      
+      var charVisuals = {
+        su:     { skin: '#ffd8c2', hair: '#4a2818', clothes: '#c91b1b', extra: '💄', eye: '#2c1810', hairStyle: 'long' },
+        dong:   { skin: '#fed7aa', hair: '#1f2937', clothes: '#1e3a8a', extra: '📖', eye: '#111827', hairStyle: 'glasses' },
+        yang:   { skin: '#fcd34d', hair: '#18181b', clothes: '#eab308', extra: '⚡', eye: '#09090b', hairStyle: 'wild' },
+        zhui:   { skin: '#ffedd5', hair: '#0f172a', clothes: '#78350f', extra: '👑', eye: '#172554', hairStyle: 'slick' },
+        ai01:   { skin: '#bae6fd', hair: '#0284c7', clothes: '#0f766e', extra: '🤖', eye: '#38bdf8', hairStyle: 'cyber' },
+        luo:    { skin: '#fed7aa', hair: '#334155', clothes: '#1e293b', extra: '⚖️', eye: '#0f172a', hairStyle: 'glasses' },
+        liu:    { skin: '#fdba74', hair: '#18181b', clothes: '#16a34a', extra: '💪', eye: '#18181b', hairStyle: 'headband' },
+        qiang:  { skin: '#fbcfe8', hair: '#4b5563', clothes: '#ea580c', extra: '🍖', eye: '#374151', hairStyle: 'stubble' },
+        meina:  { skin: '#ffe4e6', hair: '#7c2d12', clothes: '#db2777', extra: '🏀', eye: '#4c0519', hairStyle: 'twintail' },
+        he:     { skin: '#e2e8f0', hair: '#374151', clothes: '#0369a1', extra: '🔧', eye: '#1e293b', hairStyle: 'goggles' },
+        kun:    { skin: '#d6d3d1', hair: '#1c1917', clothes: '#6d28d9', extra: '🏀', eye: '#0c0a09', hairStyle: 'braids' },
+        zhao:   { skin: '#fef08a', hair: '#1e1b4b', clothes: '#059669', extra: '🪭', eye: '#111827', hairStyle: 'bun' },
+        chen:   { skin: '#fed7aa', hair: '#1f2937', clothes: '#1d4ed8', extra: '👮', eye: '#0f172a', hairStyle: 'cap' },
+        wei:    { skin: '#ea580c', hair: '#292524', clothes: '#0891b2', extra: '🦀', eye: '#1c1917', hairStyle: 'bucket' },
+        mao:    { skin: '#e2e8f0', hair: '#18181b', clothes: '#581c87', extra: '🎤', eye: '#09090b', hairStyle: 'caprev' },
+        ling:   { skin: '#fae8ff', hair: '#a21caf', clothes: '#c026d3', extra: '🎧', eye: '#701a75', hairStyle: 'bunny' },
+        che:    { skin: '#fed7aa', hair: '#334155', clothes: '#991b1b', extra: '🚗', eye: '#1e293b', hairStyle: 'short' },
+        guang:  { skin: '#fde047', hair: '#4b5563', clothes: '#b45309', extra: '🍲', eye: '#1f2937', hairStyle: 'perm' },
+        suona:  { skin: '#fdba74', hair: '#1c1917', clothes: '#b91c1c', extra: '🎺', eye: '#1c1917', hairStyle: 'folk' },
+        daxue:  { skin: '#fed7aa', hair: '#475569', clothes: '#2563eb', extra: '✨', eye: '#1e293b', hairStyle: 'kpop' },
+        baoshi: { skin: '#e2e8f0', hair: '#1e293b', clothes: '#047857', extra: '💎', eye: '#0f172a', hairStyle: 'fedora' },
+        qishou: { skin: '#fdba74', hair: '#1f2937', clothes: '#ca8a04', extra: '🛵', eye: '#111827', hairStyle: 'helmet' },
+        nong:   { skin: '#d97706', hair: '#44403c', clothes: '#713f12', extra: '🍯', eye: '#292524', hairStyle: 'straw' },
+        xiuche: { skin: '#e2e8f0', hair: '#64748b', clothes: '#334155', extra: '⌚', eye: '#1e293b', hairStyle: 'loupe' }
+      };
+
+      var v = charVisuals[id] || { skin: '#fed7aa', hair: '#1f2937', clothes: '#3b82f6', extra: '🎙️', eye: '#111827', hairStyle: 'short' };
+      
+      var bgGradient = tier === 'SSR' ? 'linear-gradient(135deg, #78350f, #991b1b)' :
+                       (tier === 'S' ? 'linear-gradient(135deg, #4c1d95, #312e81)' :
+                       (tier === 'A' ? 'linear-gradient(135deg, #1e3a8a, #0e7490)' : 'linear-gradient(135deg, #064e3b, #047857)'));
+
+      var ringColor = tier === 'SSR' ? '#f59e0b' : (tier === 'S' ? '#a855f7' : (tier === 'A' ? '#38bdf8' : '#34d399'));
+
+      var hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 C 60 24, 40 24, 30 32 Z" fill="' + v.hair + '"/>';
+      if (v.hairStyle === 'long') {
+        hairSVG = '<path d="M 28 40 C 25 18, 75 18, 72 40 C 68 30, 32 30, 28 40 Z" fill="' + v.hair + '"/><path d="M 25 36 Q 22 65 30 75 Q 34 55 30 38 Z M 75 36 Q 78 65 70 75 Q 66 55 70 38 Z" fill="' + v.hair + '"/>';
+      } else if (v.hairStyle === 'glasses') {
+        hairSVG = '<path d="M 30 32 C 30 16, 70 16, 70 32 C 60 25, 40 25, 30 32 Z" fill="' + v.hair + '"/><rect x="36" y="34" width="12" height="11" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="52" y="34" width="12" height="11" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><line x1="48" y1="39" x2="52" y2="39" stroke="#fbbf24" stroke-width="2"/>';
+      } else if (v.hairStyle === 'wild') {
+        hairSVG = '<path d="M 24 35 L 32 15 L 42 22 L 50 10 L 58 22 L 68 15 L 76 35 Z" fill="' + v.hair + '"/><rect x="36" y="36" width="28" height="8" rx="3" fill="#18181b"/>';
+      } else if (v.hairStyle === 'twintail') {
+        hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><circle cx="24" cy="35" r="8" fill="' + v.hair + '"/><circle cx="76" cy="35" r="8" fill="' + v.hair + '"/>';
+      } else if (v.hairStyle === 'cyber') {
+        hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><rect x="34" y="36" width="32" height="7" rx="3" fill="#38bdf8" opacity="0.9"/>';
+      } else if (v.hairStyle === 'headband') {
+        hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><rect x="28" y="28" width="44" height="6" fill="#ef4444"/>';
+      }
+
+      var svgBust = 
+        '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" style="background:' + bgGradient + '; border: 1.5px solid ' + ringColor + ';">' +
+          '<path d="M 20 100 C 20 72, 35 68, 50 68 C 65 68, 80 72, 80 100 Z" fill="' + v.clothes + '"/>' +
+          '<rect x="44" y="52" width="12" height="18" rx="4" fill="' + v.skin + '"/>' +
+          '<ellipse cx="50" cy="42" rx="22" ry="24" fill="' + v.skin + '"/>' +
+          '<ellipse cx="42" cy="40" rx="3" ry="3.5" fill="' + v.eye + '"/>' +
+          '<ellipse cx="58" cy="40" rx="3" ry="3.5" fill="' + v.eye + '"/>' +
+          '<circle cx="43" cy="39" r="1" fill="#ffffff"/>' +
+          '<circle cx="59" cy="39" r="1" fill="#ffffff"/>' +
+          '<path d="M 44 52 Q 50 56 56 52" stroke="#b91c1c" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+          hairSVG +
+          '<circle cx="78" cy="78" r="15" fill="#0f172a" stroke="' + ringColor + '" stroke-width="1.5"/>' +
+          '<text x="78" y="83" font-size="13" text-anchor="middle">' + v.extra + '</text>' +
+        '</svg>';
+
+      return (
+        '<div class="avatar-personified" style="width:' + size + 'px; height:' + size + 'px;">' +
+          svgBust +
+          '<span class="avatar-tier-badge tier-' + tier.toLowerCase() + '">' + tier + '</span>' +
+        '</div>'
+      );
+    }
+
+    // =========================================================================
+    // 全网 MCN 综合天梯榜数据与排名引擎 (Top 100 Leaderboard)
+    // =========================================================================
+    var competitorLadder = [
+      { rank: 1, name: '无忧传媒', power: 8500, desc: '全网超头部航母级机构' },
+      { rank: 2, name: '美ONE', power: 7200, desc: '顶流超头矩阵核心' },
+      { rank: 3, name: '三只羊网络', power: 6100, desc: '下沉与私域流量霸主' },
+      { rank: 4, name: '东方甄选', power: 5400, desc: '文化知识破圈标杆' },
+      { rank: 5, name: '辛选集团', power: 4800, desc: '超级源头供应链巨鳄' },
+      { rank: 6, name: '遥望科技', power: 3900, desc: '明星带货全域中枢' },
+      { rank: 7, name: '交个朋友', power: 3200, desc: '标准工业化机构' },
+      { rank: 8, name: '虎扑星创传媒', power: 2800, desc: 'JRs直属体育潮流矩阵' },
+      { rank: 9, name: '谦寻文化', power: 2400, desc: '老牌泛品类带货领航者' },
+      { rank: 10, name: '大禹网络', power: 2100, desc: '原创泛娱乐孵化器' },
+      { rank: 15, name: '宸帆电商', power: 1800, desc: '红人孵化与服装供应链' },
+      { rank: 20, name: '愿景娱乐', power: 1500, desc: '娱乐与直播工会领头羊' },
+      { rank: 25, name: '天娱星耀', power: 1200, desc: '【宿敌】前东家！处处打压你的老牌资本', isRival: true },
+      { rank: 35, name: '无极星芒', power: 850, desc: '短剧与游戏直播黑马' },
+      { rank: 50, name: '锐星互娱', power: 450, desc: '区域头部MCN代表' },
+      { rank: 65, name: '万象星澜', power: 320, desc: '腰部垂类科技工坊' },
+      { rank: 75, name: '极光闪耀传媒', power: 250, desc: '本地生活带货黑马' },
+      { rank: 85, name: '步行街青年创投', power: 190, desc: '草根创业者聚集地' },
+      { rank: 90, name: '晨光萌芽工作室', power: 165, desc: '初出茅庐三两个人' },
+      { rank: 95, name: '绿叶微风网络', power: 138, desc: '依靠接小广告维持生计' },
+      { rank: 96, name: '弄潮儿星选', power: 130, desc: '几位大学生合伙工作室' },
+      { rank: 97, name: '飞鱼文化传媒', power: 125, desc: '本地带货初创团队' },
+      { rank: 98, name: '破晓互娱', power: 118.5, desc: '玩家从零重起炉灶的主理机构', isPlayer: true },
+      { rank: 99, name: '街角微利小作坊', power: 105, desc: '濒临发不出薪资的杂货间' },
+      { rank: 100, name: '草台班子传媒', power: 85, desc: '设备老旧、随时可能注销' }
+    ];
+
+    function calculatePowerScore() {
+      var streamerPower = 0;
+      ownedStreamers.forEach(function(sid) {
+        var s = streamersMaster[sid];
+        if (s) {
+          streamerPower += (s.sales * 1.6) + (s.resilience * 0.8);
+        }
+      });
+      var facilityPower = (state.facilities.studio * 35) + 
+                          (state.facilities.supplyChain * 30) + 
+                          (state.facilities.prRadar * 25);
+      var score = (state.cash * 1.2) + 
+                  (state.fans * 1.5) + 
+                  (state.pr * 1.6) + 
+                  facilityPower + 
+                  streamerPower;
+      return Math.max(90, score);
+    }
+
+    function calculateRankFromPower(power) {
+      for (var i = 0; i < competitorLadder.length; i++) {
+        var comp = competitorLadder[i];
+        if (!comp.isPlayer && power >= comp.power) {
+          return comp.rank;
+        }
+      }
+      return 100;
+    }
+
+    function getLiveCooldownSeconds() {
+      var rankRatio = Math.max(0.08, Math.min(1.0, (state.mcnRank || 98) / 100));
+      return Math.max(8, Math.round(48 * rankRatio));
+    }
+
+    function updateMCNRank(animate) {
+      var currentPower = calculatePowerScore();
+      state.powerScore = currentPower;
+      var newRank = calculateRankFromPower(currentPower);
+      var oldRank = state.mcnRank || 98;
+
+      if (newRank < oldRank) {
+        var climb = oldRank - newRank;
+        state.mcnRank = newRank;
+        if (animate) {
+          var badge = document.getElementById("rankChangeBadge");
+          if (badge) {
+            badge.innerText = "▲ +" + climb;
+            badge.classList.remove("hidden");
+            clearTimeout(window._rankBadgeTimer);
+            window._rankBadgeTimer = setTimeout(function() {
+              badge.classList.add("hidden");
+            }, 3500);
+          }
+          var bar = document.getElementById("mcnRankingBar");
+          if (bar) {
+            bar.classList.add("rank-shimmer");
+            setTimeout(function() { bar.classList.remove("rank-shimmer"); }, 1000);
+          }
+          playComboSound(5);
+          showToast("🏆 综合战力提升至 " + currentPower.toFixed(1) + "w，全网排名跃升至 NO." + newRank + "！", "success");
+        }
+      } else {
+        state.mcnRank = newRank;
+      }
+
+      var rankValEl = document.getElementById("mcnRankVal");
+      if (rankValEl) rankValEl.innerText = "NO. " + state.mcnRank;
+
+      var powerValEl = document.getElementById("mcnPowerScore");
+      if (powerValEl) powerValEl.innerText = currentPower.toFixed(1) + "w";
+
+      var targetText = "稳坐榜首 · 全球第一MCN";
+      for (var i = competitorLadder.length - 1; i >= 0; i--) {
+        var comp = competitorLadder[i];
+        if (!comp.isPlayer && comp.rank < state.mcnRank) {
+          var gap = Math.max(0.1, (comp.power - currentPower)).toFixed(1);
+          targetText = "距第 " + comp.rank + " 名【" + comp.name + "】差 " + gap + "w 战力";
+          break;
+        }
+      }
+      var targetEl = document.getElementById("rankTargetText");
+      if (targetEl) targetEl.innerText = targetText;
+
+      state.liveCooldownMax = getLiveCooldownSeconds();
+    }
+
+    function openLeaderboardModal() {
+      safeInitAudio();
+      renderLeaderboard();
+      document.getElementById("leaderboardModal").classList.remove("hidden");
+    }
+
+    function closeLeaderboardModal() {
+      document.getElementById("leaderboardModal").classList.add("hidden");
+    }
+
+    function renderLeaderboard() {
+      var box = document.getElementById("leaderboardList");
+      if (!box) return;
+      box.innerHTML = "";
+
+      var currentPower = state.powerScore || calculatePowerScore();
+      var currentRank = state.mcnRank || 98;
+
+      var rival = competitorLadder.find(function(c) { return c.isRival; }) || { power: 1200 };
+      var rivalGapEl = document.getElementById("lbRivalGap");
+      if (rivalGapEl) {
+        var gap = (rival.power - currentPower);
+        if (gap > 0) {
+          rivalGapEl.innerText = "落后前东家 " + gap.toFixed(1) + "w 战力";
+          rivalGapEl.style.color = "#f87171";
+        } else {
+          rivalGapEl.innerText = "已反超 " + Math.abs(gap).toFixed(1) + "w (复仇成功!)";
+          rivalGapEl.style.color = "#34d399";
+        }
+      }
+
+      var perkHint = document.getElementById("lbPerkHint");
+      if (perkHint) {
+        perkHint.innerText = "💡 当前 NO." + currentRank + " 享受开播冷却 " + getLiveCooldownSeconds() + "s";
+      }
+
+      var displayItems = [];
+      competitorLadder.forEach(function(c) {
+        if (c.rank <= 5 || c.isRival) {
+          displayItems.push(c);
+        } else if (Math.abs(c.rank - currentRank) <= 2) {
+          displayItems.push(c);
+        }
+      });
+
+      var seen = {};
+      var uniqueItems = [];
+      displayItems.forEach(function(item) {
+        if (!seen[item.rank]) {
+          seen[item.rank] = true;
+          uniqueItems.push(item);
+        }
+      });
+      uniqueItems.sort(function(a, b) { return a.rank - b.rank; });
+
+      uniqueItems.forEach(function(item) {
+        var isPlayer = (item.rank === currentRank || item.isPlayer);
+        var div = document.createElement("div");
+        div.className = "lb-item" + (isPlayer ? " lb-item-self" : (item.isRival ? " lb-item-rival" : ""));
+
+        var rankCls = item.rank === 1 ? "lb-rank-top1" : (item.rank === 2 ? "lb-rank-top2" : (item.rank === 3 ? "lb-rank-top3" : ""));
+        var rankIcon = item.rank === 1 ? "🥇 " : (item.rank === 2 ? "🥈 " : (item.rank === 3 ? "🥉 " : ""));
+
+        div.innerHTML = 
+          '<div style="display: flex; align-items: center; gap: 8px;">' +
+            '<span class="lb-rank-tag ' + rankCls + '">' + rankIcon + item.rank + '</span>' +
+            '<div>' +
+              '<div style="font-weight: 700; color: ' + (isPlayer ? '#fbbf24' : '#fff') + ';">' + 
+                escapeHTML(isPlayer ? '破晓互娱 (你)' : item.name) + 
+                (isPlayer ? ' <span class="badge badge-gold">你的机构</span>' : (item.isRival ? ' <span class="badge badge-red">前东家宿敌</span>' : '')) + 
+              '</div>' +
+              '<div style="font-size: 10.5px; color: #94a3b8;">' + escapeHTML(item.desc) + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="text-align: right;">' +
+            '<div style="font-weight: 800; color: #38bdf8; font-family: monospace;">' + (isPlayer ? currentPower.toFixed(1) : item.power.toFixed(1)) + 'w</div>' +
+            '<div style="font-size: 9.5px; color: #64748b;">估值战力</div>' +
+          '</div>';
+
+        box.appendChild(div);
+      });
+    }
+
+    // =========================================================================
+    // 周末带货动态冷却与自动更新引擎
+    // =========================================================================
+    var liveCooldownTimer = null;
+
+    function startLiveCooldown(seconds) {
+      if (seconds === undefined) seconds = getLiveCooldownSeconds();
+      state.liveCooldownRemaining = seconds;
+      state.liveCooldownMax = seconds;
+
+      var box = document.getElementById("liveCooldownBox");
+      if (box) box.classList.remove("hidden");
+
+      var perkText = document.getElementById("cooldownRankPerkText");
+      if (perkText) perkText.innerText = "🏷️ 排名 NO." + state.mcnRank + " 特权：冷却 " + seconds + "s (排名越高开播越快)";
+
+      clearInterval(liveCooldownTimer);
+      updateCooldownUI();
+
+      liveCooldownTimer = setInterval(function() {
+        state.liveCooldownRemaining--;
+        if (state.liveCooldownRemaining <= 0) {
+          state.liveCooldownRemaining = 0;
+          clearInterval(liveCooldownTimer);
+          onCooldownComplete();
+        } else {
+          updateCooldownUI();
+        }
+      }, 1000);
+    }
+
+    function updateCooldownUI() {
+      var sec = Math.max(0, state.liveCooldownRemaining);
+      var max = Math.max(1, state.liveCooldownMax);
+      var pct = (sec / max) * 100;
+
+      var timerText = document.getElementById("cooldownTimerText");
+      if (timerText) timerText.innerText = sec + "s";
+
+      var pBar = document.getElementById("cooldownProgressBar");
+      if (pBar) pBar.style.width = pct + "%";
+
+      var prepBanner = document.getElementById("livePrepCooldownBanner");
+      var prepSec = document.getElementById("prepCooldownSec");
+      var btnStart = document.getElementById("btnStartLive");
+
+      if (sec > 0) {
+        if (prepBanner) prepBanner.classList.remove("hidden");
+        if (prepSec) prepSec.innerText = sec + "s";
+        if (btnStart) {
+          btnStart.disabled = true;
+          btnStart.classList.add("btn-disabled");
+          btnStart.innerHTML = '<span>⏳</span> 机房选品调优中 (' + sec + 's) · 排名特权加速';
+        }
+      } else {
+        if (prepBanner) prepBanner.classList.add("hidden");
+        if (btnStart) {
+          var activeS = streamersMaster[state.selectedStreamerId] || streamersMaster['su'];
+          if (activeS && activeS.stamina <= 0 && activeS.id !== 'ai01') {
+            btnStart.disabled = true;
+            btnStart.classList.add("btn-disabled");
+            btnStart.innerHTML = '<span>⚠️</span> 主播已力竭，请先在集训中休假';
+          } else {
+            btnStart.disabled = false;
+            btnStart.classList.remove("btn-disabled");
+            btnStart.innerHTML = '<span>🚀</span> 开启全网带货直播！';
+          }
+        }
+      }
+    }
+
+    function onCooldownComplete() {
+      updateCooldownUI();
+      document.getElementById("liveResultView").classList.add("hidden");
+      document.getElementById("liveBattleView").classList.add("hidden");
+      document.getElementById("livePrepView").classList.remove("hidden");
+
+      renderLivePrep();
+      playCheerSound();
+      showToast("✨ 供应链与机房选品调优完毕！新一场带货直播已就绪！", "success");
+    }
+
+    function skipCooldown() {
+      safeInitAudio();
+      if (state.liveCooldownRemaining <= 0) {
+        showToast("带货直播已就绪，无需加急！", "info");
+        return;
+      }
+      if (state.cash < 5) {
+        showToast("流动资金不足 5 万，无法加急调货！", "alert");
+        playAlertSound();
+        return;
+      }
+      state.cash -= 5;
+      state.liveCooldownRemaining = 0;
+      clearInterval(liveCooldownTimer);
+      playCoinSound();
+      showToast("⚡ 紧急加急调配成功！下一场直播已就绪！", "success");
+      renderHeaderStats();
+      onCooldownComplete();
+      saveLocalData();
+    }
 
     var ownedStreamers = ['su'];
     var selectedEventOptionIndex = null;
@@ -1309,7 +2225,7 @@
       document.getElementById("liveResultView").classList.add("hidden");
       document.getElementById("liveBattleView").classList.remove("hidden");
 
-      document.getElementById("battleStreamerAvatar").innerText = s.avatar;
+      document.getElementById("battleStreamerAvatar").innerHTML = getPersonifiedAvatarSVG(s, 28);
       document.getElementById("battleStreamerName").innerText = s.name;
       document.getElementById("comboVal").innerText = "0";
       document.getElementById("battleGMV").innerText = "+0.0 万";
@@ -1514,7 +2430,13 @@
       document.getElementById("resFans").innerText = "+" + liveSession.fansGain.toFixed(1) + "w";
       document.getElementById("resMaxCombo").innerText = liveSession.maxCombo + "x";
 
+      // 实时更新 MCN 实力排名
+      updateMCNRank(true);
       renderHeaderStats();
+
+      // 启动带货冷却倒计时 (排名越高冷却越少，自动更新就绪)
+      startLiveCooldown();
+
       saveLocalData();
       playCheerSound();
     }
@@ -1541,6 +2463,7 @@
       state.facilities[type] += 1;
       playCoinSound();
       showToast("设施升级成功！核心战力大幅提升！", "success");
+      updateMCNRank(true);
       renderHall();
       renderHeaderStats();
       saveLocalData();
@@ -1677,6 +2600,7 @@
       s.resilience += 4;
       playCoinSound();
       showToast(s.name + " 话术与带货力提升至 " + s.sales + "！", "success");
+      updateMCNRank(true);
       renderStreamersList();
       renderLivePrep();
       renderHeaderStats();
@@ -1696,6 +2620,7 @@
       state.fans += gain;
       playCheerSound();
       showToast("爆款短视频引爆，全网涨粉 +" + gain.toFixed(1) + " 万！", "success");
+      updateMCNRank(true);
       renderStreamersList();
       renderLivePrep();
       renderHeaderStats();
@@ -1730,7 +2655,7 @@
         topRow.style.alignItems = "center";
         topRow.innerHTML = 
           '<div style="display: flex; align-items: center; gap: 8px;">' +
-            '<span style="font-size: 24px;">' + escapeHTML(s.avatar) + '</span>' +
+            getPersonifiedAvatarSVG(s, 44) +
             '<div>' +
               '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + '</span> ' +
               '<span class="badge badge-blue">' + escapeHTML(s.title) + '</span>' +
@@ -1824,7 +2749,7 @@
         btn.setAttribute("data-id", s.id);
 
         btn.innerHTML = 
-          '<span style="font-size: 22px;">' + escapeHTML(s.avatar) + '</span>' +
+          getPersonifiedAvatarSVG(s, 38) +
           '<div>' +
             '<div style="font-size: 12px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + '</div>' +
             '<div style="font-size: 11px; color: #94a3b8;">带货 ' + Number(s.sales) + ' | 体 ' + (s.id === 'ai01' ? '∞' : Number(s.stamina) + '%') + '</div>' +
@@ -1833,16 +2758,7 @@
         box.appendChild(btn);
       });
 
-      var startBtn = document.getElementById("btnStartLive");
-      if (activeS.stamina <= 0 && activeS.id !== 'ai01') {
-        startBtn.disabled = true;
-        startBtn.classList.add("btn-disabled");
-        startBtn.innerHTML = '<span>⚠️</span> 主播已力竭，请先在集训中休假';
-      } else {
-        startBtn.disabled = false;
-        startBtn.classList.remove("btn-disabled");
-        startBtn.innerHTML = '<span>🚀</span> 开启全网带货直播！';
-      }
+      updateCooldownUI();
     }
 
     function openRecruitModal() {
@@ -1871,7 +2787,7 @@
           leftInfo.style.alignItems = "center";
           leftInfo.style.gap = "8px";
           leftInfo.innerHTML = 
-            '<span style="font-size: 24px;">' + escapeHTML(s.avatar) + '</span>' +
+            getPersonifiedAvatarSVG(s, 42) +
             '<div>' +
               '<div style="font-size: 13px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + ' <span class="badge badge-gold">' + escapeHTML(s.tag) + '</span></div>' +
               '<div style="font-size: 11px; color: #94a3b8;">' + escapeHTML(s.desc) + '</div>' +
@@ -1915,6 +2831,7 @@
       playCheerSound();
       showToast("签约成功！顶流达人 " + s.name + " 正式加盟！", "success");
       closeRecruitModal();
+      updateMCNRank(true);
       renderStreamersList();
       renderLivePrep();
       renderHeaderStats();
@@ -2061,6 +2978,9 @@
       }
 
       state.week += 1;
+      state.liveCooldownRemaining = 0;
+      clearInterval(liveCooldownTimer);
+      updateCooldownUI();
 
       // 自建供应链每周自动恢复 3 点口碑
       if (state.facilities.supplyChain > 0) {
@@ -2081,6 +3001,7 @@
         return;
       }
 
+      updateMCNRank(false);
       renderHeaderStats();
       showToast("📅 进入第 " + state.week + " 周！日常经营已开启，请筹备新一轮直播！", "info");
       switchTab('hall');
@@ -2184,6 +3105,11 @@
       state.activeTab = 'hall';
       state.facilities = { studio: 1, supplyChain: 0, prRadar: 0 };
       state.endless = false;
+      state.mcnRank = 98;
+      state.powerScore = 118.5;
+      state.liveCooldownRemaining = 0;
+      state.liveCooldownMax = 45;
+      clearInterval(liveCooldownTimer);
       ownedStreamers = ['su'];
 
       weekStartSnapshot = { cash: 100.0, fans: 20.0, pr: 80.0 };
@@ -2232,6 +3158,7 @@
     }
 
     function renderHeaderStats() {
+      updateMCNRank(false);
       document.getElementById("valWeek").innerText = "第 " + state.week + (state.endless ? " 周 (无尽)" : " / " + state.maxWeek + " 周");
       document.getElementById("valCash").innerText = state.cash.toFixed(1) + " 万";
       document.getElementById("valFans").innerText = state.fans.toFixed(1) + " 万";
@@ -2296,6 +3223,9 @@
             state.revenueTotal = isFinite(parsed.state.revenueTotal) ? Math.max(0, Number(parsed.state.revenueTotal)) : 0.0;
             state.destiny = typeof parsed.state.destiny === 'string' ? parsed.state.destiny : 'none';
             state.endless = Boolean(parsed.state.endless);
+            state.mcnRank = Math.max(1, Math.min(100, parseInt(parsed.state.mcnRank, 10) || 98));
+            state.liveCooldownRemaining = Math.max(0, parseInt(parsed.state.liveCooldownRemaining, 10) || 0);
+
             if (parsed.state.facilities && typeof parsed.state.facilities === 'object') {
               state.facilities.studio = Math.max(0, Math.min(4, parseInt(parsed.state.facilities.studio, 10) || 0));
               state.facilities.supplyChain = Math.max(0, Math.min(4, parseInt(parsed.state.facilities.supplyChain, 10) || 0));
@@ -2379,6 +3309,12 @@
         executeEventChoice();
       } else if (action === 'confirm-next-week') {
         confirmNextWeek();
+      } else if (action === 'open-leaderboard') {
+        openLeaderboardModal();
+      } else if (action === 'close-leaderboard') {
+        closeLeaderboardModal();
+      } else if (action === 'skip-cooldown') {
+        skipCooldown();
       }
     }
 
