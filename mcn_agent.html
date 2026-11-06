@@ -1604,28 +1604,31 @@
       ownedStreamers.forEach(function(sid) {
         var s = streamersMaster[sid];
         if (s) {
-          streamerPower += (s.sales * 1.6) + (s.resilience * 0.8);
+          streamerPower += ((s.sales || 60) + (s.resilience || 60)) * 0.2;
         }
       });
-      var facilityPower = (state.facilities.studio * 35) + 
-                          (state.facilities.supplyChain * 30) + 
-                          (state.facilities.prRadar * 25);
-      var score = (state.cash * 1.2) + 
-                  (state.fans * 1.5) + 
-                  (state.pr * 1.6) + 
+      var facilityPower = (state.facilities.studio * 15) + 
+                          (state.facilities.supplyChain * 12) + 
+                          (state.facilities.prRadar * 10);
+      var score = (state.cash * 0.4) + 
+                  (state.fans * 0.5) + 
+                  (state.pr * 0.3) + 
                   facilityPower + 
                   streamerPower;
-      return Math.max(90, score);
+      return Math.max(85, score);
     }
 
     function calculateRankFromPower(power) {
-      for (var i = 0; i < competitorLadder.length; i++) {
+      if (power < 90) return 100;
+      if (power < 110) return 99;
+      if (power < 125) return 98;
+      for (var i = competitorLadder.length - 1; i >= 0; i--) {
         var comp = competitorLadder[i];
-        if (!comp.isPlayer && power >= comp.power) {
-          return comp.rank;
+        if (!comp.isPlayer && power < comp.power) {
+          return comp.rank + 1;
         }
       }
-      return 100;
+      return 1;
     }
 
     function getLiveCooldownSeconds() {
