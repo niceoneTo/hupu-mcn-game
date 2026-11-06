@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self';" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>MCN王牌经纪人 2.0 · 虎扑AI工坊生产标准版</title>
   <style>
@@ -773,6 +774,14 @@
       console.warn("MCN Runtime Notice:", msg, "at line", line);
       return true;
     };
+
+    // 安全防御：DOM 动态拼接 XSS 过滤助手
+    function escapeHTML(str) {
+      if (typeof str !== 'string') return '' + (str !== undefined && str !== null ? str : '');
+      return str.replace(/[&<>'"]/g, function(tag) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag);
+      });
+    }
 
     // =========================================================================
     // 1. Web Audio 原生合成音效引擎 (无异常阻断保障)
@@ -1720,15 +1729,15 @@
         topRow.style.alignItems = "center";
         topRow.innerHTML = 
           '<div style="display: flex; align-items: center; gap: 8px;">' +
-            '<span style="font-size: 24px;">' + s.avatar + '</span>' +
+            '<span style="font-size: 24px;">' + escapeHTML(s.avatar) + '</span>' +
             '<div>' +
-              '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + s.name + '</span> ' +
-              '<span class="badge badge-blue">' + s.title + '</span>' +
+              '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + '</span> ' +
+              '<span class="badge badge-blue">' + escapeHTML(s.title) + '</span>' +
             '</div>' +
           '</div>' +
           '<div style="font-size: 11px; color: #cbd5e1;">' +
-            '带货力: <strong style="color: #fbbf24;">' + s.sales + '</strong> | ' +
-            '体力: <strong style="color: ' + staminaColor + ';">' + (s.id === 'ai01' ? '∞' : s.stamina + '%') + '</strong>' +
+            '带货力: <strong style="color: #fbbf24;">' + Number(s.sales) + '</strong> | ' +
+            '体力: <strong style="color: ' + staminaColor + ';">' + (s.id === 'ai01' ? '∞' : Number(s.stamina) + '%') + '</strong>' +
           '</div>';
 
         var descRow = document.createElement("div");
@@ -1814,10 +1823,10 @@
         btn.setAttribute("data-id", s.id);
 
         btn.innerHTML = 
-          '<span style="font-size: 22px;">' + s.avatar + '</span>' +
+          '<span style="font-size: 22px;">' + escapeHTML(s.avatar) + '</span>' +
           '<div>' +
-            '<div style="font-size: 12px; font-weight: 700; color: #fff;">' + s.name + '</div>' +
-            '<div style="font-size: 11px; color: #94a3b8;">带货 ' + s.sales + ' | 体 ' + (s.id === 'ai01' ? '∞' : s.stamina + '%') + '</div>' +
+            '<div style="font-size: 12px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + '</div>' +
+            '<div style="font-size: 11px; color: #94a3b8;">带货 ' + Number(s.sales) + ' | 体 ' + (s.id === 'ai01' ? '∞' : Number(s.stamina) + '%') + '</div>' +
           '</div>';
         
         box.appendChild(btn);
@@ -1861,10 +1870,10 @@
           leftInfo.style.alignItems = "center";
           leftInfo.style.gap = "8px";
           leftInfo.innerHTML = 
-            '<span style="font-size: 24px;">' + s.avatar + '</span>' +
+            '<span style="font-size: 24px;">' + escapeHTML(s.avatar) + '</span>' +
             '<div>' +
-              '<div style="font-size: 13px; font-weight: 700; color: #fff;">' + s.name + ' <span class="badge badge-gold">' + s.tag + '</span></div>' +
-              '<div style="font-size: 11px; color: #94a3b8;">' + s.desc + '</div>' +
+              '<div style="font-size: 13px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + ' <span class="badge badge-gold">' + escapeHTML(s.tag) + '</span></div>' +
+              '<div style="font-size: 11px; color: #94a3b8;">' + escapeHTML(s.desc) + '</div>' +
             '</div>';
 
           var recruitBtn = document.createElement("button");
@@ -2278,15 +2287,38 @@
         var raw = localStorage.getItem("mcn_game_v2_save");
         if (raw) {
           var parsed = JSON.parse(raw);
-          if (parsed && parsed.state) {
-            state = parsed.state;
-            ownedStreamers = parsed.ownedStreamers || ['su'];
-            if (parsed.streamersMaster) {
-              streamersMaster = parsed.streamersMaster;
+          if (parsed && parsed.state && typeof parsed.state === 'object') {
+            state.week = Math.max(1, Math.min(12, parseInt(parsed.state.week, 10) || 1));
+            state.cash = isFinite(parsed.state.cash) ? Math.max(0, Number(parsed.state.cash)) : 100.0;
+            state.fans = isFinite(parsed.state.fans) ? Math.max(0, Number(parsed.state.fans)) : 20.0;
+            state.pr = Math.max(0, Math.min(100, isFinite(parsed.state.pr) ? Number(parsed.state.pr) : 80.0));
+            state.revenueTotal = isFinite(parsed.state.revenueTotal) ? Math.max(0, Number(parsed.state.revenueTotal)) : 0.0;
+            state.destiny = typeof parsed.state.destiny === 'string' ? parsed.state.destiny : 'none';
+            state.endless = Boolean(parsed.state.endless);
+            if (parsed.state.facilities && typeof parsed.state.facilities === 'object') {
+              state.facilities.studio = Math.max(0, Math.min(4, parseInt(parsed.state.facilities.studio, 10) || 0));
+              state.facilities.supplyChain = Math.max(0, Math.min(4, parseInt(parsed.state.facilities.supplyChain, 10) || 0));
+              state.facilities.prRadar = Math.max(0, Math.min(4, parseInt(parsed.state.facilities.prRadar, 10) || 0));
+            }
+            if (Array.isArray(parsed.ownedStreamers)) {
+              ownedStreamers = parsed.ownedStreamers.filter(function(sid) { return streamersMaster[sid]; });
+              if (ownedStreamers.length === 0) ownedStreamers = ['su'];
+            }
+            if (parsed.streamersMaster && typeof parsed.streamersMaster === 'object') {
+              Object.keys(parsed.streamersMaster).forEach(function(sid) {
+                if (streamersMaster[sid] && typeof parsed.streamersMaster[sid] === 'object') {
+                  var ps = parsed.streamersMaster[sid];
+                  if (isFinite(ps.sales)) streamersMaster[sid].sales = Math.max(0, Number(ps.sales));
+                  if (isFinite(ps.stamina)) streamersMaster[sid].stamina = Math.max(0, Math.min(100, Number(ps.stamina)));
+                  if (isFinite(ps.resilience)) streamersMaster[sid].resilience = Math.max(0, Number(ps.resilience));
+                }
+              });
             }
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn("Storage recovery applied due to corrupted payload:", e);
+      }
     }
 
     // =========================================================================
@@ -2391,6 +2423,7 @@
         console.log("[HupuBridge] Cloud save payload ready:", data);
       }
     };
+    Object.freeze(window.HupuBridge);
 
     function initGame() {
       loadLocalData();
