@@ -1349,6 +1349,54 @@
     .wardrobe-item-card.unlocked:not(.equipped) {
       border-color: rgba(244, 114, 182, 0.45);
     }
+
+    /* ================================================================
+       v3.3 新手点击引导条 + 靶向脉冲高亮 + 带货门槛锁卡片
+       ================================================================ */
+    .newbie-guide-bar {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.2), rgba(236, 72, 153, 0.18));
+      border: 1px solid rgba(251, 191, 36, 0.6);
+      border-radius: 10px;
+      padding: 6px 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #fef3c7;
+      flex-shrink: 0;
+    }
+    .guide-step-pill {
+      background: #f59e0b;
+      color: #0f172a;
+      font-weight: 900;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    @keyframes guideBeaconPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7), 0 0 12px rgba(251, 191, 36, 0.45); }
+      50% { box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.15), 0 0 18px rgba(251, 191, 36, 0.8); }
+    }
+    .guide-pulse {
+      outline: 2px solid #fbbf24 !important;
+      outline-offset: 1px;
+      @media (prefers-reduced-motion: no-preference) {
+        animation: guideBeaconPulse 1.6s ease-in-out infinite;
+      }
+    }
+    .live-gate-card {
+      background: linear-gradient(135deg, rgba(185, 28, 28, 0.2), rgba(15, 23, 42, 0.94));
+      border: 1.5px solid rgba(248, 113, 113, 0.6);
+      border-radius: 12px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -1463,6 +1511,18 @@
     <div class="phase-bar">
       <span id="phaseHintText">📅 工作日：提升设施与集训主播，筹备周末直播</span>
       <span id="phaseBadgeText" style="background: rgba(201, 27, 27, 0.35); color: #fca5a5; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700;">日常经营</span>
+    </div>
+
+    <!-- 新手沉浸式步进引导条 -->
+    <div id="newbieGuideBar" class="newbie-guide-bar hidden">
+      <div style="display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1;">
+        <span id="guideStepPill" class="guide-step-pill">1/4</span>
+        <span id="guideStepText" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700;">第1步：选定办公地址立项！</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
+        <button type="button" id="guideActionBtn" class="btn-small-upgrade" data-action="guide-next-click" style="background: linear-gradient(135deg, #f59e0b, #ea580c); color: #0f172a; font-weight: 900; padding: 4px 8px; font-size: 11px; white-space: nowrap;">去选址 ›</button>
+        <button type="button" class="btn-icon" data-action="skip-guide" style="padding: 3px 6px; font-size: 10px; color: #94a3b8; white-space: nowrap;">跳过</button>
+      </div>
     </div>
 
     <!-- 动态消息 Toast -->
@@ -1650,6 +1710,9 @@
             <label style="font-size: 12px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 6px;">指定出战首发主播：</label>
             <div id="liveSelectBox" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;"></div>
           </div>
+
+          <!-- 开播前硬性前置门槛提示（未选址 / 0主播） -->
+          <div id="liveGateNotice" class="live-gate-card hidden"></div>
 
           <div class="card-subpanel" style="font-size: 12px; display: flex; flex-direction: column; gap: 4px; color: #cbd5e1;">
             <div style="color: #34d399;">🟢 绿色弹幕：成单入账并累加连击</div>
@@ -2082,11 +2145,38 @@
       <div class="modal-card">
         <div style="font-size: 14px; font-weight: 800; color: #fff;">🏷️ 命名你的 MCN 帝国</div>
         <div style="font-size: 11.5px; color: #94a3b8;">机构名称将实时展示在全服天梯榜与全服 SSR 大喇叭中（2~12字）。</div>
-        <input id="renameInput" type="text" maxlength="12" placeholder="如：步行街严选互娱" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3b82f6; background: #0f172a; color: #fff; font-size: 13px; outline: none;" />
+        <div style="display: flex; gap: 6px;">
+          <input id="renameInput" type="text" maxlength="12" placeholder="如：星河造物互娱" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #3b82f6; background: #0f172a; color: #fff; font-size: 13px; outline: none;" />
+          <button type="button" class="btn-icon" data-action="randomize-rename-input" style="padding: 0 10px; font-size: 12px; color: #fbbf24; white-space: nowrap;">🎲 随机</button>
+        </div>
         <div style="display: flex; gap: 8px; margin-top: 4px;">
           <button type="button" class="btn-primary" data-action="save-agency-name" style="flex: 1; padding: 9px; margin: 0;">保存并同步全服</button>
           <button type="button" class="btn-icon" data-action="close-rename" style="flex: 1; padding: 9px;">取消</button>
         </div>
+      </div>
+    </div>
+
+    <!-- 模态框 14: 初创 MCN 专属厂牌命名弹窗 (全服不重复推荐名 + 自定输入) -->
+    <div id="startupNamingModal" class="modal-overlay hidden">
+      <div class="modal-card" style="border-color: #ec4899;">
+        <div style="text-align: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <div style="font-size: 26px;">🏢</div>
+          <div style="font-size: 15.5px; font-weight: 900; color: #fbbf24;">创立你的 MCN 传媒厂牌</div>
+          <div style="font-size: 11px; color: #cbd5e1; margin-top: 2px;">告别前东家星霸互娱！为你推荐全服不重复厂牌名，或亲自起名：</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label for="startupAgencyInput" style="font-size: 11.5px; color: #fbcfe8; font-weight: 700;">✨ 机构名称（2~12字，全服唯一）：</label>
+          <div style="display: flex; gap: 6px;">
+            <input id="startupAgencyInput" type="text" maxlength="12" placeholder="输入独一无二的厂牌名" style="flex: 1; padding: 10px; border-radius: 8px; border: 1.5px solid #ec4899; background: #0b1120; color: #fff; font-size: 14px; font-weight: 700; outline: none;" />
+            <button type="button" class="btn-icon" data-action="randomize-startup-name" style="padding: 0 11px; font-size: 12px; color: #fbbf24; border-color: rgba(251, 191, 36, 0.5); white-space: nowrap;">🎲 换个名字</button>
+          </div>
+          <div style="font-size: 11px; color: #94a3b8; background: rgba(15, 23, 42, 0.85); border: 1px solid #24314c; border-radius: 8px; padding: 7px 9px; line-height: 1.5;">
+            🧭 <strong style="color: #fde68a;">开荒真实流程：</strong>起名领天赋 ➔ <strong>① 选定办公地址</strong> ➔ <strong>② 主播池签约首位主播</strong> ➔ <strong>③ 形象包装/周末首播</strong>！
+          </div>
+        </div>
+        <button type="button" class="btn-primary" data-action="confirm-startup-name" style="margin: 2px 0 0 0; padding: 11px; background: linear-gradient(135deg, #ec4899, #8b5cf6, #f59e0b);">
+          🚀 成立公司！抽取开局商业天赋 ›
+        </button>
       </div>
     </div>
 
@@ -2389,7 +2479,11 @@
       : location.origin;
 
     var state = {
-      agencyName: '破晓互娱',
+      agencyName: '星河造物互娱',
+      agencyNamed: false,
+      officeSelected: false,
+      tutorialLiveDone: false,
+      tutorialDismissed: false,
       week: 1,
       maxWeek: 12,
       cash: 100.0,
@@ -2400,7 +2494,7 @@
       revengeScore: 0,
       rogueScore: 0,
       techScore: 0,
-      selectedStreamerId: 'su',
+      selectedStreamerId: '',
       activeTab: 'hall',
       facilities: {
         studio: 1,
@@ -2408,8 +2502,8 @@
         prRadar: 0
       },
       endless: false,
-      mcnRank: 98,
-      powerScore: 118.5,
+      mcnRank: 332,
+      powerScore: 89.0,
       liveCooldownRemaining: 0,
       liveCooldownMax: 45,
       staminaGlobalCooldown: 0,
@@ -2426,9 +2520,9 @@
       lastEndingTitle: '',
       lastEndingRating: '9.2',
       debutGroup: null,
-      fandomDraftMembers: ['su'],
-      fandomDraftCenter: 'su',
-      activeFandomStreamerId: 'su',
+      fandomDraftMembers: [],
+      fandomDraftCenter: '',
+      activeFandomStreamerId: '',
       activeFandomPreviewStage: null,
       activeDebutSubtab: 'stage',
       localGlowsticksUsed: 0,
@@ -2492,10 +2586,10 @@
         sales: 78,
         stamina: 100,
         resilience: 68,
-        desc: '原星霸互娱美妆一姐，随你负气出走。成单转化率极高。',
+        desc: '曾受星霸互娱打压的顶流美妆花旦，极待你抛出橄榄枝挖掘签约。成单转化率极高。',
         ultName: '红颜绝杀 (全屏秒成单)',
-        cost: 0,
-        tag: '初始元老'
+        cost: 28,
+        tag: '美妆王牌'
       },
       dong: {
         id: 'dong',
@@ -3278,35 +3372,88 @@
     }
 
     // =========================================================================
-    // 全网 MCN 综合天梯榜数据与排名引擎 (Top 100 Leaderboard · 100%原创虚构商战宇宙)
+    // 全网 MCN 综合天梯榜数据与 360+ 家活跃机构池 (100%原创虚构商战宇宙)
     // =========================================================================
-    var competitorLadder = [
-      { rank: 1, name: '星海圣殿互娱', power: 8500, desc: '全网超头部航母级泛娱机构', topStreamer: '凌霜女神' },
-      { rank: 2, name: '魅影壹号工坊', power: 7200, desc: '顶流超头美妆矩阵核心', topStreamer: '安琪拉' },
-      { rank: 3, name: '狂飙三兄弟网络', power: 6100, desc: '下沉与私域切片流量霸主', topStreamer: '狂飙阿杰' },
-      { rank: 4, name: '九州文脉严选', power: 5400, desc: '文化知识双语破圈标杆', topStreamer: '清风先生' },
-      { rank: 5, name: '瀚海源头集团', power: 4800, desc: '超级源头工厂供应链巨鳄', topStreamer: '铁腕老辛' },
-      { rank: 6, name: '苍穹全域科技', power: 3900, desc: '明星达人全域带货中枢', topStreamer: '星辰姐' },
-      { rank: 7, name: '挚友严选社', power: 3200, desc: '硬核数码与标准工业化机构', topStreamer: '老罗锤科' },
-      { rank: 8, name: '步行街星创传媒', power: 2800, desc: 'JRs直属体育潮流矩阵', topStreamer: '街球坤哥' },
-      { rank: 9, name: '千寻星澜文化', power: 2400, desc: '老牌泛品类带货领航者', topStreamer: '薇薇安' },
-      { rank: 10, name: '山海创想网络', power: 2100, desc: '原创二次元与美妆孵化器', topStreamer: '卧云真昼' },
-      { rank: 15, name: '霓裳红人电商', power: 1800, desc: '颜值达人孵化与高定服装链', topStreamer: '夏沫儿' },
-      { rank: 20, name: '幻境泛娱工会', power: 1500, desc: '唱跳选秀与直播工会领头羊', topStreamer: '星瞳少女' },
-      { rank: 25, name: '星霸互娱', power: 1200, desc: '【宿敌】前东家！处处打压你的老牌资本', isRival: true, topStreamer: '林娇娇' },
-      { rank: 35, name: '无极星芒', power: 850, desc: '短剧与游戏直播黑马', topStreamer: '歪嘴龙王' },
-      { rank: 50, name: '锐星互娱', power: 450, desc: '区域头部MCN代表', topStreamer: '阿凯' },
-      { rank: 65, name: '万象星澜', power: 320, desc: '腰部垂类科技工坊', topStreamer: '极客小周' },
-      { rank: 75, name: '极光闪耀传媒', power: 250, desc: '本地生活带货黑马', topStreamer: '探店小鹿' },
-      { rank: 85, name: '步行街青年创投', power: 190, desc: '草根创业者聚集地', topStreamer: '球场老炮' },
-      { rank: 90, name: '晨光萌芽工作室', power: 165, desc: '初出茅庐三两个人', topStreamer: '萌新小雨' },
-      { rank: 95, name: '绿叶微风网络', power: 138, desc: '依靠接小广告维持生计', topStreamer: '阿木' },
-      { rank: 96, name: '弄潮儿星选', power: 130, desc: '几位大学生合伙工作室', topStreamer: '学姐小甜' },
-      { rank: 97, name: '飞鱼文化传媒', power: 125, desc: '本地带货初创团队', topStreamer: '飞鱼哥' },
-      { rank: 98, name: '破晓互娱', power: 118.5, desc: '玩家从零重起炉灶的主理机构', isPlayer: true, topStreamer: '苏晚晴' },
-      { rank: 99, name: '街角微利小作坊', power: 105, desc: '濒临发不出薪资的杂货间', topStreamer: '老张' },
-      { rank: 100, name: '草台班子传媒', power: 85, desc: '设备老旧、随时可能注销', topStreamer: '路人甲' }
+    var AGENCY_POOL_PREFIXES = [
+      '星海', '魅影', '狂飙', '九州', '瀚海', '苍穹', '挚友', '星创', '千寻', '山海',
+      '霓裳', '幻境', '星霸', '无极', '锐星', '万象', '极光', '晨光', '绿叶', '弄潮',
+      '飞鱼', '曜石', '青柠', '橘子', '霓虹', '量子', '琥珀', '潮汐', '追风', '拾光',
+      '暮色', '锦鲤', '炽焰', '银翼', '天际', '冰川', '热浪', '流萤', '微醺', '千禧'
     ];
+    var AGENCY_POOL_CORES = [
+      '圣殿', '造物', '风暴', '文脉', '严选', '全域', '创想', '红人',
+      '次元', '星澜', '星芒', '闪耀', '萌芽', '微风', '星图', '光年',
+      '造星', '魔方', '棱镜', '引力', '风向', '先锋', '宇宙', '新锐', '浪潮'
+    ];
+    var AGENCY_POOL_ACES = [
+      '凌霜女神', '安琪拉', '狂飙阿杰', '清风先生', '铁腕老辛', '星辰姐', '卧云真昼',
+      '夏沫儿', '星瞳少女', '林娇娇', '董先生', '苏晚晴', '步行街小美', '国风小昭',
+      '治愈兔兔', '街球坤哥', '校园练习生', '歪嘴龙王', '硬核老何', '车圈老刀',
+      '反诈老陈', '赶海阿伟', '地下阿毛', '翡翠小六', '民间唢呐哥', '探店小鹿',
+      '极客小周', '阿泽学长', '花魁小蝶', '电音小K', '甜妹奶糖', '御姐莫妮卡'
+    ];
+    var AGENCY_POOL_DESC_TEMPLATES = [
+      '全网超头部泛娱矩阵机构',
+      '深耕二次元高颜值孵化赛道',
+      '专注源头供应链与选品爆破',
+      '下沉市场切片霸主级 MCN',
+      '高热度颜值女团选秀工厂',
+      '都市生活与潮牌带货新势力',
+      '初创黑马型精品达人工作室'
+    ];
+
+    var SIGNATURE_COMPANIES = {
+      1:   { rank: 1,   name: '星海圣殿互娱', power: 8500, desc: '全网超头部航母级泛娱机构', topStreamer: '凌霜女神' },
+      2:   { rank: 2,   name: '魅影壹号工坊', power: 7200, desc: '顶流超头美妆矩阵核心', topStreamer: '安琪拉' },
+      3:   { rank: 3,   name: '狂飙三兄弟网络', power: 6100, desc: '下沉与私域切片流量霸主', topStreamer: '狂飙阿杰' },
+      4:   { rank: 4,   name: '九州文脉严选', power: 5400, desc: '文化知识双语破圈标杆', topStreamer: '清风先生' },
+      5:   { rank: 5,   name: '瀚海源头集团', power: 4800, desc: '超级源头工厂供应链巨鳄', topStreamer: '铁腕老辛' },
+      10:  { rank: 10,  name: '山海创想网络', power: 2100, desc: '原创二次元与美妆孵化器', topStreamer: '卧云真昼' },
+      25:  { rank: 25,  name: '星霸互娱', power: 1200, desc: '【宿敌】前东家！处处打压你的老牌资本', isRival: true, topStreamer: '林娇娇' },
+      50:  { rank: 50,  name: '锐星互娱', power: 480, desc: '区域头部MCN代表', topStreamer: '夏沫儿' },
+      100: { rank: 100, name: '极光闪耀传媒', power: 260, desc: '本地生活带货黑马', topStreamer: '探店小鹿' },
+      180: { rank: 180, name: '晨光萌芽工作室', power: 165, desc: '新锐大学生创业合伙团队', topStreamer: '学姐小甜' },
+      260: { rank: 260, name: '绿叶微风网络', power: 118, desc: '依靠接垂直商单稳步爬坡', topStreamer: '阿木' },
+      360: { rank: 360, name: '草台班子传媒', power: 32, desc: '设备老旧、全行业垫底的危局作坊', topStreamer: '路人甲' }
+    };
+
+    var TOTAL_INDUSTRY_AGENCIES = 360;
+    var competitorLadder = (function buildCompetitorLadder360() {
+      var list = [];
+      var usedNames = {};
+      Object.keys(SIGNATURE_COMPANIES).forEach(function(k) {
+        usedNames[SIGNATURE_COMPANIES[k].name] = true;
+      });
+      for (var r = 1; r <= TOTAL_INDUSTRY_AGENCIES; r++) {
+        if (SIGNATURE_COMPANIES[r]) {
+          list.push(SIGNATURE_COMPANIES[r]);
+          continue;
+        }
+        var pIdx = (r * 7 + 3) % AGENCY_POOL_PREFIXES.length;
+        var cIdx = (r * 13 + 5) % AGENCY_POOL_CORES.length;
+        var name = AGENCY_POOL_PREFIXES[pIdx] + AGENCY_POOL_CORES[cIdx];
+        if (usedNames[name]) {
+          name = AGENCY_POOL_PREFIXES[(pIdx + 5) % AGENCY_POOL_PREFIXES.length] + AGENCY_POOL_CORES[(cIdx + 9) % AGENCY_POOL_CORES.length];
+        }
+        if (usedNames[name]) name += (r % 99);
+        usedNames[name] = true;
+
+        var power;
+        if (r <= 25) power = Math.round((5200 - (r - 5) * 195) * 10) / 10;
+        else if (r <= 100) power = Math.round((1180 - (r - 25) * 12.2) * 10) / 10;
+        else if (r <= 260) power = Math.round((258 - (r - 100) * 0.88) * 10) / 10;
+        else power = Math.round(Math.max(33, 117 - (r - 260) * 0.85) * 10) / 10;
+
+        list.push({
+          rank: r,
+          name: name,
+          power: power,
+          desc: AGENCY_POOL_DESC_TEMPLATES[r % AGENCY_POOL_DESC_TEMPLATES.length],
+          topStreamer: AGENCY_POOL_ACES[(r * 11 + 3) % AGENCY_POOL_ACES.length]
+        });
+      }
+      return list;
+    })();
 
     // =========================================================================
     // 2.5 主播矩阵羁绊系统 (7大真实组合化学反应)
@@ -3436,6 +3583,11 @@
     }
 
     function renderSynergyPanel() {
+      var panel = document.getElementById("synergyPanel");
+      if (panel) {
+        if (ownedStreamers.length === 0) panel.classList.add("hidden");
+        else panel.classList.remove("hidden");
+      }
       var box = document.getElementById("synergyChipList");
       var countEl = document.getElementById("synergyActiveCount");
       if (!box) return;
@@ -3472,24 +3624,20 @@
                   streamerPower;
       var synFx = getSynergyEffects();
       score = score * (1 + synFx.powerBonusPct);
-      return Math.max(85, score);
+      return Math.max(35, score);
     }
 
     function calculateRankFromPower(power) {
-      if (power < 90) return 100;
-      if (power < 110) return 99;
-      if (power < 125) return 98;
-      for (var i = competitorLadder.length - 1; i >= 0; i--) {
-        var comp = competitorLadder[i];
-        if (!comp.isPlayer && power < comp.power) {
-          return comp.rank + 1;
+      for (var i = 0; i < competitorLadder.length; i++) {
+        if (power >= competitorLadder[i].power) {
+          return competitorLadder[i].rank;
         }
       }
-      return 1;
+      return TOTAL_INDUSTRY_AGENCIES;
     }
 
     function getLiveCooldownSeconds() {
-      var rankRatio = Math.max(0.08, Math.min(1.0, (state.mcnRank || 98) / 100));
+      var rankRatio = Math.max(0.08, Math.min(1.0, (state.mcnRank || TOTAL_INDUSTRY_AGENCIES) / TOTAL_INDUSTRY_AGENCIES));
       var synFx = getSynergyEffects();
       return Math.max(6, Math.round(48 * rankRatio) - synFx.cooldownReduce);
     }
@@ -3498,7 +3646,7 @@
       var currentPower = calculatePowerScore();
       state.powerScore = currentPower;
       var newRank = calculateRankFromPower(currentPower);
-      var oldRank = state.mcnRank || 98;
+      var oldRank = state.mcnRank || TOTAL_INDUSTRY_AGENCIES;
 
       if (newRank < oldRank) {
         var climb = oldRank - newRank;
@@ -3519,7 +3667,7 @@
             setTimeout(function() { bar.classList.remove("rank-shimmer"); }, 1000);
           }
           playComboSound(5);
-          showToast("🏆 综合战力提升至 " + currentPower.toFixed(1) + "w，行业天梯跃升至 NO." + newRank + "！", "success");
+          showToast("🏆 综合战力提升至 " + currentPower.toFixed(1) + "w，跨越 " + climb + " 家机构跃升至 NO." + newRank + "！", "success");
         }
       } else {
         state.mcnRank = newRank;
@@ -3529,10 +3677,10 @@
       var rankValEl = document.getElementById("mcnRankVal");
       if (cloudState.online && cloudState.globalRank) {
         if (rankLabelEl) rankLabelEl.innerText = "全服实时";
-        if (rankValEl) rankValEl.innerText = "全服 #" + cloudState.globalRank;
+        if (rankValEl) rankValEl.innerText = "NO." + state.mcnRank + " / " + (TOTAL_INDUSTRY_AGENCIES + cloudState.totalPlayers);
       } else {
-        if (rankLabelEl) rankLabelEl.innerText = "行业排名";
-        if (rankValEl) rankValEl.innerText = "NO. " + state.mcnRank;
+        if (rankLabelEl) rankLabelEl.innerText = "全网排名";
+        if (rankValEl) rankValEl.innerText = "NO. " + state.mcnRank + " / " + TOTAL_INDUSTRY_AGENCIES;
       }
 
       var powerValEl = document.getElementById("mcnPowerScore");
@@ -3541,14 +3689,14 @@
       var targetText = "稳坐榜首 · 全球第一MCN";
       for (var i = competitorLadder.length - 1; i >= 0; i--) {
         var comp = competitorLadder[i];
-        if (!comp.isPlayer && comp.rank < state.mcnRank) {
+        if (comp.rank < state.mcnRank) {
           var gap = Math.max(0.1, (comp.power - currentPower)).toFixed(1);
-          targetText = "距行业第 " + comp.rank + "【" + comp.name + "】差 " + gap + "w";
+          targetText = "距第 " + comp.rank + "【" + comp.name + "】差 " + gap + "w";
           break;
         }
       }
       if (cloudState.online && cloudState.totalPlayers > 0) {
-        targetText = "全服 " + cloudState.totalPlayers + " 家真实MCN混战中 · " + targetText;
+        targetText = "全服 " + (TOTAL_INDUSTRY_AGENCIES + cloudState.totalPlayers) + " 家机构混战中 · " + targetText;
       }
       var targetEl = document.getElementById("rankTargetText");
       if (targetEl) targetEl.innerText = targetText;
@@ -3596,16 +3744,17 @@
       box.innerHTML = "";
 
       var currentPower = state.powerScore || calculatePowerScore();
-      var currentRank = state.mcnRank || 98;
+      var currentRank = state.mcnRank || TOTAL_INDUSTRY_AGENCIES;
+      var totalPoolCount = TOTAL_INDUSTRY_AGENCIES + (cloudState.online ? Math.max(0, cloudState.totalPlayers) : 0);
 
       var stripLeft = document.getElementById("lbStripLeft");
       var rivalGapEl = document.getElementById("lbRivalGap");
       var rival = competitorLadder.find(function(c) { return c.isRival; }) || { power: 1200 };
-      if (stripLeft) stripLeft.innerText = cloudState.online ? ("🌐 全服真实玩家天梯 (" + Math.max(1, cloudState.totalPlayers) + " 家机构)") : "🎯 宿敌目标：前东家【星霸互娱】(NO.25)";
+      if (stripLeft) stripLeft.innerText = "🌐 全服及全行业活跃机构榜（共 " + totalPoolCount + " 家 MCN）";
       if (rivalGapEl) {
         var gap = (rival.power - currentPower);
         if (cloudState.online && cloudState.globalRank) {
-          rivalGapEl.innerText = "全服 #" + cloudState.globalRank + " · 商战剩 " + cloudState.pvpRemaining + "次";
+          rivalGapEl.innerText = "真人榜 #" + cloudState.globalRank + " · 总榜 #" + currentRank;
           rivalGapEl.style.color = "#34d399";
         } else if (gap > 0) {
           rivalGapEl.innerText = "落后前东家 " + gap.toFixed(1) + "w";
@@ -3618,14 +3767,14 @@
 
       var perkHint = document.getElementById("lbPerkHint");
       if (perkHint) {
-        perkHint.innerText = "💡 行业 NO." + currentRank + " · 开播冷却 " + getLiveCooldownSeconds() + "s";
+        perkHint.innerText = "💡 总榜 NO." + currentRank + "/" + totalPoolCount + " · 开播冷却 " + getLiveCooldownSeconds() + "s";
       }
 
-      // 优先展示全服真实玩家列表 (若已联网)
+      // 1. 优先展示云端真实注册玩家机构（每家均持有独特厂牌名与真实王牌！）
       if (cloudState.online && cloudState.leaders && cloudState.leaders.length > 0) {
         var hdr = document.createElement("div");
         hdr.style.cssText = "font-size:11px;color:#34d399;font-weight:700;padding:2px 4px;";
-        hdr.textContent = "🟢 全服真实 MCN 机构实时榜单（点击对手可直接发起异步商战）";
+        hdr.textContent = "🟢 全服真人玩家 MCN 实时榜（" + cloudState.totalPlayers + " 家真实玩家）";
         box.appendChild(hdr);
 
         cloudState.leaders.forEach(function(p, idx) {
@@ -3641,11 +3790,11 @@
               '<span class="lb-rank-tag ' + rankCls + '">' + rankIcon + '</span>' +
               '<div style="min-width:0;">' +
                 '<div style="font-weight:700;color:' + (isSelf ? '#fbbf24' : '#fff') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
-                  escapeHTML(p.agency_name || '无名机构') +
-                  (isSelf ? ' <span class="badge badge-gold">你</span>' : '') +
+                  escapeHTML(p.agency_name || '新锐互娱') +
+                  (isSelf ? ' <span class="badge badge-gold">你</span>' : ' <span class="badge badge-blue">真人</span>') +
                   (Number(p.scandal_risk) >= 50 ? ' <span class="badge badge-red">黑红</span>' : '') +
                 '</div>' +
-                '<div style="font-size:10px;color:#94a3b8;">第' + Number(p.week || 1) + '周 · 王牌:' + escapeHTML(p.top_streamer_name || '苏晚晴') + ' · ' + Number(p.streamer_count || 1) + '人</div>' +
+                '<div style="font-size:10px;color:#94a3b8;">第' + Number(p.week || 1) + '周 · 王牌:' + escapeHTML(p.top_streamer_name || '虚位以待') + ' · ' + Number(p.streamer_count || 0) + '人</div>' +
               '</div>' +
             '</div>' +
             '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
@@ -3657,18 +3806,19 @@
             '</div>';
           box.appendChild(div);
         });
-
-        var sep = document.createElement("div");
-        sep.style.cssText = "font-size:11px;color:#94a3b8;font-weight:700;padding:8px 4px 2px 4px;border-top:1px dashed #24314c;margin-top:4px;";
-        sep.textContent = "🏢 行业传奇里程碑（含前东家星霸互娱）";
-        box.appendChild(sep);
       }
+
+      // 2. 展示全行业 360 家 MCN 机构大池（Top 5 豪门 + 宿敌 #25 星霸互娱 + 玩家周边15家真实竞争梯队）
+      var sep = document.createElement("div");
+      sep.style.cssText = "font-size:11px;color:#fbbf24;font-weight:700;padding:8px 4px 2px 4px;border-top:1px dashed #24314c;margin-top:4px;";
+      sep.textContent = "🏢 全行业 360 家竞争机构天梯（Top豪门 · 宿敌 · 你的当前卡位）";
+      box.appendChild(sep);
 
       var displayItems = [];
       competitorLadder.forEach(function(c) {
-        if (c.rank <= 5 || c.isRival) {
+        if (c.rank <= 5 || c.isRival || c.rank === 50 || c.rank === 100 || c.rank === 200 || c.rank === 360) {
           displayItems.push(c);
-        } else if (Math.abs(c.rank - currentRank) <= 2) {
+        } else if (Math.abs(c.rank - currentRank) <= 5) {
           displayItems.push(c);
         }
       });
@@ -3684,27 +3834,30 @@
       uniqueItems.sort(function(a, b) { return a.rank - b.rank; });
 
       uniqueItems.forEach(function(item) {
-        var isPlayer = (item.rank === currentRank || item.isPlayer);
+        var isPlayer = (item.rank === currentRank);
         var div = document.createElement("div");
         div.className = "lb-item" + (isPlayer ? " lb-item-self" : (item.isRival ? " lb-item-rival" : ""));
 
         var rankCls = item.rank === 1 ? "lb-rank-top1" : (item.rank === 2 ? "lb-rank-top2" : (item.rank === 3 ? "lb-rank-top3" : ""));
-        var rankIcon = item.rank === 1 ? "🥇 " : (item.rank === 2 ? "🥈 " : (item.rank === 3 ? "🥉 " : ""));
+        var rankIcon = item.rank === 1 ? "🥇 " : (item.rank === 2 ? "🥈 " : (item.rank === 3 ? "🥉 " : "#" + item.rank + " "));
 
-        div.innerHTML = 
-          '<div style="display: flex; align-items: center; gap: 8px;">' +
-            '<span class="lb-rank-tag ' + rankCls + '">' + rankIcon + item.rank + '</span>' +
-            '<div>' +
-              '<div style="font-weight: 700; color: ' + (isPlayer ? '#fbbf24' : '#fff') + ';">' + 
-                escapeHTML(isPlayer ? (state.agencyName + ' (你)') : item.name) + 
-                (isPlayer ? ' <span class="badge badge-gold">你的机构</span>' : (item.isRival ? ' <span class="badge badge-red">前东家宿敌</span>' : '')) + 
+        div.innerHTML =
+          '<div style="display: flex; align-items: center; gap: 8px; min-width: 0;">' +
+            '<span class="lb-rank-tag ' + rankCls + '">' + rankIcon + '</span>' +
+            '<div style="min-width: 0;">' +
+              '<div style="font-weight: 700; color: ' + (isPlayer ? '#fbbf24' : '#fff') + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' +
+                escapeHTML(isPlayer ? (state.agencyName + ' (你)') : item.name) +
+                (isPlayer ? ' <span class="badge badge-gold">你的卡位</span>' : (item.isRival ? ' <span class="badge badge-red">前东家宿敌</span>' : '')) +
               '</div>' +
-              '<div style="font-size: 10.5px; color: #94a3b8;">' + escapeHTML(item.desc) + '</div>' +
+              '<div style="font-size: 10px; color: #94a3b8;">王牌:' + escapeHTML(isPlayer ? getTopStreamer().name : (item.topStreamer || '新星主播')) + ' · ' + escapeHTML(item.desc) + '</div>' +
             '</div>' +
           '</div>' +
-          '<div style="text-align: right;">' +
-            '<div style="font-weight: 800; color: #38bdf8; font-family: monospace;">' + (isPlayer ? currentPower.toFixed(1) : item.power.toFixed(1)) + 'w</div>' +
-            '<div style="font-size: 9.5px; color: #64748b;">估值战力</div>' +
+          '<div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">' +
+            '<div style="text-align: right;">' +
+              '<div style="font-weight: 800; color: #38bdf8; font-family: monospace;">' + (isPlayer ? currentPower.toFixed(1) : item.power.toFixed(1)) + 'w</div>' +
+              '<div style="font-size: 9.5px; color: #64748b;">战力</div>' +
+            '</div>' +
+            (!isPlayer ? '<button type="button" class="btn-icon" data-action="quick-pvp-target" style="padding:3px 6px;font-size:10px;color:#fca5a5;">⚔️</button>' : '') +
           '</div>';
 
         box.appendChild(div);
@@ -3757,6 +3910,26 @@
       var prepSec = document.getElementById("prepCooldownSec");
       var btnStart = document.getElementById("btnStartLive");
 
+      if (!state.officeSelected) {
+        if (prepBanner) prepBanner.classList.add("hidden");
+        if (btnStart) {
+          btnStart.disabled = true;
+          btnStart.classList.add("btn-disabled");
+          btnStart.innerHTML = '<span>🏢</span> 请先完成第1步「办公选址」后开播';
+        }
+        return;
+      }
+
+      if (ownedStreamers.length === 0) {
+        if (prepBanner) prepBanner.classList.add("hidden");
+        if (btnStart) {
+          btnStart.disabled = true;
+          btnStart.classList.add("btn-disabled");
+          btnStart.innerHTML = '<span>🎙️</span> 旗下暂无签约主播，请先去主播池签约';
+        }
+        return;
+      }
+
       if (sec > 0) {
         if (prepBanner) prepBanner.classList.remove("hidden");
         if (prepSec) prepSec.innerText = sec + "s";
@@ -3768,7 +3941,7 @@
       } else {
         if (prepBanner) prepBanner.classList.add("hidden");
         if (btnStart) {
-          var activeS = streamersMaster[state.selectedStreamerId] || streamersMaster['su'];
+          var activeS = streamersMaster[state.selectedStreamerId] || streamersMaster[ownedStreamers[0]];
           if (activeS && activeS.stamina <= 0 && activeS.id !== 'ai01') {
             btnStart.disabled = true;
             btnStart.classList.add("btn-disabled");
@@ -3867,7 +4040,7 @@
       if (banner) banner.classList.add("hidden");
     }
 
-    var ownedStreamers = ['su'];
+    var ownedStreamers = [];
     var selectedEventOptionIndex = null;
 
     // =========================================================================
@@ -3904,7 +4077,7 @@
       {
         week: 2,
         tag: "恶性抹黑",
-        title: "第 2 周：前东家买水军黑粉爆破苏晚晴直播间",
+        title: "第 2 周：前东家买水军黑粉爆破旗下头牌直播间",
         desc: "首播大获成功引发星霸互娱妒忌，数十万恶意差评弹幕涌入直播间质疑带货质量！",
         options: [
           {
@@ -4199,7 +4372,23 @@
 
     function startLiveSession() {
       safeInitAudio();
-      var s = streamersMaster[state.selectedStreamerId] || streamersMaster['su'];
+      if (!state.officeSelected) {
+        showToast("🏢 请先完成第 1 步【办公选址】确定公司驻地后才能开启带货！", "alert");
+        playAlertSound();
+        switchTab('events');
+        updateNewbieGuideUI();
+        return;
+      }
+      if (ownedStreamers.length === 0) {
+        showToast("🎙️ 旗下目前还没有签约主播！请先去主播池签约或开盲盒挖掘主播！", "alert");
+        playAlertSound();
+        switchTab('streamers');
+        updateNewbieGuideUI();
+        return;
+      }
+      var s = streamersMaster[state.selectedStreamerId] || streamersMaster[ownedStreamers[0]];
+      if (!s) return;
+      state.selectedStreamerId = s.id;
 
       if (s.stamina <= 0 && s.id !== 'ai01') {
         showToast(s.name + " 已筋疲力尽，请先在主播集训中安排休假！", "alert");
@@ -4463,10 +4652,19 @@
       document.getElementById("resFans").innerText = "+" + liveSession.fansGain.toFixed(1) + "w";
       document.getElementById("resMaxCombo").innerText = liveSession.maxCombo + "x";
 
+      // 首次周末带货完成：发放新手毕业大礼包！
+      if (!state.tutorialLiveDone) {
+        state.tutorialLiveDone = true;
+        state.cash += 20;
+        state.fans += 10;
+        showToast("🎉 新手开张首播圆满成功！获【破晓扶持基金 +20w · +10w粉】，可去「商战决策」开启第2周！", "success");
+      }
+
       // 实时更新 MCN 实力排名并触发企微主播私信钩子
       updateMCNRank(true);
       renderHeaderStats();
       maybePushContextualDM('after_live');
+      updateNewbieGuideUI();
 
       // 启动带货冷却倒计时 (排名越高冷却越少，自动更新就绪)
       startLiveCooldown();
@@ -4832,6 +5030,22 @@
       renderSynergyPanel();
       renderDebutPromoCard();
 
+      if (ownedStreamers.length === 0) {
+        var emptyCard = document.createElement("div");
+        emptyCard.className = "card-subpanel";
+        emptyCard.style.cssText = "padding: 18px 12px; text-align: center; display: flex; flex-direction: column; gap: 8px; border: 1.5px dashed rgba(251, 191, 36, 0.55); background: rgba(245, 158, 11, 0.08);";
+        emptyCard.innerHTML =
+          '<div style="font-size: 28px;">🎙️</div>' +
+          '<div style="font-size: 13.5px; font-weight: 800; color: #fde68a;">旗下暂无签约主播！空有舞台没人播？</div>' +
+          '<div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.45;">作为新成立的 MCN 机构，快用你的启动资金去<strong>【签约市场】精准挖人</strong>，或花 35w 去<strong>【盲盒猎头】赌一发 SSR 顶流</strong>！</div>' +
+          '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px;">' +
+            '<button type="button" class="btn-primary" data-action="open-recruit" style="margin: 0; padding: 9px; font-size: 12px; background: linear-gradient(135deg, #2563eb, #0284c7);">➕ 签约市场挑人</button>' +
+            '<button type="button" class="btn-primary" data-action="open-blindbox" style="margin: 0; padding: 9px; font-size: 12px; background: linear-gradient(135deg, #f59e0b, #ef4444);">🎁 35w 开盲盒赌SSR</button>' +
+          '</div>';
+        box.appendChild(emptyCard);
+        return;
+      }
+
       ownedStreamers.forEach(function(sid) {
         var s = streamersMaster[sid];
         ensureStreamerFandomDefaults(s);
@@ -4972,13 +5186,41 @@
 
     function renderLivePrep() {
       var box = document.getElementById("liveSelectBox");
+      var gateBox = document.getElementById("liveGateNotice");
       if (!box) return;
       box.innerHTML = "";
 
-      var activeS = streamersMaster[state.selectedStreamerId] || streamersMaster['su'];
+      if (gateBox) {
+        if (!state.officeSelected) {
+          gateBox.classList.remove("hidden");
+          gateBox.innerHTML =
+            '<div style="font-size: 24px;">🏢</div>' +
+            '<div style="font-size: 13.5px; font-weight: 800; color: #fca5a5;">新公司尚未敲定办公地址，无法开播带货！</div>' +
+            '<div style="font-size: 11.5px; color: #cbd5e1;">请先前往「📰 商战决策」选定公司办公地址立项。</div>' +
+            '<button type="button" class="btn-primary" data-action="switch-tab" data-tab="events" style="margin: 2px 0 0 0; padding: 9px; font-size: 12px; background: linear-gradient(135deg, #f59e0b, #c91b1b);">➡️ 第1步：前往选定办公地址</button>';
+        } else if (ownedStreamers.length === 0) {
+          gateBox.classList.remove("hidden");
+          gateBox.innerHTML =
+            '<div style="font-size: 24px;">🎙️</div>' +
+            '<div style="font-size: 13.5px; font-weight: 800; color: #fde68a;">旗下暂无签约主播，直播间空无一人！</div>' +
+            '<div style="font-size: 11.5px; color: #cbd5e1;">需至少签约 1 位主播，才能开启周末带货实战！</div>' +
+            '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">' +
+              '<button type="button" class="btn-primary" data-action="open-recruit" style="margin: 0; padding: 8px; font-size: 11.5px; background: #2563eb;">➕ 签约市场</button>' +
+              '<button type="button" class="btn-primary" data-action="open-blindbox" style="margin: 0; padding: 8px; font-size: 11.5px; background: linear-gradient(135deg, #f59e0b, #ef4444);">🎁 开盲盒抽主播</button>' +
+            '</div>';
+        } else {
+          gateBox.classList.add("hidden");
+          gateBox.innerHTML = "";
+        }
+      }
+
+      if (ownedStreamers.length > 0 && (!state.selectedStreamerId || ownedStreamers.indexOf(state.selectedStreamerId) === -1)) {
+        state.selectedStreamerId = ownedStreamers[0];
+      }
 
       ownedStreamers.forEach(function(sid) {
         var s = streamersMaster[sid];
+        if (!s) return;
         var isSel = (state.selectedStreamerId === s.id);
         var btn = document.createElement("button");
         btn.className = "card-subpanel";
@@ -5064,13 +5306,17 @@
     function recruitStreamer(id) {
       safeInitAudio();
       var s = streamersMaster[id];
+      if (!s) return;
       if (state.cash < s.cost) {
         showToast("流动资金不足，无法支付 " + s.cost + " 万签约金！", "alert");
         playAlertSound();
         return;
       }
       state.cash -= s.cost;
-      ownedStreamers.push(id);
+      if (ownedStreamers.indexOf(id) === -1) ownedStreamers.push(id);
+      if (!state.selectedStreamerId || ownedStreamers.indexOf(state.selectedStreamerId) === -1) {
+        state.selectedStreamerId = id;
+      }
       playCheerSound();
       showToast("签约成功！顶流达人 " + s.name + " 正式加盟！", "success");
       closeRecruitModal();
@@ -5078,6 +5324,7 @@
       renderStreamersList();
       renderLivePrep();
       renderHeaderStats();
+      updateNewbieGuideUI();
       saveLocalData();
     }
 
@@ -5192,7 +5439,10 @@
       }
 
       var chosenStreamer = tierPools[candidateTier][Math.floor(Math.random() * tierPools[candidateTier].length)];
-      ownedStreamers.push(chosenStreamer.id);
+      if (ownedStreamers.indexOf(chosenStreamer.id) === -1) ownedStreamers.push(chosenStreamer.id);
+      if (!state.selectedStreamerId || ownedStreamers.indexOf(state.selectedStreamerId) === -1) {
+        state.selectedStreamerId = chosenStreamer.id;
+      }
 
       // 拆盲盒交互动画
       var boxWrap = document.getElementById("gachaBoxWrap");
@@ -5258,6 +5508,7 @@
         renderStreamersList();
         renderLivePrep();
         renderHeaderStats();
+        updateNewbieGuideUI();
         saveLocalData();
 
         isDrawingBlindBox = false;
@@ -5800,22 +6051,59 @@
     }
 
     function renderEventView() {
+      var box = document.getElementById("evOptionsBox");
+      var infoBox = document.getElementById("evProjectedInfo");
+      var confirmBtn = document.getElementById("btnConfirmEventChoice");
+
+      // 第 1 周办公地址已选定后，防止跳过“签约+首播”直接推进到第 2 周，呈现清晰指引态
+      if (state.week === 1 && state.officeSelected) {
+        document.getElementById("evTag").innerText = "开荒待办";
+        document.getElementById("evWeekHint").innerText = "第 1 周 · 立项完成";
+        document.getElementById("evTitle").innerText = "✅ 办公地址已落户！准备签主播与首播";
+        infoBox.classList.add("hidden");
+        box.innerHTML = "";
+        confirmBtn.classList.remove("hidden");
+
+        if (!state.tutorialLiveDone) {
+          document.getElementById("evDesc").innerText = ownedStreamers.length === 0
+            ? "公司办公室已租好！目前旗下还没有主播，请先点击下方按钮前往【主播池】签约你的第 1 位主播！"
+            : "首位主播已就位！快前往【周末带货】完成你的首次开张带货直播，赚到第一桶金即可开启第 2 周商战！";
+          confirmBtn.disabled = false;
+          confirmBtn.classList.remove("btn-disabled");
+          confirmBtn.innerHTML = ownedStreamers.length === 0
+            ? '<span>🎙️</span> 第 2 步：前往主播池签约首位主播 ›'
+            : '<span>🔥</span> 第 3 步：前往开启首次周末带货 ›';
+          confirmBtn.setAttribute("data-action", ownedStreamers.length === 0 ? "switch-tab" : "switch-tab");
+          confirmBtn.setAttribute("data-tab", ownedStreamers.length === 0 ? "streamers" : "live");
+        } else {
+          document.getElementById("evDesc").innerText = "首周开张圆满收官！公司已步入正轨，点击下方按钮立即开启第 2 周全新商战博弈！";
+          confirmBtn.disabled = false;
+          confirmBtn.classList.remove("btn-disabled");
+          confirmBtn.innerHTML = '<span>🚀</span> 第 1 周收官，开启第 2 周商战！';
+          confirmBtn.setAttribute("data-action", "confirm-next-week");
+          confirmBtn.removeAttribute("data-tab");
+        }
+        return;
+      }
+
+      if (confirmBtn) {
+        confirmBtn.setAttribute("data-action", "confirm-event-choice");
+        confirmBtn.removeAttribute("data-tab");
+      }
+
       var curEv = getCurrentWeekEvent();
       if (!curEv) return;
 
       document.getElementById("evTag").innerText = curEv.tag;
-      document.getElementById("evWeekHint").innerText = "第 " + state.week + " 周动态商战";
+      document.getElementById("evWeekHint").innerText = state.week === 1 ? "第 1 步 · 办公选址" : ("第 " + state.week + " 周动态商战");
       document.getElementById("evTitle").innerText = curEv.title;
       document.getElementById("evDesc").innerText = curEv.desc;
 
       selectedEventOptionIndex = null;
-      var box = document.getElementById("evOptionsBox");
       box.innerHTML = "";
 
-      var infoBox = document.getElementById("evProjectedInfo");
       infoBox.classList.add("hidden");
 
-      var confirmBtn = document.getElementById("btnConfirmEventChoice");
       confirmBtn.disabled = true;
       confirmBtn.classList.add("btn-disabled");
       confirmBtn.innerHTML = '<span>👉</span> 请先轻触上方卡片选择一项决策方案';
@@ -5868,6 +6156,21 @@
 
       var opt = curEv.options[selectedEventOptionIndex];
       opt.action();
+
+      if (state.week === 1 && !state.officeSelected) {
+        state.officeSelected = true;
+        recordHighlight("第1周完成MCN办公选址与战略定调");
+        playCheerSound();
+        renderHeaderStats();
+        renderHall();
+        renderLivePrep();
+        renderEventView();
+        updateNewbieGuideUI();
+        saveLocalData();
+        showToast("🏢 办公地址已落户！第 2 步：快去【主播集训】签约你的第 1 位主播吧！", "success");
+        switchTab('streamers');
+        return;
+      }
 
       if (curEv.id && state.usedStoryletIds.indexOf(curEv.id) === -1) {
         state.usedStoryletIds.push(curEv.id);
@@ -6386,6 +6689,7 @@
         if (sPool.length > 0) {
           var pickedId = sPool[Math.floor(Math.random() * sPool.length)];
           ownedStreamers.push(pickedId);
+          if (!state.selectedStreamerId) state.selectedStreamerId = pickedId;
           showToast("🕵️ 内鬼生效！开局直接带走 S 级王牌【" + streamersMaster[pickedId].name + "】！", "success");
         }
       }
@@ -6393,13 +6697,17 @@
       document.getElementById("talentPickModal").classList.add("hidden");
       recordHighlight("开局选中商业天赋【" + t.name + "】");
       playCheerSound();
-      showToast("🎴 开局天赋【" + t.name + "】已激活！祝你登顶商业 GOAT！", "success");
+      showToast("🎴 开局天赋【" + t.name + "】已激活！先选定公司办公地址开启创业！", "success");
       updateMCNRank(true);
       renderHeaderStats();
       renderHall();
       renderStreamersList();
       renderLivePrep();
+      updateNewbieGuideUI();
       saveLocalData();
+      if (!state.officeSelected && state.week === 1) {
+        switchTab('events');
+      }
     }
 
     function recordEndingMeta(endingObj, rawScore) {
@@ -6791,12 +7099,141 @@
     }
 
     // =========================================================================
-    // 10. UI 控制、改名与持久化 (单局存档 + 永久局外传承)
+    // 10. UI 控制、改名、全服不重复起名、新手引导与持久化
     // =========================================================================
+    function generateLocalAgencyName() {
+      var p = AGENCY_POOL_PREFIXES[Math.floor(Math.random() * AGENCY_POOL_PREFIXES.length)];
+      var c = AGENCY_POOL_CORES[Math.floor(Math.random() * AGENCY_POOL_CORES.length)];
+      var sfx = ['互娱', '传媒', '社', '工坊', '矩阵', 'MCN'][Math.floor(Math.random() * 6)];
+      return (p + c + sfx).slice(0, 12);
+    }
+
+    function fillRandomAgencyNameInto(inputId) {
+      var inp = document.getElementById(inputId);
+      if (inp) inp.value = generateLocalAgencyName();
+      apiFetch('/api/player/suggest-name', { timeoutMs: 3500 }).then(function(res) {
+        if (res.ok && res.data && res.data.agencyName && inp) {
+          inp.value = res.data.agencyName.slice(0, 12);
+        }
+      });
+    }
+
+    function openStartupNamingModal() {
+      safeInitAudio();
+      var modal = document.getElementById("startupNamingModal");
+      if (!modal) return;
+      fillRandomAgencyNameInto("startupAgencyInput");
+      modal.classList.remove("hidden");
+    }
+
+    function confirmStartupNaming() {
+      safeInitAudio();
+      var inp = document.getElementById("startupAgencyInput");
+      var val = inp ? inp.value.replace(/[<>&"'`]/g, '').trim().slice(0, 12) : '';
+      if (val.length < 2) {
+        showToast("机构名称至少需要 2 个字哦！", "alert");
+        playAlertSound();
+        return;
+      }
+      state.agencyName = val;
+      state.agencyNamed = true;
+      var lbl = document.getElementById("agencyNameLabel");
+      if (lbl) lbl.innerText = val;
+      document.getElementById("startupNamingModal").classList.add("hidden");
+      saveLocalData();
+      ensureCloudConnected(false);
+      playCheerSound();
+      if (!state.talentPickedThisRun && state.week === 1) {
+        openTalentPickModal();
+      } else {
+        updateNewbieGuideUI();
+      }
+    }
+
+    function clearGuideHighlights() {
+      var els = document.querySelectorAll('.guide-pulse');
+      for (var i = 0; i < els.length; i++) {
+        els[i].classList.remove('guide-pulse');
+      }
+    }
+
+    function updateNewbieGuideUI() {
+      clearGuideHighlights();
+      var bar = document.getElementById("newbieGuideBar");
+      if (!bar) return;
+      if (state.tutorialDismissed || (state.tutorialLiveDone && state.officeSelected && ownedStreamers.length > 0)) {
+        bar.classList.add("hidden");
+        return;
+      }
+
+      var pill = document.getElementById("guideStepPill");
+      var txt = document.getElementById("guideStepText");
+      var btn = document.getElementById("guideActionBtn");
+      bar.classList.remove("hidden");
+
+      if (!state.officeSelected) {
+        if (pill) pill.innerText = "引导 1/3";
+        if (txt) txt.innerText = "请先在【商战决策】选择公司办公地址立项";
+        if (btn) btn.innerText = state.activeTab === 'events' ? "点下方选项确认 ›" : "去选办公地址 ›";
+        var evTab = document.getElementById("tabBtn-events");
+        if (evTab && state.activeTab !== 'events') evTab.classList.add("guide-pulse");
+        var evBox = document.getElementById("evOptionsBox");
+        if (evBox && state.activeTab === 'events') evBox.classList.add("guide-pulse");
+      } else if (ownedStreamers.length === 0) {
+        if (pill) pill.innerText = "引导 2/3";
+        if (txt) txt.innerText = "办公已落户！去【主播集训】挖角或抽盲盒签首位主播";
+        if (btn) btn.innerText = state.activeTab === 'streamers' ? "去签约市场 ›" : "去主播池签约 ›";
+        var stTab = document.getElementById("tabBtn-streamers");
+        if (stTab && state.activeTab !== 'streamers') stTab.classList.add("guide-pulse");
+        var recBtn = document.querySelector('#tabStreamers [data-action="open-recruit"]');
+        if (recBtn && state.activeTab === 'streamers') recBtn.classList.add("guide-pulse");
+      } else if (!state.tutorialLiveDone) {
+        if (pill) pill.innerText = "引导 3/3";
+        if (txt) txt.innerText = "首位主播已签约！可先给TA换装提颜，再进【周末带货】首播";
+        if (btn) btn.innerText = state.activeTab === 'live' ? "立即开播首秀 ›" : "去周末首播 ›";
+        var liveTab = document.getElementById("tabBtn-live");
+        if (liveTab && state.activeTab !== 'live') liveTab.classList.add("guide-pulse");
+        var startBtn = document.getElementById("btnStartLive");
+        if (startBtn && state.activeTab === 'live' && !startBtn.disabled) startBtn.classList.add("guide-pulse");
+      }
+    }
+
+    function guideNextClick() {
+      safeInitAudio();
+      if (!state.officeSelected) {
+        if (state.activeTab !== 'events') {
+          switchTab('events');
+        } else {
+          var firstOpt = document.getElementById("evOpt-0");
+          if (firstOpt) firstOpt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          showToast("👇 请轻触上方任意一张选址卡片，然后点底部确认按钮！", "info");
+        }
+      } else if (ownedStreamers.length === 0) {
+        if (state.activeTab !== 'streamers') {
+          switchTab('streamers');
+        } else {
+          openRecruitModal();
+        }
+      } else if (!state.tutorialLiveDone) {
+        if (state.activeTab !== 'live') {
+          switchTab('live');
+        } else {
+          startLiveSession();
+        }
+      }
+    }
+
+    function skipNewbieGuide() {
+      state.tutorialDismissed = true;
+      updateNewbieGuideUI();
+      saveLocalData();
+      showToast("已关闭新手引导，随时可按你的节奏自由运营！", "info");
+    }
+
     function openRenameModal() {
       safeInitAudio();
       var inp = document.getElementById("renameInput");
-      if (inp) inp.value = state.agencyName || '破晓互娱';
+      if (inp) inp.value = state.agencyName || generateLocalAgencyName();
       document.getElementById("renameModal").classList.remove("hidden");
     }
 
@@ -6832,8 +7269,11 @@
 
     function executeReset() {
       try { localStorage.removeItem("mcn_game_v2_save"); } catch (e) {}
-      var keepName = state.agencyName || '破晓互娱';
-      state.agencyName = keepName;
+      state.agencyName = generateLocalAgencyName();
+      state.agencyNamed = false;
+      state.officeSelected = false;
+      state.tutorialLiveDone = false;
+      state.tutorialDismissed = false;
       state.week = 1;
       state.cash = 100.0;
       state.fans = 20.0;
@@ -6843,12 +7283,12 @@
       state.revengeScore = 0;
       state.rogueScore = 0;
       state.techScore = 0;
-      state.selectedStreamerId = 'su';
+      state.selectedStreamerId = '';
       state.activeTab = 'hall';
       state.facilities = { studio: 1, supplyChain: 0, prRadar: 0 };
       state.endless = false;
-      state.mcnRank = 98;
-      state.powerScore = 118.5;
+      state.mcnRank = 332;
+      state.powerScore = 89.0;
       state.liveCooldownRemaining = 0;
       state.liveCooldownMax = 45;
       state.staminaGlobalCooldown = 0;
@@ -6864,12 +7304,12 @@
       state.recentHighlights = [];
       state.lastEndingTitle = '';
       state.debutGroup = null;
-      state.fandomDraftMembers = ['su'];
-      state.fandomDraftCenter = 'su';
-      state.activeFandomStreamerId = 'su';
+      state.fandomDraftMembers = [];
+      state.fandomDraftCenter = '';
+      state.activeFandomStreamerId = '';
       state.activeFandomPreviewStage = null;
       clearInterval(liveCooldownTimer);
-      ownedStreamers = ['su'];
+      ownedStreamers = [];
       Object.keys(streamersMaster).forEach(function(k) {
         var prof = getFandomProfile(k);
         streamersMaster[k].stamina = 100;
@@ -6893,9 +7333,8 @@
       renderLivePrep();
       renderEventView();
       switchTab('hall');
-      maybePushContextualDM('init');
-      openTalentPickModal();
-      showToast("🔄 新一轮创业已开启！永久声望与全服身份已保留！", "info");
+      openStartupNamingModal();
+      showToast("🔄 新一轮创业已开启！请先命名你的新 MCN 厂牌！", "info");
       playCoinSound();
     }
 
@@ -6928,6 +7367,7 @@
         document.getElementById("tabEvents").classList.remove("hidden");
         renderEventView();
       }
+      if (typeof updateNewbieGuideUI === 'function') updateNewbieGuideUI();
     }
 
     function renderHeaderStats() {
@@ -6999,7 +7439,7 @@
             state.revenueTotal = isFinite(parsed.state.revenueTotal) ? Math.max(0, Number(parsed.state.revenueTotal)) : 0.0;
             state.destiny = typeof parsed.state.destiny === 'string' ? parsed.state.destiny : 'none';
             state.endless = Boolean(parsed.state.endless);
-            state.mcnRank = Math.max(1, Math.min(100, parseInt(parsed.state.mcnRank, 10) || 98));
+            state.mcnRank = Math.max(1, Math.min(TOTAL_INDUSTRY_AGENCIES, parseInt(parsed.state.mcnRank, 10) || 332));
             state.liveCooldownRemaining = Math.max(0, parseInt(parsed.state.liveCooldownRemaining, 10) || 0);
             state.staminaGlobalCooldown = Math.max(0, parseInt(parsed.state.staminaGlobalCooldown, 10) || 0);
             state.scandalRisk = Math.max(0, Math.min(100, parseInt(parsed.state.scandalRisk, 10) || 0));
@@ -7008,6 +7448,10 @@
             state.currentEventId = parsed.state.currentEventId || null;
             state.activeTalentId = parsed.state.activeTalentId || null;
             state.talentPickedThisRun = Boolean(parsed.state.talentPickedThisRun);
+            state.agencyNamed = (parsed.state.agencyNamed !== undefined) ? Boolean(parsed.state.agencyNamed) : (state.agencyName !== '破晓互娱' || state.week > 1);
+            state.officeSelected = (parsed.state.officeSelected !== undefined) ? Boolean(parsed.state.officeSelected) : (state.week > 1);
+            state.tutorialLiveDone = (parsed.state.tutorialLiveDone !== undefined) ? Boolean(parsed.state.tutorialLiveDone) : (state.week > 1 || state.revenueTotal > 0);
+            state.tutorialDismissed = Boolean(parsed.state.tutorialDismissed);
             state.blindBoxDraws = Math.max(0, parseInt(parsed.state.blindBoxDraws, 10) || 0);
             state.dmInbox = Array.isArray(parsed.state.dmInbox) ? parsed.state.dmInbox : [];
             state.usedDmIds = Array.isArray(parsed.state.usedDmIds) ? parsed.state.usedDmIds : [];
@@ -7031,7 +7475,9 @@
             }
             if (Array.isArray(parsed.ownedStreamers)) {
               ownedStreamers = parsed.ownedStreamers.filter(function(sid) { return streamersMaster[sid]; });
-              if (ownedStreamers.length === 0) ownedStreamers = ['su'];
+              if (ownedStreamers.length > 0 && !state.selectedStreamerId) {
+                state.selectedStreamerId = ownedStreamers[0];
+              }
             }
             if (parsed.streamersMaster && typeof parsed.streamersMaster === 'object') {
               Object.keys(parsed.streamersMaster).forEach(function(sid) {
@@ -7081,12 +7527,25 @@
     // 11. Cloudflare Workers + D1 + Workers AI 全服轻联网引擎 (断网自动降级)
     // =========================================================================
     function getTopStreamer() {
-      var best = streamersMaster.su;
+      if (!ownedStreamers || ownedStreamers.length === 0) {
+        return {
+          id: '',
+          name: '虚位以待',
+          tier: 'B',
+          sales: 0,
+          charm: 45,
+          isBeauty: false,
+          idolStage: 1,
+          supertopicHeat: 0,
+          milestones: []
+        };
+      }
+      var best = streamersMaster[ownedStreamers[0]];
       ownedStreamers.forEach(function(sid) {
         var s = streamersMaster[sid];
         if (s && (!best || s.sales > best.sales)) best = s;
       });
-      return best || streamersMaster.su;
+      return best || streamersMaster[ownedStreamers[0]];
     }
 
     function updateCloudPillUI() {
@@ -7231,9 +7690,12 @@
         }
       } catch (e) {}
 
-      ensureCloudConnected(false).then(function(ok) {
-        if (ok) checkOfflineEarnings(true);
-      });
+      // 若是全新未命名玩家，等待其在启动弹窗起好专属厂牌名后再注册全服，彻底杜绝全服撞名“破晓互娱”！
+      if (state.agencyNamed || (cloudState.playerId && cloudState.authToken)) {
+        ensureCloudConnected(false).then(function(ok) {
+          if (ok) checkOfflineEarnings(true);
+        });
+      }
 
       // 每 45 秒静默轮询全服大喇叭与步行街热搜
       setInterval(function() {
@@ -7959,6 +8421,11 @@
 
     function openFandomModal(sid) {
       safeInitAudio();
+      if (!sid && ownedStreamers.length === 0) {
+        showToast("请先去主播池签约至少 1 位主播，再来解锁高定形象管理哦！", "alert");
+        openRecruitModal();
+        return;
+      }
       var targetId = (sid && streamersMaster[sid]) ? sid : (ownedStreamers[0] || 'su');
       state.activeFandomStreamerId = targetId;
       state.activeFandomPreviewStage = null;
@@ -9457,6 +9924,16 @@
         equipOrUnlockWardrobeItem(el.getAttribute('data-cat'), el.getAttribute('data-item-id'));
       } else if (action === 'reconnect-cloud') {
         ensureCloudConnected(true);
+      } else if (action === 'randomize-startup-name') {
+        fillRandomAgencyNameInto('startupAgencyInput');
+      } else if (action === 'confirm-startup-name') {
+        confirmStartupNaming();
+      } else if (action === 'randomize-rename-input') {
+        fillRandomAgencyNameInto('renameInput');
+      } else if (action === 'guide-next-click') {
+        guideNextClick();
+      } else if (action === 'skip-guide') {
+        skipNewbieGuide();
       }
     }
 
@@ -9513,12 +9990,15 @@
       renderLivePrep();
       renderEventView();
       switchTab(state.activeTab || 'hall');
-      if (!state.dmInbox || state.dmInbox.length === 0) {
+      if (ownedStreamers.length > 0 && (!state.dmInbox || state.dmInbox.length === 0)) {
         maybePushContextualDM('init');
       }
-      if (!state.talentPickedThisRun && state.week === 1) {
+      if (!state.agencyNamed) {
+        openStartupNamingModal();
+      } else if (!state.talentPickedThisRun && state.week === 1) {
         openTalentPickModal();
       }
+      updateNewbieGuideUI();
       initCloudClient();
     }
 

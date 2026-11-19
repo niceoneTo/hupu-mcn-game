@@ -205,8 +205,51 @@ app.get('/api/health', (c) => {
 });
 
 // =========================================================================
-// 2. 匿名注册与发证 (无需繁琐登录，开箱即连全服)
+// 2. 匿名注册与发证 (自动生成全服不重复推荐机构名，拒绝千篇一律撞名)
 // =========================================================================
+const AGENCY_PREFIXES = [
+  '星河', '霓虹', '橘子', '破晓', '山海', '云霄', '琥珀', '炽焰', '苍穹', '白昼',
+  '落樱', '极光', '星辰', '流光', '繁星', '量子', '银河', '拾光', '追风', '潮汐',
+  '暮光', '锦鲤', '青柠', '微醺', '曜石', '天际', '绯红', '翡翠', '千禧', '热浪'
+];
+const AGENCY_CORES = [
+  '造物', '造星', '严选', '星梦', '奇点', '风暴', '幻影', '棱镜', '次元', '引力',
+  '浪潮', '风向', '美学', '先锋', '宇宙', '星图', '新锐', '奇迹', '无限', '光年'
+];
+const AGENCY_SUFFIXES = ['互娱', '传媒', '社', '工坊', '矩阵', 'MCN', '工作室', '文化'];
+
+async function generateUniqueAgencyName(db: D1Database, preferred?: string): Promise<string> {
+  const candidate = sanitizeText(preferred, 16, '');
+  if (candidate && candidate !== '破晓互娱' && candidate.length >= 2) {
+    const dup = await db
+      .prepare('SELECT id FROM players WHERE agency_name = ? LIMIT 1')
+      .bind(candidate)
+      .first<{ id: string }>();
+    if (!dup) return candidate;
+    const tag = Math.floor(10 + (crypto.getRandomValues(new Uint32Array(1))[0] % 90));
+    return (candidate.slice(0, 10) + '#' + tag).slice(0, 14);
+  }
+
+  for (let attempt = 0; attempt < 15; attempt++) {
+    const r = crypto.getRandomValues(new Uint32Array(3));
+    const name =
+      AGENCY_PREFIXES[r[0] % AGENCY_PREFIXES.length] +
+      AGENCY_CORES[r[1] % AGENCY_CORES.length] +
+      AGENCY_SUFFIXES[r[2] % AGENCY_SUFFIXES.length];
+    const dup = await db
+      .prepare('SELECT id FROM players WHERE agency_name = ? LIMIT 1')
+      .bind(name)
+      .first<{ id: string }>();
+    if (!dup) return name.slice(0, 14);
+  }
+  return '星芒互娱' + (100 + (crypto.getRandomValues(new Uint32Array(1))[0] % 899));
+}
+
+app.get('/api/player/suggest-name', async (c) => {
+  const name = await generateUniqueAgencyName(c.env.DB);
+  return c.json({ ok: true, agencyName: name });
+});
+
 app.post('/api/player/register', async (c) => {
   let body: Record<string, unknown> = {};
   try {
@@ -215,7 +258,7 @@ app.post('/api/player/register', async (c) => {
     body = {};
   }
 
-  const agencyName = sanitizeText(body.agencyName, 16, '破晓互娱');
+  const agencyName = await generateUniqueAgencyName(c.env.DB, typeof body.agencyName === 'string' ? body.agencyName : '');
   const playerId = 'jr_' + randomHex(8);
   const authToken = randomHex(24);
   const tokenHash = await sha256Hex(authToken);
@@ -229,7 +272,7 @@ app.post('/api/player/register', async (c) => {
       reputation_pts, unlocked_endings, unlocked_talents,
       daily_pvp_used, daily_pvp_date, last_claim_ts, pending_raid_loss,
       ai_gen_count, ai_gen_window_ts, updated_at, created_at
-    ) VALUES (?, ?, ?, 118.5, 100.0, 20.0, 80.0, 1, 1, 'su', '苏晚晴', 'none', 0, 0, '[]', '[]', 0, ?, ?, 0, 0, 0, ?, ?)`
+    ) VALUES (?, ?, ?, 45.0, 100.0, 20.0, 80.0, 1, 0, '', '虚位以待', 'none', 0, 0, '[]', '[]', 0, ?, ?, 0, 0, 0, ?, ?)`
   )
     .bind(playerId, tokenHash, agencyName, today, ts, ts, ts)
     .run();
@@ -270,9 +313,11 @@ app.post('/api/player/sync', async (c) => {
   const fans = Math.round(clampNum(body.fans, 0, 500000, player.fans) * 10) / 10;
   const pr = Math.round(clampNum(body.pr, 0, 150, player.pr));
   const week = Math.floor(clampNum(body.week, 1, 999, player.week));
-  const streamerCount = Math.floor(clampNum(body.streamerCount, 1, 24, player.streamer_count));
-  const topStreamerId = sanitizeText(body.topStreamerId, 20, player.top_streamer_id);
-  const topStreamerName = sanitizeText(body.topStreamerName, 18, player.top_streamer_name);
+  const streamerCount = Math.floor(clampNum(body.streamerCount, 0, 24, player.streamer_count));
+  const topStreamerId = typeof body.topStreamerId === 'string' && body.topStreamerId.trim() === ''
+    ? ''
+    : sanitizeText(body.topStreamerId, 20, player.top_streamer_id);
+  const topStreamerName = sanitizeText(body.topStreamerName, 18, streamerCount === 0 ? '虚位以待' : player.top_streamer_name);
   const destiny = sanitizeText(body.destiny, 16, player.destiny);
   const scandalRisk = Math.floor(clampNum(body.scandalRisk, 0, 100, player.scandal_risk));
   const reputationPts = Math.floor(
