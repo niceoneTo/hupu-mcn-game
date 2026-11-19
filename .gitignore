@@ -1,4 +1,7 @@
 cloudflared.exe
 .playwright-mcp/
 node_modules/
+worker/node_modules/
+worker/.wrangler/
+.wrangler/
 *.log

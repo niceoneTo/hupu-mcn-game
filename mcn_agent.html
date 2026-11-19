@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://hupu-mcn-game.hepeter626.workers.dev https://*.workers.dev; object-src 'none'; base-uri 'self';" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>MCN王牌经纪人 2.0 · 虎扑AI工坊生产标准版</title>
+  <title>MCN王牌经纪人 3.0 · 破晓帝国全服联网版</title>
   <style>
     :root {
       --bg: #0b0f19;
@@ -749,6 +749,220 @@
       color: #34d399 !important;
       font-weight: 700 !important;
     }
+
+    /* v3.0 留存与全服轻联网模块样式 */
+    .modal-overlay {
+      overscroll-behavior: contain;
+    }
+    .modal-card {
+      overscroll-behavior: contain;
+    }
+    .cloud-pill {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      background: rgba(16, 185, 129, 0.16);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .header-bar .hupu-tag,
+    .header-bar .badge,
+    .header-bar .btn-icon,
+    .mcn-rank-title {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .cloud-pill.offline {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border-color: rgba(148, 163, 184, 0.3);
+    }
+    .btn-badge-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+    .red-dot-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.75);
+      pointer-events: none;
+    }
+    .scandal-bar-track {
+      height: 8px;
+      width: 100%;
+      border-radius: 999px;
+      background: #0f172a;
+      border: 1px solid #24314c;
+      overflow: hidden;
+      margin: 6px 0;
+    }
+    .scandal-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.35s ease, background 0.35s ease;
+    }
+    .synergy-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fde68a;
+    }
+    .synergy-chip.locked {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px dashed #334155;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .dm-card {
+      background: #0f172a;
+      border: 1px solid #2e3d60;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dm-bubble {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 4px 12px 12px 12px;
+      padding: 9px 11px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #f1f5f9;
+    }
+    .subtab-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin: 6px 0;
+    }
+    .subtab-btn {
+      padding: 7px 4px;
+      min-block-size: 36px;
+      border-radius: 8px;
+      border: 1px solid #2e3d60;
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .subtab-btn.active {
+      background: rgba(201, 27, 27, 0.25);
+      border-color: #ef4444;
+      color: #fff;
+    }
+    .talent-pick-card {
+      background: #0f172a;
+      border: 1.5px solid #2e3d60;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .talent-pick-card:active { transform: scale(0.98); }
+    .talent-pick-card.tier-gold { border-color: rgba(245, 158, 11, 0.7); background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), #0f172a); }
+    .talent-pick-card.tier-purple { border-color: rgba(168, 85, 247, 0.65); background: linear-gradient(135deg, rgba(168, 85, 247, 0.12), #0f172a); }
+    .talent-pick-card.tier-blue { border-color: rgba(56, 189, 248, 0.5); }
+    .hupu-comment-item {
+      background: #0f172a;
+      border: 1px solid #24314c;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: #e2e8f0;
+    }
+    .copy-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex: 1;
+    }
+    .copy-tip {
+      position: absolute;
+      inset-block-end: calc(100% + 6px);
+      inset-inline-start: 50%;
+      transform: translateX(-50%);
+      background: #10b981;
+      color: #052e16;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      pointer-events: none;
+    }
+    .copy-tip[data-visible] {
+      opacity: 1;
+    }
+    .copy-tip[data-failed] {
+      background: #ef4444;
+      color: #fff;
+    }
+    .agency-edit-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px 3px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .agency-edit-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .hot-feed-ticker {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid #24314c;
+      border-radius: 10px;
+      padding: 7px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11.5px;
+      color: #cbd5e1;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -776,7 +990,9 @@
         </div>
         <div class="mcn-rank-info">
           <div class="mcn-rank-title-row">
-            <span class="mcn-rank-title">全网MCN实力天梯榜</span>
+            <span class="mcn-rank-title">全服MCN天梯</span>
+            <span id="cloudStatusPill" class="cloud-pill offline">○ 离线</span>
+            <span id="pvpUnreadPill" class="badge badge-red hidden" style="font-size: 9px; padding: 1px 5px; white-space: nowrap;">⚔️ 0</span>
             <span id="rankChangeBadge" class="rank-badge-change hidden">▲ 0</span>
           </div>
           <div class="mcn-rank-target" id="rankTargetText">距第97名【飞鱼文化】差 6.5w 战力</div>
@@ -784,7 +1000,7 @@
       </div>
       <div class="mcn-rank-right">
         <div class="mcn-rank-metric">
-          <span class="mcn-rank-sublabel">实时排名</span>
+          <span class="mcn-rank-sublabel" id="mcnRankLabel">实时排名</span>
           <span id="mcnRankVal" class="mcn-rank-number">NO. 98</span>
         </div>
         <div class="mcn-rank-metric">
@@ -796,15 +1012,23 @@
     </div>
     
     <!-- 顶部状态栏 -->
-    <header class="header-bar">
-      <div class="brand-wrap">
-        <span class="hupu-tag">虎扑工坊</span>
-        <span class="header-title">破晓互娱 2.0</span>
-        <span id="destinyBadge" class="badge badge-blue">摸索期</span>
+    <header class="header-bar" style="gap: 4px; padding: 8px 9px;">
+      <div class="brand-wrap" style="gap: 4px; min-width: 0;">
+        <span class="hupu-tag" style="font-size: 10px; padding: 2px 5px;">虎扑</span>
+        <button type="button" id="agencyNameBtn" class="agency-edit-btn" data-action="open-rename" title="点击修改机构名称并同步全服榜">
+          <span id="agencyNameLabel">破晓互娱</span>
+          <span style="font-size: 10px; color: #94a3b8;">✎</span>
+        </button>
+        <span id="destinyBadge" class="badge badge-blue" style="font-size: 10px; padding: 2px 5px;">摸索期</span>
       </div>
-      <div style="display: flex; gap: 6px;">
-        <button id="soundBtn" class="btn-icon" data-action="toggle-sound">🔊</button>
-        <button class="btn-icon" data-action="open-reset">🔄 重开</button>
+      <div style="display: flex; gap: 4px; align-items: center; flex-shrink: 0;">
+        <span class="btn-badge-wrap">
+          <button type="button" id="btnOpenDM" class="btn-icon" data-action="open-dm" style="padding: 4px 6px; font-size: 11px;">💬私信</button>
+          <span id="dmUnreadBadge" class="red-dot-count hidden">0</span>
+        </span>
+        <button type="button" class="btn-icon" data-action="open-meta-hall" style="padding: 4px 6px; font-size: 11px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">🏅名宿</button>
+        <button type="button" id="soundBtn" class="btn-icon" data-action="toggle-sound" style="padding: 4px 6px;">🔊</button>
+        <button type="button" class="btn-icon" data-action="open-reset" style="padding: 4px 6px; font-size: 11px;">🔄</button>
       </div>
     </header>
 
@@ -870,6 +1094,47 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px;">
           <div class="card-subpanel">累积总流水: <span id="valTotalRevenue" style="color: #fbbf24; font-weight: 800;">0 万</span></div>
           <div class="card-subpanel">签约主播: <span id="valStreamerCount" style="color: #38bdf8; font-weight: 800;">1 位</span></div>
+        </div>
+
+        <!-- 差异化模块 1: 黑红度与塌房预警仪 (高风险高回报双刃剑) -->
+        <div id="scandalMeterCard" class="card-subpanel" style="border-color: rgba(245, 158, 11, 0.35);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 12px; font-weight: 700; color: #fff;">
+              🔥 黑红争议值：<strong id="valScandalRisk" style="color: #34d399;">0%</strong>
+            </span>
+            <span id="scandalTierLabel" class="badge badge-green">清流稳健</span>
+          </div>
+          <div class="scandal-bar-track">
+            <div id="scandalBarFill" class="scandal-bar-fill" style="width: 0%; background: #10b981;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px;">
+            <span id="scandalHintText" style="font-size: 10.5px; color: #94a3b8;">黑红 31~65% 触发流量暴走(GMV+35%)，超 66% 随时引爆315！</span>
+            <button type="button" id="btnCoolScandal" class="btn-icon" data-action="cool-scandal" style="font-size: 10.5px; padding: 3px 8px; color: #38bdf8; white-space: nowrap;">🧹 降热(15w)</button>
+          </div>
+        </div>
+
+        <!-- 差异化模块 2: 离线挂机收菜 & 全服步行街热搜条 -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div class="hot-feed-ticker" data-action="open-leaderboard-tab" data-subtab="feed">
+            <div style="display: flex; align-items: center; gap: 6px; overflow: hidden;">
+              <span class="badge badge-red" style="flex-shrink: 0;">全服热搜</span>
+              <span id="hallHotFeedText" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">正在拉取全服步行街吃瓜实时热搜...</span>
+            </div>
+            <span style="color: #fbbf24; font-weight: 700; flex-shrink: 0;">围观 ›</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+            <button type="button" class="btn-icon" data-action="check-offline-earnings" style="padding: 8px 6px; font-size: 11.5px; color: #34d399; border-color: rgba(16, 185, 129, 0.4);">
+              🌙 查收离线商单
+            </button>
+            <button type="button" class="btn-icon" data-action="open-leaderboard-tab" data-subtab="pvp" style="padding: 8px 6px; font-size: 11.5px; color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);">
+              ⚔️ 全服异步商战
+            </button>
+          </div>
+        </div>
+
+        <!-- 当前激活开局天赋展示条 -->
+        <div id="activeTalentBanner" class="card-subpanel hidden" style="padding: 6px 10px; font-size: 11px; border-color: rgba(168, 85, 247, 0.45); background: rgba(168, 85, 247, 0.1); color: #e9d5ff;">
+          🎴 本局商业天赋：<strong id="activeTalentTitle">未激活</strong>
         </div>
 
         <!-- 硬件设施升级区 (含前置禁用态保障) -->
@@ -944,12 +1209,21 @@
                 全网人才盲盒抽卡
                 <span class="badge badge-gold" style="font-size: 9px; padding: 1px 4px;">固定 35w/次</span>
               </div>
-              <div style="font-size: 11px; color: #cbd5e1; margin-top: 1px;">随机招募未签约主播 · 出SSR全网大喇叭通报3次</div>
+              <div style="font-size: 11px; color: #cbd5e1; margin-top: 1px;">随机招募未签约主播 · 出SSR全服真实大喇叭通报3次</div>
             </div>
           </div>
           <button class="btn-small-upgrade" data-action="open-blindbox" style="background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; font-weight: 800; border: none; padding: 5px 12px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);">
             开盲盒
           </button>
+        </div>
+
+        <!-- 主播矩阵羁绊加成面板 -->
+        <div id="synergyPanel" class="card-subpanel" style="margin-bottom: 8px; padding: 8px 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 12px; font-weight: 700; color: #fde68a;">⚡ 主播矩阵羁绊</span>
+            <span id="synergyActiveCount" style="font-size: 10.5px; color: #94a3b8;">已激活 0/7</span>
+          </div>
+          <div id="synergyChipList" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
         </div>
 
         <div id="streamersList" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -1112,6 +1386,7 @@
           <div id="endIcon" style="font-size: 32px;">🏆</div>
           <h2 id="endTitle" style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 4px;">季度业绩终局大结算</h2>
           <div id="endRating" style="font-size: 13px; font-weight: 700; color: #fbbf24; margin-top: 2px;">评价等级：SSS · 全球传媒帝国</div>
+          <div id="endRepEarned" class="badge badge-gold" style="margin-top: 6px; font-size: 11px;">🏅 本局永久声望 +120</div>
         </div>
 
         <div id="endNarrative" class="card-subpanel" style="font-size: 12px; color: #cbd5e1; line-height: 1.55;"></div>
@@ -1131,12 +1406,36 @@
           </div>
         </div>
 
-        <div style="display: flex; gap: 8px; margin-top: 6px;">
-          <button id="endlessBtn" class="btn-blue" data-action="enter-endless" style="flex: 1; background: linear-gradient(135deg, #047857, #065f46);">
+        <!-- 虎扑步行街 AI 实时神评区 -->
+        <div class="card-subpanel" style="background: rgba(201, 27, 27, 0.12); border: 1px solid rgba(201, 27, 27, 0.4); display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 12px; font-weight: 800; color: #fca5a5;">🤖 步行街 AI 实时神评</span>
+            <button type="button" id="btnFetchEndAI" class="btn-icon" data-action="fetch-ai-comments" data-target="end" style="font-size: 10.5px; padding: 3px 8px; color: #fbbf24;">✨ 刷新AI锐评</button>
+          </div>
+          <div id="endAiCommentsBox" style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 11.5px; color: #94a3b8;">正在呼叫步行街 JRs 围观打分...</div>
+          </div>
+        </div>
+
+        <!-- 一键分享与海报导出 (遵守 modern-web-guidance copy-button 规范) -->
+        <div style="display: flex; gap: 6px; margin-top: 2px;">
+          <button type="button" class="btn-primary" data-action="open-poster" style="flex: 1; padding: 10px; font-size: 12px; margin: 0; background: linear-gradient(135deg, #f59e0b, #c91b1b);">
+            🖼️ 生成虎扑战报海报
+          </button>
+          <span class="copy-wrap">
+            <button type="button" id="btnCopyEndReport" class="btn-icon" data-action="copy-report" style="width: 100%; min-block-size: 40px; font-size: 12px; color: #38bdf8; border-color: rgba(56, 189, 248, 0.45);">
+              📋 复制战报文本
+            </button>
+            <span class="copy-tip" role="status"></span>
+          </span>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 4px;">
+          <button type="button" id="endlessBtn" class="btn-blue" data-action="enter-endless" style="flex: 1; background: linear-gradient(135deg, #047857, #065f46);">
             🌟 开启无尽模式
           </button>
-          <button class="btn-icon" data-action="open-reset" style="flex: 1; padding: 10px; font-size: 13px;">
-            🔄 重开新局
+          <button type="button" class="btn-icon" data-action="open-reset" style="flex: 1; padding: 10px; font-size: 13px;">
+            🔄 带声望重开
           </button>
         </div>
       </section>
@@ -1145,11 +1444,11 @@
     <!-- 模态框 1: 重开确认弹窗 -->
     <div id="resetModal" class="modal-overlay hidden">
       <div class="modal-card">
-        <div style="font-size: 14px; font-weight: 700; color: #fff;">⚠️ 确定要重新开始吗？</div>
-        <div style="font-size: 12px; color: #cbd5e1;">重开新局将清空当前存档记录并重置至第 1 周初始状态。</div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff;">⚠️ 确定要开启新一轮创业吗？</div>
+        <div style="font-size: 12px; color: #cbd5e1;">将重置本周进度至第 1 周并重新抽取【开局商业天赋】，但你的<strong style="color:#fbbf24;">步行街永久声望、结局图鉴与全服身份</strong>将永久保留！</div>
         <div style="display: flex; gap: 8px; margin-top: 6px;">
-          <button class="btn-danger" data-action="execute-reset" style="flex: 1; padding: 9px;">确认重开</button>
-          <button class="btn-icon" data-action="close-reset" style="flex: 1; padding: 9px;">取消</button>
+          <button type="button" class="btn-danger" data-action="execute-reset" style="flex: 1; padding: 9px;">确认重开</button>
+          <button type="button" class="btn-icon" data-action="close-reset" style="flex: 1; padding: 9px;">取消</button>
         </div>
       </div>
     </div>
@@ -1159,15 +1458,15 @@
       <div class="modal-card" style="max-height: 420px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
           <span style="font-size: 14px; font-weight: 700; color: #fff;">🌟 人才经纪市场</span>
-          <button class="btn-icon" data-action="close-recruit" style="padding: 4px 8px;">✕</button>
+          <button type="button" class="btn-icon" data-action="close-recruit" style="padding: 4px 8px;">✕</button>
         </div>
         <div id="marketList" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 320px;"></div>
       </div>
     </div>
 
-    <!-- 模态框 3: 周度战报结算卡片 (Peak-End 情绪闭环高潮) -->
+    <!-- 模态框 3: 周度战报结算卡片 (Peak-End 情绪闭环高潮 + AI 实时神评) -->
     <div id="weekRecapModal" class="modal-overlay hidden">
-      <div class="modal-card" style="border-color: #f59e0b; max-height: 450px;">
+      <div class="modal-card" style="border-color: #f59e0b; max-height: 82vh; overflow-y: auto;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
           <span style="font-size: 15px; font-weight: 800; color: #fbbf24;">📅 第 <span id="recapWeekNum">1</span> 周 · 经营战报总结</span>
           <span class="badge badge-gold">周结报告</span>
@@ -1196,38 +1495,47 @@
         </div>
 
         <div class="card-subpanel" style="background: rgba(201, 27, 27, 0.15); border: 1px solid rgba(201, 27, 27, 0.4); font-size: 12px; line-height: 1.5; color: #e2e8f0;">
-          <div style="font-weight: 700; color: #fca5a5; margin-bottom: 3px;">🔥 步行街 JRs 热议神评：</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="font-weight: 700; color: #fca5a5;">🔥 步行街 JRs 热议神评</span>
+            <button type="button" id="btnFetchRecapAI" class="btn-icon" data-action="fetch-ai-comments" data-target="recap" style="font-size: 10px; padding: 2px 7px; color: #fbbf24;">🤖 AI实时点评</button>
+          </div>
           <div id="recapHupuComment">“这波商业绝杀给9.8分，直接把前东家脸打肿了！亮了(2480)”</div>
         </div>
 
-        <button class="btn-primary" data-action="confirm-next-week" style="margin-top: 4px; padding: 11px;">
+        <button type="button" class="btn-primary" data-action="confirm-next-week" style="margin-top: 4px; padding: 11px;">
           <span>🚀</span> 开启第 <span id="recapNextWeekNum">2</span> 周新经营！
         </button>
       </div>
     </div>
 
-    <!-- 模态框 4: MCN 综合实力 100 强天梯榜弹窗 -->
+    <!-- 模态框 4: 全服中心 3 合 1 (全服真实天梯 / 异步商战 / 步行街热搜) -->
     <div id="leaderboardModal" class="modal-overlay hidden">
-      <div class="modal-card" style="max-height: 85vh; display: flex; flex-direction: column;">
+      <div class="modal-card" style="max-height: 86vh; display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
           <div style="display: flex; align-items: center; gap: 6px;">
             <span style="font-size: 20px;">🏆</span>
-            <span style="font-size: 15px; font-weight: 800; color: #fff;">全网 MCN 综合实力天梯榜</span>
+            <span style="font-size: 15px; font-weight: 800; color: #fff;">全服天梯与步行街商战</span>
           </div>
-          <button class="btn-icon" data-action="close-leaderboard" style="padding: 4px 8px; font-size: 13px;">✕</button>
+          <button type="button" class="btn-icon" data-action="close-leaderboard" style="padding: 4px 8px; font-size: 13px;">✕</button>
         </div>
 
-        <div style="font-size: 11px; color: #cbd5e1; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 6px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-          <span>🎯 宿敌目标：前东家【天娱星耀】(NO.25)</span>
+        <div class="subtab-bar">
+          <button type="button" id="lbSubBtn-rank" class="subtab-btn active" data-action="switch-lb-subtab" data-subtab="rank">🏆 全服排行</button>
+          <button type="button" id="lbSubBtn-pvp" class="subtab-btn" data-action="switch-lb-subtab" data-subtab="pvp">⚔️ 异步商战</button>
+          <button type="button" id="lbSubBtn-feed" class="subtab-btn" data-action="switch-lb-subtab" data-subtab="feed">🔥 步行街热搜</button>
+        </div>
+
+        <div id="lbInfoStrip" style="font-size: 11px; color: #cbd5e1; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 6px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="lbStripLeft">🎯 宿敌目标：前东家【天娱星耀】(NO.25)</span>
           <span id="lbRivalGap" style="color: #fbbf24; font-weight: 700;">差距: 1081.5w</span>
         </div>
 
-        <!-- 榜单列表容器 (滚动) -->
-        <div id="leaderboardList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: 4px 0; -webkit-overflow-scrolling: touch;"></div>
+        <!-- 列表容器 (滚动) -->
+        <div id="leaderboardList" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding: 6px 0; -webkit-overflow-scrolling: touch;"></div>
 
         <div style="border-top: 1px solid #2e3d60; padding-top: 8px; font-size: 11px; color: #94a3b8; display: flex; justify-content: space-between; align-items: center;">
           <span id="lbPerkHint">💡 排名越高，带货冷却越少！</span>
-          <button class="btn-primary" data-action="close-leaderboard" style="padding: 6px 14px; font-size: 12px; margin: 0;">我知道了</button>
+          <button type="button" class="btn-primary" data-action="close-leaderboard" style="padding: 6px 14px; font-size: 12px; margin: 0;">我知道了</button>
         </div>
       </div>
     </div>
@@ -1240,7 +1548,7 @@
             <span style="font-size: 20px;">🎁</span>
             <span style="font-size: 15px; font-weight: 800; color: #fff;">破晓猎头 · 人才盲盒</span>
           </div>
-          <button class="btn-icon" data-action="close-blindbox" style="padding: 4px 8px; font-size: 13px;">✕</button>
+          <button type="button" class="btn-icon" data-action="close-blindbox" style="padding: 4px 8px; font-size: 13px;">✕</button>
         </div>
 
         <div style="font-size: 11.5px; color: #cbd5e1; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 7px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
@@ -1249,7 +1557,7 @@
         </div>
 
         <div style="display: flex; justify-content: space-around; font-size: 10.5px; padding: 6px 0 4px 0; color: #94a3b8; border-bottom: 1px dashed #24314c;">
-          <span style="color: #f59e0b; font-weight: 700;">SSR 10% (大喇叭)</span>
+          <span style="color: #f59e0b; font-weight: 700;">SSR 10% (全服大喇叭)</span>
           <span style="color: #a855f7; font-weight: 700;">S级 25%</span>
           <span style="color: #38bdf8; font-weight: 700;">A级 35%</span>
           <span style="color: #34d399; font-weight: 700;">B级 30%</span>
@@ -1265,9 +1573,9 @@
               <span class="gacha-box-icon">🎁</span>
             </div>
             <div style="font-size: 12px; color: #e2e8f0;">
-              敲击金色盲盒，偶遇神秘天降主播！出 SSR 全网通报！
+              敲击金色盲盒，偶遇神秘天降主播！出 SSR 全服大喇叭通报！
             </div>
-            <button id="btnDrawBlindBox" class="btn-primary" data-action="execute-blindbox" style="width: 100%; padding: 11px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #ef4444); border: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); margin-top: 4px;">
+            <button type="button" id="btnDrawBlindBox" class="btn-primary" data-action="execute-blindbox" style="width: 100%; padding: 11px; font-size: 13.5px; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #ef4444); border: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); margin-top: 4px;">
               🎲 立即开启盲盒 (35.0w)
             </button>
           </div>
@@ -1278,10 +1586,10 @@
               <!-- 动态注入获得主播信息 -->
             </div>
             <div style="display: flex; gap: 8px; width: 100%; margin-top: 4px;">
-              <button id="btnDrawAgain" class="btn-primary" data-action="execute-blindbox" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, #f59e0b, #ef4444); border: none;">
+              <button type="button" id="btnDrawAgain" class="btn-primary" data-action="execute-blindbox" style="flex: 1; padding: 10px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, #f59e0b, #ef4444); border: none;">
                 🔄 再抽一次 (35w)
               </button>
-              <button class="btn-icon" data-action="close-blindbox" style="flex: 1; padding: 10px; font-size: 12px;">
+              <button type="button" class="btn-icon" data-action="close-blindbox" style="flex: 1; padding: 10px; font-size: 12px;">
                 ✅ 收入麾下
               </button>
             </div>
@@ -1289,6 +1597,113 @@
 
         </div>
 
+      </div>
+    </div>
+
+    <!-- 模态框 6: 企微/主播私信工作群 (表里世界情感钩子与延迟因果埋雷) -->
+    <div id="dmModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 84vh; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 18px;">💬</span>
+            <span style="font-size: 14.5px; font-weight: 800; color: #fff;">MCN 内部私信 · 深夜消息</span>
+          </div>
+          <button type="button" class="btn-icon" data-action="close-dm" style="padding: 4px 8px;">✕</button>
+        </div>
+        <div id="dmListBox" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 6px 0;"></div>
+      </div>
+    </div>
+
+    <!-- 模态框 7: 开局商业天赋 3 选 1 (Roguelite 局外随机性) -->
+    <div id="talentPickModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 86vh; border-color: #f59e0b;">
+        <div style="text-align: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <div style="font-size: 22px;">🎴</div>
+          <div style="font-size: 15px; font-weight: 800; color: #fbbf24;">开局天命 · 商业天赋 3 选 1</div>
+          <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">选择本轮创业核心词条，打造你的专属商战流派！</div>
+        </div>
+        <div id="talentPickList" style="display: flex; flex-direction: column; gap: 8px; padding: 4px 0;"></div>
+      </div>
+    </div>
+
+    <!-- 模态框 8: 破晓名宿殿堂 (局外声望传承、结局图鉴、随时AI神评与海报) -->
+    <div id="metaHallModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 86vh; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 18px;">🏅</span>
+            <span style="font-size: 14.5px; font-weight: 800; color: #fbbf24;">破晓名宿殿堂 · 跨周目传承</span>
+          </div>
+          <button type="button" class="btn-icon" data-action="close-meta-hall" style="padding: 4px 8px;">✕</button>
+        </div>
+
+        <div id="metaStatsBar" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; font-size: 11.5px;">
+          <div class="card-subpanel"><div style="color:#94a3b8;font-size:10px;">步行街声望</div><div id="metaRepVal" style="color:#fbbf24;font-weight:800;font-size:14px;">0</div></div>
+          <div class="card-subpanel"><div style="color:#94a3b8;font-size:10px;">结局收集</div><div id="metaEndingsVal" style="color:#38bdf8;font-weight:800;font-size:14px;">0/10</div></div>
+          <div class="card-subpanel"><div style="color:#94a3b8;font-size:10px;">累计创业</div><div id="metaRunsVal" style="color:#34d399;font-weight:800;font-size:14px;">1 局</div></div>
+        </div>
+
+        <div style="display: flex; gap: 6px;">
+          <button type="button" class="btn-primary" data-action="open-poster" style="flex: 1; padding: 8px; font-size: 11.5px; margin: 0;">🖼️ 生成当前战报海报</button>
+          <button type="button" class="btn-icon" data-action="fetch-ai-comments" data-target="meta" style="flex: 1; padding: 8px; font-size: 11.5px; color: #fca5a5;">🤖 AI步行街点评</button>
+        </div>
+
+        <div id="metaAiPreviewBox" class="hidden" style="display: flex; flex-direction: column; gap: 5px;"></div>
+
+        <div id="metaHallBody" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 4px 0;"></div>
+      </div>
+    </div>
+
+    <!-- 模态框 9: 昨夜离线商单与商战晨报 (服务端防作弊校验) -->
+    <div id="offlineModal" class="modal-overlay hidden">
+      <div class="modal-card" style="border-color: #34d399; max-height: 82vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <span style="font-size: 15px; font-weight: 800; color: #34d399;">🌙 昨夜通告与商战晨报</span>
+          <button type="button" class="btn-icon" data-action="close-offline" style="padding: 4px 8px;">✕</button>
+        </div>
+        <div id="offlineSummaryText" style="font-size: 12px; color: #cbd5e1; line-height: 1.5;"></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: center;">
+          <div class="card-subpanel"><div style="font-size: 11px; color: #94a3b8;">离线商单入账</div><div id="offlineCashVal" style="font-size: 16px; font-weight: 800; color: #fbbf24;">+0.0w</div></div>
+          <div class="card-subpanel"><div style="font-size: 11px; color: #94a3b8;">自然涨粉</div><div id="offlineFansVal" style="font-size: 16px; font-weight: 800; color: #38bdf8;">+0.0w</div></div>
+        </div>
+        <div id="offlineRaidsBox" style="display: flex; flex-direction: column; gap: 6px;"></div>
+        <button type="button" id="btnClaimOffline" class="btn-primary" data-action="claim-offline-earnings" style="background: linear-gradient(135deg, #059669, #10b981); padding: 11px;">
+          💰 一键入账收菜！
+        </button>
+      </div>
+    </div>
+
+    <!-- 模态框 10: 自定义机构改名弹窗 -->
+    <div id="renameModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div style="font-size: 14px; font-weight: 800; color: #fff;">🏷️ 命名你的 MCN 帝国</div>
+        <div style="font-size: 11.5px; color: #94a3b8;">机构名称将实时展示在全服天梯榜与全服 SSR 大喇叭中（2~12字）。</div>
+        <input id="renameInput" type="text" maxlength="12" placeholder="如：步行街严选互娱" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #3b82f6; background: #0f172a; color: #fff; font-size: 13px; outline: none;" />
+        <div style="display: flex; gap: 8px; margin-top: 4px;">
+          <button type="button" class="btn-primary" data-action="save-agency-name" style="flex: 1; padding: 9px; margin: 0;">保存并同步全服</button>
+          <button type="button" class="btn-icon" data-action="close-rename" style="flex: 1; padding: 9px;">取消</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 模态框 11: 虎扑 9.9 分战报长图海报预览 -->
+    <div id="posterModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 88vh; display: flex; flex-direction: column; align-items: center;">
+        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <span style="font-size: 14px; font-weight: 800; color: #fbbf24;">🖼️ 虎扑步行街专属战报海报</span>
+          <button type="button" class="btn-icon" data-action="close-poster" style="padding: 4px 8px;">✕</button>
+        </div>
+        <div style="font-size: 11px; color: #94a3b8; text-align: center;">长按图片保存发微信群 / 虎扑步行街晒战绩！</div>
+        <div style="flex: 1; overflow-y: auto; width: 100%; display: flex; justify-content: center; padding: 4px 0;">
+          <img id="posterPreviewImg" alt="虎扑MCN战报海报" style="max-width: 100%; border-radius: 10px; border: 1px solid #334155;" />
+        </div>
+        <div style="width: 100%; display: flex; gap: 8px;">
+          <a id="posterDownloadLink" download="hupu-mcn-report.png" class="btn-primary" style="flex: 1; padding: 9px; margin: 0; text-decoration: none; text-align: center; font-size: 12px;">⬇️ 下载高清长图</a>
+          <span class="copy-wrap">
+            <button type="button" class="btn-icon" data-action="copy-report" style="width: 100%; min-block-size: 38px; font-size: 12px; color: #38bdf8;">📋 复制文字版</button>
+            <span class="copy-tip" role="status"></span>
+          </span>
+        </div>
       </div>
     </div>
 
@@ -1390,9 +1805,14 @@
     }
 
     // =========================================================================
-    // 2. 核心状态机与数据字典
+    // 2. 核心状态机、局外传承与全服轻联网配置 (v3.0 破晓帝国)
     // =========================================================================
+    var CLOUD_API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname.indexOf('github.io') !== -1 || location.protocol === 'file:')
+      ? 'https://hupu-mcn-game.hepeter626.workers.dev'
+      : location.origin;
+
     var state = {
+      agencyName: '破晓互娱',
       week: 1,
       maxWeek: 12,
       cash: 100.0,
@@ -1415,7 +1835,48 @@
       powerScore: 118.5,
       liveCooldownRemaining: 0,
       liveCooldownMax: 45,
-      staminaGlobalCooldown: 0
+      staminaGlobalCooldown: 0,
+      scandalRisk: 0,
+      storyFlags: {},
+      usedStoryletIds: [],
+      currentEventId: null,
+      activeTalentId: null,
+      talentPickedThisRun: false,
+      blindBoxDraws: 0,
+      dmInbox: [],
+      usedDmIds: [],
+      recentHighlights: [],
+      lastEndingTitle: '',
+      lastEndingRating: '9.2'
+    };
+
+    // 独立永久跨周目局外传承存档 (重开新局不清空)
+    var metaState = {
+      reputationPts: 0,
+      runsCompleted: 0,
+      bestScore: 0,
+      unlockedEndings: [],
+      unlockedTalents: ['supply_iron', 'viral_maker', 'energy_boost', 'pr_master', 'troll_hunter']
+    };
+
+    // 全服轻联网实时状态 (断网自动降级本地模式)
+    var cloudState = {
+      playerId: null,
+      authToken: null,
+      online: false,
+      globalRank: null,
+      totalPlayers: 0,
+      pvpRemaining: 5,
+      dailyPvpLimit: 5,
+      unreadPvpCount: 0,
+      activeLbSubtab: 'rank',
+      leaders: [],
+      feed: [],
+      pvpLogs: [],
+      lastSeenBroadcastId: 0,
+      latestAiComments: [],
+      lastSyncTs: 0,
+      offlinePreview: null
     };
 
     var weekStartSnapshot = {
@@ -1863,6 +2324,129 @@
       { rank: 100, name: '草台班子传媒', power: 85, desc: '设备老旧、随时可能注销' }
     ];
 
+    // =========================================================================
+    // 2.5 主播矩阵羁绊系统 (7大真实组合化学反应)
+    // =========================================================================
+    var SYNERGY_DEFS = [
+      {
+        id: 'culture_dao',
+        icon: '📖',
+        name: '文化正道',
+        reqText: '董先生 + 罗老师/反诈老陈',
+        bonusText: '单价+25% · 周口碑+5 · 黑红增幅-30%',
+        check: function(ids) { return ids.indexOf('dong') !== -1 && (ids.indexOf('luo') !== -1 || ids.indexOf('chen') !== -1); },
+        apply: function(fx) { fx.salesMult += 0.25; fx.weeklyPR += 5; fx.scandalMult *= 0.7; }
+      },
+      {
+        id: 'abstract_duo',
+        icon: '🤡',
+        name: '抽象整活顶流',
+        reqText: '疯狂小阳 + 歪嘴龙王/唢呐哥',
+        bonusText: '连击收益+40% · 涨粉+35% · 每播黑红+8',
+        check: function(ids) { return ids.indexOf('yang') !== -1 && (ids.indexOf('zhui') !== -1 || ids.indexOf('suona') !== -1); },
+        apply: function(fx) { fx.salesMult += 0.40; fx.fansMult += 0.35; fx.liveScandalAdd += 8; }
+      },
+      {
+        id: 'goddess_squad',
+        icon: '💄',
+        name: '步行街女神团',
+        reqText: '苏晚晴 + 小美/小昭/兔兔',
+        bonusText: '单价+20% · 榜一大哥打赏+35%',
+        check: function(ids) { return ids.indexOf('su') !== -1 && (ids.indexOf('meina') !== -1 || ids.indexOf('zhao') !== -1 || ids.indexOf('ling') !== -1); },
+        apply: function(fx) { fx.salesMult += 0.20; fx.whaleMult += 0.35; }
+      },
+      {
+        id: 'silicon_tech',
+        icon: '🤖',
+        name: '硅基硬核军团',
+        reqText: 'AI破晓01 + 老何/老刀',
+        bonusText: '离线收益+40% · 直播冷却-5s',
+        check: function(ids) { return ids.indexOf('ai01') !== -1 && (ids.indexOf('he') !== -1 || ids.indexOf('che') !== -1); },
+        apply: function(fx) { fx.offlineBonus += 0.40; fx.cooldownReduce += 5; }
+      },
+      {
+        id: 'sports_bros',
+        icon: '🏀',
+        name: '硬汉运动风暴',
+        reqText: '刘教练 + 街球坤哥',
+        bonusText: '直播耗体-30% · 涨粉+25%',
+        check: function(ids) { return ids.indexOf('liu') !== -1 && ids.indexOf('kun') !== -1; },
+        apply: function(fx) { fx.staminaSave += 0.30; fx.fansMult += 0.25; }
+      },
+      {
+        id: 'farm_fresh',
+        icon: '🌾',
+        name: '原产地烟火气',
+        reqText: '秦岭老农 + 阿伟/梁姑/强哥',
+        bonusText: '口碑上限120 · 黑粉扣分减半',
+        check: function(ids) { return ids.indexOf('nong') !== -1 && (ids.indexOf('wei') !== -1 || ids.indexOf('guang') !== -1 || ids.indexOf('qiang') !== -1); },
+        apply: function(fx) { fx.prCap = 120; fx.trollHalf = true; }
+      },
+      {
+        id: 'ssr_allstar',
+        icon: '👑',
+        name: '顶流全明星',
+        reqText: '集齐任意 3 名及以上 SSR',
+        bonusText: '综合战力+20% · 全员单价+15%',
+        check: function(ids) {
+          var cnt = 0;
+          ids.forEach(function(id) { if (streamersMaster[id] && streamersMaster[id].tier === 'SSR') cnt++; });
+          return cnt >= 3;
+        },
+        apply: function(fx) { fx.powerBonusPct += 0.20; fx.salesMult += 0.15; }
+      }
+    ];
+
+    function getSynergyEffects() {
+      var fx = {
+        activeList: [],
+        salesMult: 1.0,
+        fansMult: 1.0,
+        whaleMult: 1.0,
+        scandalMult: 1.0,
+        liveScandalAdd: 0,
+        weeklyPR: 0,
+        offlineBonus: 1.0,
+        cooldownReduce: 0,
+        staminaSave: 0,
+        prCap: 100,
+        trollHalf: false,
+        powerBonusPct: 0
+      };
+      SYNERGY_DEFS.forEach(function(syn) {
+        if (syn.check(ownedStreamers)) {
+          fx.activeList.push(syn);
+          syn.apply(fx);
+        }
+      });
+      if (state.activeTalentId === 'pr_master') {
+        fx.scandalMult *= 0.5;
+      }
+      if (state.activeTalentId === 'energy_boost') {
+        fx.cooldownReduce += 4;
+      }
+      return fx;
+    }
+
+    function renderSynergyPanel() {
+      var box = document.getElementById("synergyChipList");
+      var countEl = document.getElementById("synergyActiveCount");
+      if (!box) return;
+      var fx = getSynergyEffects();
+      if (countEl) countEl.innerText = "已激活 " + fx.activeList.length + "/" + SYNERGY_DEFS.length;
+      box.innerHTML = "";
+
+      var activeIds = fx.activeList.map(function(s) { return s.id; });
+      SYNERGY_DEFS.forEach(function(syn) {
+        var unlocked = activeIds.indexOf(syn.id) !== -1;
+        var chip = document.createElement("span");
+        chip.className = "synergy-chip" + (unlocked ? "" : " locked");
+        chip.title = syn.reqText + " → " + syn.bonusText;
+        chip.textContent = syn.icon + " " + syn.name + (unlocked ? " ✓" : " (" + syn.reqText + ")");
+        box.appendChild(chip);
+      });
+    }
+
     function calculatePowerScore() {
       var streamerPower = 0;
       ownedStreamers.forEach(function(sid) {
@@ -1879,6 +2463,8 @@
                   (state.pr * 0.3) + 
                   facilityPower + 
                   streamerPower;
+      var synFx = getSynergyEffects();
+      score = score * (1 + synFx.powerBonusPct);
       return Math.max(85, score);
     }
 
@@ -1897,7 +2483,8 @@
 
     function getLiveCooldownSeconds() {
       var rankRatio = Math.max(0.08, Math.min(1.0, (state.mcnRank || 98) / 100));
-      return Math.max(8, Math.round(48 * rankRatio));
+      var synFx = getSynergyEffects();
+      return Math.max(6, Math.round(48 * rankRatio) - synFx.cooldownReduce);
     }
 
     function updateMCNRank(animate) {
@@ -1925,14 +2512,21 @@
             setTimeout(function() { bar.classList.remove("rank-shimmer"); }, 1000);
           }
           playComboSound(5);
-          showToast("🏆 综合战力提升至 " + currentPower.toFixed(1) + "w，全网排名跃升至 NO." + newRank + "！", "success");
+          showToast("🏆 综合战力提升至 " + currentPower.toFixed(1) + "w，行业天梯跃升至 NO." + newRank + "！", "success");
         }
       } else {
         state.mcnRank = newRank;
       }
 
+      var rankLabelEl = document.getElementById("mcnRankLabel");
       var rankValEl = document.getElementById("mcnRankVal");
-      if (rankValEl) rankValEl.innerText = "NO. " + state.mcnRank;
+      if (cloudState.online && cloudState.globalRank) {
+        if (rankLabelEl) rankLabelEl.innerText = "全服实时";
+        if (rankValEl) rankValEl.innerText = "全服 #" + cloudState.globalRank;
+      } else {
+        if (rankLabelEl) rankLabelEl.innerText = "行业排名";
+        if (rankValEl) rankValEl.innerText = "NO. " + state.mcnRank;
+      }
 
       var powerValEl = document.getElementById("mcnPowerScore");
       if (powerValEl) powerValEl.innerText = currentPower.toFixed(1) + "w";
@@ -1942,24 +2536,51 @@
         var comp = competitorLadder[i];
         if (!comp.isPlayer && comp.rank < state.mcnRank) {
           var gap = Math.max(0.1, (comp.power - currentPower)).toFixed(1);
-          targetText = "距第 " + comp.rank + " 名【" + comp.name + "】差 " + gap + "w 战力";
+          targetText = "距行业第 " + comp.rank + "【" + comp.name + "】差 " + gap + "w";
           break;
         }
+      }
+      if (cloudState.online && cloudState.totalPlayers > 0) {
+        targetText = "全服 " + cloudState.totalPlayers + " 家真实MCN混战中 · " + targetText;
       }
       var targetEl = document.getElementById("rankTargetText");
       if (targetEl) targetEl.innerText = targetText;
 
       state.liveCooldownMax = getLiveCooldownSeconds();
+      if (animate) scheduleCloudSync();
     }
 
-    function openLeaderboardModal() {
+    function openLeaderboardModal(subtab) {
       safeInitAudio();
-      renderLeaderboard();
+      cloudState.activeLbSubtab = subtab || cloudState.activeLbSubtab || 'rank';
       document.getElementById("leaderboardModal").classList.remove("hidden");
+      switchLeaderboardSubtab(cloudState.activeLbSubtab);
     }
 
     function closeLeaderboardModal() {
       document.getElementById("leaderboardModal").classList.add("hidden");
+    }
+
+    function switchLeaderboardSubtab(subtab) {
+      cloudState.activeLbSubtab = subtab || 'rank';
+      ['rank', 'pvp', 'feed'].forEach(function(k) {
+        var btn = document.getElementById("lbSubBtn-" + k);
+        if (btn) {
+          if (k === cloudState.activeLbSubtab) btn.classList.add("active");
+          else btn.classList.remove("active");
+        }
+      });
+
+      if (cloudState.activeLbSubtab === 'rank') {
+        renderLeaderboard();
+        fetchCloudLeaderboard();
+      } else if (cloudState.activeLbSubtab === 'pvp') {
+        renderPvpCenter();
+        fetchCloudPvpInbox();
+      } else if (cloudState.activeLbSubtab === 'feed') {
+        renderGlobalFeedList();
+        pollGlobalFeed(false);
+      }
     }
 
     function renderLeaderboard() {
@@ -1970,22 +2591,70 @@
       var currentPower = state.powerScore || calculatePowerScore();
       var currentRank = state.mcnRank || 98;
 
-      var rival = competitorLadder.find(function(c) { return c.isRival; }) || { power: 1200 };
+      var stripLeft = document.getElementById("lbStripLeft");
       var rivalGapEl = document.getElementById("lbRivalGap");
+      var rival = competitorLadder.find(function(c) { return c.isRival; }) || { power: 1200 };
+      if (stripLeft) stripLeft.innerText = cloudState.online ? ("🌐 全服真实玩家天梯 (" + Math.max(1, cloudState.totalPlayers) + " 家机构)") : "🎯 宿敌目标：前东家【天娱星耀】(NO.25)";
       if (rivalGapEl) {
         var gap = (rival.power - currentPower);
-        if (gap > 0) {
-          rivalGapEl.innerText = "落后前东家 " + gap.toFixed(1) + "w 战力";
+        if (cloudState.online && cloudState.globalRank) {
+          rivalGapEl.innerText = "全服 #" + cloudState.globalRank + " · 商战剩 " + cloudState.pvpRemaining + "次";
+          rivalGapEl.style.color = "#34d399";
+        } else if (gap > 0) {
+          rivalGapEl.innerText = "落后前东家 " + gap.toFixed(1) + "w";
           rivalGapEl.style.color = "#f87171";
         } else {
-          rivalGapEl.innerText = "已反超 " + Math.abs(gap).toFixed(1) + "w (复仇成功!)";
+          rivalGapEl.innerText = "已反超 " + Math.abs(gap).toFixed(1) + "w!";
           rivalGapEl.style.color = "#34d399";
         }
       }
 
       var perkHint = document.getElementById("lbPerkHint");
       if (perkHint) {
-        perkHint.innerText = "💡 当前 NO." + currentRank + " 享受开播冷却 " + getLiveCooldownSeconds() + "s";
+        perkHint.innerText = "💡 行业 NO." + currentRank + " · 开播冷却 " + getLiveCooldownSeconds() + "s";
+      }
+
+      // 优先展示全服真实玩家列表 (若已联网)
+      if (cloudState.online && cloudState.leaders && cloudState.leaders.length > 0) {
+        var hdr = document.createElement("div");
+        hdr.style.cssText = "font-size:11px;color:#34d399;font-weight:700;padding:2px 4px;";
+        hdr.textContent = "🟢 全服真实 MCN 机构实时榜单（点击对手可直接发起异步商战）";
+        box.appendChild(hdr);
+
+        cloudState.leaders.forEach(function(p, idx) {
+          var rank = idx + 1;
+          var isSelf = (p.id === cloudState.playerId);
+          var div = document.createElement("div");
+          div.className = "lb-item" + (isSelf ? " lb-item-self" : "");
+          var rankCls = rank === 1 ? "lb-rank-top1" : (rank === 2 ? "lb-rank-top2" : (rank === 3 ? "lb-rank-top3" : ""));
+          var rankIcon = rank === 1 ? "🥇" : (rank === 2 ? "🥈" : (rank === 3 ? "🥉" : "#" + rank));
+
+          div.innerHTML =
+            '<div style="display:flex;align-items:center;gap:8px;min-width:0;">' +
+              '<span class="lb-rank-tag ' + rankCls + '">' + rankIcon + '</span>' +
+              '<div style="min-width:0;">' +
+                '<div style="font-weight:700;color:' + (isSelf ? '#fbbf24' : '#fff') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+                  escapeHTML(p.agency_name || '无名机构') +
+                  (isSelf ? ' <span class="badge badge-gold">你</span>' : '') +
+                  (Number(p.scandal_risk) >= 50 ? ' <span class="badge badge-red">黑红</span>' : '') +
+                '</div>' +
+                '<div style="font-size:10px;color:#94a3b8;">第' + Number(p.week || 1) + '周 · 王牌:' + escapeHTML(p.top_streamer_name || '苏晚晴') + ' · ' + Number(p.streamer_count || 1) + '人</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
+              '<div style="text-align:right;">' +
+                '<div style="font-weight:800;color:#38bdf8;font-family:monospace;">' + Number(p.power_score || 0).toFixed(1) + 'w</div>' +
+                '<div style="font-size:9.5px;color:#64748b;">战力</div>' +
+              '</div>' +
+              (!isSelf ? '<button type="button" class="btn-icon" data-action="quick-pvp-target" data-target-id="' + escapeHTML(p.id) + '" style="padding:4px 7px;font-size:10.5px;color:#fca5a5;border-color:rgba(239,68,68,0.45);">⚔️ 商战</button>' : '') +
+            '</div>';
+          box.appendChild(div);
+        });
+
+        var sep = document.createElement("div");
+        sep.style.cssText = "font-size:11px;color:#94a3b8;font-weight:700;padding:8px 4px 2px 4px;border-top:1px dashed #24314c;margin-top:4px;";
+        sep.textContent = "🏢 行业传奇里程碑（含前东家天娱星耀）";
+        box.appendChild(sep);
       }
 
       var displayItems = [];
@@ -2020,7 +2689,7 @@
             '<span class="lb-rank-tag ' + rankCls + '">' + rankIcon + item.rank + '</span>' +
             '<div>' +
               '<div style="font-weight: 700; color: ' + (isPlayer ? '#fbbf24' : '#fff') + ';">' + 
-                escapeHTML(isPlayer ? '破晓互娱 (你)' : item.name) + 
+                escapeHTML(isPlayer ? (state.agencyName + ' (你)') : item.name) + 
                 (isPlayer ? ' <span class="badge badge-gold">你的机构</span>' : (item.isRival ? ' <span class="badge badge-red">前东家宿敌</span>' : '')) + 
               '</div>' +
               '<div style="font-size: 10.5px; color: #94a3b8;">' + escapeHTML(item.desc) + '</div>' +
@@ -2639,19 +3308,22 @@
       safeInitAudio();
       var type = el.getAttribute("data-type");
       var s = liveSession.streamer || streamersMaster['su'];
-      var multiplier = (1 + (s.sales / 100)) * (1 + (state.facilities.studio * 0.25));
+      var synFx = getSynergyEffects();
+      var scandalBoost = (state.scandalRisk >= 31 && state.scandalRisk <= 65) ? 1.35 : 1.0;
+      var scandalFansBoost = (state.scandalRisk >= 31 && state.scandalRisk <= 65) ? 1.40 : 1.0;
+      var multiplier = (1 + (s.sales / 100)) * (1 + (state.facilities.studio * 0.25)) * synFx.salesMult * scandalBoost;
 
       if (type === 'normal') {
         var base = (1.5 + Math.random() * 2) * multiplier;
         liveSession.gmv += base;
-        liveSession.fansGain += 0.8;
+        liveSession.fansGain += 0.8 * synFx.fansMult * scandalFansBoost;
         liveSession.combo += 1;
         liveSession.ultCharge = Math.min(100, liveSession.ultCharge + 10);
         playComboSound(liveSession.combo);
       } else if (type === 'whale') {
-        var whaleBase = (8 + Math.random() * 10) * multiplier;
+        var whaleBase = (8 + Math.random() * 10) * multiplier * synFx.whaleMult;
         liveSession.gmv += whaleBase;
-        liveSession.fansGain += 3.5;
+        liveSession.fansGain += 3.5 * synFx.fansMult * scandalFansBoost;
         liveSession.combo += 2;
         liveSession.ultCharge = Math.min(100, liveSession.ultCharge + 20);
         playCoinSound();
@@ -2662,8 +3334,13 @@
         showToast("⚡ 能量充满！绝技随时准备就绪！", "success");
       } else if (type === 'troll') {
         liveSession.combo += 1;
+        if (state.activeTalentId === 'troll_hunter') {
+          liveSession.gmv += 6.0;
+          showToast("🛡️ 水军头子反杀黑粉！顺手赚取流量 +6.0w！", "success");
+        } else {
+          showToast("击溃黑粉！守护了直播间口碑与尊严！", "success");
+        }
         playCoinSound();
-        showToast("击溃黑粉！守护了直播间口碑与尊严！", "success");
       }
 
       if (liveSession.combo > liveSession.maxCombo) {
@@ -2736,12 +3413,18 @@
       clearInterval(liveSession.timerInterval);
       clearInterval(liveSession.spawnInterval);
 
+      var synFx = getSynergyEffects();
       if (liveSession.streamer && liveSession.streamer.id !== 'ai01') {
-        liveSession.streamer.stamina = Math.max(0, liveSession.streamer.stamina - 30);
+        var stamCost = Math.round(30 * (1 - synFx.staminaSave));
+        liveSession.streamer.stamina = Math.max(0, liveSession.streamer.stamina - stamCost);
+      }
+      if (synFx.liveScandalAdd > 0) {
+        adjustScandal(synFx.liveScandalAdd);
       }
       state.cash += liveSession.gmv;
       state.revenueTotal += liveSession.gmv;
       state.fans += liveSession.fansGain;
+      recordHighlight("第" + state.week + "周由" + (liveSession.streamer ? liveSession.streamer.name : "主播") + "带货狂揽" + liveSession.gmv.toFixed(0) + "w");
 
       document.getElementById("liveBattleView").classList.add("hidden");
       document.getElementById("liveResultView").classList.remove("hidden");
@@ -2750,9 +3433,10 @@
       document.getElementById("resFans").innerText = "+" + liveSession.fansGain.toFixed(1) + "w";
       document.getElementById("resMaxCombo").innerText = liveSession.maxCombo + "x";
 
-      // 实时更新 MCN 实力排名
+      // 实时更新 MCN 实力排名并触发企微主播私信钩子
       updateMCNRank(true);
       renderHeaderStats();
+      maybePushContextualDM('after_live');
 
       // 启动带货冷却倒计时 (排名越高冷却越少，自动更新就绪)
       startLiveCooldown();
@@ -2792,6 +3476,8 @@
     function renderHall() {
       document.getElementById("valTotalRevenue").innerText = state.revenueTotal.toFixed(1) + " 万";
       document.getElementById("valStreamerCount").innerText = ownedStreamers.length + " 位";
+      renderScandalMeter();
+      renderActiveTalentBanner();
 
       // 1. 直播间升级按钮
       var studioLvl = state.facilities.studio;
@@ -3100,6 +3786,7 @@
       if (!box) return;
       box.innerHTML = "";
       updateAllRestButton();
+      renderSynergyPanel();
 
       ownedStreamers.forEach(function(sid) {
         var s = streamersMaster[sid];
@@ -3394,6 +4081,7 @@
 
       isDrawingBlindBox = true;
       state.cash = Math.max(0, state.cash - 35.0);
+      state.blindBoxDraws = (state.blindBoxDraws || 0) + 1;
       renderHeaderStats();
 
       // 按梯队分类未签约人才池
@@ -3406,7 +4094,9 @@
 
       var roll = Math.random() * 100;
       var targetTier = 'B';
-      if (roll < 10) targetTier = 'SSR';
+      if (state.activeTalentId === 'blindbox_eye' && state.blindBoxDraws === 1) {
+        targetTier = roll < 40 ? 'SSR' : 'S';
+      } else if (roll < 10) targetTier = 'SSR';
       else if (roll < 35) targetTier = 'S';
       else if (roll < 70) targetTier = 'A';
       else targetTier = 'B';
@@ -3476,11 +4166,14 @@
 
         if (chosenStreamer.tier === 'SSR') {
           triggerMegaHornAnnouncement(chosenStreamer);
-          showToast("🎉【金色传说】一发入魂！恭喜抽中 SSR 顶流王牌【" + chosenStreamer.name + "】！全网大喇叭通报 3 轮！", "success");
+          recordHighlight("盲盒一发入魂抽出SSR顶流【" + chosenStreamer.name + "】");
+          cloudPostBroadcast('ssr_pull', "在人才盲盒一发入魂，豪揽 SSR 顶流王牌【" + chosenStreamer.name + "】(" + chosenStreamer.title + ")！");
+          showToast("🎉【金色传说】一发入魂！恭喜抽中 SSR 顶流王牌【" + chosenStreamer.name + "】！全服大喇叭通报 3 轮！", "success");
         } else {
           playCheerSound();
-          showToast("招募成功！" + chosenStreamer.tier + " 级主播【" + chosenStreamer.name + "】加盟破晓互娱！", "success");
+          showToast("招募成功！" + chosenStreamer.tier + " 级主播【" + chosenStreamer.name + "】加盟" + state.agencyName + "！", "success");
         }
+        maybePushContextualDM('after_recruit');
 
         updateMCNRank(true);
         updateBlindBoxUI();
@@ -3494,14 +4187,546 @@
     }
 
     // =========================================================================
-    // 7. 舆情商战决策 (P1 级防误触两步确认机制)
+    // 7. 黑红争议度 + QBN Storylets 动态商战与延迟因果引擎
     // =========================================================================
+    function recordHighlight(text) {
+      if (!text) return;
+      if (!Array.isArray(state.recentHighlights)) state.recentHighlights = [];
+      state.recentHighlights.push(text);
+      if (state.recentHighlights.length > 5) state.recentHighlights.shift();
+    }
+
+    function adjustScandal(delta) {
+      var synFx = getSynergyEffects();
+      var eff = delta > 0 ? Math.round(delta * synFx.scandalMult) : Math.round(delta);
+      state.scandalRisk = Math.max(0, Math.min(100, (state.scandalRisk || 0) + eff));
+      renderScandalMeter();
+    }
+
+    function renderScandalMeter() {
+      var risk = Math.max(0, Math.min(100, Number(state.scandalRisk) || 0));
+      var valEl = document.getElementById("valScandalRisk");
+      var tierEl = document.getElementById("scandalTierLabel");
+      var fillEl = document.getElementById("scandalBarFill");
+      var hintEl = document.getElementById("scandalHintText");
+      var btnCool = document.getElementById("btnCoolScandal");
+
+      var flagsCount = Object.keys(state.storyFlags || {}).filter(function(k) { return state.storyFlags[k]; }).length;
+      if (valEl) {
+        valEl.innerText = risk + "%";
+        valEl.style.color = risk >= 66 ? "#f87171" : (risk >= 31 ? "#fbbf24" : "#34d399");
+      }
+      if (fillEl) {
+        fillEl.style.width = risk + "%";
+        fillEl.style.background = risk >= 66
+          ? "linear-gradient(90deg, #ef4444, #991b1b)"
+          : (risk >= 31 ? "linear-gradient(90deg, #f59e0b, #ef4444)" : "#10b981");
+      }
+      if (tierEl) {
+        if (risk >= 66) {
+          tierEl.className = "badge badge-red";
+          tierEl.innerText = "🚨 315高危红线";
+        } else if (risk >= 31) {
+          tierEl.className = "badge badge-gold";
+          tierEl.innerText = "🔥 黑红暴走(GMV+35%)";
+        } else {
+          tierEl.className = "badge badge-green";
+          tierEl.innerText = "清流稳健";
+        }
+      }
+      if (hintEl) {
+        if (flagsCount > 0) {
+          hintEl.innerText = "⚠️ 暗处埋有 " + flagsCount + " 颗延迟雷区！随时可能被同行/315爆破！";
+          hintEl.style.color = "#fca5a5";
+        } else if (risk >= 31 && risk <= 65) {
+          hintEl.innerText = "⚡ 黑红流量红利生效中：带货 GMV +35%、涨粉 +40%！";
+          hintEl.style.color = "#fde68a";
+        } else {
+          hintEl.innerText = "黑红 31~65% 触发流量暴走(GMV+35%)，超 66% 随时引爆315！";
+          hintEl.style.color = "#94a3b8";
+        }
+      }
+      if (btnCool) {
+        var canCool = (state.cash >= 15 && (risk > 0 || flagsCount > 0));
+        btnCool.disabled = !canCool;
+        if (!canCool) btnCool.classList.add("btn-disabled");
+        else btnCool.classList.remove("btn-disabled");
+      }
+    }
+
+    function coolScandal() {
+      safeInitAudio();
+      var flagKeys = Object.keys(state.storyFlags || {}).filter(function(k) { return state.storyFlags[k]; });
+      if ((state.scandalRisk || 0) <= 0 && flagKeys.length === 0) {
+        showToast("当前风评清白无暗雷，无需公关降热！", "info");
+        return;
+      }
+      if (state.cash < 15) {
+        showToast("流动资金不足 15w，无法请公关团队拆雷降热！", "alert");
+        playAlertSound();
+        return;
+      }
+      state.cash -= 15;
+      adjustScandal(-28);
+      if (flagKeys.length > 0) {
+        delete state.storyFlags[flagKeys[0]];
+        showToast("🧹 危机公关到位！黑红度 -28%，并成功拆除 1 颗潜伏暗雷！", "success");
+      } else {
+        showToast("🧹 公关团队撤热搜降噪！黑红争议度 -28%！", "success");
+      }
+      playCoinSound();
+      renderHeaderStats();
+      renderHall();
+      saveLocalData();
+    }
+
+    // QBN Storylets 动态条件事件池 (含延迟因果爆破 + 状态条件 + 行业热梗)
+    var STORYLET_POOL = [
+      // === A. 延迟因果雷区爆破事件 (由私信或早期抉择埋雷触发) ===
+      {
+        id: 'bomb_315_liquor',
+        priority: 100,
+        tag: '🚨 延迟雷区爆破',
+        title: '315 晚会连夜点名！此前接的“高佣贴牌茅台”东窗事发！',
+        desc: '几周前偷偷接下的 45% 暴利贴牌酒被职业打假人送检实锤，直播间评论区瞬间沦陷，全网热搜第一！',
+        condition: function() { return state.storyFlags && state.storyFlags.fake_liquor_bomb && (state.week - state.storyFlags.fake_liquor_bomb >= 2); },
+        options: [
+          {
+            title: '1. 壮士断腕！连夜宣布“退一赔三”并全网公开致歉',
+            sub: '现金 -75w，口碑止血 +12，黑红清零，拆除假酒雷区',
+            action: function() {
+              state.cash -= 75;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 12);
+              state.scandalRisk = 0;
+              delete state.storyFlags.fake_liquor_bomb;
+              recordHighlight('315假酒危机中豪掷75w退一赔三保住口碑');
+            }
+          },
+          {
+            title: '2. 甩锅给源头供应链，让主播直播间声泪俱下哭诉也是受害者',
+            sub: '现金 -20w，口碑 -22，黑红度 +25，但意外蹭到 +40w 吃瓜粉',
+            action: function() {
+              state.cash -= 20;
+              state.pr = Math.max(0, state.pr - 22);
+              state.fans += 40;
+              adjustScandal(25);
+              delete state.storyFlags.fake_liquor_bomb;
+              recordHighlight('315风波甩锅供应链靠哭播反涨40w黑红粉');
+            }
+          }
+        ]
+      },
+      {
+        id: 'bomb_su_poach',
+        priority: 95,
+        tag: '💔 延迟因果爆发',
+        title: '前东家天娱开出 500 万签字费，密约苏晚晴跳槽！',
+        desc: '之前你画的大饼让她彻底心寒。狗仔拍到天娱高管在咖啡厅递出解约代付协议，她等你最后一通电话。',
+        condition: function() { return state.storyFlags && state.storyFlags.su_resentment && (state.week - state.storyFlags.su_resentment >= 1); },
+        options: [
+          {
+            title: '1. 掏出真金白银：直接给 35w 股权分红与永久一姐承诺',
+            sub: '现金 -35w，苏晚晴带货力 +12、体力回满，彻底化解心结',
+            action: function() {
+              state.cash -= 35;
+              if (streamersMaster.su) { streamersMaster.su.sales += 12; streamersMaster.su.stamina = 100; }
+              delete state.storyFlags.su_resentment;
+              recordHighlight('35w重金留住苏晚晴粉碎天娱挖角阴谋');
+            }
+          },
+          {
+            title: '2. 强硬搬出竞业协议，同时紧急力捧其他主播接棒',
+            sub: '现金 +15w(违约补偿)，口碑 -14，黑红度 +18',
+            action: function() {
+              state.cash += 15;
+              state.pr = Math.max(0, state.pr - 14);
+              adjustScandal(18);
+              delete state.storyFlags.su_resentment;
+              recordHighlight('硬刚违约金强留元老引发步行街激烈站队');
+            }
+          }
+        ]
+      },
+      {
+        id: 'bomb_ad_lawsuit',
+        priority: 92,
+        tag: '⚖️ 司法风暴',
+        title: '职业打假人团伙突袭起诉，指控直播间违反《广告法》！',
+        desc: '此前擦边宣传的极限词全被录屏公证，法院传票与自媒体爆料同时刷屏步行街。',
+        condition: function() { return state.storyFlags && state.storyFlags.lawsuit_bomb && (state.week - state.storyFlags.lawsuit_bomb >= 2); },
+        options: [
+          {
+            title: '1. 聘请顶级律所应诉，同时全线商品升级合规检测',
+            sub: '现金 -35w，口碑 +8，黑红度 -20',
+            action: function() {
+              state.cash -= 35;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 8);
+              adjustScandal(-20);
+              delete state.storyFlags.lawsuit_bomb;
+              recordHighlight('花35w硬刚职业打假人洗白合规');
+            }
+          },
+          {
+            title: '2. 私下破财免灾和解，封口费换撤诉',
+            sub: '现金 -50w，口碑 -6，黑红度 +10',
+            action: function() {
+              state.cash -= 50;
+              state.pr = Math.max(0, state.pr - 6);
+              adjustScandal(10);
+              delete state.storyFlags.lawsuit_bomb;
+              recordHighlight('50w破财私了广告法风波');
+            }
+          }
+        ]
+      },
+      // === B. 高黑红度 / 阵容条件触发事件 ===
+      {
+        id: 'cond_high_scandal_hupu',
+        priority: 85,
+        tag: '🔥 步行街热帖爆破',
+        title: '虎扑步行街万字实锤长帖冲上热榜第一，全网要求给个说法！',
+        desc: '因为近期黑红争议值居高不下，有匿名前员工发长文曝光你家“演戏砍价”剧本，点亮数瞬间破 3 万！',
+        condition: function() { return (state.scandalRisk || 0) >= 60; },
+        options: [
+          {
+            title: '1. 本人亲自注册虎扑小号进帖对线 + 晒全套流水质检自证',
+            sub: '现金 -18w，口碑 +15，黑红度 -35，反吸 +25w 硬核 JRs 粉',
+            action: function() {
+              state.cash -= 18;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 15);
+              state.fans += 25;
+              adjustScandal(-35);
+              recordHighlight('亲自下场虎扑对线晒铁证上演史诗级口碑逆转');
+            }
+          },
+          {
+            title: '2. 不装了！顺势自黑玩梗，推出“剧本同款 9.9 秒杀专场”',
+            sub: '现金 +65w，粉丝 +45w，但口碑 -18，黑红度再 +12',
+            action: function() {
+              state.cash += 65;
+              state.fans += 45;
+              state.pr = Math.max(0, state.pr - 18);
+              adjustScandal(12);
+              recordHighlight('在步行街自黑玩梗狂赚65w彻底化身黑红巨鳄');
+            }
+          }
+        ]
+      },
+      {
+        id: 'cond_ai_regulation',
+        priority: 75,
+        tag: '🤖 算力新规',
+        title: '平台突查“纯无人 AI 直播间”，要求标注数字人水印！',
+        desc: '你的 AI 矩阵全天候狂吸 GMV 引起平台风控注意，竞争对手趁机举报你用录播割韭菜。',
+        condition: function() { return ownedStreamers.indexOf('ai01') !== -1 && state.usedStoryletIds.indexOf('cond_ai_regulation') === -1; },
+        options: [
+          {
+            title: '1. 率先公开 AI 实时交互技术开源演示，抢占合规话语权',
+            sub: '资金 -25w，科技度 +10，口碑 +12，全网粉丝 +30w',
+            action: function() {
+              state.cash -= 25;
+              state.techScore += 10;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 12);
+              state.fans += 30;
+              recordHighlight('开源演示AI直播技术拿下平台合规标杆');
+            }
+          },
+          {
+            title: '2. 给数字人套上“半人工实时配音”马甲继续满负荷变现',
+            sub: '资金 +55w，黑红度 +16，科技度 +4',
+            action: function() {
+              state.cash += 55;
+              state.techScore += 4;
+              adjustScandal(16);
+              recordHighlight('用AI套皮马甲一周狂揽55w');
+            }
+          }
+        ]
+      },
+      {
+        id: 'cond_roster_drama',
+        priority: 72,
+        tag: '🎭 内部修罗场',
+        title: '旗下主播团队爆发“C位排班之争”，直播间互相阴阳怪气！',
+        desc: '随着签约矩阵壮大，黄金档坑位僧多粥少，两位主播在连麦时当着十万观众面冷嘲热讽。',
+        condition: function() { return ownedStreamers.length >= 3 && state.usedStoryletIds.indexOf('cond_roster_drama') === -1; },
+        options: [
+          {
+            title: '1. 顺水推舟搞“破晓杯带货PK赛”，把内讧变全民吃瓜流量',
+            sub: '资金 +45w，粉丝 +50w，黑红度 +18',
+            action: function() {
+              state.cash += 45;
+              state.fans += 50;
+              adjustScandal(18);
+              recordHighlight('把内部主播内讧包装成PK赛狂吸50w吃瓜粉');
+            }
+          },
+          {
+            title: '2. 内部团建定规矩：按带货转化透明分账，彻底平息怨气',
+            sub: '资金 -15w，口碑 +10，全体主播带货力 +4',
+            action: function() {
+              state.cash -= 15;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 10);
+              ownedStreamers.forEach(function(sid) { if (streamersMaster[sid]) streamersMaster[sid].sales += 4; });
+              recordHighlight('推行透明分账机制让全员战力暴涨');
+            }
+          }
+        ]
+      },
+      // === C. 高复玩度动态行业热梗 Storylet 池 ===
+      {
+        id: 'st_price_war',
+        priority: 50,
+        tag: '⚔️ 全网最低价之争',
+        title: '前东家天娱联合品牌方逼签“全网最低价排他协议”',
+        desc: '如果签了，其他品牌会把你拉黑；如果不签，天娱就要买断你的爆款货源。',
+        condition: function() { return state.usedStoryletIds.indexOf('st_price_war') === -1; },
+        options: [
+          {
+            title: '1. 甩出底牌！直接联系源头工厂推“破晓严选自营白牌”',
+            sub: '资金 -30w，现金流大增(下周起口碑+10)，粉丝 +35w，复仇度 +6',
+            action: function() {
+              state.cash -= 30;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 10);
+              state.fans += 35;
+              state.revengeScore += 6;
+              recordHighlight('硬刚前东家排他协议推出自营白牌');
+            }
+          },
+          {
+            title: '2. 假意服软签短约，趁机把对方库存高价甩卖套现',
+            sub: '资金 +70w，黑红度 +15，复仇度 +4',
+            action: function() {
+              state.cash += 70;
+              adjustScandal(15);
+              state.revengeScore += 4;
+              recordHighlight('借壳套现前东家爆款库存狂赚70w');
+            }
+          }
+        ]
+      },
+      {
+        id: 'st_hupu_goddess',
+        priority: 50,
+        tag: '🏀 步行街爆梗',
+        title: '虎扑“女神大赛”出圈，网友投票让你家主播当特邀颁奖嘉宾',
+        desc: '虎扑官方发来合作邀请函，如果玩梗到位，能瞬间收割千万级直男消费力！',
+        condition: function() { return state.usedStoryletIds.indexOf('st_hupu_goddess') === -1; },
+        options: [
+          {
+            title: '1. 零出场费赞助十万件联名球衣，彻底打通 JRs 信任壁垒',
+            sub: '资金 -20w，粉丝 +75w，口碑 +16，黑马度 +6',
+            action: function() {
+              state.cash -= 20;
+              state.fans += 75;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 16);
+              state.rogueScore += 6;
+              recordHighlight('零出场费赞助虎扑女神大赛收割75w死忠JR');
+            }
+          },
+          {
+            title: '2. 趁热度上架高溢价“情怀盲盒球鞋”收割一波',
+            sub: '资金 +85w，口碑 -10，黑红度 +18',
+            action: function() {
+              state.cash += 85;
+              state.pr = Math.max(0, state.pr - 10);
+              adjustScandal(18);
+              recordHighlight('借虎扑女神大赛卖盲盒球鞋暴赚85w');
+            }
+          }
+        ]
+      },
+      {
+        id: 'st_short_drama',
+        priority: 50,
+        tag: '🎬 短剧风口',
+        title: '霸总复仇短剧《重生之我在MCN当大佬》邀你植入冠名',
+        desc: '充值投流回报率极其夸张，但剧情极度狗血抽象，品牌形象可能跟着一起魔性化。',
+        condition: function() { return state.usedStoryletIds.indexOf('st_short_drama') === -1; },
+        options: [
+          {
+            title: '1. 梭哈 40w 独家冠名，把前东家老板写成第一集炮灰反派',
+            sub: '资金 +95w(分账回款)，粉丝 +55w，黑红度 +16，复仇度 +8',
+            action: function() {
+              state.cash += 55;
+              state.fans += 55;
+              adjustScandal(16);
+              state.revengeScore += 8;
+              recordHighlight('投拍复仇爽文短剧把前东家拍成炮灰爆赚55w');
+            }
+          },
+          {
+            title: '2. 放弃狗血短剧，转而自制高质量行业纪录片立人设',
+            sub: '资金 -15w，口碑 +14，粉丝 +22w，黑红度 -12',
+            action: function() {
+              state.cash -= 15;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 14);
+              state.fans += 22;
+              adjustScandal(-12);
+            }
+          }
+        ]
+      },
+      {
+        id: 'st_sea_overseas',
+        priority: 50,
+        tag: '🌏 跨境出海',
+        title: '东南亚 TikTok 跨境直播潮爆发，招商局邀你建海外仓',
+        desc: '国内卷成红海，海外客单价利润极高，但前期物流压款不菲。',
+        condition: function() { return state.usedStoryletIds.indexOf('st_sea_overseas') === -1; },
+        options: [
+          {
+            title: '1. 重仓 45w 建自营海外仓，双语直播间降维打击东南亚',
+            sub: '资金 -45w → 结算回流 +125w(净赚80w)，粉丝 +60w，科技度 +5',
+            action: function() {
+              state.cash += 80;
+              state.fans += 60;
+              state.techScore += 5;
+              recordHighlight('出海东南亚建海外仓降维打击净赚80w');
+            }
+          },
+          {
+            title: '2. 稳健收割国内基本盘，只做无货源轻资产试水',
+            sub: '资金 +35w，口碑 +6',
+            action: function() {
+              state.cash += 35;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 6);
+            }
+          }
+        ]
+      },
+      {
+        id: 'st_charity_farm',
+        priority: 50,
+        tag: '🌾 助农破圈',
+        title: '山区果农万斤高山苹果滞销，央视客户端向全网 MCN 求援',
+        desc: '纯公益零佣金几乎不赚钱还得倒贴冷链运费，但全网正能量曝光无价。',
+        condition: function() { return state.usedStoryletIds.indexOf('st_charity_farm') === -1; },
+        options: [
+          {
+            title: '1. 全员零佣金连播 12 小时，自掏 25w 补贴顺丰冷链！',
+            sub: '资金 -25w，口碑 +22，粉丝 +85w，黑红度 -30，黑马度 +8',
+            action: function() {
+              state.cash -= 25;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 22);
+              state.fans += 85;
+              adjustScandal(-30);
+              state.rogueScore += 8;
+              recordHighlight('自掏25w冷链补贴零佣金助农登上央视点赞');
+            }
+          },
+          {
+            title: '2. 正常抽成 10% 做常规专场，商业归商业',
+            sub: '资金 +35w，粉丝 +18w，口碑 +2',
+            action: function() {
+              state.cash += 35;
+              state.fans += 18;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 2);
+            }
+          }
+        ]
+      },
+      {
+        id: 'st_tax_gray',
+        priority: 50,
+        tag: '💼 财税博弈',
+        title: '神秘财税顾问推销“海南离岸核定征收避税大法”',
+        desc: '账面上立刻能多留出 90 万现金流，但合规边界极度模糊，随时可能埋下税务雷区！',
+        condition: function() { return state.usedStoryletIds.indexOf('st_tax_gray') === -1; },
+        options: [
+          {
+            title: '1. 拒绝灰色操作！阳光纳税，直接晒出完税凭证立金字招牌',
+            sub: '资金 -10w，口碑 +15，黑红度 -15',
+            action: function() {
+              state.cash -= 10;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 15);
+              adjustScandal(-15);
+              recordHighlight('晒出阳光完税凭证赢得步行街满屏点赞');
+            }
+          },
+          {
+            title: '2. 撑死胆大的！先落袋 90w 现金扩张矩阵再说',
+            sub: '资金 +90w，黑红度 +24，⚠️ 埋下【广告与财税暗雷】',
+            action: function() {
+              state.cash += 90;
+              adjustScandal(24);
+              state.storyFlags.lawsuit_bomb = state.week;
+              recordHighlight('冒险套现90w节税资金在雷区边缘疯狂试探');
+            }
+          }
+        ]
+      },
+      {
+        id: 'st_ipo_roadshow',
+        priority: 45,
+        tag: '🔔 资本路演',
+        title: '香港投行主动接洽 Pre-IPO 估值路演，要求做一轮冲刺数据',
+        desc: '估值翻倍的机会就在眼前，取决于你选择“买量做爆 GMV”还是“夯实真实复购”。',
+        condition: function() { return state.usedStoryletIds.indexOf('st_ipo_roadshow') === -1; },
+        options: [
+          {
+            title: '1. 猛砸流量投放做爆单月 GMV 曲线，拿下高估值融资！',
+            sub: '资金 +110w，黑红度 +16，粉丝 +40w',
+            action: function() {
+              state.cash += 110;
+              state.fans += 40;
+              adjustScandal(16);
+              recordHighlight('香港路演刷爆GMV曲线拿下110w融资');
+            }
+          },
+          {
+            title: '2. 展示硬核真实复购率与零退货口碑，签长期价值投资',
+            sub: '资金 +65w，口碑 +14，黑红度 -10',
+            action: function() {
+              state.cash += 65;
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 14);
+              adjustScandal(-10);
+              recordHighlight('凭硬核真实复购拿下价值投资机构背书');
+            }
+          }
+        ]
+      }
+    ];
+
+    function getCurrentWeekEvent() {
+      // 第 1 周与第 4 周保持经典里程碑
+      if (state.week === 1) return weeklyEvents[0];
+      if (state.week === 4) return weeklyEvents[3];
+
+      // 如果本周已抽定了动态事件，直接返回，切 Tab 不刷新作弊
+      if (state.currentEventId) {
+        var cached = STORYLET_POOL.find(function(e) { return e.id === state.currentEventId; });
+        if (cached) return cached;
+        var cachedLegacy = weeklyEvents.find(function(e) { return ('legacy_' + e.week) === state.currentEventId; });
+        if (cachedLegacy) return cachedLegacy;
+      }
+
+      // 按 QBN 优先级筛选符合条件的 Storylets
+      var candidates = STORYLET_POOL.filter(function(ev) {
+        try { return ev.condition(); } catch (e) { return false; }
+      });
+
+      if (candidates.length > 0) {
+        candidates.sort(function(a, b) { return (b.priority || 0) - (a.priority || 0); });
+        var topPrio = candidates[0].priority || 0;
+        var topTier = candidates.filter(function(ev) { return (ev.priority || 0) === topPrio; });
+        var picked = topTier[Math.floor(Math.random() * topTier.length)];
+        state.currentEventId = picked.id;
+        return picked;
+      }
+
+      // 兜底回退到经典事件池（支持无尽模式循环）
+      var fallback = weeklyEvents[(state.week - 1) % weeklyEvents.length];
+      state.currentEventId = 'legacy_' + fallback.week;
+      return fallback;
+    }
+
     function renderEventView() {
-      var curEv = weeklyEvents[Math.min(state.week - 1, weeklyEvents.length - 1)];
+      var curEv = getCurrentWeekEvent();
       if (!curEv) return;
 
       document.getElementById("evTag").innerText = curEv.tag;
-      document.getElementById("evWeekHint").innerText = "第 " + state.week + " 周商战决策";
+      document.getElementById("evWeekHint").innerText = "第 " + state.week + " 周动态商战";
       document.getElementById("evTitle").innerText = curEv.title;
       document.getElementById("evDesc").innerText = curEv.desc;
 
@@ -3519,13 +4744,14 @@
 
       curEv.options.forEach(function(opt, idx) {
         var btn = document.createElement("button");
+        btn.type = "button";
         btn.className = "opt-card";
         btn.id = "evOpt-" + idx;
         btn.setAttribute("data-action", "select-event-opt");
         btn.setAttribute("data-index", idx);
         btn.innerHTML = 
-          '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + opt.title + '</span>' +
-          '<span style="font-size: 11px; color: #38bdf8;">' + opt.sub + '</span>';
+          '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + escapeHTML(opt.title) + '</span>' +
+          '<span style="font-size: 11px; color: #38bdf8;">' + escapeHTML(opt.sub) + '</span>';
         box.appendChild(btn);
       });
     }
@@ -3533,26 +4759,21 @@
     function selectEventOption(idx) {
       safeInitAudio();
       selectedEventOptionIndex = idx;
-      var curEv = weeklyEvents[Math.min(state.week - 1, weeklyEvents.length - 1)];
+      var curEv = getCurrentWeekEvent();
       if (!curEv || !curEv.options[idx]) return;
 
       var opt = curEv.options[idx];
-
-      // 高亮选中的卡片
       curEv.options.forEach(function(o, i) {
         var card = document.getElementById("evOpt-" + i);
         if (card) {
-          if (i === idx) {
-            card.classList.add("selected");
-          } else {
-            card.classList.remove("selected");
-          }
+          if (i === idx) card.classList.add("selected");
+          else card.classList.remove("selected");
         }
       });
 
       var infoBox = document.getElementById("evProjectedInfo");
       infoBox.classList.remove("hidden");
-      infoBox.innerHTML = '<strong>当前选定方案：</strong>' + opt.title + '<br><span style="color:#94a3b8;">效果概览：' + opt.sub + '</span>';
+      infoBox.innerHTML = '<strong>当前选定方案：</strong>' + escapeHTML(opt.title) + '<br><span style="color:#94a3b8;">效果概览：' + escapeHTML(opt.sub) + '</span>';
 
       var confirmBtn = document.getElementById("btnConfirmEventChoice");
       confirmBtn.disabled = false;
@@ -3564,20 +4785,301 @@
     function executeEventChoice() {
       if (selectedEventOptionIndex === null) return;
       safeInitAudio();
-      var curEv = weeklyEvents[Math.min(state.week - 1, weeklyEvents.length - 1)];
+      var curEv = getCurrentWeekEvent();
       if (!curEv || !curEv.options[selectedEventOptionIndex]) return;
 
       var opt = curEv.options[selectedEventOptionIndex];
-
-      // 执行动作
       opt.action();
 
-      // 展现周度战报结算卡片
+      if (curEv.id && state.usedStoryletIds.indexOf(curEv.id) === -1) {
+        state.usedStoryletIds.push(curEv.id);
+      }
+      state.currentEventId = null;
       showWeekRecapModal(opt);
     }
 
     // =========================================================================
-    // 8. 周度战报结算模态框 (Weekly Turn Settlement Recap)
+    // 7.5 企微/主播深夜私信引擎 (表里世界情感钩子 + 延迟因果埋雷)
+    // =========================================================================
+    var DM_TEMPLATES = [
+      {
+        id: 'dm_su_midnight',
+        streamerId: 'su',
+        time: '凌晨 02:14',
+        text: '老板睡了吗？这周我看公司都在忙新主播和盲盒，我以前可是为了你才从天娱出来的……下周的头牌档期还是我的吧？',
+        options: [
+          {
+            label: '转账 8w 奖金+书面确认C位（忠诚拉满，带货力+6）',
+            run: function() {
+              state.cash = Math.max(0, state.cash - 8);
+              if (streamersMaster.su) streamersMaster.su.sales += 6;
+              return '苏晚晴秒回“懂事的老板最好命！明天给你干爆 GMV！”（带货力+6）';
+            }
+          },
+          {
+            label: '画期权大饼先省钱（⚠️可能埋下跳槽怨恨暗雷）',
+            run: function() {
+              state.storyFlags.su_resentment = state.week;
+              return '她回了个“好的老板，晚安。”——但朋友圈瞬间对你不可见了…';
+            }
+          }
+        ]
+      },
+      {
+        id: 'dm_yang_fake_liquor',
+        streamerId: 'yang',
+        time: '深夜 23:48',
+        text: '哥！！有个渠道商私聊我推“内部特供贴牌茅台”，给 45% 变态佣金！咱们挂一场小黄车直接净赚 60w，干不干？！',
+        options: [
+          {
+            label: '富贵险中求！干一票！（现金+60w，黑红+28，⚠️埋315假酒暗雷）',
+            run: function() {
+              state.cash += 60;
+              adjustScandal(28);
+              state.storyFlags.fake_liquor_bomb = state.week;
+              recordHighlight('深夜偷接高佣贴牌酒单狂揽60w');
+              return '当晚小黄车直接秒空入账 +60w！但后台已收到几条“扫码查不到防伪”的私信…';
+            }
+          },
+          {
+            label: '严词拒绝！咱宁可少赚绝不碰假货（口碑+8，黑红-10）',
+            run: function() {
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 8);
+              adjustScandal(-10);
+              return '疯狂小阳挠头：“行，听哥的！把这聊天记录截图发步行街立波正能量人设！”';
+            }
+          }
+        ]
+      },
+      {
+        id: 'dm_luo_adlaw',
+        streamerId: 'luo',
+        time: '上午 09:30',
+        text: '主理人，我刚复盘了昨晚切片，有几句“全网第一、绝对最低”的话术明显游走在《广告法》边缘，建议立刻自查。',
+        options: [
+          {
+            label: '火速下架整改并自罚 10w 补贴粉丝（口碑+12，黑红-20）',
+            run: function() {
+              state.cash = Math.max(0, state.cash - 10);
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 12);
+              adjustScandal(-20);
+              delete state.storyFlags.lawsuit_bomb;
+              return '罗老师赞许点头：“守法经营才能穿越周期，步行街老哥给你打9.9分！”';
+            }
+          },
+          {
+            label: '不浮夸怎么转化？先冲完这波业绩再说（现金+25w，黑红+20，⚠️埋法务暗雷）',
+            run: function() {
+              state.cash += 25;
+              adjustScandal(20);
+              state.storyFlags.lawsuit_bomb = state.week;
+              return '转化暴涨 +25w，但罗老师默默截了个屏留作免责证据…';
+            }
+          }
+        ]
+      },
+      {
+        id: 'dm_dong_poem',
+        streamerId: 'dong',
+        time: '傍晚 19:20',
+        text: '老板，我写了篇关于“理想与麦田”的万字长文，今晚直播想停掉 10 分钟卖货纯讲文学，粉丝可能会很感动。',
+        options: [
+          {
+            label: '全力支持！咱破晓不差这 10 分钟（口碑+10，粉丝+28w）',
+            run: function() {
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 10);
+              state.fans += 28;
+              return '金句切片一夜刷屏全网，涨粉 +28w，步行街直呼“降维打击”！';
+            }
+          },
+          {
+            label: '婉拒，要求多上 3 款高客单价大米链接（现金+30w，黑红+8）',
+            run: function() {
+              state.cash += 30;
+              adjustScandal(8);
+              return '当晚 GMV 多赚 +30w，但评论区有老粉调侃“还是资本的味道”。';
+            }
+          }
+        ]
+      },
+      {
+        id: 'dm_ai_overclock',
+        streamerId: 'ai01',
+        time: '凌晨 04:01',
+        text: '[系统告警] 检测到夜间东南亚流量低谷期，是否开启 GPU 超频模式通宵收割海外夜猫子订单？',
+        options: [
+          {
+            label: '立刻超频满载运转！（现金+38w，黑红+10）',
+            run: function() {
+              state.cash += 38;
+              adjustScandal(10);
+              return '算力拉满，天亮醒来账上多出 +38w，机房电表转得冒火星！';
+            }
+          },
+          {
+            label: '保持冷静节能模式，顺便做一次模型防翻车微调（口碑+6）',
+            run: function() {
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 6);
+              return '模型零胡言乱语，粉丝纷纷点赞“比真人还靠谱”。';
+            }
+          }
+        ]
+      },
+      {
+        id: 'dm_generic_burnout',
+        streamerId: null,
+        time: '深夜 01:05',
+        text: '老板，最近连轴转拍短视频+带货实在有点顶不住了，嗓子都哑了……能不能给报销一次高端理疗？',
+        options: [
+          {
+            label: '批！安排 6w 顶级理疗+红包（全员体力+25%，口碑+5）',
+            run: function() {
+              state.cash = Math.max(0, state.cash - 6);
+              state.pr = Math.min(getSynergyEffects().prCap, state.pr + 5);
+              ownedStreamers.forEach(function(sid) {
+                if (streamersMaster[sid] && sid !== 'ai01') {
+                  streamersMaster[sid].stamina = Math.min(100, streamersMaster[sid].stamina + 25);
+                }
+              });
+              return '群里瞬间刷屏“老板大气！明天继续拼命干翻天娱！”';
+            }
+          },
+          {
+            label: '画狼性文化大饼：年轻人要敢拼！（省钱，黑红+12）',
+            run: function() {
+              adjustScandal(12);
+              return '群里陷入死一般寂静，疑似有人把聊天记录投稿给了职场八卦号…';
+            }
+          }
+        ]
+      }
+    ];
+
+    function maybePushContextualDM(trigger) {
+      if (!Array.isArray(state.dmInbox)) state.dmInbox = [];
+      if (!Array.isArray(state.usedDmIds)) state.usedDmIds = [];
+      var unreadCount = state.dmInbox.filter(function(m) { return !m.replied; }).length;
+      if (unreadCount >= 3) { updateDmBadge(); return; }
+
+      var pool = DM_TEMPLATES.filter(function(t) {
+        if (state.usedDmIds.indexOf(t.id) !== -1) return false;
+        if (t.streamerId && ownedStreamers.indexOf(t.streamerId) === -1) return false;
+        return true;
+      });
+      if (pool.length === 0) { updateDmBadge(); return; }
+
+      var chosen = pool[0];
+      if (trigger === 'init') {
+        chosen = pool.find(function(t) { return t.id === 'dm_su_midnight'; }) || pool[0];
+      } else {
+        chosen = pool[Math.floor(Math.random() * pool.length)];
+      }
+
+      var senderId = chosen.streamerId || ownedStreamers[ownedStreamers.length - 1] || 'su';
+      var sender = streamersMaster[senderId] || streamersMaster.su;
+      state.usedDmIds.push(chosen.id);
+      state.dmInbox.unshift({
+        uid: chosen.id + '_' + Date.now(),
+        templateId: chosen.id,
+        senderId: senderId,
+        senderName: sender.name,
+        time: chosen.time,
+        text: chosen.text,
+        replied: false,
+        replySummary: ''
+      });
+      if (state.dmInbox.length > 10) state.dmInbox.pop();
+      updateDmBadge();
+      if (trigger !== 'init') {
+        showToast("💬 收到【" + sender.name + "】发来的深夜私信，请尽快查看！", "info");
+      }
+    }
+
+    function updateDmBadge() {
+      var badge = document.getElementById("dmUnreadBadge");
+      if (!badge) return;
+      var cnt = (state.dmInbox || []).filter(function(m) { return !m.replied; }).length;
+      if (cnt > 0) {
+        badge.innerText = cnt;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+    }
+
+    function openDMModal() {
+      safeInitAudio();
+      renderDMList();
+      document.getElementById("dmModal").classList.remove("hidden");
+    }
+
+    function closeDMModal() {
+      document.getElementById("dmModal").classList.add("hidden");
+    }
+
+    function renderDMList() {
+      var box = document.getElementById("dmListBox");
+      if (!box) return;
+      box.innerHTML = "";
+      var list = state.dmInbox || [];
+      if (list.length === 0) {
+        box.innerHTML = '<div style="text-align:center;color:#94a3b8;font-size:12px;padding:24px;">暂无未读私信。完成一场带货或招募新主播后，主播们会给你发深夜微信！</div>';
+        return;
+      }
+      list.forEach(function(item) {
+        var tpl = DM_TEMPLATES.find(function(t) { return t.id === item.templateId; });
+        var s = streamersMaster[item.senderId] || streamersMaster.su;
+        var card = document.createElement("div");
+        card.className = "dm-card";
+        var html =
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<div style="display:flex;align-items:center;gap:8px;">' +
+              getPersonifiedAvatarSVG(s, 36) +
+              '<div>' +
+                '<div style="font-size:12.5px;font-weight:700;color:#fff;">' + escapeHTML(item.senderName) + (!item.replied ? ' <span class="badge badge-red">未读</span>' : ' <span class="badge badge-green">已回复</span>') + '</div>' +
+                '<div style="font-size:10px;color:#94a3b8;">' + escapeHTML(item.time) + ' · 内部企微私信</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="dm-bubble">' + escapeHTML(item.text) + '</div>';
+
+        if (!item.replied && tpl) {
+          html += '<div style="display:flex;flex-direction:column;gap:6px;">';
+          tpl.options.forEach(function(opt, idx) {
+            html += '<button type="button" class="opt-card" data-action="reply-dm" data-dm-uid="' + escapeHTML(item.uid) + '" data-opt-idx="' + idx + '" style="padding:8px 10px;font-size:11.5px;color:#e2e8f0;">' + escapeHTML(opt.label) + '</button>';
+          });
+          html += '</div>';
+        } else {
+          html += '<div style="font-size:11px;color:#34d399;background:rgba(16,185,129,0.1);padding:6px 8px;border-radius:6px;">✅ 处理结果：' + escapeHTML(item.replySummary || '已妥善处理') + '</div>';
+        }
+        card.innerHTML = html;
+        box.appendChild(card);
+      });
+    }
+
+    function replyToDM(uid, optIdx) {
+      safeInitAudio();
+      var item = (state.dmInbox || []).find(function(m) { return m.uid === uid; });
+      if (!item || item.replied) return;
+      var tpl = DM_TEMPLATES.find(function(t) { return t.id === item.templateId; });
+      if (!tpl || !tpl.options[optIdx]) return;
+
+      var summary = tpl.options[optIdx].run();
+      item.replied = true;
+      item.replySummary = summary;
+
+      playCheerSound();
+      showToast("💬 " + summary, "success");
+      updateDmBadge();
+      renderDMList();
+      renderHeaderStats();
+      renderHall();
+      renderStreamersList();
+      saveLocalData();
+    }
+
+    // =========================================================================
+    // 8. 周度战报结算模态框 (Peak-End + AI 实时神评)
     // =========================================================================
     function showWeekRecapModal(chosenOpt) {
       var modal = document.getElementById("weekRecapModal");
@@ -3601,16 +5103,13 @@
       document.getElementById("recapPRDelta").innerText = (prDelta >= 0 ? "+" : "") + Math.round(prDelta) + "分";
       document.getElementById("recapPRDelta").style.color = prDelta >= 0 ? "#34d399" : "#f87171";
 
-      // 动态生成 JRs 步行街锐评
       var comments = [
         "“这波商业绝杀给9.8分，直接把前东家脸打肿了！亮了(2480)”",
-        "“步行街名宿实至名归，破晓互娱这波操作属于教科书级别！亮了(1892)”",
+        "“步行街名宿实至名归，" + state.agencyName + "这波操作属于教科书级别！亮了(1892)”",
         "“原以为要被商战打垮，结果反手一记绝杀逆风翻盘，实战利器！亮了(3210)”",
-        "“JRs大呼过瘾！这格局和手速，破晓互娱已经是年度黑马GOAT了！亮了(4155)”",
-        "“这运营思路太硬核了，前东家现在怕是肠子都悔青了！亮了(2770)”"
+        "“JRs大呼过瘾！这格局和手速，" + state.agencyName + "已经是年度黑马GOAT了！亮了(4155)”"
       ];
-      var randComment = comments[Math.floor(Math.random() * comments.length)];
-      document.getElementById("recapHupuComment").innerText = randComment;
+      document.getElementById("recapHupuComment").innerText = comments[Math.floor(Math.random() * comments.length)];
 
       playCheerSound();
       modal.classList.remove("hidden");
@@ -3624,11 +5123,15 @@
 
     function advanceToNextWeek() {
       if (state.cash < 0) {
-        triggerBankruptcy("资金链彻底断裂，无法支付主播薪资与场地租金，宣告破产清算。");
+        triggerBankruptcy("资金链彻底断裂，无法支付主播薪资与场地租金，宣告破产清算。", 'fail_bankrupt');
         return;
       }
       if (state.pr <= 0) {
-        triggerBankruptcy("JRs口碑彻底塌房至0分，全网抵制引发监管全面勒令关停。");
+        triggerBankruptcy("JRs口碑彻底塌房至0分，全网抵制引发监管全面勒令关停。", 'fail_banned');
+        return;
+      }
+      if ((state.scandalRisk || 0) >= 100) {
+        triggerBankruptcy("黑红争议值飙升至 100% 爆表，315 特别节目全程直播点名，全网封禁退网！", 'fail_315');
         return;
       }
 
@@ -3637,18 +5140,15 @@
       clearInterval(liveCooldownTimer);
       updateCooldownUI();
 
-      // 自建供应链每周自动恢复 3 点口碑
+      var synFx = getSynergyEffects();
       if (state.facilities.supplyChain > 0) {
-        state.pr = Math.min(100, state.pr + 3 * state.facilities.supplyChain);
+        state.pr = Math.min(synFx.prCap, state.pr + 3 * state.facilities.supplyChain);
+      }
+      if (synFx.weeklyPR > 0) {
+        state.pr = Math.min(synFx.prCap, state.pr + synFx.weeklyPR);
       }
 
-      // 更新周初数据快照
-      weekStartSnapshot = {
-        cash: state.cash,
-        fans: state.fans,
-        pr: state.pr
-      };
-
+      weekStartSnapshot = { cash: state.cash, fans: state.fans, pr: state.pr };
       saveLocalData();
 
       if (state.week > state.maxWeek && !state.endless) {
@@ -3656,33 +5156,187 @@
         return;
       }
 
-      updateMCNRank(false);
+      maybePushContextualDM('new_week');
+      updateMCNRank(true);
       renderHeaderStats();
-      showToast("📅 进入第 " + state.week + " 周！日常经营已开启，请筹备新一轮直播！", "info");
+      showToast("📅 进入第 " + state.week + " 周！新的动态商战与私信已送达！", "info");
       switchTab('hall');
     }
 
     // =========================================================================
-    // 9. 终局结算与虎扑评分体系
+    // 9. 跨周目肉鸽传承 (名宿殿堂 / 天赋3选1 / 10大结局图鉴 / 海报与合规复制)
     // =========================================================================
-    function triggerBankruptcy(reason) {
+    var TALENT_CATALOG = [
+      { id: 'supply_iron', tier: 'blue', icon: '📦', name: '铁血供应链', cost: 0, desc: '开局自建质检供应链直达 Lv.2，每周自动回血口碑' },
+      { id: 'viral_maker', tier: 'blue', icon: '📈', name: '爆款制造机', cost: 0, desc: '开局全网粉丝 +35w，自带自然热搜体质' },
+      { id: 'energy_boost', tier: 'blue', icon: '⚡', name: '精力永动机', cost: 0, desc: '所有带货直播冷却额外 -4 秒，节奏拉满' },
+      { id: 'pr_master', tier: 'purple', icon: '🛡️', name: '公关祖师爷', cost: 0, desc: '全篇所有黑红争议增幅减半，稳如老狗' },
+      { id: 'troll_hunter', tier: 'purple', icon: '🥊', name: '步行街水军头子', cost: 0, desc: '周末带货每踢出 1 个黑粉额外反赚 +6.0w 流量费' },
+      { id: 'inside_mole', tier: 'gold', icon: '🕵️', name: '前东家内鬼(SSR)', cost: 120, desc: '开局直接拐走 1 名随机 S 级王牌主播加盟！' },
+      { id: 'blindbox_eye', tier: 'gold', icon: '👁️', name: '盲盒透视眼(SSR)', cost: 150, desc: '本局首次盲盒抽卡 100% 必出 S 或 SSR 顶流！' },
+      { id: 'vc_angel', tier: 'gold', icon: '💰', name: '华尔街风投(SSR)', cost: 180, desc: '开局流动资金暴涨 +80w，前期直接梭哈盲盒！' }
+    ];
+
+    var ENDING_CATALOG = [
+      { id: 'goat_99', icon: '👑', rating: '9.9分', title: '商业 GOAT · 纳斯达克敲钟', rep: 180, desc: '横跨电商与影视的全球第一传媒帝国，前东家被全资收购！' },
+      { id: 'revenge_96', icon: '⚔️', rating: '9.6分', title: '复仇清算者 · 吞并天娱', rep: 150, desc: '商战修罗线大获全胜，昔日打压你的前老板如今给你端茶倒水！' },
+      { id: 'tech_95', icon: '🤖', rating: '9.5分', title: '硅基资本教父', rep: 145, desc: 'AI数字人矩阵24小时统治全网货架，实现真正睡后印钞！' },
+      { id: 'scandal_tycoon', icon: '🔥', rating: '9.3分', title: '黑红流量暴君', rep: 135, desc: '刀尖舔血！在高黑红争议中暴赚 300w+，越骂越火，堪称商业奇观！' },
+      { id: 'famous_92', icon: '🏆', rating: '9.2分', title: '步行街名宿 · 港交所上市', rep: 120, desc: '高口碑与充沛现金流双丰收，当代青年白手起家的商业范本！' },
+      { id: 'rogue_88', icon: '🌾', rating: '8.8分', title: '国民白月光 · 草根造神', rep: 110, desc: '拒绝资本对赌，靠助农与草根矩阵赢得全网 JRs 真心尊重！' },
+      { id: 'normal_75', icon: '🎖️', rating: '7.5分', title: '合格主理人 · 稳健盈利', rep: 75, desc: '在血腥直播红海中站稳脚跟，实现了财务独立与健康盈利。' },
+      { id: 'fail_315', icon: '🚨', rating: '2.5分', title: '315晚会特邀嘉宾', rep: 45, desc: '黑红度爆表引爆全网打假风暴，连夜登顶央媒特别报道。' },
+      { id: 'fail_bankrupt', icon: '💀', rating: '1.8分', title: '老赖限高执行人', rep: 35, desc: '资金链断裂宣告破产清算，交出一笔昂贵的商战学费。' },
+      { id: 'fail_banned', icon: '📉', rating: '1.5分', title: '全网封杀社死退网', rep: 35, desc: '口碑清零触发全网抵制，连步行街小号都被永久禁言。' }
+    ];
+
+    function loadMetaState() {
+      try {
+        var raw = localStorage.getItem("mcn_meta_v3");
+        if (raw) {
+          var p = JSON.parse(raw);
+          if (p && typeof p === 'object') {
+            metaState.reputationPts = Math.max(0, parseInt(p.reputationPts, 10) || 0);
+            metaState.runsCompleted = Math.max(0, parseInt(p.runsCompleted, 10) || 0);
+            metaState.bestScore = Math.max(0, Number(p.bestScore) || 0);
+            if (Array.isArray(p.unlockedEndings)) metaState.unlockedEndings = p.unlockedEndings;
+            if (Array.isArray(p.unlockedTalents) && p.unlockedTalents.length > 0) metaState.unlockedTalents = p.unlockedTalents;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function saveMetaState() {
+      try { localStorage.setItem("mcn_meta_v3", JSON.stringify(metaState)); } catch (e) {}
+    }
+
+    function renderActiveTalentBanner() {
+      var banner = document.getElementById("activeTalentBanner");
+      var titleEl = document.getElementById("activeTalentTitle");
+      if (!banner || !titleEl) return;
+      var t = TALENT_CATALOG.find(function(x) { return x.id === state.activeTalentId; });
+      if (t) {
+        banner.classList.remove("hidden");
+        titleEl.innerText = t.icon + " " + t.name + "（" + t.desc + "）";
+      } else {
+        banner.classList.add("hidden");
+      }
+    }
+
+    function openTalentPickModal() {
+      var listBox = document.getElementById("talentPickList");
+      if (!listBox) return;
+      listBox.innerHTML = "";
+
+      // 从已解锁天赋中随机抽 3 个（若有金色已解锁优先混入）
+      var pool = TALENT_CATALOG.filter(function(t) { return metaState.unlockedTalents.indexOf(t.id) !== -1; });
+      if (pool.length < 3) pool = TALENT_CATALOG.slice(0, 5);
+      var shuffled = pool.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 3);
+
+      shuffled.forEach(function(t) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "talent-pick-card tier-" + t.tier;
+        btn.setAttribute("data-action", "choose-talent");
+        btn.setAttribute("data-talent-id", t.id);
+        var badgeCls = t.tier === 'gold' ? 'badge-gold' : (t.tier === 'purple' ? 'badge-red' : 'badge-blue');
+        var tierTxt = t.tier === 'gold' ? 'SSR 金色词条' : (t.tier === 'purple' ? 'S 紫色词条' : 'A 稀有词条');
+        btn.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<span style="font-size:13.5px;font-weight:800;color:#fff;">' + t.icon + ' ' + escapeHTML(t.name) + '</span>' +
+            '<span class="badge ' + badgeCls + '">' + tierTxt + '</span>' +
+          '</div>' +
+          '<div style="font-size:11.5px;color:#cbd5e1;">' + escapeHTML(t.desc) + '</div>';
+        listBox.appendChild(btn);
+      });
+
+      document.getElementById("talentPickModal").classList.remove("hidden");
+    }
+
+    function chooseStartingTalent(talentId) {
+      safeInitAudio();
+      var t = TALENT_CATALOG.find(function(x) { return x.id === talentId; });
+      if (!t) return;
+      state.activeTalentId = t.id;
+      state.talentPickedThisRun = true;
+
+      if (t.id === 'supply_iron') {
+        state.facilities.supplyChain = Math.max(2, state.facilities.supplyChain);
+      } else if (t.id === 'viral_maker') {
+        state.fans += 35;
+      } else if (t.id === 'vc_angel') {
+        state.cash += 80;
+      } else if (t.id === 'inside_mole') {
+        var sPool = Object.keys(streamersMaster).filter(function(id) {
+          return streamersMaster[id].tier === 'S' && ownedStreamers.indexOf(id) === -1;
+        });
+        if (sPool.length > 0) {
+          var pickedId = sPool[Math.floor(Math.random() * sPool.length)];
+          ownedStreamers.push(pickedId);
+          showToast("🕵️ 内鬼生效！开局直接带走 S 级王牌【" + streamersMaster[pickedId].name + "】！", "success");
+        }
+      }
+
+      document.getElementById("talentPickModal").classList.add("hidden");
+      recordHighlight("开局选中商业天赋【" + t.name + "】");
+      playCheerSound();
+      showToast("🎴 开局天赋【" + t.name + "】已激活！祝你登顶商业 GOAT！", "success");
+      updateMCNRank(true);
+      renderHeaderStats();
+      renderHall();
+      renderStreamersList();
+      renderLivePrep();
+      saveLocalData();
+    }
+
+    function recordEndingMeta(endingObj, rawScore) {
+      metaState.runsCompleted = (metaState.runsCompleted || 0) + 1;
+      if (rawScore > metaState.bestScore) metaState.bestScore = Math.round(rawScore);
+      var firstUnlockBonus = 0;
+      if (metaState.unlockedEndings.indexOf(endingObj.id) === -1) {
+        metaState.unlockedEndings.push(endingObj.id);
+        firstUnlockBonus = 50;
+      }
+      var repEarned = endingObj.rep + firstUnlockBonus;
+      metaState.reputationPts += repEarned;
+      state.lastEndingTitle = endingObj.title;
+      state.lastEndingRating = endingObj.rating.replace('分', '');
+      saveMetaState();
+
+      var repEl = document.getElementById("endRepEarned");
+      if (repEl) {
+        repEl.innerText = "🏅 永久声望 +" + repEarned + (firstUnlockBonus ? "（含新结局首通 +50！）" : "");
+      }
+      if (endingObj.id === 'goat_99' || endingObj.id === 'revenge_96') {
+        cloudPostBroadcast('ending_goat', "12周商战封神！喜提虎扑 JRs " + endingObj.rating + "【" + endingObj.title + "】评级！");
+      } else if (endingObj.id === 'fail_315') {
+        cloudPostBroadcast('scandal_boom', "黑红度拉满爆表，惨遭 315 特别节目现场点名，笑疯全网 JRs！");
+      }
+      scheduleCloudSync();
+    }
+
+    function triggerBankruptcy(reason, endingId) {
       playAlertSound();
+      var endObj = ENDING_CATALOG.find(function(e) { return e.id === (endingId || 'fail_bankrupt'); }) || ENDING_CATALOG[8];
       document.getElementById("tabHall").classList.add("hidden");
       document.getElementById("tabStreamers").classList.add("hidden");
       document.getElementById("tabLive").classList.add("hidden");
       document.getElementById("tabEvents").classList.add("hidden");
       document.getElementById("tabEndgame").classList.remove("hidden");
 
-      document.getElementById("endIcon").innerText = "💀";
-      document.getElementById("endTitle").innerText = "破晓互娱宣告破产清算";
-      document.getElementById("endRating").innerText = "虎扑JRs最终评级：1.8分 · 铁血翻车";
+      document.getElementById("endIcon").innerText = endObj.icon;
+      document.getElementById("endTitle").innerText = state.agencyName + " · " + endObj.title;
+      document.getElementById("endRating").innerText = "虎扑JRs最终评级：" + endObj.rating + " · " + endObj.title;
       document.getElementById("endRating").style.color = "#f43f5e";
-      document.getElementById("endNarrative").innerText = reason + " 在血腥的MCN丛林法则面前，初出茅庐的你交出了一笔昂贵学费。JRs建议：重开新局再战！";
+      document.getElementById("endNarrative").innerText = reason + " " + endObj.desc;
 
       document.getElementById("endCash").innerText = state.cash.toFixed(1) + "w";
       document.getElementById("endFans").innerText = state.fans.toFixed(1) + "w";
       document.getElementById("endPR").innerText = Math.round(state.pr) + "分";
       document.getElementById("endlessBtn").classList.add("hidden");
+
+      recordEndingMeta(endObj, 0);
+      fetchAiHupuComments('end');
     }
 
     function triggerEndingEvaluation() {
@@ -3696,44 +5350,349 @@
       document.getElementById("endCash").innerText = state.cash.toFixed(1) + "w";
       document.getElementById("endFans").innerText = state.fans.toFixed(1) + "w";
       document.getElementById("endPR").innerText = Math.round(state.pr) + "分";
+      document.getElementById("endlessBtn").classList.remove("hidden");
 
       var score = (state.cash * 0.4) + (state.fans * 0.3) + (state.pr * 0.3);
-      var endIcon = document.getElementById("endIcon");
-      var endRating = document.getElementById("endRating");
-      var endNarrative = document.getElementById("endNarrative");
+      var endId = 'normal_75';
+      if (score >= 280) endId = 'goat_99';
+      else if (state.destiny === 'revenge' && score >= 200) endId = 'revenge_96';
+      else if (state.destiny === 'tech' && score >= 190) endId = 'tech_95';
+      else if ((state.scandalRisk || 0) >= 45 && state.cash >= 260) endId = 'scandal_tycoon';
+      else if (score >= 180) endId = 'famous_92';
+      else if (state.destiny === 'rogue' && state.pr >= 85) endId = 'rogue_88';
 
-      if (score >= 260) {
-        endIcon.innerText = "👑";
-        endRating.innerText = "虎扑 JRs 最终神级评级：9.9 分 · 商业 GOAT";
-        endRating.style.color = "#fbbf24";
-        endNarrative.innerText = "全网封神！破晓互娱成为横跨电商、电竞与影视的全球第一传媒帝国。前东家天娱已被全资收购，昔日打压你的前老板如今在你的旗下端茶递水。步行街JRs全员亮评：‘这波什么水平？历史第一，毋庸置疑！’";
-      } else if (score >= 180) {
-        endIcon.innerText = "🏆";
-        endRating.innerText = "虎扑 JRs 最终评级：9.2 分 · 步行街名宿";
-        endRating.style.color = "#34d399";
-        endNarrative.innerText = "功成名就！破晓互娱成功登陆港交所敲钟上市，旗下达人矩阵稳居行业前三甲，牢牢守住了高口碑与充沛现金流，成为当代青年白手起家的商业范本！";
-      } else {
-        endIcon.innerText = "🎖️";
-        endRating.innerText = "虎扑 JRs 最终评级：7.5 分 · 合格主理人";
-        endRating.style.color = "#60a5fa";
-        endNarrative.innerText = "扎稳脚跟！破晓互娱在竞争惨烈的直播红海中杀出重围，虽未登顶顶流之巅，但实现了财务独立与健康盈利，未来依然大有可为！";
-      }
+      var endObj = ENDING_CATALOG.find(function(e) { return e.id === endId; }) || ENDING_CATALOG[6];
+      document.getElementById("endIcon").innerText = endObj.icon;
+      document.getElementById("endTitle").innerText = state.agencyName + " · " + endObj.title;
+      document.getElementById("endRating").innerText = "虎扑 JRs 最终评级：" + endObj.rating + " · " + endObj.title;
+      document.getElementById("endRating").style.color = score >= 260 ? "#fbbf24" : (score >= 180 ? "#34d399" : "#60a5fa");
+      document.getElementById("endNarrative").innerText = endObj.desc;
+
+      recordEndingMeta(endObj, score);
+      fetchAiHupuComments('end');
 
       if (window.HupuBridge && window.HupuBridge.onGameEnd) {
-        window.HupuBridge.onGameEnd({ score: score, cash: state.cash, fans: state.fans, pr: state.pr });
+        window.HupuBridge.onGameEnd({ score: score, cash: state.cash, fans: state.fans, pr: state.pr, ending: endObj.id });
+      }
+    }
+
+    function openMetaHallModal() {
+      safeInitAudio();
+      renderMetaHall();
+      document.getElementById("metaHallModal").classList.remove("hidden");
+    }
+
+    function closeMetaHallModal() {
+      document.getElementById("metaHallModal").classList.add("hidden");
+    }
+
+    function renderMetaHall() {
+      var repEl = document.getElementById("metaRepVal");
+      var endEl = document.getElementById("metaEndingsVal");
+      var runEl = document.getElementById("metaRunsVal");
+      var body = document.getElementById("metaHallBody");
+      if (repEl) repEl.innerText = metaState.reputationPts;
+      if (endEl) endEl.innerText = metaState.unlockedEndings.length + "/" + ENDING_CATALOG.length;
+      if (runEl) runEl.innerText = Math.max(1, metaState.runsCompleted + 1) + " 局";
+      if (!body) return;
+      body.innerHTML = "";
+
+      // 1. 永久金色天赋解锁商店
+      var sec1 = document.createElement("div");
+      sec1.innerHTML = '<div style="font-size:12px;font-weight:800;color:#fbbf24;margin-bottom:6px;">🎴 局外永久天赋词条库（用步行街声望解锁进开局抽池）</div>';
+      TALENT_CATALOG.forEach(function(t) {
+        var owned = metaState.unlockedTalents.indexOf(t.id) !== -1;
+        var row = document.createElement("div");
+        row.className = "card-subpanel";
+        row.style.cssText = "display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:5px;padding:7px 9px;";
+        row.innerHTML =
+          '<div>' +
+            '<div style="font-size:12px;font-weight:700;color:#fff;">' + t.icon + ' ' + escapeHTML(t.name) + '</div>' +
+            '<div style="font-size:10.5px;color:#94a3b8;">' + escapeHTML(t.desc) + '</div>' +
+          '</div>' +
+          (owned
+            ? '<span class="badge badge-green">已解锁</span>'
+            : '<button type="button" class="btn-small-upgrade" data-action="unlock-talent" data-talent-id="' + t.id + '" style="background:#d97706;padding:4px 8px;font-size:10.5px;">🏅' + t.cost + '解锁</button>');
+        sec1.appendChild(row);
+      });
+      body.appendChild(sec1);
+
+      // 2. 10 大毒舌结局图鉴
+      var sec2 = document.createElement("div");
+      sec2.innerHTML = '<div style="font-size:12px;font-weight:800;color:#38bdf8;margin:4px 0 6px 0;">📖 虎扑毒舌结局图鉴（解锁首通额外奖 +50 声望）</div>';
+      ENDING_CATALOG.forEach(function(e) {
+        var unlocked = metaState.unlockedEndings.indexOf(e.id) !== -1;
+        var row = document.createElement("div");
+        row.className = "card-subpanel";
+        row.style.cssText = "display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:5px;padding:7px 9px;opacity:" + (unlocked ? "1" : "0.55") + ";";
+        row.innerHTML =
+          '<div>' +
+            '<div style="font-size:12px;font-weight:700;color:' + (unlocked ? '#fff' : '#94a3b8') + ';">' + (unlocked ? e.icon : '🔒') + ' ' + escapeHTML(unlocked ? e.title : '？？？待发掘结局') + '</div>' +
+            '<div style="font-size:10.5px;color:#94a3b8;">' + escapeHTML(unlocked ? e.desc : '尝试不同天命路线、高黑红或极端经营策略解锁') + '</div>' +
+          '</div>' +
+          '<span class="badge ' + (unlocked ? 'badge-gold' : 'badge-blue') + '">' + (unlocked ? e.rating : '未达成') + '</span>';
+        sec2.appendChild(row);
+      });
+      body.appendChild(sec2);
+    }
+
+    function unlockTalent(talentId) {
+      safeInitAudio();
+      var t = TALENT_CATALOG.find(function(x) { return x.id === talentId; });
+      if (!t || metaState.unlockedTalents.indexOf(t.id) !== -1) return;
+      if (metaState.reputationPts < t.cost) {
+        showToast("步行街声望不足 " + t.cost + " 点，多通关或达成新结局可快速赚声望！", "alert");
+        playAlertSound();
+        return;
+      }
+      metaState.reputationPts -= t.cost;
+      metaState.unlockedTalents.push(t.id);
+      saveMetaState();
+      playCheerSound();
+      showToast("🎉 成功解锁永久天赋【" + t.name + "】！下轮开局即可抽到！", "success");
+      renderMetaHall();
+      scheduleCloudSync();
+    }
+
+    // 虎扑 9.9 分战报长图海报 Canvas 绘制 (零外链纯原生)
+    function openPosterModal() {
+      safeInitAudio();
+      var canvas = document.createElement("canvas");
+      canvas.width = 750;
+      canvas.height = 1080;
+      var ctx = canvas.getContext("2d");
+
+      // 背景渐变
+      var bgGrad = ctx.createLinearGradient(0, 0, 750, 1080);
+      bgGrad.addColorStop(0, "#0b0f19");
+      bgGrad.addColorStop(0.5, "#131b2e");
+      bgGrad.addColorStop(1, "#1e1020");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 750, 1080);
+
+      // 顶部虎扑红金饰条
+      var topBar = ctx.createLinearGradient(0, 0, 750, 0);
+      topBar.addColorStop(0, "#c91b1b");
+      topBar.addColorStop(1, "#f59e0b");
+      ctx.fillStyle = topBar;
+      ctx.fillRect(0, 0, 750, 14);
+
+      // 标题区
+      ctx.fillStyle = "#c91b1b";
+      ctx.fillRect(48, 52, 204, 40);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 22px sans-serif";
+      ctx.fillText("虎扑步行街评分卡", 60, 80);
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "20px sans-serif";
+      ctx.fillText("MCN王牌经纪人 3.0 · 全服实况战报", 268, 80);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 46px sans-serif";
+      ctx.fillText(state.agencyName, 48, 165);
+
+      var ratingStr = state.lastEndingRating || (state.powerScore >= 260 ? "9.9" : (state.powerScore >= 180 ? "9.3" : "8.6"));
+      ctx.fillStyle = "#fbbf24";
+      ctx.font = "bold 76px sans-serif";
+      ctx.fillText(ratingStr + " 分", 490, 175);
+
+      ctx.fillStyle = "#fca5a5";
+      ctx.font = "bold 24px sans-serif";
+      ctx.fillText("称号：" + (state.lastEndingTitle || "破晓崛起·新锐MCN主理人"), 48, 215);
+
+      // 核心数据卡片
+      var metrics = [
+        { lbl: "综合战力", val: (state.powerScore || calculatePowerScore()).toFixed(1) + "w", color: "#fbbf24" },
+        { lbl: "全服排位", val: cloudState.globalRank ? ("全服 #" + cloudState.globalRank) : ("NO." + state.mcnRank), color: "#34d399" },
+        { lbl: "流动资金", val: state.cash.toFixed(1) + "w", color: "#f59e0b" },
+        { lbl: "全网粉丝", val: state.fans.toFixed(1) + "w", color: "#38bdf8" },
+        { lbl: "JRs口碑", val: Math.round(state.pr) + " 分", color: "#34d399" },
+        { lbl: "黑红争议", val: (state.scandalRisk || 0) + "%", color: "#f87171" }
+      ];
+      metrics.forEach(function(m, idx) {
+        var col = idx % 3;
+        var row = Math.floor(idx / 3);
+        var x = 48 + col * 224;
+        var y = 260 + row * 124;
+        ctx.fillStyle = "#19233c";
+        ctx.fillRect(x, y, 206, 106);
+        ctx.strokeStyle = "#2e3d60";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, 206, 106);
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "20px sans-serif";
+        ctx.fillText(m.lbl, x + 20, y + 38);
+        ctx.fillStyle = m.color;
+        ctx.font = "bold 32px sans-serif";
+        ctx.fillText(m.val, x + 20, y + 84);
+      });
+
+      // 矩阵羁绊与王牌主播
+      var synList = getSynergyEffects().activeList.map(function(s) { return s.icon + s.name; });
+      ctx.fillStyle = "#19233c";
+      ctx.fillRect(48, 530, 654, 120);
+      ctx.strokeStyle = "#f59e0b";
+      ctx.strokeRect(48, 530, 654, 120);
+      ctx.fillStyle = "#fbbf24";
+      ctx.font = "bold 24px sans-serif";
+      ctx.fillText("🎙️ 旗下阵容：" + ownedStreamers.length + " 位主播 | 王牌：" + (getTopStreamer().name), 70, 574);
+      ctx.fillStyle = "#cbd5e1";
+      ctx.font = "21px sans-serif";
+      ctx.fillText("⚡ 已激活羁绊：" + (synList.length ? synList.join(" · ") : "单核带队潜伏期"), 70, 618);
+
+      // 步行街 AI 神评区
+      ctx.fillStyle = "#1b1420";
+      ctx.fillRect(48, 680, 654, 285);
+      ctx.strokeStyle = "#c91b1b";
+      ctx.strokeRect(48, 680, 654, 285);
+      ctx.fillStyle = "#fca5a5";
+      ctx.font = "bold 25px sans-serif";
+      ctx.fillText("🔥 虎扑步行街高赞神评", 70, 725);
+
+      var cmts = (cloudState.latestAiComments && cloudState.latestAiComments.length > 0)
+        ? cloudState.latestAiComments.slice(0, 2)
+        : [{ user: "步行街热心JR", text: "这波操作我给" + ratingStr + "分！带着" + getTopStreamer().name + "硬生生打穿商战，前东家连夜破防！", likes: 2890 }];
+
+      var curY = 772;
+      cmts.forEach(function(c) {
+        ctx.fillStyle = "#fbbf24";
+        ctx.font = "bold 20px sans-serif";
+        ctx.fillText("@" + c.user + "  👍亮了(" + c.likes + ")", 70, curY);
+        curY += 32;
+        ctx.fillStyle = "#f1f5f9";
+        ctx.font = "20px sans-serif";
+        // 简单中文换行
+        var str = "“" + c.text + "”";
+        var line = "";
+        for (var i = 0; i < str.length; i++) {
+          line += str[i];
+          if (line.length >= 28 || i === str.length - 1) {
+            ctx.fillText(line, 70, curY);
+            curY += 28;
+            line = "";
+          }
+        }
+        curY += 16;
+      });
+
+      // 底部扫码/链接水印
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "19px sans-serif";
+      ctx.fillText("在线试玩：niceoneto.github.io/hupu-mcn-game  |  不服来战！", 48, 1028);
+
+      var dataUrl = canvas.toDataURL("image/png");
+      var img = document.getElementById("posterPreviewImg");
+      var dl = document.getElementById("posterDownloadLink");
+      if (img) img.src = dataUrl;
+      if (dl) dl.href = dataUrl;
+
+      document.getElementById("posterModal").classList.remove("hidden");
+    }
+
+    function closePosterModal() {
+      document.getElementById("posterModal").classList.add("hidden");
+    }
+
+    // 遵循 modern-web-guidance copy-button 规范：Async Clipboard + legacyCopy 兜底 + role="status" 不禁用按键
+    var copyTipTimers = new WeakMap();
+    var lastCopyAnnouncement = '';
+
+    function legacyCopyText(text) {
+      var field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.cssText = 'position:fixed;inset-block-start:0;opacity:0';
+      document.body.appendChild(field);
+      field.select();
+      try { return document.execCommand('copy'); } finally { field.remove(); }
+    }
+
+    function buildBattleReportText() {
+      var ratingStr = state.lastEndingRating || (state.powerScore >= 260 ? "9.9" : "9.2");
+      var topS = getTopStreamer();
+      var rankTxt = cloudState.globalRank ? ("全服第 " + cloudState.globalRank + " 名") : ("行业第 " + state.mcnRank + " 名");
+      var topComment = (cloudState.latestAiComments && cloudState.latestAiComments[0])
+        ? ("\n🔥 步行街神评：「" + cloudState.latestAiComments[0].text + "」亮了(" + cloudState.latestAiComments[0].likes + ")")
+        : "";
+      return "【虎扑MCN王牌经纪人 3.0 战报】\n🏢 机构：" + state.agencyName + "（JRs评分 " + ratingStr + " 分）\n🏆 战绩：" + rankTxt + " | 战力 " + (state.powerScore || calculatePowerScore()).toFixed(1) + "w | 现金 " + state.cash.toFixed(1) + "w | 粉丝 " + state.fans.toFixed(1) + "w\n🎙️ 王牌主播：" + topS.name + "（旗下 " + ownedStreamers.length + " 人）" + topComment + "\n👉 手机即点即玩，来全服商战跟我碰一碰：https://niceoneto.github.io/hupu-mcn-game/";
+    }
+
+    function reportCopyFeedback(button, ok) {
+      var tip = button ? button.nextElementSibling : null;
+      if (!tip) { showToast(ok ? "已复制战报文本，快去群里晒图！" : "复制失败，请手动截图", ok ? "success" : "alert"); return; }
+      clearTimeout(copyTipTimers.get(button));
+      tip.removeAttribute('data-visible');
+      tip.removeAttribute('data-failed');
+      var msg = ok ? '已复制战报' : '复制失败';
+      if (msg === lastCopyAnnouncement) msg += '\u00A0';
+      lastCopyAnnouncement = msg;
+      tip.textContent = '';
+      void button.offsetWidth;
+      if (!ok) tip.setAttribute('data-failed', '');
+      tip.setAttribute('data-visible', '');
+      requestAnimationFrame(function() { tip.textContent = msg; });
+      copyTipTimers.set(button, setTimeout(function() {
+        tip.removeAttribute('data-visible');
+        tip.removeAttribute('data-failed');
+        tip.textContent = '';
+      }, 2200));
+    }
+
+    function copyBattleReport(button) {
+      var text = buildBattleReportText();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
+          reportCopyFeedback(button, true);
+          playCoinSound();
+        }).catch(function() {
+          var ok = legacyCopyText(text);
+          reportCopyFeedback(button, ok);
+        });
+      } else {
+        var ok = legacyCopyText(text);
+        reportCopyFeedback(button, ok);
       }
     }
 
     function enterEndlessMode() {
       state.endless = true;
       document.getElementById("tabEndgame").classList.add("hidden");
-      showToast("🌟 已解锁自由无尽模式！您可以不受周数限制继续扩张商业帝国！", "success");
+      showToast("🌟 已解锁自由无尽模式！动态事件池与全服商战持续开启！", "success");
       switchTab('hall');
     }
 
     // =========================================================================
-    // 10. UI 控制与持久化
+    // 10. UI 控制、改名与持久化 (单局存档 + 永久局外传承)
     // =========================================================================
+    function openRenameModal() {
+      safeInitAudio();
+      var inp = document.getElementById("renameInput");
+      if (inp) inp.value = state.agencyName || '破晓互娱';
+      document.getElementById("renameModal").classList.remove("hidden");
+    }
+
+    function closeRenameModal() {
+      document.getElementById("renameModal").classList.add("hidden");
+    }
+
+    function saveAgencyName() {
+      var inp = document.getElementById("renameInput");
+      var val = inp ? inp.value.replace(/[<>&"'`]/g, '').trim().slice(0, 12) : '';
+      if (val.length < 2) {
+        showToast("机构名称至少需要 2 个字哦！", "alert");
+        return;
+      }
+      state.agencyName = val;
+      var lbl = document.getElementById("agencyNameLabel");
+      if (lbl) lbl.innerText = val;
+      closeRenameModal();
+      saveLocalData();
+      syncToCloud(true);
+      showToast("🏷️ 机构已正式更名为【" + val + "】，正在同步全服榜单！", "success");
+      playCoinSound();
+    }
+
     function openResetModal() {
       safeInitAudio();
       document.getElementById("resetModal").classList.remove("hidden");
@@ -3744,9 +5703,9 @@
     }
 
     function executeReset() {
-      try {
-        localStorage.removeItem("mcn_game_v2_save");
-      } catch (e) {}
+      try { localStorage.removeItem("mcn_game_v2_save"); } catch (e) {}
+      var keepName = state.agencyName || '破晓互娱';
+      state.agencyName = keepName;
       state.week = 1;
       state.cash = 100.0;
       state.fans = 20.0;
@@ -3764,14 +5723,37 @@
       state.powerScore = 118.5;
       state.liveCooldownRemaining = 0;
       state.liveCooldownMax = 45;
+      state.staminaGlobalCooldown = 0;
+      state.scandalRisk = 0;
+      state.storyFlags = {};
+      state.usedStoryletIds = [];
+      state.currentEventId = null;
+      state.activeTalentId = null;
+      state.talentPickedThisRun = false;
+      state.blindBoxDraws = 0;
+      state.dmInbox = [];
+      state.usedDmIds = [];
+      state.recentHighlights = [];
+      state.lastEndingTitle = '';
       clearInterval(liveCooldownTimer);
       ownedStreamers = ['su'];
-
+      Object.keys(streamersMaster).forEach(function(k) {
+        streamersMaster[k].stamina = 100;
+        streamersMaster[k].restCooldownRemaining = 0;
+      });
       weekStartSnapshot = { cash: 100.0, fans: 20.0, pr: 80.0 };
 
       closeResetModal();
-      initGame();
-      showToast("🔄 游戏已重置，返回第 1 周重新创业！", "info");
+      saveLocalData();
+      renderHeaderStats();
+      renderHall();
+      renderStreamersList();
+      renderLivePrep();
+      renderEventView();
+      switchTab('hall');
+      maybePushContextualDM('init');
+      openTalentPickModal();
+      showToast("🔄 新一轮创业已开启！永久声望与全服身份已保留！", "info");
       playCoinSound();
     }
 
@@ -3788,13 +5770,7 @@
       var tabs = ['hall', 'streamers', 'live', 'events'];
       tabs.forEach(function(t) {
         var btn = document.getElementById("tabBtn-" + t);
-        if (btn) {
-          if (t === tabId) {
-            btn.className = "nav-item active";
-          } else {
-            btn.className = "nav-item";
-          }
-        }
+        if (btn) btn.className = (t === tabId) ? "nav-item active" : "nav-item";
       });
 
       if (tabId === 'hall') {
@@ -3814,6 +5790,8 @@
 
     function renderHeaderStats() {
       updateMCNRank(false);
+      var lbl = document.getElementById("agencyNameLabel");
+      if (lbl) lbl.innerText = state.agencyName || '破晓互娱';
       document.getElementById("valWeek").innerText = "第 " + state.week + (state.endless ? " 周 (无尽)" : " / " + state.maxWeek + " 周");
       document.getElementById("valCash").innerText = state.cash.toFixed(1) + " 万";
       document.getElementById("valFans").innerText = state.fans.toFixed(1) + " 万";
@@ -3833,6 +5811,7 @@
         badge.innerText = "摸索期";
         badge.className = "badge badge-blue";
       }
+      updateDmBadge();
     }
 
     function showToast(msg, type) {
@@ -3841,18 +5820,14 @@
       t.innerText = msg;
       t.classList.remove("hidden");
 
-      if (type === "alert") {
-        t.className = "toast-bar toast-alert";
-      } else if (type === "success") {
-        t.className = "toast-bar toast-success";
-      } else {
-        t.className = "toast-bar toast-info";
-      }
+      if (type === "alert") t.className = "toast-bar toast-alert";
+      else if (type === "success") t.className = "toast-bar toast-success";
+      else t.className = "toast-bar toast-info";
 
       if (window._toastTimer) clearTimeout(window._toastTimer);
       window._toastTimer = setTimeout(function() {
         t.classList.add("hidden");
-      }, 3000);
+      }, 3200);
     }
 
     function saveLocalData() {
@@ -3866,21 +5841,35 @@
     }
 
     function loadLocalData() {
+      loadMetaState();
       try {
         var raw = localStorage.getItem("mcn_game_v2_save");
         if (raw) {
           var parsed = JSON.parse(raw);
           if (parsed && parsed.state && typeof parsed.state === 'object') {
-            state.week = Math.max(1, Math.min(12, parseInt(parsed.state.week, 10) || 1));
+            if (typeof parsed.state.agencyName === 'string' && parsed.state.agencyName.trim()) {
+              state.agencyName = parsed.state.agencyName.trim().slice(0, 12);
+            }
+            state.week = Math.max(1, Math.min(999, parseInt(parsed.state.week, 10) || 1));
             state.cash = isFinite(parsed.state.cash) ? Math.max(0, Number(parsed.state.cash)) : 100.0;
             state.fans = isFinite(parsed.state.fans) ? Math.max(0, Number(parsed.state.fans)) : 20.0;
-            state.pr = Math.max(0, Math.min(100, isFinite(parsed.state.pr) ? Number(parsed.state.pr) : 80.0));
+            state.pr = Math.max(0, Math.min(120, isFinite(parsed.state.pr) ? Number(parsed.state.pr) : 80.0));
             state.revenueTotal = isFinite(parsed.state.revenueTotal) ? Math.max(0, Number(parsed.state.revenueTotal)) : 0.0;
             state.destiny = typeof parsed.state.destiny === 'string' ? parsed.state.destiny : 'none';
             state.endless = Boolean(parsed.state.endless);
             state.mcnRank = Math.max(1, Math.min(100, parseInt(parsed.state.mcnRank, 10) || 98));
             state.liveCooldownRemaining = Math.max(0, parseInt(parsed.state.liveCooldownRemaining, 10) || 0);
             state.staminaGlobalCooldown = Math.max(0, parseInt(parsed.state.staminaGlobalCooldown, 10) || 0);
+            state.scandalRisk = Math.max(0, Math.min(100, parseInt(parsed.state.scandalRisk, 10) || 0));
+            state.storyFlags = (parsed.state.storyFlags && typeof parsed.state.storyFlags === 'object') ? parsed.state.storyFlags : {};
+            state.usedStoryletIds = Array.isArray(parsed.state.usedStoryletIds) ? parsed.state.usedStoryletIds : [];
+            state.currentEventId = parsed.state.currentEventId || null;
+            state.activeTalentId = parsed.state.activeTalentId || null;
+            state.talentPickedThisRun = Boolean(parsed.state.talentPickedThisRun);
+            state.blindBoxDraws = Math.max(0, parseInt(parsed.state.blindBoxDraws, 10) || 0);
+            state.dmInbox = Array.isArray(parsed.state.dmInbox) ? parsed.state.dmInbox : [];
+            state.usedDmIds = Array.isArray(parsed.state.usedDmIds) ? parsed.state.usedDmIds : [];
+            state.recentHighlights = Array.isArray(parsed.state.recentHighlights) ? parsed.state.recentHighlights : [];
 
             if (parsed.state.facilities && typeof parsed.state.facilities === 'object') {
               state.facilities.studio = Math.max(0, Math.min(4, parseInt(parsed.state.facilities.studio, 10) || 0));
@@ -3910,18 +5899,600 @@
     }
 
     // =========================================================================
-    // 11. 生产级全局事件委托处理器 (Universal Touch & Click Delegation Engine)
-    // 彻底解决 iOS WKWebView / Android WebView 拦截或丢失 click 事件的问题
+    // 11. Cloudflare Workers + D1 + Workers AI 全服轻联网引擎 (断网自动降级)
+    // =========================================================================
+    function getTopStreamer() {
+      var best = streamersMaster.su;
+      ownedStreamers.forEach(function(sid) {
+        var s = streamersMaster[sid];
+        if (s && (!best || s.sales > best.sales)) best = s;
+      });
+      return best || streamersMaster.su;
+    }
+
+    function updateCloudPillUI() {
+      var pill = document.getElementById("cloudStatusPill");
+      if (pill) {
+        if (cloudState.online) {
+          pill.className = "cloud-pill";
+          pill.innerText = "● 实时";
+        } else {
+          pill.className = "cloud-pill offline";
+          pill.innerText = "○ 离线";
+        }
+      }
+      var pvpPill = document.getElementById("pvpUnreadPill");
+      if (pvpPill) {
+        if (cloudState.unreadPvpCount > 0) {
+          pvpPill.innerText = "⚔️ " + cloudState.unreadPvpCount;
+          pvpPill.classList.remove("hidden");
+        } else {
+          pvpPill.classList.add("hidden");
+        }
+      }
+    }
+
+    function apiFetch(path, opts) {
+      opts = opts || {};
+      var headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+      if (cloudState.playerId && cloudState.authToken) {
+        headers['X-Player-Id'] = cloudState.playerId;
+        headers['X-Player-Token'] = cloudState.authToken;
+      }
+      var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var timer = controller ? setTimeout(function() { controller.abort(); }, opts.timeoutMs || 9000) : null;
+
+      return fetch(CLOUD_API_BASE + path, {
+        method: opts.method || 'GET',
+        headers: headers,
+        body: opts.body ? JSON.stringify(opts.body) : undefined,
+        signal: controller ? controller.signal : undefined
+      }).then(function(res) {
+        if (timer) clearTimeout(timer);
+        return res.json().then(function(data) { return { ok: res.ok, status: res.status, data: data }; });
+      }).catch(function(err) {
+        if (timer) clearTimeout(timer);
+        return { ok: false, status: 0, error: err };
+      });
+    }
+
+    function initCloudClient() {
+      try {
+        var saved = localStorage.getItem("mcn_cloud_auth_v3");
+        if (saved) {
+          var p = JSON.parse(saved);
+          if (p && p.playerId && p.authToken) {
+            cloudState.playerId = p.playerId;
+            cloudState.authToken = p.authToken;
+          }
+        }
+      } catch (e) {}
+
+      var bootstrap = function() {
+        return syncToCloud(true).then(function(ok) {
+          if (ok) {
+            pollGlobalFeed(true);
+            checkOfflineEarnings(true);
+          }
+        });
+      };
+
+      if (!cloudState.playerId || !cloudState.authToken) {
+        apiFetch('/api/player/register', {
+          method: 'POST',
+          body: { agencyName: state.agencyName || '破晓互娱' }
+        }).then(function(res) {
+          if (res.ok && res.data && res.data.playerId) {
+            cloudState.playerId = res.data.playerId;
+            cloudState.authToken = res.data.authToken;
+            try {
+              localStorage.setItem("mcn_cloud_auth_v3", JSON.stringify({
+                playerId: cloudState.playerId,
+                authToken: cloudState.authToken
+              }));
+            } catch (e) {}
+            bootstrap();
+          } else {
+            cloudState.online = false;
+            updateCloudPillUI();
+          }
+        });
+      } else {
+        bootstrap();
+      }
+
+      // 每 45 秒静默轮询全服大喇叭与步行街热搜
+      setInterval(function() {
+        if (cloudState.online) pollGlobalFeed(false);
+      }, 45000);
+    }
+
+    var cloudSyncDebounce = null;
+    function scheduleCloudSync() {
+      if (cloudSyncDebounce) clearTimeout(cloudSyncDebounce);
+      cloudSyncDebounce = setTimeout(function() { syncToCloud(false); }, 1800);
+    }
+
+    function syncToCloud(force) {
+      if (!cloudState.playerId || !cloudState.authToken) return Promise.resolve(false);
+      var now = Date.now();
+      if (!force && now - cloudState.lastSyncTs < 3000) return Promise.resolve(cloudState.online);
+      cloudState.lastSyncTs = now;
+      var topS = getTopStreamer();
+
+      return apiFetch('/api/player/sync', {
+        method: 'POST',
+        body: {
+          agencyName: state.agencyName,
+          powerScore: calculatePowerScore(),
+          cash: state.cash,
+          fans: state.fans,
+          pr: state.pr,
+          week: state.week,
+          streamerCount: ownedStreamers.length,
+          topStreamerId: topS.id,
+          topStreamerName: topS.name,
+          destiny: state.destiny,
+          scandalRisk: state.scandalRisk || 0,
+          reputationPts: metaState.reputationPts || 0,
+          unlockedEndings: metaState.unlockedEndings || [],
+          unlockedTalents: metaState.unlockedTalents || []
+        }
+      }).then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          cloudState.online = true;
+          cloudState.globalRank = res.data.globalRank;
+          cloudState.totalPlayers = res.data.totalPlayers;
+          cloudState.unreadPvpCount = res.data.unreadPvpCount || 0;
+          updateCloudPillUI();
+          updateMCNRank(false);
+          return true;
+        }
+        if (res.status === 401) {
+          cloudState.playerId = null;
+          cloudState.authToken = null;
+          try { localStorage.removeItem("mcn_cloud_auth_v3"); } catch (e) {}
+        }
+        cloudState.online = false;
+        updateCloudPillUI();
+        return false;
+      });
+    }
+
+    function fetchCloudLeaderboard() {
+      apiFetch('/api/leaderboard').then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          cloudState.online = true;
+          cloudState.leaders = res.data.leaders || [];
+          cloudState.totalPlayers = res.data.totalPlayers || cloudState.leaders.length;
+          if (res.data.selfRank) cloudState.globalRank = res.data.selfRank;
+          cloudState.pvpRemaining = res.data.pvpRemaining !== undefined ? res.data.pvpRemaining : 5;
+          updateCloudPillUI();
+          if (cloudState.activeLbSubtab === 'rank') renderLeaderboard();
+          else if (cloudState.activeLbSubtab === 'pvp') renderPvpCenter();
+        }
+      });
+    }
+
+    function fetchCloudPvpInbox() {
+      fetchCloudLeaderboard();
+      apiFetch('/api/pvp/inbox').then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          cloudState.pvpLogs = res.data.logs || [];
+          cloudState.pvpRemaining = res.data.pvpRemaining !== undefined ? res.data.pvpRemaining : 5;
+          cloudState.unreadPvpCount = cloudState.pvpLogs.filter(function(l) {
+            return l.defender_id === cloudState.playerId && l.status === 'unread';
+          }).length;
+          updateCloudPillUI();
+          if (cloudState.activeLbSubtab === 'pvp') renderPvpCenter();
+        }
+      });
+    }
+
+    function renderPvpCenter() {
+      var box = document.getElementById("leaderboardList");
+      if (!box) return;
+      box.innerHTML = "";
+
+      var stripLeft = document.getElementById("lbStripLeft");
+      var rivalGapEl = document.getElementById("lbRivalGap");
+      if (stripLeft) stripLeft.innerText = "⚔️ 每日异步商战行动点（偷袭/联名/挖角）";
+      if (rivalGapEl) {
+        rivalGapEl.innerText = "今日剩余 " + cloudState.pvpRemaining + " / " + cloudState.dailyPvpLimit + " 次";
+        rivalGapEl.style.color = cloudState.pvpRemaining > 0 ? "#34d399" : "#f87171";
+      }
+
+      if (!cloudState.online) {
+        box.innerHTML = '<div class="card-subpanel" style="text-align:center;color:#94a3b8;font-size:12px;padding:18px;">当前处于离线单机模式，联网后可与全服真实 MCN 互相发起黑通稿、联名与反杀！</div>';
+        return;
+      }
+
+      // 1. 待处理商战战报 (支持一键反杀 / 领联名红利)
+      var incoming = (cloudState.pvpLogs || []).filter(function(l) { return l.defender_id === cloudState.playerId; });
+      if (incoming.length > 0) {
+        var h1 = document.createElement("div");
+        h1.style.cssText = "font-size:11.5px;font-weight:800;color:#fca5a5;padding:2px 4px;";
+        h1.textContent = "🚨 针对你的商战动态";
+        box.appendChild(h1);
+
+        incoming.slice(0, 5).forEach(function(log) {
+          var div = document.createElement("div");
+          div.className = "card-subpanel";
+          div.style.cssText = "display:flex;flex-direction:column;gap:5px;border-color:" + (log.status === 'unread' ? 'rgba(239,68,68,0.6)' : '#24314c') + ";";
+          var actionBtn = '';
+          if (log.status === 'unread') {
+            actionBtn = log.action_type === 'collab'
+              ? '<button type="button" class="btn-small-upgrade" data-action="counter-pvp" data-log-id="' + log.id + '" style="background:#059669;padding:4px 10px;font-size:11px;">🤝 领取 +8w 联名粉</button>'
+              : '<button type="button" class="btn-small-upgrade" data-action="counter-pvp" data-log-id="' + log.id + '" style="background:#c91b1b;padding:4px 10px;font-size:11px;">🛡️ 晒质检报告反杀(1.5倍赔款)</button>';
+          } else {
+            actionBtn = '<span class="badge badge-blue">' + (log.status === 'countered' ? '已反杀打脸' : '已处理') + '</span>';
+          }
+          div.innerHTML =
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<span style="font-size:12px;font-weight:700;color:#fff;">来自【' + escapeHTML(log.attacker_name) + '】</span>' +
+              actionBtn +
+            '</div>' +
+            '<div style="font-size:11px;color:#cbd5e1;">' + escapeHTML(log.taunt_msg) + '</div>';
+          box.appendChild(div);
+        });
+      }
+
+      // 2. 主动选择全服真实对手发起异步商战
+      var h2 = document.createElement("div");
+      h2.style.cssText = "font-size:11.5px;font-weight:800;color:#fbbf24;padding:6px 4px 2px 4px;";
+      h2.textContent = "🎯 选择全服真实同行发起异步商战";
+      box.appendChild(h2);
+
+      var rivals = (cloudState.leaders || []).filter(function(p) { return p.id !== cloudState.playerId; });
+      if (rivals.length === 0) {
+        var empty = document.createElement("div");
+        empty.className = "card-subpanel";
+        empty.style.cssText = "text-align:center;color:#94a3b8;font-size:12px;padding:16px;";
+        empty.textContent = "你目前是全服首位拓荒巨鳄！分享链接邀请朋友加入即可开启商战互怼！";
+        box.appendChild(empty);
+        return;
+      }
+
+      rivals.slice(0, 12).forEach(function(r) {
+        var card = document.createElement("div");
+        card.className = "card-subpanel";
+        card.style.cssText = "display:flex;flex-direction:column;gap:6px;";
+        card.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<span style="font-size:12.5px;font-weight:700;color:#fff;">' + escapeHTML(r.agency_name) + ' <span style="font-size:10.5px;color:#94a3b8;">(王牌:' + escapeHTML(r.top_streamer_name) + ')</span></span>' +
+            '<span style="font-size:11.5px;color:#38bdf8;font-weight:800;">' + Number(r.power_score || 0).toFixed(1) + 'w 战力</span>' +
+          '</div>' +
+          '<div style="display:flex;gap:5px;">' +
+            '<button type="button" class="btn-icon" data-action="launch-pvp" data-target-id="' + escapeHTML(r.id) + '" data-pvp-type="smear" style="flex:1;padding:5px 0;font-size:10.5px;color:#fca5a5;">💣 发黑通稿</button>' +
+            '<button type="button" class="btn-icon" data-action="launch-pvp" data-target-id="' + escapeHTML(r.id) + '" data-pvp-type="poach" style="flex:1;padding:5px 0;font-size:10.5px;color:#fbbf24;">🕵️ 试探挖角</button>' +
+            '<button type="button" class="btn-icon" data-action="launch-pvp" data-target-id="' + escapeHTML(r.id) + '" data-pvp-type="collab" style="flex:1;padding:5px 0;font-size:10.5px;color:#34d399;">🤝 商业联名</button>' +
+          '</div>';
+        box.appendChild(card);
+      });
+    }
+
+    function launchPvpAction(defenderId, actionType) {
+      safeInitAudio();
+      if (!cloudState.online) {
+        showToast("联网后即可发起真实全服异步商战！", "alert");
+        return;
+      }
+      if (cloudState.pvpRemaining <= 0) {
+        showToast("今日 5 次商战行动点已用完，明日 0 点自动刷新！", "alert");
+        playAlertSound();
+        return;
+      }
+      apiFetch('/api/pvp/action', {
+        method: 'POST',
+        body: { defenderId: defenderId, actionType: actionType }
+      }).then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          var d = res.data;
+          state.cash = Math.max(0, state.cash + (d.cashGain || 0));
+          state.fans = Math.max(0, state.fans + (d.fansGain || 0));
+          state.pr = Math.max(0, Math.min(getSynergyEffects().prCap, state.pr + (d.prDelta || 0)));
+          if (d.scandalDelta) adjustScandal(d.scandalDelta);
+          cloudState.pvpRemaining = d.pvpRemaining;
+          recordHighlight(d.resultSummary);
+          playCheerSound();
+          showToast(d.resultSummary, "success");
+          renderHeaderStats();
+          renderHall();
+          saveLocalData();
+          fetchCloudPvpInbox();
+        } else {
+          showToast("商战发起失败：" + (res.data && res.data.error ? res.data.error : "网络波动"), "alert");
+          playAlertSound();
+        }
+      });
+    }
+
+    function counterPvpAttack(logId) {
+      safeInitAudio();
+      apiFetch('/api/pvp/counter', {
+        method: 'POST',
+        body: { logId: Number(logId) }
+      }).then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          var d = res.data;
+          state.cash += (d.cashGain || 0);
+          state.fans += (d.fansGain || 0);
+          state.pr = Math.min(getSynergyEffects().prCap, state.pr + (d.prGain || 0));
+          playCheerSound();
+          showToast(d.message, "success");
+          renderHeaderStats();
+          renderHall();
+          saveLocalData();
+          fetchCloudPvpInbox();
+          var offModal = document.getElementById("offlineModal");
+          if (offModal && !offModal.classList.contains("hidden")) {
+            var btn = document.querySelector('button[data-action="counter-pvp"][data-log-id="' + logId + '"]');
+            if (btn) { btn.disabled = true; btn.innerText = "✅ 已反杀"; }
+          }
+        } else {
+          showToast("该战报已处理完毕", "info");
+        }
+      });
+    }
+
+    function pollGlobalFeed(isInitial) {
+      apiFetch('/api/feed').then(function(res) {
+        if (res.ok && res.data && res.data.ok && Array.isArray(res.data.items)) {
+          cloudState.online = true;
+          cloudState.feed = res.data.items;
+          updateCloudPillUI();
+
+          if (cloudState.feed.length > 0) {
+            var top = cloudState.feed[0];
+            var ticker = document.getElementById("hallHotFeedText");
+            if (ticker) ticker.innerText = "【" + top.agency_name + "】" + top.message + " · 亮了(" + top.likes + ")";
+
+            // 若有其他真实玩家最新抽出 SSR 或反杀，触发顶部真实大喇叭播报！
+            if (!isInitial && top.id > cloudState.lastSeenBroadcastId && top.player_id !== cloudState.playerId && top.type === 'ssr_pull') {
+              triggerGlobalCustomHorn("📢【全服真实SSR喜报】玩家机构【" + top.agency_name + "】" + top.message + " 亮了(" + top.likes + ")");
+            }
+            if (top.id > cloudState.lastSeenBroadcastId) {
+              cloudState.lastSeenBroadcastId = top.id;
+            }
+          }
+          if (cloudState.activeLbSubtab === 'feed') renderGlobalFeedList();
+        }
+      });
+    }
+
+    function triggerGlobalCustomHorn(fullText) {
+      var banner = document.getElementById("megaHornBanner");
+      var badge = document.getElementById("hornCycleBadge");
+      var text = document.getElementById("hornText");
+      if (!banner || !badge || !text) return;
+      if (megaHornTimer) clearTimeout(megaHornTimer);
+      megaHornCycle = 1;
+      banner.classList.remove("hidden");
+      badge.innerText = "全服实时";
+      text.innerText = fullText;
+      text.style.animation = 'none';
+      void text.offsetWidth;
+      text.style.animation = 'hornScroll 6s linear infinite';
+      megaHornTimer = setTimeout(function() { banner.classList.add("hidden"); }, 12000);
+    }
+
+    function cloudPostBroadcast(type, message) {
+      if (!cloudState.playerId || !cloudState.authToken) return;
+      apiFetch('/api/broadcast', {
+        method: 'POST',
+        body: { type: type, message: message }
+      }).then(function() { pollGlobalFeed(true); });
+    }
+
+    function renderGlobalFeedList() {
+      var box = document.getElementById("leaderboardList");
+      if (!box) return;
+      box.innerHTML = "";
+      var stripLeft = document.getElementById("lbStripLeft");
+      var rivalGapEl = document.getElementById("lbRivalGap");
+      if (stripLeft) stripLeft.innerText = "🔥 步行街全服实时大喇叭 & 吃瓜热搜";
+      if (rivalGapEl) { rivalGapEl.innerText = "点 👍 为老哥亮评"; rivalGapEl.style.color = "#fbbf24"; }
+
+      var items = cloudState.feed || [];
+      if (items.length === 0) {
+        box.innerHTML = '<div class="card-subpanel" style="text-align:center;color:#94a3b8;font-size:12px;padding:20px;">正在拉取全服热搜动态...</div>';
+        return;
+      }
+      items.forEach(function(item) {
+        var tagMap = {
+          ssr_pull: '<span class="badge badge-gold">🎁 SSR出货</span>',
+          pvp_revenge: '<span class="badge badge-red">🛡️ 商战反杀</span>',
+          ending_goat: '<span class="badge badge-green">👑 封神结局</span>',
+          scandal_boom: '<span class="badge badge-red">🚨 315大瓜</span>'
+        };
+        var div = document.createElement("div");
+        div.className = "card-subpanel";
+        div.style.cssText = "display:flex;flex-direction:column;gap:6px;";
+        div.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+            '<span style="font-size:12px;font-weight:800;color:#fbbf24;">' + escapeHTML(item.agency_name) + ' ' + (tagMap[item.type] || '') + '</span>' +
+            '<button type="button" class="btn-icon" data-action="like-broadcast" data-broadcast-id="' + item.id + '" style="padding:3px 8px;font-size:11px;color:#38bdf8;">👍 亮了(<span id="bcLike-' + item.id + '">' + Number(item.likes || 0) + '</span>)</button>' +
+          '</div>' +
+          '<div style="font-size:11.5px;color:#e2e8f0;line-height:1.45;">' + escapeHTML(item.message) + '</div>';
+        box.appendChild(div);
+      });
+    }
+
+    function likeBroadcast(id) {
+      safeInitAudio();
+      playCoinSound();
+      apiFetch('/api/broadcast/' + id + '/like', { method: 'POST' }).then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          var el = document.getElementById("bcLike-" + id);
+          if (el) el.innerText = res.data.likes;
+          showToast("👍 亮了 +1！步行街气氛组到位！", "success");
+        }
+      });
+    }
+
+    // 服务端权威离线挂机收益核验与领取
+    function checkOfflineEarnings(autoOnly) {
+      if (!cloudState.online || !cloudState.playerId) {
+        if (!autoOnly) showToast("当前为离线模式，联网后将由云端自动计时累计最多 12 小时挂机商单！", "info");
+        return;
+      }
+      var synFx = getSynergyEffects();
+      apiFetch('/api/offline/claim', {
+        method: 'POST',
+        body: { preview: true, synergyBonus: synFx.offlineBonus }
+      }).then(function(res) {
+        if (!res.ok || !res.data || !res.data.ok) return;
+        var d = res.data;
+        cloudState.offlinePreview = d;
+        var hasRaids = Array.isArray(d.unreadEvents) && d.unreadEvents.length > 0;
+
+        if (!d.claimable && !hasRaids) {
+          if (!autoOnly) {
+            var leftSec = Math.max(1, (d.minSeconds || 60) - (d.elapsedSeconds || 0));
+            showToast("🌙 主播们正在帮你跑离线商单，再过 " + leftSec + " 秒即可首批收菜（上限12h）！", "info");
+          }
+          return;
+        }
+        if (autoOnly && d.elapsedSeconds < 120 && !hasRaids) return;
+
+        var mins = Math.max(1, Math.floor((d.elapsedSeconds || 0) / 60));
+        var timeDesc = mins >= 60 ? (Math.floor(mins / 60) + "小时" + (mins % 60) + "分") : (mins + "分钟");
+        document.getElementById("offlineSummaryText").innerText = d.claimable
+          ? ("在你离开的 " + timeDesc + " 里，旗下 " + ownedStreamers.length + " 位主播仍在全网自动接商单赚钱（服务端时间戳核验，上限12h）！")
+          : "虽暂未满新一轮挂机结算，但检测到以下同行商战急报！";
+        document.getElementById("offlineCashVal").innerText = "+" + Number(d.cashGain || 0).toFixed(1) + "w";
+        document.getElementById("offlineFansVal").innerText = "+" + Number(d.fansGain || 0).toFixed(1) + "w";
+
+        var raidsBox = document.getElementById("offlineRaidsBox");
+        raidsBox.innerHTML = "";
+        if (hasRaids) {
+          d.unreadEvents.slice(0, 3).forEach(function(ev) {
+            var rDiv = document.createElement("div");
+            rDiv.className = "card-subpanel";
+            rDiv.style.cssText = "border-color:rgba(239,68,68,0.5);font-size:11.5px;display:flex;flex-direction:column;gap:5px;";
+            rDiv.innerHTML =
+              '<div style="color:#fca5a5;font-weight:700;">⚔️ 离线急报：来自【' + escapeHTML(ev.attacker_name) + '】</div>' +
+              '<div style="color:#e2e8f0;">' + escapeHTML(ev.taunt_msg) + '</div>' +
+              '<button type="button" class="btn-small-upgrade" data-action="counter-pvp" data-log-id="' + ev.id + '" style="align-self:flex-start;background:' + (ev.action_type === 'collab' ? '#059669' : '#c91b1b') + ';padding:4px 10px;font-size:11px;">' + (ev.action_type === 'collab' ? '🤝 收下联名粉丝' : '🛡️ 晒质检反杀(1.5倍赔款)') + '</button>';
+            raidsBox.appendChild(rDiv);
+          });
+        }
+
+        var btnClaim = document.getElementById("btnClaimOffline");
+        if (btnClaim) {
+          btnClaim.disabled = !d.claimable;
+          btnClaim.innerText = d.claimable ? "💰 一键入账收菜！" : "已查阅战报，关闭窗口";
+        }
+        document.getElementById("offlineModal").classList.remove("hidden");
+      });
+    }
+
+    function claimOfflineEarnings() {
+      safeInitAudio();
+      if (!cloudState.offlinePreview || !cloudState.offlinePreview.claimable) {
+        closeOfflineModal();
+        return;
+      }
+      var synFx = getSynergyEffects();
+      apiFetch('/api/offline/claim', {
+        method: 'POST',
+        body: { preview: false, synergyBonus: synFx.offlineBonus }
+      }).then(function(res) {
+        if (res.ok && res.data && res.data.ok && res.data.claimed) {
+          state.cash += Number(res.data.cashGain || 0);
+          state.revenueTotal += Number(res.data.cashGain || 0);
+          state.fans += Number(res.data.fansGain || 0);
+          playCheerSound();
+          showToast("🌙 离线商单入账成功！资金 +" + res.data.cashGain + "w、粉丝 +" + res.data.fansGain + "w！", "success");
+          updateMCNRank(true);
+          renderHeaderStats();
+          renderHall();
+          saveLocalData();
+        }
+        closeOfflineModal();
+      });
+    }
+
+    function closeOfflineModal() {
+      document.getElementById("offlineModal").classList.add("hidden");
+    }
+
+    // Cloudflare Workers AI：虎扑步行街实时神评生成器
+    function fetchAiHupuComments(target) {
+      safeInitAudio();
+      var boxId = target === 'end' ? 'endAiCommentsBox' : (target === 'meta' ? 'metaAiPreviewBox' : 'recapHupuComment');
+      var box = document.getElementById(boxId);
+      if (box) {
+        box.classList.remove("hidden");
+        box.innerText = "🤖 正在连线 Cloudflare Workers AI 呼叫步行街 JRs 围观打分...";
+      }
+
+      var topS = getTopStreamer();
+      var highlights = (state.recentHighlights && state.recentHighlights.length > 0)
+        ? state.recentHighlights.join('；')
+        : ("旗下已签约" + ownedStreamers.length + "位主播，稳步冲刺全服天梯");
+
+      apiFetch('/api/ai/hupu-comments', {
+        method: 'POST',
+        timeoutMs: 16000,
+        body: {
+          agencyName: state.agencyName,
+          week: state.week,
+          cash: state.cash,
+          fans: state.fans,
+          pr: state.pr,
+          scandalRisk: state.scandalRisk || 0,
+          topStreamer: topS.name,
+          endingTitle: state.lastEndingTitle || '',
+          recentHighlights: highlights
+        }
+      }).then(function(res) {
+        var comments = (res.ok && res.data && Array.isArray(res.data.comments) && res.data.comments.length > 0)
+          ? res.data.comments
+          : [
+              { user: "步行街热心JR", tag: "这波什么水平", text: state.agencyName + "带着" + topS.name + "一路狂飙，手握" + state.cash.toFixed(0) + "w现金，这波操作给9.8分！", likes: 2480 },
+              { user: "铁血老哥看球", tag: "前东家破防", text: "本来以为要翻车，结果反手就是一波商业绝杀，建议直接颁发步行街名宿勋章！", likes: 1765 }
+            ];
+        var isAi = res.ok && res.data && res.data.source === 'workers-ai';
+        cloudState.latestAiComments = comments;
+
+        if (!box) return;
+        if (target === 'recap') {
+          var first = comments[0];
+          box.innerHTML =
+            '<div style="font-size:10px;color:#fbbf24;margin-bottom:3px;">' + (isAi ? '✨ Qwen3 AI 实时生成' : '🔥 步行街热评') + ' · @' + escapeHTML(first.user) + ' [' + escapeHTML(first.tag || '亮评') + ']</div>' +
+            '<div>“' + escapeHTML(first.text) + '” <strong style="color:#fca5a5;">👍亮了(' + Number(first.likes || 1688) + ')</strong></div>';
+        } else {
+          box.innerHTML = '';
+          var srcHint = document.createElement("div");
+          srcHint.style.cssText = "font-size:10px;color:#fbbf24;";
+          srcHint.textContent = isAi ? "✨ 由 Cloudflare Workers AI (Qwen3) 根据你本局真实战绩实时点评：" : "🔥 步行街 JRs 实时锐评：";
+          box.appendChild(srcHint);
+          comments.forEach(function(c) {
+            var item = document.createElement("div");
+            item.className = "hupu-comment-item";
+            item.innerHTML =
+              '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">' +
+                '<span style="font-weight:700;color:#fbbf24;font-size:11px;">@' + escapeHTML(c.user) + ' <span class="badge badge-blue">' + escapeHTML(c.tag || '热评') + '</span></span>' +
+                '<span style="font-size:10.5px;color:#fca5a5;">👍 亮了(' + Number(c.likes || 1200) + ')</span>' +
+              '</div>' +
+              '<div>' + escapeHTML(c.text) + '</div>';
+            box.appendChild(item);
+          });
+        }
+      });
+    }
+
+    // =========================================================================
+    // 12. 生产级全局事件委托处理器 (Universal Touch & Click Delegation Engine)
     // =========================================================================
     function handleActionDispatch(action, el) {
       if (!action) return;
 
       if (action === 'switch-tab') {
-        var tab = el.getAttribute('data-tab');
-        switchTab(tab);
+        switchTab(el.getAttribute('data-tab'));
       } else if (action === 'upgrade') {
-        var type = el.getAttribute('data-type');
-        upgradeFacility(type);
+        upgradeFacility(el.getAttribute('data-type'));
       } else if (action === 'toggle-sound') {
         toggleSound();
       } else if (action === 'open-reset') {
@@ -3935,22 +6506,17 @@
       } else if (action === 'close-recruit') {
         closeRecruitModal();
       } else if (action === 'recruit-streamer') {
-        var id = el.getAttribute('data-id');
-        recruitStreamer(id);
+        recruitStreamer(el.getAttribute('data-id'));
       } else if (action === 'train-streamer') {
-        var id = el.getAttribute('data-id');
-        trainStreamer(id);
+        trainStreamer(el.getAttribute('data-id'));
       } else if (action === 'shoot-video') {
-        var id = el.getAttribute('data-id');
-        shootShortVideo(id);
+        shootShortVideo(el.getAttribute('data-id'));
       } else if (action === 'rest-streamer') {
-        var id = el.getAttribute('data-id');
-        restStreamer(id);
+        restStreamer(el.getAttribute('data-id'));
       } else if (action === 'restore-all-streamers') {
         restoreAllStreamers();
       } else if (action === 'select-live-streamer') {
-        var id = el.getAttribute('data-id');
-        selectLiveStreamer(id);
+        selectLiveStreamer(el.getAttribute('data-id'));
       } else if (action === 'start-live') {
         startLiveSession();
       } else if (action === 'click-bubble') {
@@ -3960,14 +6526,17 @@
       } else if (action === 'enter-endless') {
         enterEndlessMode();
       } else if (action === 'select-event-opt') {
-        var idx = parseInt(el.getAttribute('data-index'), 10);
-        selectEventOption(idx);
+        selectEventOption(parseInt(el.getAttribute('data-index'), 10));
       } else if (action === 'confirm-event-choice') {
         executeEventChoice();
       } else if (action === 'confirm-next-week') {
         confirmNextWeek();
       } else if (action === 'open-leaderboard') {
-        openLeaderboardModal();
+        openLeaderboardModal('rank');
+      } else if (action === 'open-leaderboard-tab') {
+        openLeaderboardModal(el.getAttribute('data-subtab') || 'rank');
+      } else if (action === 'switch-lb-subtab') {
+        switchLeaderboardSubtab(el.getAttribute('data-subtab'));
       } else if (action === 'close-leaderboard') {
         closeLeaderboardModal();
       } else if (action === 'skip-cooldown') {
@@ -3981,10 +6550,53 @@
       } else if (action === 'close-horn') {
         closeMegaHorn();
       } else if (action === 'speedup-streamer-stamina') {
-        var id = el.getAttribute('data-id');
-        speedupStreamerStamina(id);
+        speedupStreamerStamina(el.getAttribute('data-id'));
       } else if (action === 'speedup-all-stamina') {
         speedupAllStamina();
+      } else if (action === 'cool-scandal') {
+        coolScandal();
+      } else if (action === 'open-dm') {
+        openDMModal();
+      } else if (action === 'close-dm') {
+        closeDMModal();
+      } else if (action === 'reply-dm') {
+        replyToDM(el.getAttribute('data-dm-uid'), parseInt(el.getAttribute('data-opt-idx'), 10));
+      } else if (action === 'choose-talent') {
+        chooseStartingTalent(el.getAttribute('data-talent-id'));
+      } else if (action === 'open-meta-hall') {
+        openMetaHallModal();
+      } else if (action === 'close-meta-hall') {
+        closeMetaHallModal();
+      } else if (action === 'unlock-talent') {
+        unlockTalent(el.getAttribute('data-talent-id'));
+      } else if (action === 'open-rename') {
+        openRenameModal();
+      } else if (action === 'close-rename') {
+        closeRenameModal();
+      } else if (action === 'save-agency-name') {
+        saveAgencyName();
+      } else if (action === 'check-offline-earnings') {
+        checkOfflineEarnings(false);
+      } else if (action === 'claim-offline-earnings') {
+        claimOfflineEarnings();
+      } else if (action === 'close-offline') {
+        closeOfflineModal();
+      } else if (action === 'quick-pvp-target') {
+        switchLeaderboardSubtab('pvp');
+      } else if (action === 'launch-pvp') {
+        launchPvpAction(el.getAttribute('data-target-id'), el.getAttribute('data-pvp-type'));
+      } else if (action === 'counter-pvp') {
+        counterPvpAttack(el.getAttribute('data-log-id'));
+      } else if (action === 'like-broadcast') {
+        likeBroadcast(el.getAttribute('data-broadcast-id'));
+      } else if (action === 'fetch-ai-comments') {
+        fetchAiHupuComments(el.getAttribute('data-target') || 'end');
+      } else if (action === 'open-poster') {
+        openPosterModal();
+      } else if (action === 'close-poster') {
+        closePosterModal();
+      } else if (action === 'copy-report') {
+        copyBattleReport(el);
       }
     }
 
@@ -3995,7 +6607,6 @@
       while (target && target !== document.body && target !== document.documentElement) {
         var action = target.getAttribute('data-action');
         if (action) {
-          // 防抖保护 (避免 touchend 和 click 重复触发两次)
           var now = Date.now();
           if (now - lastActionTimestamp < 80) return;
           lastActionTimestamp = now;
@@ -4008,20 +6619,19 @@
       }
     }
 
-    // 绑定跨端交互监听：支持 pointerup, touchend, 与标准 click
     document.addEventListener('pointerup', onUniversalInteraction, { passive: true });
     document.addEventListener('click', onUniversalInteraction, { passive: true });
 
     // =========================================================================
-    // 12. 虎扑 AI 工坊云端扩展规范接口 (HupuBridge Standard Protocol)
+    // 13. 虎扑 AI 工坊云端扩展规范接口 (HupuBridge Standard Protocol)
     // =========================================================================
     window.HupuBridge = {
-      version: "2.1.0",
+      version: "3.0.0",
       isHupuApp: function() {
         return /hupu|kanqiu/i.test(navigator.userAgent);
       },
       onGameReady: function(cb) {
-        if (typeof cb === 'function') cb({ week: state.week, cash: state.cash, pr: state.pr });
+        if (typeof cb === 'function') cb({ week: state.week, cash: state.cash, pr: state.pr, agencyName: state.agencyName });
       },
       onGameEnd: function(result) {
         console.log("[HupuBridge] Game Completed:", result);
@@ -4042,6 +6652,13 @@
       renderLivePrep();
       renderEventView();
       switchTab(state.activeTab || 'hall');
+      if (!state.dmInbox || state.dmInbox.length === 0) {
+        maybePushContextualDM('init');
+      }
+      if (!state.talentPickedThisRun && state.week === 1) {
+        openTalentPickModal();
+      }
+      initCloudClient();
     }
 
     initGame();

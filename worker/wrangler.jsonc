@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "hupu-mcn-game",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-19",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "hupu-mcn-db",
+      "database_id": "328a3a70-afd0-4b8b-b501-53ddd781a254"
+    }
+  ],
+  "ai": {
+    "binding": "AI"
+  },
+  "vars": {
+    "ALLOWED_ORIGINS": "https://niceoneto.github.io"
+  }
+}
