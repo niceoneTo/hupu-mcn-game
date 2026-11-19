@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://hupu-mcn-game.hepeter626.workers.dev https://*.workers.dev; object-src 'none'; base-uri 'self';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://mcn.199771online.top https://hupu-mcn-game.hepeter626.workers.dev https://*.workers.dev; object-src 'none'; base-uri 'self';" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>MCN王牌经纪人 3.0 · 破晓帝国全服联网版</title>
   <style>
@@ -2385,7 +2385,7 @@
     // 2. 核心状态机、局外传承与全服轻联网配置 (v3.0 破晓帝国)
     // =========================================================================
     var CLOUD_API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname.indexOf('github.io') !== -1 || location.protocol === 'file:')
-      ? 'https://hupu-mcn-game.hepeter626.workers.dev'
+      ? 'https://mcn.199771online.top'
       : location.origin;
 
     var state = {
@@ -6702,7 +6702,7 @@
       // 底部扫码/链接水印
       ctx.fillStyle = "#94a3b8";
       ctx.font = "19px sans-serif";
-      ctx.fillText("在线试玩：niceoneto.github.io/hupu-mcn-game  |  不服来战！", 48, 1028);
+      ctx.fillText("在线试玩：mcn.199771online.top  |  不服来战！", 48, 1028);
 
       var dataUrl = canvas.toDataURL("image/png");
       var img = document.getElementById("posterPreviewImg");
@@ -6743,7 +6743,7 @@
       var topComment = (cloudState.latestAiComments && cloudState.latestAiComments[0])
         ? ("\n🔥 步行街神评：「" + cloudState.latestAiComments[0].text + "」亮了(" + cloudState.latestAiComments[0].likes + ")")
         : "";
-      return "【虎扑MCN王牌经纪人 3.1 战报】\n🏢 机构：" + state.agencyName + "（JRs评分 " + ratingStr + " 分）\n🏆 战绩：" + rankTxt + " | 战力 " + (state.powerScore || calculatePowerScore()).toFixed(1) + "w | 现金 " + state.cash.toFixed(1) + "w | 粉丝 " + state.fans.toFixed(1) + "w\n🎙️ 王牌养成：" + topS.name + "（" + stageInfo.title + " · 颜值" + topS.charm + "）" + debutTxt + topComment + "\n👉 手机即点即玩，来《破晓101》和我碰一碰：https://niceoneto.github.io/hupu-mcn-game/";
+      return "【虎扑MCN王牌经纪人 3.1 战报】\n🏢 机构：" + state.agencyName + "（JRs评分 " + ratingStr + " 分）\n🏆 战绩：" + rankTxt + " | 战力 " + (state.powerScore || calculatePowerScore()).toFixed(1) + "w | 现金 " + state.cash.toFixed(1) + "w | 粉丝 " + state.fans.toFixed(1) + "w\n🎙️ 王牌养成：" + topS.name + "（" + stageInfo.title + " · 颜值" + topS.charm + "）" + debutTxt + topComment + "\n👉 手机即点即玩，来《破晓101》和我碰一碰：https://mcn.199771online.top/";
     }
 
     function reportCopyFeedback(button, ok) {
