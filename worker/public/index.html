@@ -963,10 +963,221 @@
       color: #cbd5e1;
       cursor: pointer;
     }
+
+    /* ================================================================
+       v3.1 饭圈养成 · 颜值即正义 5阶进化 · 《破晓101》选秀成团样式
+       严格遵循 modern-web-guidance motion & tabs 规范
+       ================================================================ */
+    .debut-confetti-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .avatar-stage-badge {
+      position: absolute;
+      left: -3px;
+      bottom: -3px;
+      font-size: 8.5px;
+      font-weight: 800;
+      padding: 1px 4px;
+      border-radius: 5px;
+      line-height: 1.15;
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .stage-pill-1 { background: #334155; color: #cbd5e1; }
+    .stage-pill-2 { background: #9d174d; color: #fbcfe8; }
+    .stage-pill-3 { background: #6d28d9; color: #ede9fe; }
+    .stage-pill-4 { background: linear-gradient(135deg, #be185d, #d97706); color: #fef3c7; }
+    .stage-pill-5 { background: linear-gradient(135deg, #ec4899, #8b5cf6, #f59e0b); color: #ffffff; }
+
+    .avatar-stage-ur {
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.55);
+    }
+    @keyframes urFloatGlow {
+      0%, 100% { transform: scale(1); opacity: 0.95; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+    .avatar-stage-ur svg {
+      @media (prefers-reduced-motion: no-preference) {
+        animation: urFloatGlow 2.8s ease-in-out infinite;
+      }
+    }
+
+    .beauty-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.25), rgba(245, 158, 11, 0.25));
+      border: 1px solid rgba(244, 114, 182, 0.55);
+      color: #fbcfe8;
+      white-space: nowrap;
+    }
+
+    /* Accessible single-row tablist (modern-web-guidance tabs) */
+    .fandom-tablist {
+      display: flex;
+      overflow-x: auto;
+      gap: 4px;
+      border-bottom: 1px solid #2e3d60;
+      scrollbar-width: none;
+      margin-bottom: 4px;
+    }
+    .fandom-tablist::-webkit-scrollbar { display: none; }
+    .fandom-tab {
+      position: relative;
+      flex: 1 0 auto;
+      padding: 8px 7px;
+      min-block-size: 40px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .fandom-tab[aria-selected="true"] {
+      color: #fbbf24;
+    }
+    .fandom-tab[aria-selected="true"]::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      border-block-end: 3px solid #f472b6;
+    }
+    .debut-panel-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 6px;
+    }
+
+    .evo-compare-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(88, 28, 135, 0.28));
+      border: 1px solid rgba(244, 114, 182, 0.35);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .evo-stage-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      text-align: center;
+    }
+    .stage-timeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+    }
+    .stage-step-btn {
+      padding: 5px 2px;
+      min-block-size: 36px;
+      border-radius: 8px;
+      border: 1px solid #2e3d60;
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .stage-step-btn.unlocked {
+      border-color: rgba(244, 114, 182, 0.55);
+      color: #fbcfe8;
+      background: rgba(157, 23, 77, 0.22);
+    }
+    .stage-step-btn.active-preview {
+      border-color: #fbbf24;
+      color: #fef08a;
+      background: rgba(245, 158, 11, 0.22);
+    }
+
+    .faction-bar {
+      display: flex;
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #1e293b;
+      border: 1px solid #334155;
+    }
+    .faction-seg-solo { background: #f43f5e; }
+    .faction-seg-cp   { background: #a855f7; }
+    .faction-seg-mom  { background: #34d399; }
+
+    .dual-copy-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .copy-card-fandom {
+      background: linear-gradient(135deg, rgba(157, 23, 77, 0.22), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(244, 114, 182, 0.45);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      line-height: 1.48;
+      color: #fce7f3;
+    }
+    .copy-card-hupu {
+      background: linear-gradient(135deg, rgba(185, 28, 28, 0.22), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      line-height: 1.48;
+      color: #fee2e2;
+    }
+    .trainee-pick-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 7px 9px;
+      border-radius: 10px;
+      background: #0f172a;
+      border: 1px solid #24314c;
+    }
+    .trainee-pick-row.selected {
+      border-color: #f472b6;
+      background: rgba(157, 23, 77, 0.18);
+    }
+    .milestone-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10.5px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #64748b;
+    }
+    .milestone-chip.unlocked {
+      border-color: rgba(251, 191, 36, 0.65);
+      background: rgba(245, 158, 11, 0.18);
+      color: #fde68a;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
 
+  <canvas id="confettiCanvas" class="debut-confetti-canvas hidden" aria-hidden="true"></canvas>
   <div class="game-container" id="gameApp">
     
     <!-- 顶部全场大喇叭公报 (抽出SSR级时全场播报3次) -->
@@ -1214,6 +1425,23 @@
           </div>
           <button class="btn-small-upgrade" data-action="open-blindbox" style="background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; font-weight: 800; border: none; padding: 5px 12px; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);">
             开盲盒
+          </button>
+        </div>
+
+        <!-- 《破晓101》选秀出道成团 & 全服饭圈超话入口卡片 -->
+        <div id="debutPromoCard" class="card-subpanel" style="background: linear-gradient(135deg, rgba(157, 23, 77, 0.28), rgba(88, 28, 135, 0.28)); border: 1px solid rgba(244, 114, 182, 0.5); display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; margin-bottom: 8px; border-radius: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+            <span style="font-size: 24px; flex-shrink: 0;">👑</span>
+            <div style="min-width: 0;">
+              <div id="debutPromoTitle" style="font-size: 12.5px; font-weight: 800; color: #fbcfe8; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                《破晓101》选秀成团打投
+                <span class="beauty-tag">✨ 颜值即正义</span>
+              </div>
+              <div id="debutPromoSub" style="font-size: 11px; color: #cbd5e1; margin-top: 1px;">提名3~5位主播争C位出道 · 永久团播GMV+35% · 全服超话榜</div>
+            </div>
+          </div>
+          <button type="button" class="btn-small-upgrade" data-action="open-debut" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; font-weight: 800; border: none; padding: 6px 11px; flex-shrink: 0; white-space: nowrap;">
+            选秀成团
           </button>
         </div>
 
@@ -1707,6 +1935,179 @@
       </div>
     </div>
 
+    <!-- 模态框 12: 饭圈个人超话 & 素颜➔女神 5阶养成档案 -->
+    <div id="fandomModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 90vh; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
+          <div style="display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1;">
+            <span id="fandomModalTitle" style="font-size: 13.5px; font-weight: 800; color: #fbcfe8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">💖 个人养成超话</span>
+            <span id="fandomSuperTierBadge" class="badge badge-gold" style="white-space: nowrap; flex-shrink: 0;">银超</span>
+          </div>
+          <button type="button" class="btn-icon" data-action="close-fandom" style="padding: 4px 8px; flex-shrink: 0;">✕</button>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; padding-right: 2px;">
+          <!-- 粉丝名与应援色条 -->
+          <div id="fandomProfileHeader" class="card-subpanel" style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px;"></div>
+
+          <!-- Before → After 素人到女神可视化蜕变对比框 -->
+          <div class="evo-compare-grid">
+            <div class="evo-stage-slot">
+              <div style="font-size: 10px; color: #94a3b8; font-weight: 700;">海选素颜 · Lv.1</div>
+              <div id="fandomBeforeAvatar"></div>
+              <div id="fandomBeforeLabel" style="font-size: 10.5px; color: #cbd5e1;">素颜素人</div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+              <span style="font-size: 18px; color: #f472b6; font-weight: 900;">➔</span>
+              <span id="fandomCharmDelta" style="font-size: 10px; font-weight: 800; color: #fbbf24; white-space: nowrap;">颜值 68</span>
+            </div>
+            <div class="evo-stage-slot">
+              <div id="fandomAfterTag" style="font-size: 10px; color: #fbcfe8; font-weight: 800;">当前阶段</div>
+              <div id="fandomAfterAvatar"></div>
+              <div id="fandomAfterLabel" style="font-size: 10.5px; color: #fde68a; font-weight: 800;">Lv.1 素颜素人</div>
+            </div>
+          </div>
+
+          <!-- 5阶蜕变时间轴预览按钮 (点击任意阶预览未来女神形态) -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 10.5px; color: #94a3b8; margin-bottom: 4px;">
+              <span style="white-space: nowrap;">✨ 5阶进化（点击预览）</span>
+              <span id="fandomExpText" style="color: #fbbf24; font-weight: 700; white-space: nowrap;">0 / 100</span>
+            </div>
+            <div class="stage-timeline" id="fandomStageTimeline"></div>
+            <div style="height: 6px; background: #1e293b; border-radius: 999px; overflow: hidden; margin-top: 5px;">
+              <div id="fandomExpBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #ec4899, #f59e0b); transition: width 0.25s ease;"></div>
+            </div>
+          </div>
+
+          <!-- 颜值即正义被动说明 + 三大粉丝派系结构 -->
+          <div id="fandomBeautyPassiveBox" class="card-subpanel" style="padding: 8px 10px; font-size: 11px; color: #fbcfe8; border-color: rgba(244, 114, 182, 0.4); background: rgba(157, 23, 77, 0.14);"></div>
+
+          <div class="card-subpanel" style="padding: 8px 10px; display: flex; flex-direction: column; gap: 5px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+              <span style="font-weight: 700; color: #fff;">🎭 粉圈三大派系生态</span>
+              <span id="fandomMomShieldBadge" style="font-size: 10px; color: #34d399;">🛡️ 妈粉护盾待激活</span>
+            </div>
+            <div class="faction-bar">
+              <div id="facBarSolo" class="faction-seg-solo" style="width: 55%;"></div>
+              <div id="facBarCp" class="faction-seg-cp" style="width: 15%;"></div>
+              <div id="facBarMom" class="faction-seg-mom" style="width: 30%;"></div>
+            </div>
+            <div id="factionLabels" style="display: flex; justify-content: space-between; font-size: 10.5px; color: #cbd5e1;"></div>
+          </div>
+
+          <!-- 线下应援里程碑 -->
+          <div class="card-subpanel" style="padding: 8px 10px;">
+            <div style="font-size: 11px; font-weight: 700; color: #fde68a; margin-bottom: 5px;">🏙️ 粉丝线下应援里程碑</div>
+            <div id="fandomMilestonesBox" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
+          </div>
+
+          <!-- 饭圈核心操作按钮矩阵 -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+            <button type="button" id="btnFandomGlowstick" class="btn-icon" data-action="fandom-vote-glowstick" style="padding: 8px 6px; font-size: 11.5px; color: #fbcfe8; border-color: rgba(244, 114, 182, 0.5); background: rgba(157, 23, 77, 0.22); font-weight: 700;">
+              🌸 送应援棒打榜
+            </button>
+            <button type="button" id="btnFandomGlowup" class="btn-icon" data-action="fandom-glowup" style="padding: 8px 6px; font-size: 11.5px; color: #fef08a; border-color: rgba(245, 158, 11, 0.55); background: rgba(245, 158, 11, 0.16); font-weight: 700;">
+              💄 妆造/站姐出图(8w)
+            </button>
+            <button type="button" id="btnFandomCp" class="btn-icon" data-action="fandom-cp-pair" style="padding: 8px 6px; font-size: 11.5px; color: #d8b4fe; border-color: rgba(168, 85, 247, 0.5); background: rgba(109, 40, 217, 0.18); font-weight: 700;">
+              💞 指定CP营业(5w)
+            </button>
+            <button type="button" id="btnFandomAntiBlack" class="btn-icon" data-action="fandom-antiblack" style="padding: 8px 6px; font-size: 11.5px; color: #6ee7b7; border-color: rgba(16, 185, 129, 0.45); background: rgba(6, 78, 59, 0.25); font-weight: 700;">
+              🛡️ 反黑洗广场(6w)
+            </button>
+          </div>
+
+          <!-- Qwen3 AI 双画风实时回响（饭圈站姐彩虹屁 × 虎扑步行街跨圈热评） -->
+          <div id="fandomDualCopyBox" class="dual-copy-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; font-weight: 800; color: #fbbf24;">📡 饭圈站姐 × 虎扑老哥跨圈舆情</span>
+              <button type="button" class="btn-icon" data-action="fandom-ai-copy" style="padding: 3px 8px; font-size: 10.5px; color: #38bdf8;">✨ AI 生成直拍热评</button>
+            </div>
+            <div id="fandomDualCopyContent" style="font-size: 11px; color: #94a3b8;">点击「妆造/站姐出图」或「AI 生成直拍热评」，触发 Cloudflare Workers AI (Qwen3) 实时围观！</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 模态框 13: 《破晓101》选秀出道成团 & 全服超话/天团殿堂 (遵循 modern-web-guidance tabs 规范) -->
+    <div id="debutModal" class="modal-overlay hidden">
+      <div class="modal-card" style="max-height: 90vh; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 14px; font-weight: 800; color: #fbcfe8;">🌟 《破晓101》选秀成团 & 全服超话</span>
+          <button type="button" class="btn-icon" data-action="close-debut" style="padding: 4px 8px;">✕</button>
+        </div>
+
+        <div class="fandom-tablist" role="tablist" focusgroup="tablist nomemory" aria-label="破晓101选秀与全服超话视图" id="debutTablist">
+          <button type="button" class="fandom-tab" role="tab" id="debutTab-stage" aria-selected="true" focusgroupstart data-action="switch-debut-subtab" data-subtab="stage">🗳️ 成团打投</button>
+          <button type="button" class="fandom-tab" role="tab" id="debutTab-supertopics" aria-selected="false" data-action="switch-debut-subtab" data-subtab="supertopics">🏆 全服超话</button>
+          <button type="button" class="fandom-tab" role="tab" id="debutTab-groups" aria-selected="false" data-action="switch-debut-subtab" data-subtab="groups">👑 出道天团</button>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding-right: 2px;">
+          <!-- Panel 1: 选秀成团打投 -->
+          <div id="debutPanel-stage" role="tabpanel" aria-labelledby="debutTab-stage">
+            <div class="debut-panel-inner">
+              <div id="debutCurrentGroupCard" class="card-subpanel hidden" style="border-color: rgba(251, 191, 36, 0.65); background: linear-gradient(135deg, rgba(236, 72, 153, 0.18), rgba(245, 158, 11, 0.16)); padding: 9px 10px;"></div>
+
+              <div class="card-subpanel" style="padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11.5px; color: #e2e8f0; font-weight: 700;">🌸 今日免费应援棒</span>
+                <span id="debutGlowstickCount" style="font-size: 12px; font-weight: 800; color: #f472b6;">10 / 10 根</span>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                  <span style="font-size: 11.5px; font-weight: 700; color: #fff;">1. 选择 3~5 位练习生并指定 C 位</span>
+                  <span id="debutSelectedSummary" style="font-size: 11px; color: #fbbf24;">已选 1/5</span>
+                </div>
+                <div id="debutTraineeList" style="display: flex; flex-direction: column; gap: 6px;"></div>
+              </div>
+
+              <!-- 成团门槛进度条 + 打投操作 -->
+              <div class="card-subpanel" style="padding: 9px 10px; display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px;">
+                  <span style="font-weight: 700; color: #fbcfe8;">2. 成团出道总票数门槛</span>
+                  <span id="debutVoteProgressText" style="font-weight: 800; color: #fbbf24;">1200 / 3000 票</span>
+                </div>
+                <div style="height: 8px; background: #1e293b; border-radius: 999px; overflow: hidden;">
+                  <div id="debutVoteProgressBar" style="height: 100%; width: 40%; background: linear-gradient(90deg, #ec4899, #8b5cf6, #f59e0b); transition: width 0.25s ease;"></div>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button type="button" class="btn-icon" data-action="debut-vote-free" style="flex: 1; padding: 7px 6px; font-size: 11px; color: #fbcfe8; border-color: rgba(244, 114, 182, 0.5); font-weight: 700;">🌸 投免费应援棒(+120票)</button>
+                  <button type="button" class="btn-icon" data-action="debut-vote-milk" style="flex: 1; padding: 7px 6px; font-size: 11px; color: #fbbf24; border-color: rgba(245, 158, 11, 0.5); font-weight: 700;">🥛 买奶票打投(10w/+1200票)</button>
+                </div>
+              </div>
+
+              <!-- 团名与成团夜盛典触发 -->
+              <div class="card-subpanel" style="padding: 9px 10px; display: flex; flex-direction: column; gap: 7px;">
+                <label for="debutGroupNameInput" style="font-size: 11.5px; font-weight: 700; color: #fff;">3. 命名你的限定天团并开启成团夜</label>
+                <input id="debutGroupNameInput" type="text" maxlength="12" placeholder="如：破晓神颜101 / 步行街绝美团" style="width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid #334155; background: #0b1120; color: #fff; font-size: 13px; outline: none;" />
+                <button type="button" id="btnLaunchDebutNight" class="btn-primary" data-action="execute-debut" style="margin: 0; padding: 10px; background: linear-gradient(135deg, #ec4899, #8b5cf6, #f59e0b); font-size: 13px;">
+                  🎉 开启《破晓101》成团夜盛典！
+                </button>
+              </div>
+
+              <div id="debutCeremonyResult" class="dual-copy-box hidden"></div>
+            </div>
+          </div>
+
+          <!-- Panel 2: 全服超话人气榜 -->
+          <div id="debutPanel-supertopics" role="tabpanel" aria-labelledby="debutTab-supertopics" hidden="until-found">
+            <div class="debut-panel-inner" id="globalSupertopicsList">
+              <div class="card-subpanel" style="text-align: center; color: #94a3b8; font-size: 12px; padding: 18px;">正在拉取全服超话人气榜...</div>
+            </div>
+          </div>
+
+          <!-- Panel 3: 全服出道天团殿堂 -->
+          <div id="debutPanel-groups" role="tabpanel" aria-labelledby="debutTab-groups" hidden="until-found">
+            <div class="debut-panel-inner" id="globalDebutGroupsList">
+              <div class="card-subpanel" style="text-align: center; color: #94a3b8; font-size: 12px; padding: 18px;">正在拉取全服出道天团殿堂...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -1847,7 +2248,15 @@
       usedDmIds: [],
       recentHighlights: [],
       lastEndingTitle: '',
-      lastEndingRating: '9.2'
+      lastEndingRating: '9.2',
+      debutGroup: null,
+      fandomDraftMembers: ['su'],
+      fandomDraftCenter: 'su',
+      activeFandomStreamerId: 'su',
+      activeFandomPreviewStage: null,
+      activeDebutSubtab: 'stage',
+      localGlowsticksUsed: 0,
+      localGlowsticksDate: ''
     };
 
     // 独立永久跨周目局外传承存档 (重开新局不清空)
@@ -1876,7 +2285,11 @@
       lastSeenBroadcastId: 0,
       latestAiComments: [],
       lastSyncTs: 0,
-      offlinePreview: null
+      offlinePreview: null,
+      supertopics: [],
+      debutGroups: [],
+      glowsticksRemaining: 10,
+      dailyGlowsticksLimit: 10
     };
 
     var weekStartSnapshot = {
@@ -2209,17 +2622,120 @@
       }
     };
 
+    // =========================================================================
+    // 2.2 饭圈文化与「颜值即正义」5阶养成蜕变数据库 (全24位主播完整适配)
+    // =========================================================================
+    var FANDOM_STAGES = {
+      beauty: [
+        { stage: 1, minExp: 0,   shortName: 'Lv.1素颜', title: 'Lv.1 素颜素人',   desc: '黑框素颜初出茅庐，尚未发掘惊艳骨相' },
+        { stage: 2, minExp: 100, shortName: 'Lv.2校花', title: 'Lv.2 校花初现',   desc: '摘下眼镜换上清甜妆造，步行街初露锋芒' },
+        { stage: 3, minExp: 260, shortName: 'Lv.3神图', title: 'Lv.3 万转神图',   desc: '站姐直拍出圈万转，星味与镜头感全面拉满' },
+        { stage: 4, minExp: 500, shortName: 'Lv.4钻超', title: 'Lv.4 钻超女神',   desc: '高定礼服加身登顶钻超，生图抗住死亡顶光' },
+        { stage: 5, minExp: 850, shortName: 'UR神颜',   title: 'Lv.5 国民神颜UR', desc: '全网审美天花板！王冠星环加冕，颜值即正义' }
+      ],
+      pro: [
+        { stage: 1, minExp: 0,   shortName: 'Lv.1新秀', title: 'Lv.1 潜力新秀',   desc: '初入直播江湖，积攒第一批死忠铁粉' },
+        { stage: 2, minExp: 100, shortName: 'Lv.2黑马', title: 'Lv.2 出圈黑马',   desc: '爆款切片刷屏热搜，后援会雏形已成' },
+        { stage: 3, minExp: 260, shortName: 'Lv.3顶流', title: 'Lv.3 话题顶流',   desc: '站姐接机与金超登榜，热搜常驻门面' },
+        { stage: 4, minExp: 500, shortName: 'Lv.4钻超', title: 'Lv.4 钻超巨星',   desc: '个人超话突破三万大关，全网号召力爆表' },
+        { stage: 5, minExp: 850, shortName: 'UR封神',   title: 'Lv.5 全网封神UR', desc: '自带百万应援海的现象级王牌传奇' }
+      ]
+    };
+
+    var FANDOM_PROFILES = {
+      su:     { fanClub: '晴天娃娃', color: '#f43f5e', colorName: '玫瑰绯红', slogan: '晚晴所至，颜值即正义！', isBeauty: true, baseCharm: 68, initVotes: 1200 },
+      meina:  { fanClub: '护美亲卫队', color: '#ec4899', colorName: '樱花粉', slogan: '步行街白月光，绝杀全网颜值！', isBeauty: true, baseCharm: 66, initVotes: 950 },
+      zhao:   { fanClub: '昭华星辰', color: '#10b981', colorName: '青瓷翠', slogan: '一眼万年国风绝色，东方美学天花板！', isBeauty: true, baseCharm: 65, initVotes: 820 },
+      ling:   { fanClub: '兔糖应援团', color: '#c084fc', colorName: '香芋紫', slogan: '甜度爆表治愈宇宙，妈粉誓死守护！', isBeauty: true, baseCharm: 64, initVotes: 760 },
+      daxue:  { fanClub: '青春发电站', color: '#38bdf8', colorName: '海盐蓝', slogan: '从素人练习生到顶流C位，一路走花路！', isBeauty: true, baseCharm: 62, initVotes: 650 },
+      dong:   { fanClub: '墨香书友会', color: '#3b82f6', colorName: '青花蓝', slogan: '腹有诗书气自华，人间烟火第一流！', isBeauty: false, baseCharm: 60, initVotes: 880 },
+      yang:   { fanClub: '狂飙家人们', color: '#eab308', colorName: '闪电黄', slogan: '反向带货整活王，今晚直播间不散！', isBeauty: false, baseCharm: 56, initVotes: 800 },
+      zhui:   { fanClub: '龙王亲卫队', color: '#f97316', colorName: '霸总金', slogan: '歪嘴一笑全网沸腾，爽文之神降临！', isBeauty: false, baseCharm: 61, initVotes: 750 },
+      ai01:   { fanClub: '赛博硅基团', color: '#06b6d4', colorName: '量子青', slogan: '零失误永动机，算力铸就神颜！', isBeauty: false, baseCharm: 64, initVotes: 720 },
+      luo:    { fanClub: '理想交友团', color: '#6366f1', colorName: '极客靛', slogan: '真还传商业标杆，交个朋友不踩坑！', isBeauty: false, baseCharm: 55, initVotes: 680 },
+      liu:    { fanClub: '毽子操铁军', color: '#22c55e', colorName: '燃脂绿', slogan: '腰间肥肉咔咔掉，全网男孩女孩冲！', isBeauty: false, baseCharm: 58, initVotes: 620 },
+      qiang:  { fanClub: '碳水快乐营', color: '#fb923c', colorName: '烤串橙', slogan: '半夜吃播顶流，烟火气天下第一！', isBeauty: false, baseCharm: 52, initVotes: 560 },
+      he:     { fanClub: '极客实验室', color: '#0284c7', colorName: '星云蓝', slogan: '硬核拆解不吹牛，工科生信仰之光！', isBeauty: false, baseCharm: 57, initVotes: 540 },
+      kun:    { fanClub: '野球场铁粉', color: '#8b5cf6', colorName: '紫金梦', slogan: '街头绝杀后仰跳投，虎扑实战之王！', isBeauty: false, baseCharm: 60, initVotes: 660 },
+      chen:   { fanClub: '正义守望者', color: '#2563eb', colorName: '警徽蓝', slogan: '正能量拉满，守护全网消费底线！', isBeauty: false, baseCharm: 54, initVotes: 500 },
+      wei:    { fanClub: '海鲜狂热帮', color: '#0891b2', colorName: '深海青', slogan: '赶海爆桶停不下来，鲜味直击灵魂！', isBeauty: false, baseCharm: 53, initVotes: 480 },
+      mao:    { fanClub: '地下说唱帮', color: '#a855f7', colorName: '霓虹紫', slogan: '即兴押韵炸翻全场，潮流街头主理人！', isBeauty: false, baseCharm: 59, initVotes: 520 },
+      che:    { fanClub: '懂车老炮团', color: '#dc2626', colorName: '赛道红', slogan: '零百加速实测为王，真男人的浪漫！', isBeauty: false, baseCharm: 55, initVotes: 490 },
+      guang:  { fanClub: '煲汤街坊会', color: '#d97706', colorName: '琥珀金', slogan: '老火靓汤暖人心，两广街坊顶起！', isBeauty: false, baseCharm: 54, initVotes: 460 },
+      suona:  { fanClub: '民乐燃魂团', color: '#ef4444', colorName: '国潮红', slogan: '唢呐一响黄金万两，非遗燃爆全网！', isBeauty: false, baseCharm: 54, initVotes: 470 },
+      baoshi: { fanClub: '捡漏鉴宝团', color: '#059669', colorName: '翡翠绿', slogan: '骨折砍价教科书，沉浸捡漏天花板！', isBeauty: false, baseCharm: 55, initVotes: 440 },
+      qishou: { fanClub: '疾风骑士团', color: '#eab308', colorName: '疾风黄', slogan: '风里雨里准时必达，草根逆袭标杆！', isBeauty: false, baseCharm: 54, initVotes: 430 },
+      nong:   { fanClub: '助农暖心帮', color: '#84cc16', colorName: '山野绿', slogan: '秦岭深山纯天然，良心好货不掺假！', isBeauty: false, baseCharm: 52, initVotes: 450 },
+      xiuche: { fanClub: '静心匠人粉', color: '#64748b', colorName: '机械银', slogan: '微雕机械时光美学，治愈浮躁灵魂！', isBeauty: false, baseCharm: 56, initVotes: 420 }
+    };
+
+    var FANDOM_MILESTONES = [
+      { id: 'subway',      icon: '🚇', name: '地铁痛墙灯箱',   reqStage: 2, reqHeat: 5000,  bonusDesc: '带货转化+5%' },
+      { id: 'timessquare', icon: '🏙️', name: '时代广场痛楼屏', reqStage: 4, reqHeat: 18000, bonusDesc: '带货转化+10%' },
+      { id: 'drone',       icon: '🛸', name: '生日千架无人机', reqStage: 5, reqHeat: 30000, bonusDesc: '带货转化+15%·全服播报' }
+    ];
+
+    function getFandomProfile(id) {
+      return FANDOM_PROFILES[id] || {
+        fanClub: '星光后援会', color: '#ec4899', colorName: '星光粉',
+        slogan: '破晓出道，一路走花路！', isBeauty: false, baseCharm: 58, initVotes: 500
+      };
+    }
+
+    function getIdolStageInfo(s, stageNum) {
+      var prof = getFandomProfile(s.id);
+      var track = prof.isBeauty ? FANDOM_STAGES.beauty : FANDOM_STAGES.pro;
+      var st = Math.max(1, Math.min(5, stageNum || s.idolStage || 1));
+      return track[st - 1];
+    }
+
+    function computeStageFromExp(exp) {
+      var e = Number(exp) || 0;
+      if (e >= 850) return 5;
+      if (e >= 500) return 4;
+      if (e >= 260) return 3;
+      if (e >= 100) return 2;
+      return 1;
+    }
+
+    function getSupertopicTierName(heat) {
+      if (heat >= 30000) return '钻超';
+      if (heat >= 10000) return '金超';
+      return '银超';
+    }
+
+    function ensureStreamerFandomDefaults(s) {
+      if (!s) return;
+      var prof = getFandomProfile(s.id);
+      s.isBeauty = prof.isBeauty;
+      if (!isFinite(s.idolStage) || s.idolStage < 1) s.idolStage = 1;
+      if (!isFinite(s.idolExp) || s.idolExp < 0) s.idolExp = 0;
+      if (!isFinite(s.charm) || s.charm < 40) s.charm = prof.baseCharm;
+      if (!s.factions || typeof s.factions !== 'object') {
+        s.factions = prof.isBeauty ? { solo: 52, cp: 18, mom: 30 } : { solo: 58, cp: 14, mom: 28 };
+      }
+      if (typeof s.cpPartnerId !== 'string') s.cpPartnerId = '';
+      if (!isFinite(s.debutVotes) || s.debutVotes < 0) s.debutVotes = prof.initVotes;
+      if (!isFinite(s.supertopicHeat) || s.supertopicHeat < 0) s.supertopicHeat = Math.round(prof.initVotes * 1.4);
+      if (!Array.isArray(s.milestones)) s.milestones = [];
+    }
+
     Object.keys(streamersMaster).forEach(function(k) {
       streamersMaster[k].restCooldownRemaining = 0;
+      ensureStreamerFandomDefaults(streamersMaster[k]);
     });
 
-    // 拟人化主播专属矢量立绘肖像生成器
-    function getPersonifiedAvatarSVG(s, size) {
+    // 拟人化主播 5阶养成进化矢量立绘引擎 (支持素颜素人 -> 国民神颜UR可视化蜕变)
+    function getPersonifiedAvatarSVG(s, size, overrideStage) {
       if (!s) return '';
+      ensureStreamerFandomDefaults(s);
       size = size || 44;
       var tier = s.tier || 'B';
       var id = s.id || 'su';
-      
+      var stage = Math.max(1, Math.min(5, overrideStage || s.idolStage || 1));
+      var prof = getFandomProfile(id);
+      var isBeauty = prof.isBeauty;
+
       var charVisuals = {
         su:     { skin: '#ffd8c2', hair: '#4a2818', clothes: '#c91b1b', extra: '💄', eye: '#2c1810', hairStyle: 'long' },
         dong:   { skin: '#fed7aa', hair: '#1f2937', clothes: '#1e3a8a', extra: '📖', eye: '#111827', hairStyle: 'glasses' },
@@ -2248,47 +2764,141 @@
       };
 
       var v = charVisuals[id] || { skin: '#fed7aa', hair: '#1f2937', clothes: '#3b82f6', extra: '🎙️', eye: '#111827', hairStyle: 'short' };
-      
+
+      // 按养成阶段动态切换舞台背景与边框气场
       var bgGradient = tier === 'SSR' ? 'linear-gradient(135deg, #78350f, #991b1b)' :
                        (tier === 'S' ? 'linear-gradient(135deg, #4c1d95, #312e81)' :
                        (tier === 'A' ? 'linear-gradient(135deg, #1e3a8a, #0e7490)' : 'linear-gradient(135deg, #064e3b, #047857)'));
-
       var ringColor = tier === 'SSR' ? '#f59e0b' : (tier === 'S' ? '#a855f7' : (tier === 'A' ? '#38bdf8' : '#34d399'));
 
+      if (isBeauty) {
+        if (stage === 1) {
+          bgGradient = 'linear-gradient(135deg, #334155, #1e293b)';
+          ringColor = '#64748b';
+        } else if (stage === 2) {
+          bgGradient = 'linear-gradient(135deg, #475569, #831843)';
+          ringColor = '#f9a8d4';
+        } else if (stage === 3) {
+          bgGradient = 'linear-gradient(135deg, #4c1d95, ' + prof.color + ')';
+          ringColor = prof.color;
+        } else if (stage === 4) {
+          bgGradient = 'linear-gradient(135deg, #831843, #7c2d12, #4c1d95)';
+          ringColor = '#fbbf24';
+        } else {
+          bgGradient = 'linear-gradient(135deg, #be185d, #7e22ce, #f59e0b)';
+          ringColor = '#fde047';
+        }
+      } else if (stage >= 4) {
+        bgGradient = stage === 5
+          ? 'linear-gradient(135deg, #991b1b, #6d28d9, #d97706)'
+          : 'linear-gradient(135deg, #312e81, #78350f)';
+        ringColor = stage === 5 ? '#fde047' : '#fbbf24';
+      }
+
+      // 颜值赛道 Lv.1 素颜素人：朴素卫衣 + 素颜淡色 + 厚黑框眼镜；Lv.2+ 逐步蜕变女神高定！
+      var clothesFill = (isBeauty && stage === 1) ? '#475569' : (isBeauty && stage >= 4 ? prof.color : v.clothes);
+      var skinFill = (isBeauty && stage === 1) ? '#f3d2be' : (isBeauty && stage >= 3 ? '#ffe8dc' : v.skin);
+      var clothesSVG = '<path d="M 20 100 C 20 72, 35 68, 50 68 C 65 68, 80 72, 80 100 Z" fill="' + clothesFill + '"/>';
+      if (isBeauty && stage === 1) {
+        // 素人圆领灰卫衣 + 抽绳
+        clothesSVG += '<path d="M 41 69 Q 50 75 59 69" stroke="#334155" stroke-width="2" fill="none"/><line x1="45" y1="73" x2="44" y2="85" stroke="#94a3b8" stroke-width="1.5"/><line x1="55" y1="73" x2="56" y2="85" stroke="#94a3b8" stroke-width="1.5"/>';
+      } else if (isBeauty && stage === 2) {
+        // 校花学院白翻领 + 小蝴蝶结
+        clothesSVG += '<path d="M 38 69 L 50 82 L 62 69" fill="#ffffff" opacity="0.92"/><circle cx="50" cy="80" r="3.2" fill="#f472b6"/>';
+      } else if (isBeauty && stage === 3) {
+        // 偶像舞台打歌服 V领金边 + 珍珠项圈
+        clothesSVG += '<path d="M 35 70 L 50 86 L 65 70" fill="none" stroke="#fde68a" stroke-width="2.5"/><path d="M 40 68 Q 50 74 60 68" stroke="#ffffff" stroke-width="2.2" stroke-dasharray="2.5 2" fill="none"/>';
+      } else if (isBeauty && stage >= 4) {
+        // 高定星光礼服 + 钻石项链
+        clothesSVG += '<path d="M 28 76 Q 50 88 72 76 L 78 100 L 22 100 Z" fill="' + (stage === 5 ? '#9d174d' : prof.color) + '"/><path d="M 28 76 Q 50 88 72 76" fill="none" stroke="#fde047" stroke-width="2.4"/><path d="M 39 67 Q 50 76 61 67" stroke="#fef08a" stroke-width="2" fill="none"/><polygon points="50,74 47,79 50,83 53,79" fill="#e0f2fe" stroke="#fde047" stroke-width="1"/>';
+      }
+
+      // 发型绘制 (颜值赛道 Lv.1 朴素齐刘海，Lv.2+ 解锁绝美飘逸发型)
       var hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 C 60 24, 40 24, 30 32 Z" fill="' + v.hair + '"/>';
-      if (v.hairStyle === 'long') {
-        hairSVG = '<path d="M 28 40 C 25 18, 75 18, 72 40 C 68 30, 32 30, 28 40 Z" fill="' + v.hair + '"/><path d="M 25 36 Q 22 65 30 75 Q 34 55 30 38 Z M 75 36 Q 78 65 70 75 Q 66 55 70 38 Z" fill="' + v.hair + '"/>';
+      if (isBeauty && stage === 1) {
+        hairSVG = '<path d="M 28 36 C 28 17, 72 17, 72 36 L 68 33 L 32 33 Z" fill="#334155"/>';
+      } else if (v.hairStyle === 'long') {
+        hairSVG = '<path d="M 28 40 C 25 18, 75 18, 72 40 C 68 30, 32 30, 28 40 Z" fill="' + v.hair + '"/><path d="M 24 36 Q 20 68 30 78 Q 34 55 30 38 Z M 76 36 Q 80 68 70 78 Q 66 55 70 38 Z" fill="' + v.hair + '"/>';
       } else if (v.hairStyle === 'glasses') {
         hairSVG = '<path d="M 30 32 C 30 16, 70 16, 70 32 C 60 25, 40 25, 30 32 Z" fill="' + v.hair + '"/><rect x="36" y="34" width="12" height="11" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="52" y="34" width="12" height="11" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><line x1="48" y1="39" x2="52" y2="39" stroke="#fbbf24" stroke-width="2"/>';
       } else if (v.hairStyle === 'wild') {
         hairSVG = '<path d="M 24 35 L 32 15 L 42 22 L 50 10 L 58 22 L 68 15 L 76 35 Z" fill="' + v.hair + '"/><rect x="36" y="36" width="28" height="8" rx="3" fill="#18181b"/>';
       } else if (v.hairStyle === 'twintail') {
-        hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><circle cx="24" cy="35" r="8" fill="' + v.hair + '"/><circle cx="76" cy="35" r="8" fill="' + v.hair + '"/>';
+        hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><circle cx="23" cy="36" r="9" fill="' + v.hair + '"/><circle cx="77" cy="36" r="9" fill="' + v.hair + '"/>';
+      } else if (v.hairStyle === 'bun') {
+        hairSVG = '<path d="M 29 36 C 29 18, 71 18, 71 36 C 60 26, 40 26, 29 36 Z" fill="' + v.hair + '"/><circle cx="32" cy="18" r="7" fill="' + v.hair + '"/><circle cx="68" cy="18" r="7" fill="' + v.hair + '"/><path d="M 26 38 Q 22 65 29 74 M 74 38 Q 78 65 71 74" stroke="' + v.hair + '" stroke-width="5" stroke-linecap="round"/>';
+      } else if (v.hairStyle === 'bunny') {
+        hairSVG = '<path d="M 29 35 C 29 18, 71 18, 71 35 Z" fill="' + v.hair + '"/><ellipse cx="36" cy="14" rx="5" ry="11" fill="' + v.hair + '"/><ellipse cx="64" cy="14" rx="5" ry="11" fill="' + v.hair + '"/>';
       } else if (v.hairStyle === 'cyber') {
         hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><rect x="34" y="36" width="32" height="7" rx="3" fill="#38bdf8" opacity="0.9"/>';
       } else if (v.hairStyle === 'headband') {
         hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><rect x="28" y="28" width="44" height="6" fill="#ef4444"/>';
       }
 
-      var svgBust = 
-        '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" style="background:' + bgGradient + '; border: 1.5px solid ' + ringColor + ';">' +
-          '<path d="M 20 100 C 20 72, 35 68, 50 68 C 65 68, 80 72, 80 100 Z" fill="' + v.clothes + '"/>' +
-          '<rect x="44" y="52" width="12" height="18" rx="4" fill="' + v.skin + '"/>' +
-          '<ellipse cx="50" cy="42" rx="22" ry="24" fill="' + v.skin + '"/>' +
-          '<ellipse cx="42" cy="40" rx="3" ry="3.5" fill="' + v.eye + '"/>' +
-          '<ellipse cx="58" cy="40" rx="3" ry="3.5" fill="' + v.eye + '"/>' +
-          '<circle cx="43" cy="39" r="1" fill="#ffffff"/>' +
-          '<circle cx="59" cy="39" r="1" fill="#ffffff"/>' +
-          '<path d="M 44 52 Q 50 56 56 52" stroke="#b91c1c" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      // 眼妆、腮红、耳饰、黑框眼镜与皇冠星环特效
+      var auraSVG = '';
+      if (stage >= 4) {
+        auraSVG += '<circle cx="50" cy="44" r="34" fill="none" stroke="' + (stage === 5 ? '#fde047' : '#f472b6') + '" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.75"/>';
+      }
+      if (stage >= 3) {
+        auraSVG += '<text x="16" y="24" font-size="11" fill="#fde047">✦</text><text x="82" y="26" font-size="10" fill="#fbcfe8">✦</text>';
+      }
+      if (stage === 5) {
+        auraSVG += '<circle cx="50" cy="44" r="41" fill="none" stroke="#fbcfe8" stroke-width="1" opacity="0.55"/><text x="14" y="64" font-size="10" fill="#fde047">✨</text>';
+      }
+
+      var faceExtraSVG = '';
+      if (isBeauty && stage === 1) {
+        // 厚黑框素人眼镜 + 朴素唇色
+        faceExtraSVG += '<rect x="34" y="34" width="14" height="12" rx="3" fill="rgba(226,232,240,0.22)" stroke="#0f172a" stroke-width="2.8"/><rect x="52" y="34" width="14" height="12" rx="3" fill="rgba(226,232,240,0.22)" stroke="#0f172a" stroke-width="2.8"/><line x1="48" y1="39" x2="52" y2="39" stroke="#0f172a" stroke-width="2.6"/>';
+      } else if (isBeauty) {
+        // Lv.2+ 腮红 + 眼眸高光 + 卷翘睫毛
+        var blushOp = stage === 2 ? '0.35' : (stage === 3 ? '0.5' : '0.62');
+        faceExtraSVG += '<ellipse cx="35" cy="48" rx="4.5" ry="2.4" fill="#fb7185" opacity="' + blushOp + '"/><ellipse cx="65" cy="48" rx="4.5" ry="2.4" fill="#fb7185" opacity="' + blushOp + '"/>';
+        if (stage >= 3) {
+          // 眼尾飞扬眼线 + 珍珠耳环
+          faceExtraSVG += '<path d="M 38 37 L 35 35 M 62 37 L 65 35" stroke="#1e1b4b" stroke-width="1.5" stroke-linecap="round"/><circle cx="27" cy="49" r="2.6" fill="#fef08a" stroke="#fff" stroke-width="0.8"/><circle cx="73" cy="49" r="2.6" fill="#fef08a" stroke="#fff" stroke-width="0.8"/>';
+        }
+        if (stage >= 4) {
+          // 星星瞳孔高光 + 发丝天使光环
+          faceExtraSVG += '<circle cx="41" cy="41.5" r="1.2" fill="#fde047"/><circle cx="57" cy="41.5" r="1.2" fill="#fde047"/><path d="M 35 24 Q 50 18 65 24" stroke="#ffffff" stroke-width="1.6" fill="none" opacity="0.7"/>';
+        }
+      }
+
+      // Lv.5 UR 国民神颜皇冠
+      var crownSVG = '';
+      if (stage === 5) {
+        crownSVG = '<polygon points="36,20 41,9 50,15 59,9 64,20" fill="#fde047" stroke="#b45309" stroke-width="1.2"/><circle cx="50" cy="14" r="2.2" fill="#ec4899"/>';
+      }
+
+      var mouthColor = (isBeauty && stage === 1) ? '#946b6b' : (isBeauty && stage >= 3 ? '#e11d48' : '#b91c1c');
+      var mouthPath = (isBeauty && stage === 1) ? 'M 46 53 Q 50 54.5 54 53' : 'M 44 52 Q 50 57 56 52';
+      var cornerEmoji = (isBeauty && stage === 1) ? '📷' : (stage === 5 ? '👑' : (stage === 4 ? '💎' : v.extra));
+
+      var svgBust =
+        '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" style="background:' + bgGradient + '; border: ' + (stage === 5 ? '2px' : '1.5px') + ' solid ' + ringColor + ';">' +
+          auraSVG +
+          clothesSVG +
+          '<rect x="44" y="52" width="12" height="18" rx="4" fill="' + skinFill + '"/>' +
+          '<ellipse cx="50" cy="42" rx="22" ry="24" fill="' + skinFill + '"/>' +
+          '<ellipse cx="42" cy="40" rx="' + (isBeauty && stage >= 3 ? '3.5' : '3') + '" ry="' + (isBeauty && stage >= 3 ? '4' : '3.5') + '" fill="' + v.eye + '"/>' +
+          '<ellipse cx="58" cy="40" rx="' + (isBeauty && stage >= 3 ? '3.5' : '3') + '" ry="' + (isBeauty && stage >= 3 ? '4' : '3.5') + '" fill="' + v.eye + '"/>' +
+          (isBeauty && stage === 1 ? '' : '<circle cx="43.2" cy="38.8" r="1.2" fill="#ffffff"/><circle cx="59.2" cy="38.8" r="1.2" fill="#ffffff"/>') +
+          '<path d="' + mouthPath + '" stroke="' + mouthColor + '" stroke-width="' + (isBeauty && stage >= 3 ? '2.5' : '2') + '" fill="none" stroke-linecap="round"/>' +
           hairSVG +
-          '<circle cx="78" cy="78" r="15" fill="#0f172a" stroke="' + ringColor + '" stroke-width="1.5"/>' +
-          '<text x="78" y="83" font-size="13" text-anchor="middle">' + v.extra + '</text>' +
+          faceExtraSVG +
+          crownSVG +
+          '<circle cx="78" cy="78" r="14.5" fill="#0f172a" stroke="' + ringColor + '" stroke-width="1.5"/>' +
+          '<text x="78" y="83" font-size="12.5" text-anchor="middle">' + cornerEmoji + '</text>' +
         '</svg>';
 
+      var stageTag = stage === 5 ? 'UR' : ('Lv.' + stage);
+      var showStagePill = size >= 40;
       return (
-        '<div class="avatar-personified" style="width:' + size + 'px; height:' + size + 'px;">' +
+        '<div class="avatar-personified' + (stage === 5 ? ' avatar-stage-ur' : '') + '" style="width:' + size + 'px; height:' + size + 'px;">' +
           svgBust +
           '<span class="avatar-tier-badge tier-' + tier.toLowerCase() + '">' + tier + '</span>' +
+          (showStagePill ? '<span class="avatar-stage-badge stage-pill-' + stage + '">' + stageTag + '</span>' : '') +
         '</div>'
       );
     }
@@ -2424,6 +3034,21 @@
       }
       if (state.activeTalentId === 'energy_boost') {
         fx.cooldownReduce += 4;
+      }
+      // 🌟 成团出道永久加成 (《破晓101》团播GMV+35% · 离线商单+25% · 战力+15%)
+      if (state.debutGroup && state.debutGroup.groupName) {
+        fx.salesMult += 0.35;
+        fx.offlineBonus += 0.25;
+        fx.powerBonusPct += 0.15;
+      }
+      // 🛡️ 妈粉护盾：旗下主力主播妈粉占比 >= 35% 时，黑红增幅与口碑扣分降低 30%
+      var hasMomShield = ownedStreamers.some(function(sid) {
+        var st = streamersMaster[sid];
+        return st && st.factions && Number(st.factions.mom || 0) >= 35;
+      });
+      if (hasMomShield) {
+        fx.scandalMult *= 0.7;
+        fx.momShield = true;
       }
       return fx;
     }
@@ -3292,11 +3917,28 @@
       setTimeout(function() {
         if (bubble && bubble.parentElement) {
           if (type === 'troll') {
+            var actS = liveSession.streamer || streamersMaster['su'];
+            ensureStreamerFandomDefaults(actS);
+            // ✨ 颜值即正义：颜值赛道主播高颜值概率直接触发「颜值洗粉」——黑粉看清神颜当场黑转粉！
+            if (actS.isBeauty) {
+              var washChance = Math.min(0.55, Math.max(0.15, (actS.charm - 55) * 0.012));
+              if (Math.random() < washChance) {
+                liveSession.fansGain += 1.5;
+                playCheerSound();
+                showToast("😍 颜值即正义！「" + actS.name + "」生图神颜直接洗粉！黑粉黑转粉，口碑无损 +1.5w粉！", "success");
+                bubble.remove();
+                return;
+              }
+            }
+            var synFx = getSynergyEffects();
             var dmg = state.facilities.prRadar > 0 ? 1 : 2;
+            if (synFx.trollHalf || (actS.factions && actS.factions.mom >= 35)) {
+              dmg = Math.max(1, Math.floor(dmg * 0.5));
+            }
             state.pr = Math.max(0, state.pr - dmg);
             renderHeaderStats();
             playAlertSound();
-            showToast("黑粉未及时驱逐！JRs口碑 -" + dmg + " 分", "alert");
+            showToast((actS.factions && actS.factions.mom >= 35 ? "🛡️ 妈粉控评减伤！黑粉仅扣口碑 -" : "黑粉未及时驱逐！JRs口碑 -") + dmg + " 分", "alert");
           }
           bubble.remove();
         }
@@ -3308,10 +3950,12 @@
       safeInitAudio();
       var type = el.getAttribute("data-type");
       var s = liveSession.streamer || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
       var synFx = getSynergyEffects();
       var scandalBoost = (state.scandalRisk >= 31 && state.scandalRisk <= 65) ? 1.35 : 1.0;
       var scandalFansBoost = (state.scandalRisk >= 31 && state.scandalRisk <= 65) ? 1.40 : 1.0;
-      var multiplier = (1 + (s.sales / 100)) * (1 + (state.facilities.studio * 0.25)) * synFx.salesMult * scandalBoost;
+      var milestoneBonus = 1.0 + (s.milestones.indexOf('subway') !== -1 ? 0.05 : 0) + (s.milestones.indexOf('timessquare') !== -1 ? 0.10 : 0) + (s.milestones.indexOf('drone') !== -1 ? 0.15 : 0);
+      var multiplier = (1 + (s.sales / 100)) * (1 + (state.facilities.studio * 0.25)) * synFx.salesMult * scandalBoost * milestoneBonus;
 
       if (type === 'normal') {
         var base = (1.5 + Math.random() * 2) * multiplier;
@@ -3321,13 +3965,17 @@
         liveSession.ultCharge = Math.min(100, liveSession.ultCharge + 10);
         playComboSound(liveSession.combo);
       } else if (type === 'whale') {
-        var whaleBase = (8 + Math.random() * 10) * multiplier * synFx.whaleMult;
+        var beautyWhaleBonus = s.isBeauty ? (1 + Math.max(0, (s.charm - 60) / 10) * 0.18) : 1.0;
+        var whaleBase = (8 + Math.random() * 10) * multiplier * synFx.whaleMult * beautyWhaleBonus;
         liveSession.gmv += whaleBase;
-        liveSession.fansGain += 3.5 * synFx.fansMult * scandalFansBoost;
+        liveSession.fansGain += (s.isBeauty ? 4.2 : 3.5) * synFx.fansMult * scandalFansBoost;
         liveSession.combo += 2;
         liveSession.ultCharge = Math.min(100, liveSession.ultCharge + 20);
         playCoinSound();
         triggerFeverMode();
+        if (s.isBeauty && s.charm >= 72) {
+          showToast("💖 颜值即正义！榜一大哥被「" + s.name + "」(颜值" + s.charm + ")迷晕，打赏暴击 +" + whaleBase.toFixed(1) + "w！", "success");
+        }
       } else if (type === 'flash') {
         liveSession.ultCharge = 100;
         playCheerSound();
@@ -3781,15 +4429,32 @@
       saveLocalData();
     }
 
+    function renderDebutPromoCard() {
+      var titleEl = document.getElementById("debutPromoTitle");
+      var subEl = document.getElementById("debutPromoSub");
+      if (!titleEl || !subEl) return;
+      if (state.debutGroup && state.debutGroup.groupName) {
+        titleEl.innerHTML = '👑 已成团：【' + escapeHTML(state.debutGroup.groupName) + '】 <span class="beauty-tag">C位·' + escapeHTML(state.debutGroup.centerName) + '</span>';
+        subEl.innerText = '🌟 永久天团Buff生效中：团播GMV+35% · 离线+25% · 战力+15% (均颜' + Number(state.debutGroup.avgCharm || 85) + ')';
+      } else {
+        titleEl.innerHTML = '《破晓101》选秀成团打投 <span class="beauty-tag">✨ 颜值即正义</span>';
+        subEl.innerText = '提名3~5位主播争C位出道 · 永久团播GMV+35% · 全服超话榜';
+      }
+    }
+
     function renderStreamersList() {
       var box = document.getElementById("streamersList");
       if (!box) return;
       box.innerHTML = "";
       updateAllRestButton();
       renderSynergyPanel();
+      renderDebutPromoCard();
 
       ownedStreamers.forEach(function(sid) {
         var s = streamersMaster[sid];
+        ensureStreamerFandomDefaults(s);
+        var stageInfo = getIdolStageInfo(s);
+        var prof = getFandomProfile(s.id);
         var card = document.createElement("div");
         card.className = "card-subpanel";
         card.style.display = "flex";
@@ -3797,40 +4462,69 @@
         card.style.gap = "6px";
 
         var staminaColor = s.stamina > 50 ? "#34d399" : (s.stamina > 20 ? "#fbbf24" : "#f87171");
+        var beautyChip = s.isBeauty
+          ? '<span class="beauty-tag">✨颜值' + Number(s.charm) + '</span>'
+          : '<span class="badge badge-blue" style="font-size:9.5px;">气场' + Number(s.charm) + '</span>';
+        var cpTag = (s.cpPartnerId && streamersMaster[s.cpPartnerId])
+          ? ' <span class="badge" style="background:rgba(168,85,247,0.22);color:#e9d5ff;font-size:9.5px;">💞CP·' + escapeHTML(streamersMaster[s.cpPartnerId].name) + '</span>'
+          : '';
 
         var topRow = document.createElement("div");
         topRow.style.display = "flex";
         topRow.style.justifyContent = "space-between";
         topRow.style.alignItems = "center";
-        topRow.innerHTML = 
-          '<div style="display: flex; align-items: center; gap: 8px;">' +
-            getPersonifiedAvatarSVG(s, 44) +
-            '<div>' +
-              '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + '</span> ' +
-              '<span class="badge badge-blue">' + escapeHTML(s.title) + '</span>' +
+        topRow.style.gap = "6px";
+        topRow.innerHTML =
+          '<div style="display: flex; align-items: center; gap: 8px; min-width: 0;">' +
+            getPersonifiedAvatarSVG(s, 48) +
+            '<div style="min-width: 0;">' +
+              '<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">' +
+                '<span style="font-size: 13px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + '</span>' +
+                beautyChip +
+              '</div>' +
+              '<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:2px;">' +
+                '<span class="badge" style="background:' + prof.color + '2e;color:#fbcfe8;border:1px solid ' + prof.color + '88;font-size:9.5px;">' + escapeHTML(stageInfo.shortName) + ' · ' + escapeHTML(prof.fanClub) + '</span>' +
+                cpTag +
+              '</div>' +
             '</div>' +
           '</div>' +
-          '<div style="font-size: 11px; color: #cbd5e1;">' +
-            '带货力: <strong style="color: #fbbf24;">' + Number(s.sales) + '</strong> | ' +
-            '体力: <strong style="color: ' + staminaColor + ';">' + (s.id === 'ai01' ? '∞' : Number(s.stamina) + '%') + '</strong>' +
+          '<div style="font-size: 11px; color: #cbd5e1; text-align: right; flex-shrink: 0;">' +
+            '<div>带货: <strong style="color: #fbbf24;">' + Number(s.sales) + '</strong></div>' +
+            '<div>体力: <strong style="color: ' + staminaColor + ';">' + (s.id === 'ai01' ? '∞' : Number(s.stamina) + '%') + '</strong></div>' +
           '</div>';
 
         var descRow = document.createElement("div");
         descRow.style.fontSize = "11px";
         descRow.style.color = "#94a3b8";
-        descRow.innerText = s.desc;
+        descRow.innerText = s.desc + (s.isBeauty ? " · 【颜值即正义：高颜值暴击大哥打赏 & 概率颜值洗粉】" : "");
 
         var btnRow = document.createElement("div");
-        btnRow.style.display = "flex";
-        btnRow.style.gap = "6px";
+        btnRow.style.display = "grid";
+        btnRow.style.gridTemplateColumns = "repeat(4, 1fr)";
+        btnRow.style.gap = "5px";
         btnRow.style.marginTop = "4px";
+
+        // 饭圈养成/超话按钮 (核心入口)
+        var btnFandom = document.createElement("button");
+        btnFandom.type = "button";
+        btnFandom.className = "btn-icon";
+        btnFandom.style.padding = "6px 2px";
+        btnFandom.style.fontSize = "11px";
+        btnFandom.style.color = "#fbcfe8";
+        btnFandom.style.borderColor = "rgba(244, 114, 182, 0.55)";
+        btnFandom.style.background = "rgba(157, 23, 77, 0.24)";
+        btnFandom.style.fontWeight = "700";
+        btnFandom.innerText = s.isBeauty ? "💖 蜕变养成" : "💖 饭圈超话";
+        btnFandom.setAttribute("data-action", "open-fandom");
+        btnFandom.setAttribute("data-id", s.id);
 
         // 集训按钮 (带禁用态)
         var btnTrain = document.createElement("button");
+        btnTrain.type = "button";
         btnTrain.className = "btn-icon";
-        btnTrain.style.flex = "1";
-        btnTrain.style.padding = "6px 0";
-        btnTrain.innerText = "📚 集训 (5w)";
+        btnTrain.style.padding = "6px 2px";
+        btnTrain.style.fontSize = "11px";
+        btnTrain.innerText = "📚 集训5w";
         btnTrain.setAttribute("data-action", "train-streamer");
         btnTrain.setAttribute("data-id", s.id);
         if (state.cash < 5 || (s.stamina < 15 && s.id !== 'ai01')) {
@@ -3840,10 +4534,11 @@
 
         // 短视频按钮 (带禁用态)
         var btnShoot = document.createElement("button");
+        btnShoot.type = "button";
         btnShoot.className = "btn-icon";
-        btnShoot.style.flex = "1";
-        btnShoot.style.padding = "6px 0";
-        btnShoot.innerText = "🎬 拍短视频";
+        btnShoot.style.padding = "6px 2px";
+        btnShoot.style.fontSize = "11px";
+        btnShoot.innerText = "🎬 短视频";
         btnShoot.setAttribute("data-action", "shoot-video");
         btnShoot.setAttribute("data-id", s.id);
         if (s.stamina < 15 && s.id !== 'ai01') {
@@ -3853,33 +4548,34 @@
 
         // 休假与冷却加速按钮
         var btnRest = document.createElement("button");
+        btnRest.type = "button";
         btnRest.className = "btn-icon";
-        btnRest.style.flex = "1";
-        btnRest.style.padding = "6px 0";
+        btnRest.style.padding = "6px 2px";
+        btnRest.style.fontSize = "11px";
 
         var cdSec = s.restCooldownRemaining || 0;
         if (s.id === 'ai01') {
-          btnRest.innerText = "⚡ 永动机免休";
+          btnRest.innerText = "⚡ 永动";
           btnRest.disabled = true;
           btnRest.classList.add("btn-disabled");
         } else if (cdSec > 0) {
-          // 冷却中，支持消耗资金缩短冷却 / 清空冷却立满
           btnRest.className = "btn-icon btn-speedup";
-          btnRest.innerHTML = '⚡ 私汤清CD(2w) <span style="font-size: 10px; opacity: 0.9;">⏳' + cdSec + 's</span>';
+          btnRest.innerHTML = '⚡清CD2w <span>' + cdSec + 's</span>';
           btnRest.setAttribute("data-action", "speedup-streamer-stamina");
           btnRest.setAttribute("data-id", s.id);
           btnRest.title = "消耗 2.0w 资金立即清空冷却并体力回满 100%";
         } else if (s.stamina >= 100) {
-          btnRest.innerText = "💆 体力已满";
+          btnRest.innerText = "💆 已满";
           btnRest.disabled = true;
           btnRest.classList.add("btn-disabled");
         } else {
-          btnRest.innerText = "💆 休假恢复";
+          btnRest.innerText = "💆 休假";
           btnRest.setAttribute("data-action", "rest-streamer");
           btnRest.setAttribute("data-id", s.id);
           btnRest.title = "安排主播调休休假 (冷却 25s)";
         }
 
+        btnRow.appendChild(btnFandom);
         btnRow.appendChild(btnTrain);
         btnRow.appendChild(btnShoot);
         btnRow.appendChild(btnRest);
@@ -4952,6 +5648,41 @@
             }
           }
         ]
+      },
+      {
+        id: 'dm_fandom_cp_war',
+        streamerId: 'su',
+        time: '凌晨 00:48',
+        text: '老板救命！咱俩双人 CP 营业上热搜后，唯粉后援会大粉连夜发三千字长文维权，扬言要停氪抗议！现在超话广场全是吵架的，怎么处理？',
+        options: [
+          {
+            label: '稳住唯粉：发单人精修神图安抚（现金-4w，唯粉涨+粉丝+8w）',
+            run: function() {
+              state.cash = Math.max(0, state.cash - 4);
+              state.fans += 8.0;
+              var su = streamersMaster.su;
+              if (su) {
+                ensureStreamerFandomDefaults(su);
+                su.idolExp += 50;
+                su.supertopicHeat += 600;
+              }
+              return '站姐火速释出九宫格生图神照，唯粉瞬间“真香”转为疯狂控评打榜！';
+            }
+          },
+          {
+            label: '将计就计：官宣《破晓101》合体舞台（黑红+6，选秀总票+900）',
+            run: function() {
+              adjustScandal(6);
+              var su = streamersMaster.su;
+              if (su) {
+                ensureStreamerFandomDefaults(su);
+                su.debutVotes += 900;
+                su.supertopicHeat += 950;
+              }
+              return '“越吵越红！”CP粉连夜集资狂买奶票冲榜，直接把选秀票数顶上全服前排！';
+            }
+          }
+        ]
       }
     ];
 
@@ -5486,7 +6217,7 @@
 
       ctx.fillStyle = "#94a3b8";
       ctx.font = "20px sans-serif";
-      ctx.fillText("MCN王牌经纪人 3.0 · 全服实况战报", 268, 80);
+      ctx.fillText("MCN王牌经纪人 3.1 · 饭圈养成 & 选秀成团", 268, 80);
 
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 46px sans-serif";
@@ -5528,18 +6259,28 @@
         ctx.fillText(m.val, x + 20, y + 84);
       });
 
-      // 矩阵羁绊与王牌主播
+      // 矩阵羁绊、选秀成团与王牌养成进度
       var synList = getSynergyEffects().activeList.map(function(s) { return s.icon + s.name; });
+      var topS = getTopStreamer();
+      ensureStreamerFandomDefaults(topS);
+      var topStage = getIdolStageInfo(topS);
+      var topProf = getFandomProfile(topS.id);
       ctx.fillStyle = "#19233c";
-      ctx.fillRect(48, 530, 654, 120);
-      ctx.strokeStyle = "#f59e0b";
-      ctx.strokeRect(48, 530, 654, 120);
+      ctx.fillRect(48, 524, 654, 138);
+      ctx.strokeStyle = state.debutGroup ? "#ec4899" : "#f59e0b";
+      ctx.strokeRect(48, 524, 654, 138);
       ctx.fillStyle = "#fbbf24";
-      ctx.font = "bold 24px sans-serif";
-      ctx.fillText("🎙️ 旗下阵容：" + ownedStreamers.length + " 位主播 | 王牌：" + (getTopStreamer().name), 70, 574);
+      ctx.font = "bold 23px sans-serif";
+      ctx.fillText("🎙️ 旗下阵容：" + ownedStreamers.length + " 人 | 王牌：" + topS.name + "（" + topStage.shortName + "·颜值" + topS.charm + "）", 70, 562);
+      ctx.fillStyle = "#fbcfe8";
+      ctx.font = "bold 21px sans-serif";
+      var debutLine = (state.debutGroup && state.debutGroup.groupName)
+        ? ("👑 《破晓101》出道天团：【" + state.debutGroup.groupName + "】 C位·" + state.debutGroup.centerName + " (均颜" + state.debutGroup.avgCharm + ")")
+        : ("💖 后援会：【" + topProf.fanClub + "】 · 应援色「" + topProf.colorName + "」 · " + getSupertopicTierName(topS.supertopicHeat));
+      ctx.fillText(debutLine, 70, 602);
       ctx.fillStyle = "#cbd5e1";
-      ctx.font = "21px sans-serif";
-      ctx.fillText("⚡ 已激活羁绊：" + (synList.length ? synList.join(" · ") : "单核带队潜伏期"), 70, 618);
+      ctx.font = "19px sans-serif";
+      ctx.fillText("⚡ 已激活羁绊：" + (synList.length ? synList.join(" · ") : "单核带队潜伏期"), 70, 642);
 
       // 步行街 AI 神评区
       ctx.fillStyle = "#1b1420";
@@ -5611,11 +6352,16 @@
     function buildBattleReportText() {
       var ratingStr = state.lastEndingRating || (state.powerScore >= 260 ? "9.9" : "9.2");
       var topS = getTopStreamer();
+      ensureStreamerFandomDefaults(topS);
+      var stageInfo = getIdolStageInfo(topS);
       var rankTxt = cloudState.globalRank ? ("全服第 " + cloudState.globalRank + " 名") : ("行业第 " + state.mcnRank + " 名");
+      var debutTxt = (state.debutGroup && state.debutGroup.groupName)
+        ? ("\n👑 出道天团：【" + state.debutGroup.groupName + "】(C位：" + state.debutGroup.centerName + "，均颜 " + state.debutGroup.avgCharm + ")")
+        : "";
       var topComment = (cloudState.latestAiComments && cloudState.latestAiComments[0])
         ? ("\n🔥 步行街神评：「" + cloudState.latestAiComments[0].text + "」亮了(" + cloudState.latestAiComments[0].likes + ")")
         : "";
-      return "【虎扑MCN王牌经纪人 3.0 战报】\n🏢 机构：" + state.agencyName + "（JRs评分 " + ratingStr + " 分）\n🏆 战绩：" + rankTxt + " | 战力 " + (state.powerScore || calculatePowerScore()).toFixed(1) + "w | 现金 " + state.cash.toFixed(1) + "w | 粉丝 " + state.fans.toFixed(1) + "w\n🎙️ 王牌主播：" + topS.name + "（旗下 " + ownedStreamers.length + " 人）" + topComment + "\n👉 手机即点即玩，来全服商战跟我碰一碰：https://niceoneto.github.io/hupu-mcn-game/";
+      return "【虎扑MCN王牌经纪人 3.1 战报】\n🏢 机构：" + state.agencyName + "（JRs评分 " + ratingStr + " 分）\n🏆 战绩：" + rankTxt + " | 战力 " + (state.powerScore || calculatePowerScore()).toFixed(1) + "w | 现金 " + state.cash.toFixed(1) + "w | 粉丝 " + state.fans.toFixed(1) + "w\n🎙️ 王牌养成：" + topS.name + "（" + stageInfo.title + " · 颜值" + topS.charm + "）" + debutTxt + topComment + "\n👉 手机即点即玩，来《破晓101》和我碰一碰：https://niceoneto.github.io/hupu-mcn-game/";
     }
 
     function reportCopyFeedback(button, ok) {
@@ -5735,11 +6481,25 @@
       state.usedDmIds = [];
       state.recentHighlights = [];
       state.lastEndingTitle = '';
+      state.debutGroup = null;
+      state.fandomDraftMembers = ['su'];
+      state.fandomDraftCenter = 'su';
+      state.activeFandomStreamerId = 'su';
+      state.activeFandomPreviewStage = null;
       clearInterval(liveCooldownTimer);
       ownedStreamers = ['su'];
       Object.keys(streamersMaster).forEach(function(k) {
+        var prof = getFandomProfile(k);
         streamersMaster[k].stamina = 100;
         streamersMaster[k].restCooldownRemaining = 0;
+        streamersMaster[k].idolStage = 1;
+        streamersMaster[k].idolExp = 0;
+        streamersMaster[k].charm = prof.baseCharm;
+        streamersMaster[k].factions = prof.isBeauty ? { solo: 52, cp: 18, mom: 30 } : { solo: 58, cp: 14, mom: 28 };
+        streamersMaster[k].cpPartnerId = '';
+        streamersMaster[k].debutVotes = prof.initVotes;
+        streamersMaster[k].supertopicHeat = Math.round(prof.initVotes * 1.4);
+        streamersMaster[k].milestones = [];
       });
       weekStartSnapshot = { cash: 100.0, fans: 20.0, pr: 80.0 };
 
@@ -5870,6 +6630,17 @@
             state.dmInbox = Array.isArray(parsed.state.dmInbox) ? parsed.state.dmInbox : [];
             state.usedDmIds = Array.isArray(parsed.state.usedDmIds) ? parsed.state.usedDmIds : [];
             state.recentHighlights = Array.isArray(parsed.state.recentHighlights) ? parsed.state.recentHighlights : [];
+            if (parsed.state.debutGroup && typeof parsed.state.debutGroup === 'object' && parsed.state.debutGroup.groupName) {
+              state.debutGroup = parsed.state.debutGroup;
+            }
+            if (Array.isArray(parsed.state.fandomDraftMembers)) {
+              state.fandomDraftMembers = parsed.state.fandomDraftMembers.filter(function(sid) { return streamersMaster[sid]; }).slice(0, 5);
+            }
+            if (typeof parsed.state.fandomDraftCenter === 'string' && streamersMaster[parsed.state.fandomDraftCenter]) {
+              state.fandomDraftCenter = parsed.state.fandomDraftCenter;
+            }
+            state.localGlowsticksUsed = Math.max(0, Math.min(10, parseInt(parsed.state.localGlowsticksUsed, 10) || 0));
+            state.localGlowsticksDate = typeof parsed.state.localGlowsticksDate === 'string' ? parsed.state.localGlowsticksDate : '';
 
             if (parsed.state.facilities && typeof parsed.state.facilities === 'object') {
               state.facilities.studio = Math.max(0, Math.min(4, parseInt(parsed.state.facilities.studio, 10) || 0));
@@ -5888,6 +6659,20 @@
                   if (isFinite(ps.stamina)) streamersMaster[sid].stamina = Math.max(0, Math.min(100, Number(ps.stamina)));
                   if (isFinite(ps.resilience)) streamersMaster[sid].resilience = Math.max(0, Number(ps.resilience));
                   if (isFinite(ps.restCooldownRemaining)) streamersMaster[sid].restCooldownRemaining = Math.max(0, Number(ps.restCooldownRemaining));
+                  if (isFinite(ps.idolStage)) streamersMaster[sid].idolStage = Math.max(1, Math.min(5, parseInt(ps.idolStage, 10) || 1));
+                  if (isFinite(ps.idolExp)) streamersMaster[sid].idolExp = Math.max(0, Number(ps.idolExp));
+                  if (isFinite(ps.charm)) streamersMaster[sid].charm = Math.max(40, Math.min(100, Number(ps.charm)));
+                  if (ps.factions && typeof ps.factions === 'object') {
+                    streamersMaster[sid].factions = {
+                      solo: Math.max(5, Math.min(90, Number(ps.factions.solo) || 52)),
+                      cp: Math.max(5, Math.min(90, Number(ps.factions.cp) || 18)),
+                      mom: Math.max(5, Math.min(90, Number(ps.factions.mom) || 30))
+                    };
+                  }
+                  if (typeof ps.cpPartnerId === 'string') streamersMaster[sid].cpPartnerId = ps.cpPartnerId;
+                  if (isFinite(ps.debutVotes)) streamersMaster[sid].debutVotes = Math.max(0, Number(ps.debutVotes));
+                  if (isFinite(ps.supertopicHeat)) streamersMaster[sid].supertopicHeat = Math.max(0, Number(ps.supertopicHeat));
+                  if (Array.isArray(ps.milestones)) streamersMaster[sid].milestones = ps.milestones.slice(0, 6);
                 }
               });
             }
@@ -6247,9 +7032,10 @@
             var ticker = document.getElementById("hallHotFeedText");
             if (ticker) ticker.innerText = "【" + top.agency_name + "】" + top.message + " · 亮了(" + top.likes + ")";
 
-            // 若有其他真实玩家最新抽出 SSR 或反杀，触发顶部真实大喇叭播报！
-            if (!isInitial && top.id > cloudState.lastSeenBroadcastId && top.player_id !== cloudState.playerId && top.type === 'ssr_pull') {
-              triggerGlobalCustomHorn("📢【全服真实SSR喜报】玩家机构【" + top.agency_name + "】" + top.message + " 亮了(" + top.likes + ")");
+            // 若有其他真实玩家最新抽出 SSR 或成团出道，触发顶部真实大喇叭播报！
+            if (!isInitial && top.id > cloudState.lastSeenBroadcastId && top.player_id !== cloudState.playerId && (top.type === 'ssr_pull' || top.type === 'debut_group' || top.type === 'fandom_diamond')) {
+              var hornPrefix = top.type === 'debut_group' ? "👑【全服成团喜报】" : (top.type === 'fandom_diamond' ? "💎【全服钻超喜报】" : "📢【全服真实SSR喜报】");
+              triggerGlobalCustomHorn(hornPrefix + "玩家机构【" + top.agency_name + "】" + top.message + " 亮了(" + top.likes + ")");
             }
             if (top.id > cloudState.lastSeenBroadcastId) {
               cloudState.lastSeenBroadcastId = top.id;
@@ -6303,7 +7089,10 @@
           ssr_pull: '<span class="badge badge-gold">🎁 SSR出货</span>',
           pvp_revenge: '<span class="badge badge-red">🛡️ 商战反杀</span>',
           ending_goat: '<span class="badge badge-green">👑 封神结局</span>',
-          scandal_boom: '<span class="badge badge-red">🚨 315大瓜</span>'
+          scandal_boom: '<span class="badge badge-red">🚨 315大瓜</span>',
+          debut_group: '<span class="beauty-tag">🌟 成团出道</span>',
+          fandom_diamond: '<span class="badge badge-gold">💎 登顶钻超</span>',
+          beauty_glowup: '<span class="beauty-tag">✨ 神颜觉醒</span>'
         };
         var div = document.createElement("div");
         div.className = "card-subpanel";
@@ -6484,6 +7273,1117 @@
     }
 
     // =========================================================================
+    // 11.5 饭圈养成 · 颜值即正义 5阶蜕变 · 《破晓101》选秀成团 & Canvas礼花引擎
+    // =========================================================================
+    var confettiAnimId = null;
+
+    function launchSupportConfetti(colors) {
+      // 严格遵循 modern-web-guidance motion 规范：尊重 prefers-reduced-motion
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+      }
+      var canvas = document.getElementById("confettiCanvas");
+      if (!canvas) return;
+      var ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      canvas.classList.remove("hidden");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      var palette = (Array.isArray(colors) && colors.length > 0)
+        ? colors
+        : ['#ec4899', '#f59e0b', '#a855f7', '#38bdf8', '#fde047'];
+
+      var particles = [];
+      for (var i = 0; i < 95; i++) {
+        particles.push({
+          x: canvas.width * (0.15 + Math.random() * 0.7),
+          y: canvas.height * (0.15 + Math.random() * 0.25),
+          vx: (Math.random() - 0.5) * 11,
+          vy: -4 - Math.random() * 8,
+          w: 6 + Math.random() * 6,
+          h: 4 + Math.random() * 5,
+          rot: Math.random() * Math.PI * 2,
+          vrot: (Math.random() - 0.5) * 0.28,
+          color: palette[i % palette.length],
+          alpha: 1
+        });
+      }
+
+      if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+      var startTs = performance.now();
+
+      function step(now) {
+        var elapsed = now - startTs;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var alive = false;
+        for (var j = 0; j < particles.length; j++) {
+          var p = particles[j];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.28;
+          p.vx *= 0.99;
+          p.rot += p.vrot;
+          if (elapsed > 1500) p.alpha = Math.max(0, p.alpha - 0.03);
+          if (p.alpha > 0.02 && p.y < canvas.height + 30) {
+            alive = true;
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          }
+        }
+        if (alive && elapsed < 2700) {
+          confettiAnimId = requestAnimationFrame(step);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          canvas.classList.add("hidden");
+          confettiAnimId = null;
+        }
+      }
+      confettiAnimId = requestAnimationFrame(step);
+    }
+
+    function normalizeFactions(f) {
+      if (!f) return { solo: 52, cp: 18, mom: 30 };
+      var solo = Math.max(5, Number(f.solo) || 50);
+      var cp = Math.max(5, Number(f.cp) || 18);
+      var mom = Math.max(5, Number(f.mom) || 30);
+      var sum = solo + cp + mom;
+      var sPct = Math.round((solo / sum) * 100);
+      var cPct = Math.round((cp / sum) * 100);
+      var mPct = Math.max(5, 100 - sPct - cPct);
+      f.solo = sPct;
+      f.cp = cPct;
+      f.mom = mPct;
+      return f;
+    }
+
+    function getLocalTodayStr() {
+      var d = new Date(Date.now() + 8 * 3600 * 1000);
+      return d.toISOString().slice(0, 10);
+    }
+
+    function getEffectiveGlowsticksRemaining() {
+      if (cloudState.online) {
+        return Math.max(0, Number(cloudState.glowsticksRemaining || 0));
+      }
+      var today = getLocalTodayStr();
+      if (state.localGlowsticksDate !== today) {
+        state.localGlowsticksDate = today;
+        state.localGlowsticksUsed = 0;
+      }
+      return Math.max(0, 10 - (state.localGlowsticksUsed || 0));
+    }
+
+    function checkFandomMilestones(s) {
+      ensureStreamerFandomDefaults(s);
+      var unlockedNew = [];
+      FANDOM_MILESTONES.forEach(function(m) {
+        if (s.milestones.indexOf(m.id) === -1) {
+          if (s.idolStage >= m.reqStage || s.supertopicHeat >= m.reqHeat) {
+            s.milestones.push(m.id);
+            unlockedNew.push(m);
+            if (m.id === 'drone') {
+              cloudPostBroadcast('fandom_diamond', '粉丝豪掷千架无人机为【' + s.name + '】庆生应援，点亮整座城市夜空！');
+            }
+          }
+        }
+      });
+      if (unlockedNew.length > 0) {
+        var names = unlockedNew.map(function(x) { return x.icon + x.name; }).join('、');
+        showToast("🏙️ 解锁粉丝线下应援里程碑：" + names + "！永久带货加成生效！", "success");
+      }
+    }
+
+    function openFandomModal(sid) {
+      safeInitAudio();
+      var targetId = (sid && streamersMaster[sid]) ? sid : (ownedStreamers[0] || 'su');
+      state.activeFandomStreamerId = targetId;
+      state.activeFandomPreviewStage = null;
+      renderFandomModal();
+      document.getElementById("fandomModal").classList.remove("hidden");
+    }
+
+    function closeFandomModal() {
+      document.getElementById("fandomModal").classList.add("hidden");
+    }
+
+    function previewFandomStage(stageNum) {
+      safeInitAudio();
+      state.activeFandomPreviewStage = Math.max(1, Math.min(5, parseInt(stageNum, 10) || 1));
+      renderFandomModal();
+    }
+
+    function renderFandomModal() {
+      var s = streamersMaster[state.activeFandomStreamerId] || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
+      normalizeFactions(s.factions);
+      var prof = getFandomProfile(s.id);
+      var curStage = s.idolStage;
+      var viewStage = state.activeFandomPreviewStage || curStage;
+      var curStageInfo = getIdolStageInfo(s, curStage);
+      var viewStageInfo = getIdolStageInfo(s, viewStage);
+      var lv1Info = getIdolStageInfo(s, 1);
+      var superTier = getSupertopicTierName(s.supertopicHeat);
+
+      var titleEl = document.getElementById("fandomModalTitle");
+      if (titleEl) titleEl.innerText = "💖 " + s.name + " · 养成超话";
+
+      var tierBadge = document.getElementById("fandomSuperTierBadge");
+      if (tierBadge) {
+        tierBadge.innerText = superTier + " · " + Number(s.supertopicHeat).toLocaleString();
+        tierBadge.className = superTier === '钻超' ? 'badge badge-gold' : (superTier === '金超' ? 'badge badge-red' : 'badge badge-blue');
+      }
+
+      var headerBox = document.getElementById("fandomProfileHeader");
+      if (headerBox) {
+        headerBox.innerHTML =
+          '<div style="min-width:0;">' +
+            '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' +
+              '<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:' + prof.color + ';box-shadow:0 0 8px ' + prof.color + ';"></span>' +
+              '<strong style="font-size:12.5px;color:#fff;">粉丝名：' + escapeHTML(prof.fanClub) + '</strong>' +
+              '<span style="font-size:10.5px;color:#cbd5e1;">(' + escapeHTML(prof.colorName) + ')</span>' +
+            '</div>' +
+            '<div style="font-size:11px;color:#fbcfe8;margin-top:3px;">📣 “' + escapeHTML(prof.slogan) + '”</div>' +
+          '</div>' +
+          '<div style="text-align:right;flex-shrink:0;">' +
+            '<div style="font-size:10px;color:#94a3b8;">选秀累计票数</div>' +
+            '<div style="font-size:14px;font-weight:900;color:#fbbf24;">' + Number(s.debutVotes).toLocaleString() + '</div>' +
+          '</div>';
+      }
+
+      // Before (Lv.1) -> After (当前 / 预览阶段)
+      var beforeAv = document.getElementById("fandomBeforeAvatar");
+      var afterAv = document.getElementById("fandomAfterAvatar");
+      if (beforeAv) beforeAv.innerHTML = getPersonifiedAvatarSVG(s, 78, 1);
+      if (afterAv) afterAv.innerHTML = getPersonifiedAvatarSVG(s, 78, viewStage);
+
+      var beforeLbl = document.getElementById("fandomBeforeLabel");
+      if (beforeLbl) beforeLbl.innerText = lv1Info.title;
+      var afterTag = document.getElementById("fandomAfterTag");
+      if (afterTag) {
+        afterTag.innerText = viewStage === curStage
+          ? ("当前形态 · Lv." + curStage)
+          : (viewStage > curStage ? ("🔮 未来形态预览 · Lv." + viewStage) : ("📸 历史回顾 · Lv." + viewStage));
+      }
+      var afterLbl = document.getElementById("fandomAfterLabel");
+      if (afterLbl) afterLbl.innerText = viewStageInfo.title;
+
+      var charmDelta = document.getElementById("fandomCharmDelta");
+      if (charmDelta) {
+        var gain = Math.max(0, s.charm - prof.baseCharm);
+        charmDelta.innerText = (s.isBeauty ? "✨颜值 " : "气场 ") + s.charm + (gain > 0 ? " (+" + gain + ")" : "");
+      }
+
+      // 5阶时间轴按钮
+      var tl = document.getElementById("fandomStageTimeline");
+      if (tl) {
+        tl.innerHTML = "";
+        for (var st = 1; st <= 5; st++) {
+          var stInf = getIdolStageInfo(s, st);
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "stage-step-btn" + (st <= curStage ? " unlocked" : "") + (st === viewStage ? " active-preview" : "");
+          btn.setAttribute("data-action", "preview-fandom-stage");
+          btn.setAttribute("data-stage", String(st));
+          btn.innerText = stInf.shortName;
+          tl.appendChild(btn);
+        }
+      }
+
+      // 养成经验进度条
+      var thresholds = [0, 100, 260, 500, 850];
+      var expText = document.getElementById("fandomExpText");
+      var expBar = document.getElementById("fandomExpBar");
+      if (curStage >= 5) {
+        if (expText) expText.innerText = "👑 已登顶 Lv.5 UR 国民神颜满阶！";
+        if (expBar) expBar.style.width = "100%";
+      } else {
+        var nextReq = thresholds[curStage];
+        var prevReq = thresholds[curStage - 1];
+        var pct = Math.max(0, Math.min(100, Math.round(((s.idolExp - prevReq) / (nextReq - prevReq)) * 100)));
+        if (expText) expText.innerText = s.idolExp + "/" + nextReq + " → " + getIdolStageInfo(s, curStage + 1).shortName;
+        if (expBar) expBar.style.width = pct + "%";
+      }
+
+      // 颜值即正义被动展示
+      var passiveBox = document.getElementById("fandomBeautyPassiveBox");
+      if (passiveBox) {
+        if (s.isBeauty) {
+          var whaleBonusPct = Math.round(Math.max(0, (s.charm - 60) / 10) * 18);
+          var washPct = Math.round(Math.min(55, Math.max(15, (s.charm - 55) * 1.2)));
+          passiveBox.innerHTML =
+            '<div style="font-weight:800;color:#fde68a;margin-bottom:2px;">✨ 颜值即正义专属光环（当前颜值 ' + s.charm + '/100）</div>' +
+            '<div>• 直播「榜一大哥」打赏暴击 <strong>+' + whaleBonusPct + '%</strong> · 遇黑粉 <strong>' + washPct + '%</strong> 概率直接「😍颜值洗粉」化黑为粉！</div>' +
+            '<div style="color:#cbd5e1;margin-top:2px;">• 当前阶段感悟：' + escapeHTML(viewStageInfo.desc) + '</div>';
+        } else {
+          passiveBox.innerHTML =
+            '<div style="font-weight:800;color:#93c5fd;margin-bottom:2px;">🔥 实力人气超话养成（当前气场 ' + s.charm + '/100）</div>' +
+            '<div>• 持续打榜升阶可解锁全服钻超播报与线下应援大屏，助力《破晓101》争C位！</div>' +
+            '<div style="color:#cbd5e1;margin-top:2px;">• 当前阶段感悟：' + escapeHTML(viewStageInfo.desc) + '</div>';
+        }
+      }
+
+      // 三大粉丝派系生态条
+      var fSolo = document.getElementById("facBarSolo");
+      var fCp = document.getElementById("facBarCp");
+      var fMom = document.getElementById("facBarMom");
+      if (fSolo) fSolo.style.width = s.factions.solo + "%";
+      if (fCp) fCp.style.width = s.factions.cp + "%";
+      if (fMom) fMom.style.width = s.factions.mom + "%";
+
+      var facLbl = document.getElementById("factionLabels");
+      if (facLbl) {
+        var cpPartnerName = (s.cpPartnerId && streamersMaster[s.cpPartnerId]) ? ('(' + streamersMaster[s.cpPartnerId].name + ')') : '(未绑定)';
+        facLbl.innerHTML =
+          '<span style="color:#fda4af;">❤️ 唯粉 ' + s.factions.solo + '%</span>' +
+          '<span style="color:#d8b4fe;">💜 CP粉 ' + s.factions.cp + '%' + escapeHTML(cpPartnerName) + '</span>' +
+          '<span style="color:#6ee7b7;">💚 妈粉 ' + s.factions.mom + '%</span>';
+      }
+      var momBadge = document.getElementById("fandomMomShieldBadge");
+      if (momBadge) {
+        if (s.factions.mom >= 35) {
+          momBadge.innerText = "🛡️ 妈粉护盾已激活(黑红/扣分-30%)";
+          momBadge.style.color = "#34d399";
+        } else {
+          momBadge.innerText = "妈粉达35%激活反黑护盾(差" + (35 - s.factions.mom) + "%)";
+          momBadge.style.color = "#94a3b8";
+        }
+      }
+
+      // 线下应援里程碑
+      var mBox = document.getElementById("fandomMilestonesBox");
+      if (mBox) {
+        mBox.innerHTML = "";
+        FANDOM_MILESTONES.forEach(function(m) {
+          var unl = s.milestones.indexOf(m.id) !== -1;
+          var chip = document.createElement("span");
+          chip.className = "milestone-chip" + (unl ? " unlocked" : "");
+          chip.title = "达 Lv." + m.reqStage + " 或超话热度 " + m.reqHeat + " 解锁：" + m.bonusDesc;
+          chip.textContent = m.icon + " " + m.name + (unl ? " ✓(" + m.bonusDesc + ")" : " (Lv." + m.reqStage + ")");
+          mBox.appendChild(chip);
+        });
+      }
+
+      var glowBtn = document.getElementById("btnFandomGlowstick");
+      if (glowBtn) {
+        var rem = getEffectiveGlowsticksRemaining();
+        glowBtn.innerText = "🌸 送应援棒 (剩" + rem + "/10)";
+      }
+    }
+
+    function fandomVoteGlowstick(sid) {
+      safeInitAudio();
+      var s = streamersMaster[sid || state.activeFandomStreamerId] || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
+      var rem = getEffectiveGlowsticksRemaining();
+      if (rem <= 0) {
+        showToast("今日 10 根免费应援棒已送完，可在《破晓101》买奶票继续打投或明日刷新！", "alert");
+        playAlertSound();
+        return;
+      }
+
+      var oldStage = s.idolStage;
+      s.debutVotes += 120;
+      s.supertopicHeat += s.isBeauty ? 162 : 132;
+      s.idolExp += 40;
+      s.factions.solo += 3;
+      normalizeFactions(s.factions);
+      var newStage = computeStageFromExp(s.idolExp);
+      if (newStage > oldStage) {
+        onStreamerStageUp(s, newStage);
+      } else {
+        playCoinSound();
+        showToast("🌸 为【" + s.name + "】送上应援棒！票数+120，养成值+40！", "success");
+      }
+
+      if (cloudState.online) {
+        cloudState.glowsticksRemaining = Math.max(0, rem - 1);
+        apiFetch('/api/fandom/vote', {
+          method: 'POST',
+          body: { streamerId: s.id, streamerName: s.name, isBeauty: s.isBeauty, mode: 'free_glowstick', votes: 1 }
+        }).then(function(res) {
+          if (res.ok && res.data && res.data.ok) {
+            cloudState.glowsticksRemaining = res.data.glowsticksRemaining;
+            if (res.data.crossedDiamond) {
+              triggerGlobalCustomHorn("💎【全服钻超喜报】旗下【" + s.name + "】冲破3万热度登顶钻超！站姐神图刷爆全网！");
+            }
+            renderFandomModal();
+          }
+        });
+      } else {
+        state.localGlowsticksDate = getLocalTodayStr();
+        state.localGlowsticksUsed = (state.localGlowsticksUsed || 0) + 1;
+      }
+
+      checkFandomMilestones(s);
+      saveLocalData();
+      renderFandomModal();
+      renderStreamersList();
+    }
+
+    function onStreamerStageUp(s, newStage) {
+      var prof = getFandomProfile(s.id);
+      s.idolStage = newStage;
+      s.charm = Math.min(100, s.charm + (s.isBeauty ? 7 : 4));
+      s.sales += (s.isBeauty ? 5 : 4);
+      state.fans += (s.isBeauty ? 8.5 : 5.5);
+      state.activeFandomPreviewStage = null;
+
+      var stInf = getIdolStageInfo(s, newStage);
+      playSSRTrumpetSound();
+      launchSupportConfetti([prof.color, '#fbbf24', '#ffffff', '#a855f7']);
+      recordHighlight(s.name + '蜕变晋升为「' + stInf.title + '」(颜值' + s.charm + ')');
+      showToast("✨ 颜值蜕变觉醒！【" + s.name + "】晋升「" + stInf.title + "」！颜值飙至 " + s.charm + "，粉丝 +8.5w！", "success");
+
+      if (newStage >= 4) {
+        triggerGlobalCustomHorn("✨【神颜蜕变官宣】" + state.agencyName + " 旗下【" + s.name + "】完成从素人到「" + stInf.title + "」的绝美逆袭（颜值" + s.charm + "）！");
+        cloudPostBroadcast('beauty_glowup', '旗下颜值王牌【' + s.name + '】蜕变晋升「' + stInf.title + '」(颜值' + s.charm + ')，步行街老哥直呼颜值即正义！');
+      }
+      checkFandomMilestones(s);
+      fetchAiFandomCopy(s.id, 'glowup', 'fandomDualCopyContent');
+      updateMCNRank(true);
+    }
+
+    function fandomDoGlowup(sid) {
+      safeInitAudio();
+      var s = streamersMaster[sid || state.activeFandomStreamerId] || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
+      if (state.cash < 8) {
+        showToast("资金不足 8.0w，无法聘请顶级妆造师与神图站姐！", "alert");
+        playAlertSound();
+        return;
+      }
+      state.cash -= 8;
+      var oldStage = s.idolStage;
+      var charmGain = s.isBeauty ? (5 + Math.floor(Math.random() * 3)) : (3 + Math.floor(Math.random() * 2));
+      s.charm = Math.min(100, s.charm + charmGain);
+      s.sales += 3;
+      s.idolExp += 115;
+      s.debutVotes += 450;
+      s.supertopicHeat += s.isBeauty ? 900 : 650;
+      s.factions.solo += 4;
+      s.factions.mom += 2;
+      normalizeFactions(s.factions);
+      state.fans += s.isBeauty ? 5.2 : 3.5;
+
+      if (cloudState.online) {
+        apiFetch('/api/fandom/vote', {
+          method: 'POST',
+          body: { streamerId: s.id, streamerName: s.name, isBeauty: s.isBeauty, mode: 'station_sister', votes: 450 }
+        });
+      }
+
+      var newStage = computeStageFromExp(s.idolExp);
+      if (newStage > oldStage) {
+        onStreamerStageUp(s, newStage);
+      } else {
+        playCheerSound();
+        var prof = getFandomProfile(s.id);
+        launchSupportConfetti([prof.color, '#fbbf24']);
+        showToast("💄 顶级妆造 & 站姐神图万转出圈！【" + s.name + "】颜值 +" + charmGain + "、养成值 +115、涨粉 +5.2w！", "success");
+        fetchAiFandomCopy(s.id, 'glowup', 'fandomDualCopyContent');
+      }
+
+      checkFandomMilestones(s);
+      renderHeaderStats();
+      renderStreamersList();
+      renderFandomModal();
+      saveLocalData();
+    }
+
+    function fandomPairCP(sid) {
+      safeInitAudio();
+      var s = streamersMaster[sid || state.activeFandomStreamerId] || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
+      var others = ownedStreamers.filter(function(id) { return id !== s.id && streamersMaster[id]; });
+      if (others.length === 0) {
+        showToast("需至少签约 2 位主播才能炒双人 CP 营业！先去盲盒或市场签一位搭档吧！", "alert");
+        playAlertSound();
+        return;
+      }
+      if (state.cash < 5) {
+        showToast("CP 双人企划需要 5.0w 宣发预算！", "alert");
+        playAlertSound();
+        return;
+      }
+      state.cash -= 5;
+      var curIdx = others.indexOf(s.cpPartnerId);
+      var nextPartnerId = others[(curIdx + 1) % others.length];
+      var partner = streamersMaster[nextPartnerId];
+      ensureStreamerFandomDefaults(partner);
+
+      s.cpPartnerId = partner.id;
+      partner.cpPartnerId = s.id;
+      s.factions.cp += 14;
+      s.factions.solo = Math.max(10, s.factions.solo - 8);
+      normalizeFactions(s.factions);
+      partner.factions.cp += 12;
+      normalizeFactions(partner.factions);
+
+      s.idolExp += 65;
+      s.debutVotes += 320;
+      s.supertopicHeat += 520;
+      state.fans += 6.5;
+
+      var newStage = computeStageFromExp(s.idolExp);
+      if (newStage > s.idolStage) {
+        onStreamerStageUp(s, newStage);
+      } else {
+        playCheerSound();
+        showToast("💞 【" + s.name + " × " + partner.name + "】双人CP营业上热搜！CP粉暴涨、全网涨粉 +6.5w！", "success");
+        fetchAiFandomCopy(s.id, 'cp', 'fandomDualCopyContent');
+      }
+
+      // 唯粉过多时偶发小幅黑红争议（真实饭圈撕番生态！）
+      if (s.factions.solo >= 48 && Math.random() < 0.5) {
+        adjustScandal(4);
+        showToast("⚡ 唯粉大粉抗议捆绑营业（黑红度+4），但CP超话已冲上热搜前排！", "info");
+      }
+
+      checkFandomMilestones(s);
+      renderHeaderStats();
+      renderStreamersList();
+      renderFandomModal();
+      saveLocalData();
+    }
+
+    function fandomAntiBlack(sid) {
+      safeInitAudio();
+      var s = streamersMaster[sid || state.activeFandomStreamerId] || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
+      if (state.cash < 6) {
+        showToast("反黑站控评与律所取证需要 6.0w 预算！", "alert");
+        playAlertSound();
+        return;
+      }
+      state.cash -= 6;
+      s.factions.mom += 10;
+      normalizeFactions(s.factions);
+      s.idolExp += 45;
+      s.supertopicHeat += 300;
+      adjustScandal(-14);
+      state.pr = Math.min(getSynergyEffects().prCap, state.pr + 5);
+
+      var newStage = computeStageFromExp(s.idolExp);
+      if (newStage > s.idolStage) {
+        onStreamerStageUp(s, newStage);
+      } else {
+        playCoinSound();
+        showToast("🛡️ 反黑站全员控评洗广场成功！黑红风险 -14%、口碑 +5、妈粉护盾升至 " + s.factions.mom + "%！", "success");
+      }
+
+      checkFandomMilestones(s);
+      renderHeaderStats();
+      renderHall();
+      renderStreamersList();
+      renderFandomModal();
+      saveLocalData();
+    }
+
+    function renderDualCopyCards(targetEl, data, isAi) {
+      if (!targetEl || !data || !data.fandomPost || !data.hupuCrossPost) return;
+      targetEl.classList.remove("hidden");
+      targetEl.innerHTML =
+        '<div style="font-size:10px;color:#fbbf24;">' + (isAi ? '✨ Cloudflare Workers AI (Qwen3) 实时双画风舆情生成：' : '📡 实时跨圈舆情速报：') + '</div>' +
+        '<div class="copy-card-fandom">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">' +
+            '<span style="font-weight:800;color:#f472b6;">📸 饭圈站姐 @' + escapeHTML(data.fandomPost.author) + '</span>' +
+            '<span style="font-size:10px;color:#fbcfe8;">🔁 转发 ' + Number(data.fandomPost.reposts || 12800).toLocaleString() + '</span>' +
+          '</div>' +
+          '<div>' + escapeHTML(data.fandomPost.text) + '</div>' +
+        '</div>' +
+        '<div class="copy-card-hupu">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">' +
+            '<span style="font-weight:800;color:#fca5a5;">🏀 虎扑步行街 @' + escapeHTML(data.hupuCrossPost.user) + '</span>' +
+            '<span style="font-size:10px;color:#fde68a;">👍 亮了(' + Number(data.hupuCrossPost.likes || 2350) + ')</span>' +
+          '</div>' +
+          '<div>' + escapeHTML(data.hupuCrossPost.text) + '</div>' +
+        '</div>';
+    }
+
+    function fetchAiFandomCopy(sid, actionType, targetBoxId, groupName) {
+      var s = streamersMaster[sid || state.activeFandomStreamerId] || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
+      var prof = getFandomProfile(s.id);
+      var stInf = getIdolStageInfo(s);
+      var box = document.getElementById(targetBoxId || 'fandomDualCopyContent');
+      if (box) {
+        box.classList.remove("hidden");
+        box.innerHTML = '<div style="font-size:11px;color:#fbbf24;">🤖 正在连线 Cloudflare Workers AI (Qwen3)，召唤神图站姐与步行街老哥跨圈围观...</div>';
+      }
+
+      var cpPartnerName = (s.cpPartnerId && streamersMaster[s.cpPartnerId]) ? streamersMaster[s.cpPartnerId].name : '';
+      var localFallback = {
+        fandomPost: {
+          author: s.name + '神图出圈站姐',
+          text: s.isBeauty
+            ? ('【生图万转】内娱审美救星驾到！' + s.name + '晋升「' + stInf.title + '」颜值飙到' + s.charm + '，从素颜素人逆袭女神的养成系痛感谁懂啊！' + prof.fanClub + '冲钻超！')
+            : ('【站姐速报】' + s.name + '进阶「' + stInf.title + '」，气场拉满！' + prof.fanClub + '全员控评做数据，锁死热搜前排！'),
+          reposts: 15800 + s.charm * 90
+        },
+        hupuCrossPost: {
+          user: '步行街嘴硬评分员',
+          text: s.isBeauty
+            ? ('家人们实话实说，海选戴黑框眼镜我真没认出来，现在' + s.name + '一换高定直接封神，颜值即正义给9.9分！')
+            : ('有一说一，' + state.agencyName + '这套养成运营真离谱，连' + s.name + '都整出顶流大片感了，服气！'),
+          likes: 2480 + s.charm * 20
+        }
+      };
+
+      if (!cloudState.online) {
+        renderDualCopyCards(box, localFallback, false);
+        return;
+      }
+
+      apiFetch('/api/ai/fandom-copy', {
+        method: 'POST',
+        timeoutMs: 16000,
+        body: {
+          agencyName: state.agencyName,
+          streamerName: s.name,
+          fanClub: prof.fanClub,
+          stageTitle: stInf.title,
+          charm: s.charm,
+          isBeauty: s.isBeauty,
+          actionType: actionType || 'glowup',
+          groupName: groupName || (state.debutGroup ? state.debutGroup.groupName : ''),
+          cpPartner: cpPartnerName
+        }
+      }).then(function(res) {
+        if (res.ok && res.data && res.data.fandomPost && res.data.hupuCrossPost) {
+          renderDualCopyCards(box, res.data, res.data.source === 'workers-ai');
+        } else {
+          renderDualCopyCards(box, localFallback, false);
+        }
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 《破晓101》选秀出道成团 & 全服超话/出道天团殿堂 (modern-web-guidance tabs)
+    // -------------------------------------------------------------------------
+    function openDebutModal(subtab) {
+      safeInitAudio();
+      // 自动预选旗下最多3~5位主播（优先颜值赛道！）
+      if (!Array.isArray(state.fandomDraftMembers) || state.fandomDraftMembers.length === 0) {
+        state.fandomDraftMembers = ownedStreamers.slice(0, 5);
+      } else {
+        state.fandomDraftMembers = state.fandomDraftMembers.filter(function(id) {
+          return ownedStreamers.indexOf(id) !== -1;
+        });
+        if (state.fandomDraftMembers.length < Math.min(3, ownedStreamers.length)) {
+          ownedStreamers.forEach(function(id) {
+            if (state.fandomDraftMembers.length < 3 && state.fandomDraftMembers.indexOf(id) === -1) {
+              state.fandomDraftMembers.push(id);
+            }
+          });
+        }
+      }
+      if (!state.fandomDraftCenter || state.fandomDraftMembers.indexOf(state.fandomDraftCenter) === -1) {
+        state.fandomDraftCenter = state.fandomDraftMembers[0] || ownedStreamers[0] || 'su';
+      }
+
+      document.getElementById("debutModal").classList.remove("hidden");
+      switchDebutSubtab(subtab || 'stage');
+    }
+
+    function closeDebutModal() {
+      document.getElementById("debutModal").classList.add("hidden");
+    }
+
+    function switchDebutSubtab(subtab) {
+      state.activeDebutSubtab = subtab || 'stage';
+      var list = ['stage', 'supertopics', 'groups'];
+      list.forEach(function(key) {
+        var tab = document.getElementById("debutTab-" + key);
+        var panel = document.getElementById("debutPanel-" + key);
+        var isSel = key === state.activeDebutSubtab;
+        if (tab) {
+          tab.setAttribute("aria-selected", isSel ? "true" : "false");
+          tab.toggleAttribute("focusgroupstart", isSel);
+          if (isSel && tab.scrollIntoView) {
+            try { tab.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) {}
+          }
+        }
+        if (panel) {
+          if (isSel) {
+            panel.removeAttribute("hidden");
+          } else {
+            panel.hidden = "until-found";
+          }
+        }
+      });
+
+      if (state.activeDebutSubtab === 'stage') {
+        renderDebutStagePanel();
+      } else if (state.activeDebutSubtab === 'supertopics') {
+        fetchGlobalSupertopics();
+      } else if (state.activeDebutSubtab === 'groups') {
+        fetchGlobalDebutGroups();
+      }
+    }
+
+    function initDebutTabsAccessibility() {
+      var tablist = document.getElementById("debutTablist");
+      if (tablist) {
+        tablist.addEventListener("keydown", function(e) {
+          var keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
+          if (keys.indexOf(e.key) === -1) return;
+          var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+          var idx = tabs.indexOf(document.activeElement);
+          if (idx === -1) return;
+          e.preventDefault();
+          var nextIdx = idx;
+          if (e.key === 'ArrowRight') nextIdx = (idx + 1) % tabs.length;
+          else if (e.key === 'ArrowLeft') nextIdx = (idx - 1 + tabs.length) % tabs.length;
+          else if (e.key === 'Home') nextIdx = 0;
+          else if (e.key === 'End') nextIdx = tabs.length - 1;
+          tabs[nextIdx].focus();
+          switchDebutSubtab(tabs[nextIdx].getAttribute('data-subtab'));
+        });
+      }
+      ['stage', 'supertopics', 'groups'].forEach(function(key) {
+        var panel = document.getElementById("debutPanel-" + key);
+        if (panel) {
+          panel.addEventListener("beforematch", function() {
+            switchDebutSubtab(key);
+          });
+        }
+      });
+    }
+
+    function renderDebutStagePanel() {
+      var curCard = document.getElementById("debutCurrentGroupCard");
+      if (curCard) {
+        if (state.debutGroup && state.debutGroup.groupName) {
+          curCard.classList.remove("hidden");
+          curCard.innerHTML =
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<span style="font-size:12.5px;font-weight:800;color:#fef08a;">👑 已出道天团：【' + escapeHTML(state.debutGroup.groupName) + '】</span>' +
+              '<span class="beauty-tag">均颜 ' + Number(state.debutGroup.avgCharm || 85) + '</span>' +
+            '</div>' +
+            '<div style="font-size:11px;color:#fce7f3;margin-top:3px;">C位队长：<strong>' + escapeHTML(state.debutGroup.centerName) + '</strong> · 成员：' + escapeHTML((state.debutGroup.memberNames || []).join(' / ')) + '</div>' +
+            '<div style="font-size:10.5px;color:#34d399;margin-top:3px;">🌟 永久成团光环生效：团播GMV+35% · 离线+25% · 战力+15%（可随时打投升级重组！）</div>';
+        } else {
+          curCard.classList.add("hidden");
+        }
+      }
+
+      var glowEl = document.getElementById("debutGlowstickCount");
+      if (glowEl) glowEl.innerText = getEffectiveGlowsticksRemaining() + " / 10 根";
+
+      var sel = state.fandomDraftMembers || [];
+      var sumEl = document.getElementById("debutSelectedSummary");
+      if (sumEl) sumEl.innerText = "已选 " + sel.length + " / 5（需3~5人）";
+
+      var listBox = document.getElementById("debutTraineeList");
+      if (listBox) {
+        listBox.innerHTML = "";
+        if (ownedStreamers.length < 3) {
+          var hint = document.createElement("div");
+          hint.className = "card-subpanel";
+          hint.style.cssText = "border-color:rgba(245,158,11,0.5);background:rgba(245,158,11,0.12);font-size:11.5px;color:#fde68a;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;";
+          hint.innerHTML =
+            '<span>💡 当前旗下仅 ' + ownedStreamers.length + ' 人，至少需 3 位主播才能成团！</span>' +
+            '<button type="button" class="btn-small-upgrade" data-action="quick-recruit-for-debut" style="background:#f59e0b;color:#111827;font-weight:800;padding:4px 9px;white-space:nowrap;">去签约凑齐</button>';
+          listBox.appendChild(hint);
+        }
+
+        ownedStreamers.forEach(function(sid) {
+          var s = streamersMaster[sid];
+          ensureStreamerFandomDefaults(s);
+          var isPicked = sel.indexOf(sid) !== -1;
+          var isCenter = isPicked && state.fandomDraftCenter === sid;
+          var stInf = getIdolStageInfo(s);
+
+          var row = document.createElement("div");
+          row.className = "trainee-pick-row" + (isPicked ? " selected" : "");
+          row.innerHTML =
+            '<div style="display:flex;align-items:center;gap:8px;min-width:0;">' +
+              getPersonifiedAvatarSVG(s, 40) +
+              '<div style="min-width:0;">' +
+                '<div style="font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:4px;flex-wrap:wrap;">' +
+                  escapeHTML(s.name) +
+                  (s.isBeauty ? '<span class="beauty-tag">✨颜' + s.charm + '</span>' : '<span class="badge badge-blue">' + stInf.shortName + '</span>') +
+                '</div>' +
+                '<div style="font-size:10.5px;color:#94a3b8;">票数 <strong style="color:#fbbf24;">' + Number(s.debutVotes).toLocaleString() + '</strong> · ' + escapeHTML(stInf.title) + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">' +
+              (isPicked
+                ? '<button type="button" class="btn-icon" data-action="set-debut-center" data-id="' + s.id + '" style="padding:4px 7px;font-size:10.5px;color:' + (isCenter ? '#fef08a' : '#94a3b8') + ';border-color:' + (isCenter ? '#f59e0b' : '#334155') + ';background:' + (isCenter ? 'rgba(245,158,11,0.22)' : 'transparent') + ';">' + (isCenter ? '👑C位' : '设C位') + '</button>'
+                : '') +
+              '<button type="button" class="btn-icon" data-action="toggle-debut-trainee" data-id="' + s.id + '" style="padding:4px 8px;font-size:10.5px;color:' + (isPicked ? '#fbcfe8' : '#cbd5e1') + ';border-color:' + (isPicked ? '#f472b6' : '#334155') + ';">' + (isPicked ? '✓入选' : '+提名') + '</button>' +
+            '</div>';
+          listBox.appendChild(row);
+        });
+      }
+
+      // 计算总票数与成团门槛 (3000票即可出道，轻松爽快！)
+      var totalVotes = 0;
+      sel.forEach(function(id) {
+        if (streamersMaster[id]) {
+          ensureStreamerFandomDefaults(streamersMaster[id]);
+          totalVotes += streamersMaster[id].debutVotes;
+        }
+      });
+      var goal = 3000;
+      var pct = Math.min(100, Math.round((totalVotes / goal) * 100));
+      var pText = document.getElementById("debutVoteProgressText");
+      var pBar = document.getElementById("debutVoteProgressBar");
+      if (pText) pText.innerText = totalVotes.toLocaleString() + " / " + goal.toLocaleString() + " 票" + (totalVotes >= goal ? " ✅已达标" : "");
+      if (pBar) pBar.style.width = pct + "%";
+
+      var inp = document.getElementById("debutGroupNameInput");
+      if (inp && !inp.value && state.debutGroup && state.debutGroup.groupName) {
+        inp.value = state.debutGroup.groupName;
+      }
+    }
+
+    function toggleDebutTrainee(sid) {
+      safeInitAudio();
+      if (!streamersMaster[sid]) return;
+      var idx = state.fandomDraftMembers.indexOf(sid);
+      if (idx !== -1) {
+        state.fandomDraftMembers.splice(idx, 1);
+        if (state.fandomDraftCenter === sid) {
+          state.fandomDraftCenter = state.fandomDraftMembers[0] || '';
+        }
+      } else {
+        if (state.fandomDraftMembers.length >= 5) {
+          showToast("每支限定团最多提名 5 位练习生哦！", "alert");
+          return;
+        }
+        state.fandomDraftMembers.push(sid);
+        if (!state.fandomDraftCenter) state.fandomDraftCenter = sid;
+      }
+      playCoinSound();
+      renderDebutStagePanel();
+      saveLocalData();
+    }
+
+    function setDebutCenter(sid) {
+      safeInitAudio();
+      if (state.fandomDraftMembers.indexOf(sid) === -1) return;
+      state.fandomDraftCenter = sid;
+      playCoinSound();
+      showToast("👑 已任命【" + streamersMaster[sid].name + "】为本次成团夜 C 位队长！", "success");
+      renderDebutStagePanel();
+      saveLocalData();
+    }
+
+    function debutQuickVoteFree() {
+      var targetId = state.fandomDraftCenter || state.fandomDraftMembers[0] || ownedStreamers[0] || 'su';
+      fandomVoteGlowstick(targetId);
+      renderDebutStagePanel();
+    }
+
+    function debutQuickVoteMilk() {
+      safeInitAudio();
+      if (state.cash < 10) {
+        showToast("资金不足 10.0w，无法发起奶票打投应援！", "alert");
+        playAlertSound();
+        return;
+      }
+      var targetId = state.fandomDraftCenter || state.fandomDraftMembers[0] || ownedStreamers[0] || 'su';
+      var s = streamersMaster[targetId];
+      if (!s) return;
+      ensureStreamerFandomDefaults(s);
+      state.cash -= 10;
+      var oldStage = s.idolStage;
+      s.debutVotes += 1200;
+      s.supertopicHeat += s.isBeauty ? 1560 : 1200;
+      s.idolExp += 90;
+      state.fans += 4.5;
+
+      if (cloudState.online) {
+        apiFetch('/api/fandom/vote', {
+          method: 'POST',
+          body: { streamerId: s.id, streamerName: s.name, isBeauty: s.isBeauty, mode: 'cash_milk_ticket', votes: 1200 }
+        });
+      }
+
+      var newStage = computeStageFromExp(s.idolExp);
+      if (newStage > oldStage) {
+        onStreamerStageUp(s, newStage);
+      } else {
+        playCheerSound();
+        showToast("🥛 粉丝狂扫奶票打投！【" + s.name + "】票数暴涨 +1,200、热度狂飙！", "success");
+      }
+      checkFandomMilestones(s);
+      renderHeaderStats();
+      renderStreamersList();
+      renderDebutStagePanel();
+      saveLocalData();
+    }
+
+    function executeDebutCeremony() {
+      safeInitAudio();
+      var members = (state.fandomDraftMembers || []).filter(function(id) {
+        return ownedStreamers.indexOf(id) !== -1 && streamersMaster[id];
+      });
+      if (members.length < 3) {
+        showToast("成团至少需要提名 3 位旗下主播！先去签约市场或盲盒扩充团队吧！", "alert");
+        playAlertSound();
+        return;
+      }
+      var totalVotes = 0;
+      var charmSum = 0;
+      var memberNames = [];
+      members.forEach(function(id) {
+        var st = streamersMaster[id];
+        ensureStreamerFandomDefaults(st);
+        totalVotes += st.debutVotes;
+        charmSum += st.charm;
+        memberNames.push(st.name);
+      });
+      if (totalVotes < 3000) {
+        showToast("当前总票数 " + totalVotes + "，需满 3,000 票方可成团！快投应援棒或奶票冲刺！", "alert");
+        playAlertSound();
+        return;
+      }
+
+      var inp = document.getElementById("debutGroupNameInput");
+      var rawName = inp ? inp.value.replace(/[<>&"'`]/g, '').trim().slice(0, 12) : '';
+      var groupName = rawName.length >= 2 ? rawName : (state.agencyName.slice(0, 4) + '101');
+      if (inp) inp.value = groupName;
+
+      var centerId = (state.fandomDraftCenter && members.indexOf(state.fandomDraftCenter) !== -1) ? state.fandomDraftCenter : members[0];
+      var centerObj = streamersMaster[centerId];
+      var avgCharm = Math.round(charmSum / members.length);
+
+      state.debutGroup = {
+        groupName: groupName,
+        centerId: centerId,
+        centerName: centerObj.name,
+        memberIds: members.slice(),
+        memberNames: memberNames,
+        avgCharm: avgCharm,
+        totalVotes: totalVotes,
+        debutedAt: Date.now()
+      };
+
+      // 成团庆典奖励与全服大喇叭 + 应援色礼花！
+      state.fans += 15.0;
+      state.pr = Math.min(getSynergyEffects().prCap, state.pr + 6);
+      var colors = members.map(function(id) { return getFandomProfile(id).color; });
+      colors.push('#fbbf24', '#ffffff');
+
+      playSSRTrumpetSound();
+      launchSupportConfetti(colors);
+      triggerGlobalCustomHorn("👑【《破晓101》成团夜重磅官宣】" + state.agencyName + " 限定天团【" + groupName + "】荣耀出道！C位：" + centerObj.name + "（均颜" + avgCharm + "，总票" + totalVotes.toLocaleString() + "）！");
+      recordHighlight('在《破晓101》成功推出限定天团【' + groupName + '】(C位·' + centerObj.name + ')');
+      showToast("🎉 恭喜！【" + groupName + "】正式成团出道！永久团播GMV+35%·离线+25%·战力+15%生效！", "success");
+
+      if (cloudState.online) {
+        apiFetch('/api/fandom/debut', {
+          method: 'POST',
+          body: {
+            groupName: groupName,
+            centerId: centerId,
+            centerName: centerObj.name,
+            memberIds: members,
+            memberNames: memberNames,
+            avgCharm: avgCharm,
+            totalVotes: totalVotes
+          }
+        }).then(function() {
+          pollGlobalFeed(true);
+        });
+      }
+
+      fetchAiFandomCopy(centerId, 'debut', 'debutCeremonyResult', groupName);
+      updateMCNRank(true);
+      renderHeaderStats();
+      renderStreamersList();
+      renderDebutStagePanel();
+      saveLocalData();
+    }
+
+    function fetchGlobalSupertopics() {
+      var box = document.getElementById("globalSupertopicsList");
+      if (!cloudState.online) {
+        renderGlobalSupertopics();
+        return;
+      }
+      apiFetch('/api/fandom/supertopics').then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          cloudState.supertopics = res.data.items || [];
+          if (res.data.glowsticksRemaining !== undefined) {
+            cloudState.glowsticksRemaining = res.data.glowsticksRemaining;
+          }
+        }
+        renderGlobalSupertopics();
+      });
+    }
+
+    function renderGlobalSupertopics() {
+      var box = document.getElementById("globalSupertopicsList");
+      if (!box) return;
+      box.innerHTML = "";
+      var items = (cloudState.supertopics && cloudState.supertopics.length > 0)
+        ? cloudState.supertopics
+        : Object.keys(streamersMaster).slice(0, 8).map(function(id) {
+            var s = streamersMaster[id];
+            ensureStreamerFandomDefaults(s);
+            return {
+              streamer_id: s.id,
+              streamer_name: s.name,
+              is_beauty: s.isBeauty ? 1 : 0,
+              supertopic_heat: s.supertopicHeat,
+              debut_votes: s.debutVotes,
+              top_agency_name: state.agencyName
+            };
+          });
+
+      var infoStrip = document.createElement("div");
+      infoStrip.className = "card-subpanel";
+      infoStrip.style.cssText = "padding:7px 10px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#fbcfe8;";
+      infoStrip.innerHTML = '<span>🔥 全服实时超话打榜（今日剩余应援棒：<strong>' + getEffectiveGlowsticksRemaining() + '/10</strong>）</span>';
+      box.appendChild(infoStrip);
+
+      items.forEach(function(item, idx) {
+        var rank = idx + 1;
+        var stObj = streamersMaster[item.streamer_id] || { id: item.streamer_id, name: item.streamer_name, tier: 'A', idolStage: 3 };
+        var tierName = getSupertopicTierName(Number(item.supertopic_heat || 0));
+        var card = document.createElement("div");
+        card.className = "card-subpanel";
+        card.style.cssText = "display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 9px;";
+        card.innerHTML =
+          '<div style="display:flex;align-items:center;gap:8px;min-width:0;">' +
+            '<span style="font-size:13px;font-weight:900;width:22px;text-align:center;color:' + (rank <= 3 ? '#fbbf24' : '#94a3b8') + ';">#' + rank + '</span>' +
+            getPersonifiedAvatarSVG(stObj, 38, Math.max(stObj.idolStage || 2, rank <= 3 ? 4 : 3)) +
+            '<div style="min-width:0;">' +
+              '<div style="font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:4px;flex-wrap:wrap;">' +
+                escapeHTML(item.streamer_name) +
+                (item.is_beauty ? '<span class="beauty-tag">✨颜值</span>' : '') +
+                '<span class="badge ' + (tierName === '钻超' ? 'badge-gold' : 'badge-blue') + '" style="font-size:9.5px;">' + tierName + '</span>' +
+              '</div>' +
+              '<div style="font-size:10.5px;color:#94a3b8;">票数 <strong style="color:#fbbf24;">' + Number(item.debut_votes || 0).toLocaleString() + '</strong> · 热度 ' + Number(item.supertopic_heat || 0).toLocaleString() + ' · 榜一:' + escapeHTML(item.top_agency_name || '破晓互娱') + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="btn-icon" data-action="vote-global-supertopic" data-id="' + escapeHTML(item.streamer_id) + '" data-name="' + escapeHTML(item.streamer_name) + '" data-beauty="' + (item.is_beauty ? '1' : '0') + '" style="padding:5px 8px;font-size:11px;color:#fbcfe8;border-color:rgba(244,114,182,0.5);flex-shrink:0;white-space:nowrap;">🌸 送棒</button>';
+        box.appendChild(card);
+      });
+    }
+
+    function voteSupertopicFromList(sid, name, isBeauty) {
+      safeInitAudio();
+      var rem = getEffectiveGlowsticksRemaining();
+      if (rem <= 0) {
+        showToast("今日 10 根免费应援棒已送完，明日 0 点刷新！", "alert");
+        playAlertSound();
+        return;
+      }
+      if (streamersMaster[sid]) {
+        ensureStreamerFandomDefaults(streamersMaster[sid]);
+        streamersMaster[sid].debutVotes += 120;
+        streamersMaster[sid].supertopicHeat += isBeauty ? 162 : 132;
+      }
+      playCoinSound();
+      if (cloudState.online) {
+        cloudState.glowsticksRemaining = Math.max(0, rem - 1);
+        apiFetch('/api/fandom/vote', {
+          method: 'POST',
+          body: { streamerId: sid, streamerName: name, isBeauty: Boolean(isBeauty), mode: 'free_glowstick', votes: 1 }
+        }).then(function(res) {
+          if (res.ok && res.data && res.data.ok) {
+            cloudState.glowsticksRemaining = res.data.glowsticksRemaining;
+            showToast("🌸 成功为【" + name + "】全服超话打榜 +" + res.data.addedVotes + " 票！", "success");
+            fetchGlobalSupertopics();
+          }
+        });
+      } else {
+        state.localGlowsticksDate = getLocalTodayStr();
+        state.localGlowsticksUsed = (state.localGlowsticksUsed || 0) + 1;
+        showToast("🌸 已为【" + name + "】本地应援 +120 票！", "success");
+        renderGlobalSupertopics();
+      }
+      saveLocalData();
+    }
+
+    function fetchGlobalDebutGroups() {
+      if (!cloudState.online) {
+        renderGlobalDebutGroups();
+        return;
+      }
+      apiFetch('/api/fandom/groups').then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          cloudState.debutGroups = res.data.groups || [];
+        }
+        renderGlobalDebutGroups();
+      });
+    }
+
+    function renderGlobalDebutGroups() {
+      var box = document.getElementById("globalDebutGroupsList");
+      if (!box) return;
+      box.innerHTML = "";
+      var groups = (cloudState.debutGroups && cloudState.debutGroups.length > 0) ? cloudState.debutGroups : [];
+      if (groups.length === 0 && state.debutGroup) {
+        groups = [{
+          id: 0,
+          agency_name: state.agencyName,
+          group_name: state.debutGroup.groupName,
+          center_id: state.debutGroup.centerId,
+          center_name: state.debutGroup.centerName,
+          member_names: JSON.stringify(state.debutGroup.memberNames || []),
+          avg_charm: state.debutGroup.avgCharm,
+          total_votes: state.debutGroup.totalVotes,
+          cheers: 1
+        }];
+      }
+      if (groups.length === 0) {
+        box.innerHTML = '<div class="card-subpanel" style="text-align:center;color:#94a3b8;font-size:12px;padding:18px;">尚无出道天团，快去【选秀成团打投】打造全服首个顶流天团！</div>';
+        return;
+      }
+
+      groups.forEach(function(g, idx) {
+        var names = [];
+        try { names = typeof g.member_names === 'string' ? JSON.parse(g.member_names) : (g.member_names || []); } catch (e) {}
+        var centerObj = streamersMaster[g.center_id] || streamersMaster.su;
+        var card = document.createElement("div");
+        card.className = "card-subpanel";
+        card.style.cssText = "display:flex;flex-direction:column;gap:6px;padding:9px 10px;border-color:" + (idx === 0 ? 'rgba(251,191,36,0.65)' : '#24314c') + ";";
+        card.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">' +
+            '<div style="display:flex;align-items:center;gap:8px;min-width:0;">' +
+              getPersonifiedAvatarSVG(centerObj, 42, 5) +
+              '<div style="min-width:0;">' +
+                '<div style="font-size:13px;font-weight:800;color:#fef08a;">#' + (idx + 1) + ' 【' + escapeHTML(g.group_name) + '】 <span class="beauty-tag">均颜' + Number(g.avg_charm || 85) + '</span></div>' +
+                '<div style="font-size:11px;color:#cbd5e1;">所属：' + escapeHTML(g.agency_name) + ' · 👑C位：' + escapeHTML(g.center_name) + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<button type="button" class="btn-icon" data-action="cheer-debut-group" data-group-id="' + Number(g.id || 0) + '" style="padding:5px 8px;font-size:11px;color:#fbcfe8;border-color:rgba(244,114,182,0.5);flex-shrink:0;white-space:nowrap;">✨ 打Call(<span id="grpCheer-' + Number(g.id || 0) + '">' + Number(g.cheers || 1) + '</span>)</button>' +
+          '</div>' +
+          '<div style="font-size:11px;color:#94a3b8;">成员：' + escapeHTML(names.join(' / ')) + ' · 总票数 <strong style="color:#fbbf24;">' + Number(g.total_votes || 0).toLocaleString() + '</strong></div>';
+        box.appendChild(card);
+      });
+    }
+
+    function cheerDebutGroup(groupId) {
+      safeInitAudio();
+      playCoinSound();
+      if (!groupId || !cloudState.online) {
+        var elLocal = document.getElementById("grpCheer-" + groupId);
+        if (elLocal) elLocal.innerText = String(parseInt(elLocal.innerText, 10) + 1);
+        showToast("✨ 打Call +1！应援灯海已点亮！", "success");
+        return;
+      }
+      apiFetch('/api/fandom/groups/' + groupId + '/cheer', { method: 'POST' }).then(function(res) {
+        if (res.ok && res.data && res.data.ok) {
+          var el = document.getElementById("grpCheer-" + groupId);
+          if (el) el.innerText = String(res.data.cheers);
+          showToast("✨ 已为该出道天团打Call +1！全服应援值飙升！", "success");
+        }
+      });
+    }
+
+    // =========================================================================
     // 12. 生产级全局事件委托处理器 (Universal Touch & Click Delegation Engine)
     // =========================================================================
     function handleActionDispatch(action, el) {
@@ -6597,6 +8497,45 @@
         closePosterModal();
       } else if (action === 'copy-report') {
         copyBattleReport(el);
+      } else if (action === 'open-fandom') {
+        openFandomModal(el.getAttribute('data-id'));
+      } else if (action === 'close-fandom') {
+        closeFandomModal();
+      } else if (action === 'preview-fandom-stage') {
+        previewFandomStage(el.getAttribute('data-stage'));
+      } else if (action === 'fandom-vote-glowstick') {
+        fandomVoteGlowstick(state.activeFandomStreamerId);
+      } else if (action === 'fandom-glowup') {
+        fandomDoGlowup(state.activeFandomStreamerId);
+      } else if (action === 'fandom-cp-pair') {
+        fandomPairCP(state.activeFandomStreamerId);
+      } else if (action === 'fandom-antiblack') {
+        fandomAntiBlack(state.activeFandomStreamerId);
+      } else if (action === 'fandom-ai-copy') {
+        fetchAiFandomCopy(state.activeFandomStreamerId, 'glowup', 'fandomDualCopyContent');
+      } else if (action === 'open-debut') {
+        openDebutModal('stage');
+      } else if (action === 'close-debut') {
+        closeDebutModal();
+      } else if (action === 'switch-debut-subtab') {
+        switchDebutSubtab(el.getAttribute('data-subtab'));
+      } else if (action === 'toggle-debut-trainee') {
+        toggleDebutTrainee(el.getAttribute('data-id'));
+      } else if (action === 'set-debut-center') {
+        setDebutCenter(el.getAttribute('data-id'));
+      } else if (action === 'debut-vote-free') {
+        debutQuickVoteFree();
+      } else if (action === 'debut-vote-milk') {
+        debutQuickVoteMilk();
+      } else if (action === 'execute-debut') {
+        executeDebutCeremony();
+      } else if (action === 'vote-global-supertopic') {
+        voteSupertopicFromList(el.getAttribute('data-id'), el.getAttribute('data-name'), el.getAttribute('data-beauty') === '1');
+      } else if (action === 'cheer-debut-group') {
+        cheerDebutGroup(parseInt(el.getAttribute('data-group-id'), 10));
+      } else if (action === 'quick-recruit-for-debut') {
+        closeDebutModal();
+        openRecruitModal();
       }
     }
 
@@ -6645,6 +8584,7 @@
     function initGame() {
       loadLocalData();
       initStaminaTicker();
+      initDebutTabsAccessibility();
       weekStartSnapshot = { cash: state.cash, fans: state.fans, pr: state.pr };
       renderHeaderStats();
       renderHall();

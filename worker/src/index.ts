@@ -31,6 +31,8 @@ interface PlayerRow {
   pending_raid_loss: number;
   ai_gen_count: number;
   ai_gen_window_ts: number;
+  daily_glowsticks_used?: number;
+  daily_glowsticks_date?: string;
   updated_at: number;
   created_at: number;
 }
@@ -44,10 +46,11 @@ const DEFAULT_ALLOWED_ORIGINS = [
 ];
 
 const DAILY_PVP_LIMIT = 5;
+const DAILY_GLOWSTICKS_LIMIT = 10;
 const OFFLINE_MAX_SECONDS = 12 * 3600; // 12 小时封顶
 const OFFLINE_MIN_SECONDS = 60; // 满 1 分钟即可领
 const AI_WINDOW_SECONDS = 600; // 10 分钟窗口
-const AI_MAX_PER_WINDOW = 4; // 每玩家每 10 分钟最多 4 次 AI 神评
+const AI_MAX_PER_WINDOW = 8; // 每玩家每 10 分钟最多 8 次 AI 文案/神评
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -196,7 +199,7 @@ app.get('/api/health', (c) => {
   return c.json({
     ok: true,
     service: 'hupu-mcn-worker',
-    version: '3.0.0',
+    version: '3.1.0',
     serverTime: nowSec(),
   });
 });
@@ -732,7 +735,17 @@ app.post('/api/broadcast', async (c) => {
   }
 
   const type = sanitizeText(body.type, 24, 'ssr_pull');
-  if (!['ssr_pull', 'ending_goat', 'scandal_boom', 'pvp_revenge'].includes(type)) {
+  if (
+    ![
+      'ssr_pull',
+      'ending_goat',
+      'scandal_boom',
+      'pvp_revenge',
+      'debut_group',
+      'fandom_diamond',
+      'beauty_glowup',
+    ].includes(type)
+  ) {
     return c.json({ ok: false, error: 'INVALID_TYPE' }, 400);
   }
 
@@ -955,6 +968,624 @@ app.post('/api/ai/hupu-comments', async (c) => {
     ok: true,
     source: 'fallback_model',
     comments: buildFallbackHupuComments(summary),
+  });
+});
+
+// =========================================================================
+// 8.5 饭圈超话人气榜 + 《破晓101》选秀出道投票成团 + Qwen3 双画风彩虹屁×虎扑对线
+// =========================================================================
+async function ensureSeedFandomData(db: D1Database): Promise<void> {
+  const ts = nowSec();
+  const stCnt = await db
+    .prepare('SELECT COUNT(*) as cnt FROM idol_supertopics')
+    .first<{ cnt: number }>();
+
+  if (!stCnt || stCnt.cnt === 0) {
+    const seedIdols = [
+      { id: 'su', name: '苏晚晴', isBeauty: 1, heat: 26800, votes: 18400, agency: '星耀少女工坊', agencyVotes: 4200 },
+      { id: 'meina', name: '步行街小美', isBeauty: 1, heat: 24200, votes: 16900, agency: '虎扑严选MCN', agencyVotes: 3800 },
+      { id: 'zhao', name: '国风小昭', isBeauty: 1, heat: 18600, votes: 12500, agency: '长安星梦传媒', agencyVotes: 2900 },
+      { id: 'ling', name: '治愈兔兔', isBeauty: 1, heat: 14900, votes: 9800, agency: '元气次元互娱', agencyVotes: 2400 },
+      { id: 'daxue', name: '校园练习生', isBeauty: 1, heat: 11200, votes: 7600, agency: '破晓练习生基地', agencyVotes: 1900 },
+      { id: 'dong', name: '董先生', isBeauty: 0, heat: 19800, votes: 13200, agency: '文人墨客严选', agencyVotes: 3100 },
+      { id: 'yang', name: '疯狂小阳', isBeauty: 0, heat: 17500, votes: 11800, agency: '合肥狂飙传媒', agencyVotes: 2600 },
+      { id: 'kun', name: '街球坤哥', isBeauty: 0, heat: 13400, votes: 8900, agency: '五棵松篮球社', agencyVotes: 2100 },
+    ];
+    await db.batch(
+      seedIdols.map((s) =>
+        db
+          .prepare(
+            `INSERT OR IGNORE INTO idol_supertopics (
+              streamer_id, streamer_name, is_beauty, supertopic_heat, debut_votes,
+              top_agency_name, top_agency_votes, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+          )
+          .bind(s.id, s.name, s.isBeauty, s.heat, s.votes, s.agency, s.agencyVotes, ts)
+      )
+    );
+  }
+
+  const grpCnt = await db
+    .prepare('SELECT COUNT(*) as cnt FROM debut_groups')
+    .first<{ cnt: number }>();
+
+  if (!grpCnt || grpCnt.cnt === 0) {
+    const seedGroups = [
+      {
+        player_id: 'npc_group_1',
+        agency_name: '虎扑严选MCN',
+        group_name: '步行街神颜101',
+        center_id: 'su',
+        center_name: '苏晚晴',
+        member_ids: JSON.stringify(['su', 'meina', 'zhao', 'ling']),
+        member_names: JSON.stringify(['苏晚晴', '步行街小美', '国风小昭', '治愈兔兔']),
+        avg_charm: 94,
+        total_votes: 58600,
+        cheers: 1688,
+        created_at: ts - 7200,
+      },
+      {
+        player_id: 'npc_group_2',
+        agency_name: '五棵松星工场',
+        group_name: '破晓顶流女团',
+        center_id: 'meina',
+        center_name: '步行街小美',
+        member_ids: JSON.stringify(['meina', 'zhao', 'daxue']),
+        member_names: JSON.stringify(['步行街小美', '国风小昭', '校园练习生']),
+        avg_charm: 88,
+        total_votes: 36200,
+        cheers: 942,
+        created_at: ts - 3600,
+      },
+    ];
+    await db.batch(
+      seedGroups.map((g) =>
+        db
+          .prepare(
+            `INSERT INTO debut_groups (
+              player_id, agency_name, group_name, center_id, center_name,
+              member_ids, member_names, avg_charm, total_votes, cheers, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          )
+          .bind(
+            g.player_id,
+            g.agency_name,
+            g.group_name,
+            g.center_id,
+            g.center_name,
+            g.member_ids,
+            g.member_names,
+            g.avg_charm,
+            g.total_votes,
+            g.cheers,
+            g.created_at
+          )
+      )
+    );
+  }
+}
+
+function getSupertopicTierLabel(heat: number): string {
+  if (heat >= 30000) return '钻超';
+  if (heat >= 10000) return '金超';
+  return '银超';
+}
+
+app.get('/api/fandom/supertopics', async (c) => {
+  await ensureSeedFandomData(c.env.DB);
+  const player = await authenticatePlayer(
+    c.env.DB,
+    c.req.header('X-Player-Id'),
+    c.req.header('X-Player-Token')
+  );
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT streamer_id, streamer_name, is_beauty, supertopic_heat, debut_votes,
+            top_agency_name, top_agency_votes, updated_at
+     FROM idol_supertopics
+     ORDER BY debut_votes DESC, supertopic_heat DESC
+     LIMIT 24`
+  ).all();
+
+  const today = getBeijingDateStr();
+  let glowsticksRemaining = DAILY_GLOWSTICKS_LIMIT;
+  if (player) {
+    const usedToday = player.daily_glowsticks_date === today ? Number(player.daily_glowsticks_used || 0) : 0;
+    glowsticksRemaining = Math.max(0, DAILY_GLOWSTICKS_LIMIT - usedToday);
+  }
+
+  return c.json({
+    ok: true,
+    items: results,
+    glowsticksRemaining,
+    dailyGlowsticksLimit: DAILY_GLOWSTICKS_LIMIT,
+    serverTime: nowSec(),
+  });
+});
+
+app.post('/api/fandom/vote', async (c) => {
+  const player = await authenticatePlayer(
+    c.env.DB,
+    c.req.header('X-Player-Id'),
+    c.req.header('X-Player-Token')
+  );
+  if (!player) {
+    return c.json({ ok: false, error: 'UNAUTHORIZED' }, 401);
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await c.req.json()) as Record<string, unknown>;
+  } catch {
+    return c.json({ ok: false, error: 'INVALID_JSON' }, 400);
+  }
+
+  await ensureSeedFandomData(c.env.DB);
+
+  const streamerId = sanitizeText(body.streamerId, 24);
+  const streamerName = sanitizeText(body.streamerName, 18);
+  const isBeauty = body.isBeauty ? 1 : 0;
+  const mode = sanitizeText(body.mode, 24, 'free_glowstick');
+
+  if (!streamerId || !streamerName) {
+    return c.json({ ok: false, error: 'INVALID_STREAMER' }, 400);
+  }
+  if (!['free_glowstick', 'cash_milk_ticket', 'station_sister'].includes(mode)) {
+    return c.json({ ok: false, error: 'INVALID_MODE' }, 400);
+  }
+
+  const ts = nowSec();
+  const today = getBeijingDateStr();
+  const usedToday = player.daily_glowsticks_date === today ? Number(player.daily_glowsticks_used || 0) : 0;
+  let glowsticksRemaining = Math.max(0, DAILY_GLOWSTICKS_LIMIT - usedToday);
+
+  let addedVotes = 0;
+  let addedHeat = 0;
+
+  if (mode === 'free_glowstick') {
+    const reqUnits = Math.floor(clampNum(body.votes, 1, DAILY_GLOWSTICKS_LIMIT, 1));
+    if (glowsticksRemaining <= 0) {
+      return c.json(
+        { ok: false, error: 'NO_GLOWSTICKS_LEFT', glowsticksRemaining: 0 },
+        429
+      );
+    }
+    const useUnits = Math.min(reqUnits, glowsticksRemaining);
+    addedVotes = useUnits * 120;
+    addedHeat = Math.round(addedVotes * (isBeauty ? 1.35 : 1.1));
+    glowsticksRemaining = Math.max(0, glowsticksRemaining - useUnits);
+
+    await c.env.DB.prepare(
+      'UPDATE players SET daily_glowsticks_used = ?, daily_glowsticks_date = ?, updated_at = ? WHERE id = ?'
+    )
+      .bind(usedToday + useUnits, today, ts, player.id)
+      .run();
+  } else if (mode === 'cash_milk_ticket') {
+    addedVotes = Math.floor(clampNum(body.votes, 100, 5000, 800));
+    addedHeat = Math.round(addedVotes * (isBeauty ? 1.3 : 1.0));
+  } else {
+    // station_sister 站姐出神图 / 高定妆造升咖
+    addedVotes = Math.floor(clampNum(body.votes, 150, 1500, 450));
+    addedHeat = Math.round(addedVotes * (isBeauty ? 1.8 : 1.4));
+  }
+
+  const existing = await c.env.DB.prepare(
+    'SELECT * FROM idol_supertopics WHERE streamer_id = ?'
+  )
+    .bind(streamerId)
+    .first<{
+      streamer_id: string;
+      supertopic_heat: number;
+      debut_votes: number;
+      top_agency_name: string;
+      top_agency_votes: number;
+    }>();
+
+  const prevHeat = existing ? existing.supertopic_heat : 0;
+  const newHeat = prevHeat + addedHeat;
+  const newVotes = (existing ? existing.debut_votes : 0) + addedVotes;
+
+  let nextTopAgency = existing?.top_agency_name || player.agency_name;
+  let nextTopVotes = existing?.top_agency_votes || 0;
+  const candidateAgencyVotes =
+    nextTopAgency === player.agency_name ? nextTopVotes + addedVotes : addedVotes;
+  if (!existing || nextTopAgency === player.agency_name || candidateAgencyVotes >= nextTopVotes) {
+    nextTopAgency = player.agency_name;
+    nextTopVotes = Math.max(nextTopVotes, candidateAgencyVotes);
+  }
+
+  if (existing) {
+    await c.env.DB.prepare(
+      `UPDATE idol_supertopics
+       SET streamer_name = ?, is_beauty = ?, supertopic_heat = ?, debut_votes = ?,
+           top_agency_name = ?, top_agency_votes = ?, updated_at = ?
+       WHERE streamer_id = ?`
+    )
+      .bind(streamerName, isBeauty, newHeat, newVotes, nextTopAgency, nextTopVotes, ts, streamerId)
+      .run();
+  } else {
+    await c.env.DB.prepare(
+      `INSERT INTO idol_supertopics (
+        streamer_id, streamer_name, is_beauty, supertopic_heat, debut_votes,
+        top_agency_name, top_agency_votes, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+      .bind(streamerId, streamerName, isBeauty, newHeat, newVotes, nextTopAgency, nextTopVotes, ts)
+      .run();
+  }
+
+  // 突破 30,000 钻超门槛时自动全服喇叭播报
+  let crossedDiamond = false;
+  if (prevHeat < 30000 && newHeat >= 30000) {
+    crossedDiamond = true;
+    const msg = `顶流加冕！【${streamerName}】超话热度冲破3万正式登顶【钻超】！站姐生图刷屏全网！`;
+    await c.env.DB.prepare(
+      "INSERT INTO broadcasts (type, player_id, agency_name, message, likes, created_at) VALUES ('fandom_diamond', ?, ?, ?, 1, ?)"
+    )
+      .bind(player.id, player.agency_name, msg, ts)
+      .run();
+  }
+
+  return c.json({
+    ok: true,
+    streamerId,
+    streamerName,
+    addedVotes,
+    addedHeat,
+    totalVotes: newVotes,
+    supertopicHeat: newHeat,
+    tier: getSupertopicTierLabel(newHeat),
+    crossedDiamond,
+    glowsticksRemaining,
+    dailyGlowsticksLimit: DAILY_GLOWSTICKS_LIMIT,
+    serverTime: ts,
+  });
+});
+
+app.get('/api/fandom/groups', async (c) => {
+  await ensureSeedFandomData(c.env.DB);
+
+  const { results } = await c.env.DB.prepare(
+    `SELECT id, player_id, agency_name, group_name, center_id, center_name,
+            member_ids, member_names, avg_charm, total_votes, cheers, created_at
+     FROM debut_groups
+     ORDER BY total_votes DESC, created_at DESC
+     LIMIT 30`
+  ).all();
+
+  return c.json({
+    ok: true,
+    groups: results,
+    serverTime: nowSec(),
+  });
+});
+
+app.post('/api/fandom/debut', async (c) => {
+  const player = await authenticatePlayer(
+    c.env.DB,
+    c.req.header('X-Player-Id'),
+    c.req.header('X-Player-Token')
+  );
+  if (!player) {
+    return c.json({ ok: false, error: 'UNAUTHORIZED' }, 401);
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = (await c.req.json()) as Record<string, unknown>;
+  } catch {
+    return c.json({ ok: false, error: 'INVALID_JSON' }, 400);
+  }
+
+  const groupName = sanitizeText(body.groupName, 14);
+  const centerId = sanitizeText(body.centerId, 24);
+  const centerName = sanitizeText(body.centerName, 18);
+  if (groupName.length < 2 || !centerId || !centerName) {
+    return c.json({ ok: false, error: 'INVALID_GROUP_PARAMS' }, 400);
+  }
+
+  const rawIds = Array.isArray(body.memberIds) ? body.memberIds : [];
+  const rawNames = Array.isArray(body.memberNames) ? body.memberNames : [];
+  const memberIds = Array.from(
+    new Set(
+      rawIds
+        .map((x) => sanitizeText(x, 24))
+        .filter(Boolean)
+    )
+  ).slice(0, 5);
+  const memberNames = rawNames
+    .map((x) => sanitizeText(x, 18))
+    .filter(Boolean)
+    .slice(0, 5);
+
+  if (memberIds.length < 3 || memberNames.length < 3) {
+    return c.json({ ok: false, error: 'NEED_AT_LEAST_3_MEMBERS' }, 400);
+  }
+
+  const avgCharm = Math.floor(clampNum(body.avgCharm, 45, 100, 82));
+  const totalVotes = Math.floor(clampNum(body.totalVotes, 500, 999999, 6000));
+  const ts = nowSec();
+
+  // 每家机构在出道殿堂保持其最新旗舰成团阵容，防刷重复行
+  const existing = await c.env.DB.prepare(
+    'SELECT id, cheers FROM debut_groups WHERE player_id = ? LIMIT 1'
+  )
+    .bind(player.id)
+    .first<{ id: number; cheers: number }>();
+
+  let groupId = 0;
+  if (existing) {
+    groupId = existing.id;
+    await c.env.DB.prepare(
+      `UPDATE debut_groups
+       SET agency_name = ?, group_name = ?, center_id = ?, center_name = ?,
+           member_ids = ?, member_names = ?, avg_charm = ?, total_votes = ?, created_at = ?
+       WHERE id = ?`
+    )
+      .bind(
+        player.agency_name,
+        groupName,
+        centerId,
+        centerName,
+        JSON.stringify(memberIds),
+        JSON.stringify(memberNames),
+        avgCharm,
+        totalVotes,
+        ts,
+        existing.id
+      )
+      .run();
+  } else {
+    const res = await c.env.DB.prepare(
+      `INSERT INTO debut_groups (
+        player_id, agency_name, group_name, center_id, center_name,
+        member_ids, member_names, avg_charm, total_votes, cheers, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`
+    )
+      .bind(
+        player.id,
+        player.agency_name,
+        groupName,
+        centerId,
+        centerName,
+        JSON.stringify(memberIds),
+        JSON.stringify(memberNames),
+        avgCharm,
+        totalVotes,
+        ts
+      )
+      .run();
+    groupId = Number(res.meta.last_row_id || 0);
+  }
+
+  const broadcastMsg = `重磅官宣！旗下天团【${groupName}】（C位：${centerName}，均颜${avgCharm}分）在《破晓101》荣耀成团出道！`;
+  await c.env.DB.prepare(
+    "INSERT INTO broadcasts (type, player_id, agency_name, message, likes, created_at) VALUES ('debut_group', ?, ?, ?, 1, ?)"
+  )
+    .bind(player.id, player.agency_name, broadcastMsg, ts)
+    .run();
+
+  return c.json({
+    ok: true,
+    groupId,
+    groupName,
+    centerName,
+    avgCharm,
+    totalVotes,
+    serverTime: ts,
+  });
+});
+
+app.post('/api/fandom/groups/:id/cheer', async (c) => {
+  const id = Math.floor(clampNum(c.req.param('id'), 1, 999999999, 0));
+  if (!id) return c.json({ ok: false, error: 'INVALID_ID' }, 400);
+
+  await c.env.DB.prepare('UPDATE debut_groups SET cheers = cheers + 1 WHERE id = ?')
+    .bind(id)
+    .run();
+
+  const row = await c.env.DB.prepare('SELECT cheers FROM debut_groups WHERE id = ?')
+    .bind(id)
+    .first<{ cheers: number }>();
+
+  return c.json({ ok: true, id, cheers: row?.cheers ?? 1 });
+});
+
+interface FandomCopyResult {
+  fandomPost: { author: string; text: string; reposts: number };
+  hupuCrossPost: { user: string; text: string; likes: number };
+}
+
+function buildFallbackFandomCopy(ctx: {
+  agencyName: string;
+  streamerName: string;
+  fanClub: string;
+  stageTitle: string;
+  charm: number;
+  isBeauty: boolean;
+  actionType: string;
+  groupName: string;
+  cpPartner: string;
+}): FandomCopyResult {
+  if (ctx.actionType === 'debut' && ctx.groupName) {
+    return {
+      fandomPost: {
+        author: `${ctx.streamerName}全球后援会`,
+        text: `#${ctx.groupName}成团夜# 哭晕在应援海里！从素颜海选到今夜C位加冕，${ctx.streamerName}和队友终于走花路了！${ctx.fanClub}永远做你们的底气，明晚时代广场大屏安排！`,
+        reposts: 28600 + ctx.charm * 120,
+      },
+      hupuCrossPost: {
+        user: '步行街嘴硬老哥',
+        text: `原本我不看选秀的，但${ctx.agencyName}这个【${ctx.groupName}】均颜实在太顶了，${ctx.streamerName}这波C位直拍我给9.9分，兄弟们别劝了，我去买箱牛奶打投了！`,
+        likes: 4120 + ctx.charm * 25,
+      },
+    };
+  }
+  if (ctx.actionType === 'cp' && ctx.cpPartner) {
+    return {
+      fandomPost: {
+        author: '磕学家首席产粮站',
+        text: `救命！${ctx.streamerName}×${ctx.cpPartner}今晚双人同框甜度超标！一个眼神拉丝直接把超话磕瘫痪，唯粉别吵了，这对双顶流营业就是内娱教科书！`,
+        reposts: 16400 + ctx.charm * 85,
+      },
+      hupuCrossPost: {
+        user: '理性分析帝JR',
+        text: `虽然知道是${ctx.agencyName}安排的商业CP营业，但这俩人站一起节目效果确实拉满，直播间弹幕都在刷“结婚”，这运营鬼才有点东西。`,
+        likes: 2680 + ctx.charm * 18,
+      },
+    };
+  }
+  return {
+    fandomPost: {
+      author: `${ctx.streamerName}神图出圈站姐`,
+      text: ctx.isBeauty
+        ? `【精修直拍万转】内娱审美救星驾到！${ctx.streamerName}晋升「${ctx.stageTitle}」颜值飙到${ctx.charm}，生图抗住死亡顶光，从素人逆袭女神的养成系痛感谁懂啊！${ctx.fanClub}冲钻超！`
+        : `【站姐前线速报】${ctx.streamerName}进阶「${ctx.stageTitle}」！业务能力与气场双杀，${ctx.fanClub}全员做数据控评，这波出圈神图必须锁死热搜前排！`,
+      reposts: 14200 + ctx.charm * 95,
+    },
+    hupuCrossPost: {
+      user: '虎扑颜值评分员',
+      text: ctx.isBeauty
+        ? `家人们实话实说，当年海选戴黑框眼镜我真没认出来，现在${ctx.streamerName}这造型一换，颜值即正义直接把我黑转粉了，这波蜕变打9.8分不过分吧？`
+        : `有一说一，${ctx.agencyName}这养成系包装确实离谱，连${ctx.streamerName}都能有站姐拍出大片感，步行街老哥集体表示服气！`,
+      likes: 2350 + ctx.charm * 22,
+    },
+  };
+}
+
+function parseAiFandomCopyJson(rawText: string): FandomCopyResult | null {
+  const stripped = rawText.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+  const match = stripped.match(/\{[\s\S]*\}/);
+  if (!match) return null;
+  try {
+    const parsed = JSON.parse(match[0]) as Record<string, unknown>;
+    const fp = parsed.fandomPost as Record<string, unknown> | undefined;
+    const hp = parsed.hupuCrossPost as Record<string, unknown> | undefined;
+    if (!fp || !hp) return null;
+    const fText = sanitizeText(fp.text, 110);
+    const hText = sanitizeText(hp.text, 100);
+    if (fText.length < 10 || hText.length < 10) return null;
+    return {
+      fandomPost: {
+        author: sanitizeText(fp.author, 16, '神图前线站姐'),
+        text: fText,
+        reposts: Math.floor(clampNum(fp.reposts, 500, 999999, 15800)),
+      },
+      hupuCrossPost: {
+        user: sanitizeText(hp.user, 16, '步行街嘴硬JR'),
+        text: hText,
+        likes: Math.floor(clampNum(hp.likes, 200, 99999, 2580)),
+      },
+    };
+  } catch {
+    return null;
+  }
+}
+
+app.post('/api/ai/fandom-copy', async (c) => {
+  const player = await authenticatePlayer(
+    c.env.DB,
+    c.req.header('X-Player-Id'),
+    c.req.header('X-Player-Token')
+  );
+  if (!player) {
+    return c.json({ ok: false, error: 'UNAUTHORIZED' }, 401);
+  }
+
+  let body: Record<string, unknown> = {};
+  try {
+    body = (await c.req.json()) as Record<string, unknown>;
+  } catch {
+    body = {};
+  }
+
+  const ctx = {
+    agencyName: sanitizeText(body.agencyName, 16, player.agency_name),
+    streamerName: sanitizeText(body.streamerName, 16, player.top_streamer_name),
+    fanClub: sanitizeText(body.fanClub, 12, '星光后援会'),
+    stageTitle: sanitizeText(body.stageTitle, 18, '万转神图偶像'),
+    charm: Math.floor(clampNum(body.charm, 40, 100, 82)),
+    isBeauty: Boolean(body.isBeauty),
+    actionType: sanitizeText(body.actionType, 16, 'glowup'),
+    groupName: sanitizeText(body.groupName, 16, ''),
+    cpPartner: sanitizeText(body.cpPartner, 16, ''),
+  };
+
+  const ts = nowSec();
+  const inWindow = ts - player.ai_gen_window_ts < AI_WINDOW_SECONDS;
+  const countInWindow = inWindow ? player.ai_gen_count : 0;
+
+  if (countInWindow >= AI_MAX_PER_WINDOW || !c.env.AI) {
+    return c.json({
+      ok: true,
+      source: 'fallback_ratelimit',
+      ...buildFallbackFandomCopy(ctx),
+    });
+  }
+
+  await c.env.DB.prepare(
+    'UPDATE players SET ai_gen_count = ?, ai_gen_window_ts = ? WHERE id = ?'
+  )
+    .bind(countInWindow + 1, inWindow ? player.ai_gen_window_ts : ts, player.id)
+    .run();
+
+  const actionLabelMap: Record<string, string> = {
+    glowup: '高定妆造升咖与站姐神图出圈',
+    debut: '《破晓101》选秀成团夜C位出道',
+    cp: '双人顶流神仙CP商业营业',
+    vote: '粉丝超话冲刺钻超打榜',
+  };
+  const actionLabel = actionLabelMap[ctx.actionType] || '偶像养成高光时刻';
+
+  const systemPrompt =
+    '你同时精通内娱饭圈站姐彩虹屁文化与虎扑步行街老哥幽默点评文化。根据主播养成动态，生成1条饭圈站姐万转神图小作文和1条虎扑步行街跨圈热评（纯正地道中文，不要夹杂英文词汇，突出从素人逆袭女神的成就感与颜值即正义的真香反差，健康幽默无低俗）。严格只输出一个JSON对象，不要markdown代码块或多余文字。格式：{"fandomPost":{"author":"站姐名","text":"40到75字饭圈热帖","reposts":16800},"hupuCrossPost":{"user":"虎扑JR名","text":"35到65字步行街跨圈热评","likes":2680}}';
+
+  const userPrompt = `/no_think\n机构：${ctx.agencyName}；主播：${ctx.streamerName}（${ctx.isBeauty ? '颜值赛道王牌' : '实力人气主播'}）；当前阶段：${ctx.stageTitle}；颜值分：${ctx.charm}/100；粉丝名：${ctx.fanClub}；动态主题：${actionLabel}；成团名：${ctx.groupName || '暂无'}；CP搭档：${ctx.cpPartner || '无'}。请用纯中文直接输出JSON。`;
+
+  const modelCandidates = [
+    '@cf/qwen/qwen3-30b-a3b-fp8',
+    '@cf/google/gemma-4-26b-a4b-it',
+    '@cf/meta/llama-3.1-8b-instruct-fp8',
+  ];
+
+  for (const model of modelCandidates) {
+    try {
+      const aiRes = (await c.env.AI.run(model as Parameters<Ai['run']>[0], {
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        temperature: 0.85,
+        max_tokens: 550,
+      })) as {
+        response?: string | unknown;
+        choices?: Array<{ message?: { content?: string } }>;
+      };
+
+      const textOut =
+        (typeof aiRes?.response === 'string' && aiRes.response) ||
+        (aiRes?.response && typeof aiRes.response === 'object' ? JSON.stringify(aiRes.response) : '') ||
+        aiRes?.choices?.[0]?.message?.content ||
+        '';
+
+      const parsed = parseAiFandomCopyJson(textOut);
+      if (parsed) {
+        return c.json({
+          ok: true,
+          source: 'workers-ai',
+          model,
+          ...parsed,
+        });
+      }
+    } catch (err) {
+      console.warn(`Workers AI fandom-copy fallback on ${model}:`, err);
+    }
+  }
+
+  return c.json({
+    ok: true,
+    source: 'fallback_model',
+    ...buildFallbackFandomCopy(ctx),
   });
 });
 
