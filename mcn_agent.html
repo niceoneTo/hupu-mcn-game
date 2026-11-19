@@ -1081,7 +1081,7 @@
     }
     .stage-timeline {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 4px;
     }
     .stage-step-btn {
@@ -1172,6 +1172,182 @@
       background: rgba(245, 158, 11, 0.18);
       color: #fde68a;
       font-weight: 700;
+    }
+
+    /* ================================================================
+       v3.2 二次元 SSR 立绘海报卡 & 4维高定形象管理衣橱 (致敬《篮球少女》立绘海报感)
+       ================================================================ */
+    .anime-hero-poster {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      min-height: 240px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1.5px solid rgba(251, 191, 36, 0.75);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), inset 0 0 24px rgba(244, 114, 182, 0.22);
+      background: #1e293b;
+      user-select: none;
+    }
+    .anime-hero-poster.is-bare-preview {
+      border-color: #64748b;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    }
+    .poster-slant-tags {
+      position: absolute;
+      left: 10px;
+      bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .poster-slant-tag {
+      display: inline-block;
+      padding: 3px 12px 3px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      transform: skewX(-14deg);
+      border-radius: 3px;
+      box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.45);
+      white-space: nowrap;
+    }
+    .poster-slant-tag.tag-gold {
+      background: linear-gradient(90deg, #facc15, #f59e0b);
+      color: #0f172a;
+      border-left: 3px solid #fef08a;
+    }
+    .poster-slant-tag.tag-navy {
+      background: linear-gradient(90deg, #1e3a8a, #312e81);
+      color: #f8fafc;
+      border-left: 3px solid #38bdf8;
+    }
+    .poster-top-right-rarity {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .poster-ssr-emblem {
+      font-size: 24px;
+      font-weight: 900;
+      font-style: italic;
+      line-height: 1;
+      background: linear-gradient(180deg, #fffbeb 0%, #facc15 45%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.75));
+      letter-spacing: 1px;
+    }
+    .poster-role-pill {
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #f8fafc;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .poster-compare-btn {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      z-index: 5;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(244, 114, 182, 0.7);
+      color: #fbcfe8;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    }
+    .poster-compare-btn.active {
+      background: #f59e0b;
+      color: #0f172a;
+      border-color: #fef08a;
+    }
+    .poster-before-mini {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      border-radius: 10px;
+      padding: 3px 8px 3px 4px;
+      cursor: pointer;
+    }
+
+    .wardrobe-cat-bar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 4px;
+    }
+    .wardrobe-cat-btn {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 6px 2px;
+      min-block-size: 34px;
+      border-radius: 8px;
+      border: 1px solid #2e3d60;
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .wardrobe-cat-btn.active {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.28), rgba(139, 92, 246, 0.28));
+      border-color: #f472b6;
+      color: #fff;
+    }
+    .wardrobe-items-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .wardrobe-item-card {
+      min-width: 0;
+      overflow: hidden;
+      background: #0b1120;
+      border: 1px solid #24314c;
+      border-radius: 10px;
+      padding: 7px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 4px;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s ease;
+    }
+    .wardrobe-item-card.equipped {
+      border-color: #fbbf24;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(15, 23, 42, 0.95));
+    }
+    .wardrobe-item-card.unlocked:not(.equipped) {
+      border-color: rgba(244, 114, 182, 0.45);
     }
   </style>
 </head>
@@ -1593,7 +1769,7 @@
         </h3>
 
         <p id="evDesc" style="font-size: 12px; color: #cbd5e1; line-height: 1.5;">
-          离开前东家天娱传媒后，你手里握着100万启动资金。办公选址将定义你的初创姿态。
+          离开前东家星霸互娱后，你手里握着100万启动资金。办公选址将定义你的初创姿态。
         </p>
 
         <!-- 选项列表 -->
@@ -1754,7 +1930,7 @@
         </div>
 
         <div id="lbInfoStrip" style="font-size: 11px; color: #cbd5e1; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 6px 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-          <span id="lbStripLeft">🎯 宿敌目标：前东家【天娱星耀】(NO.25)</span>
+          <span id="lbStripLeft">🎯 宿敌目标：前东家【星霸互娱】(NO.25)</span>
           <span id="lbRivalGap" style="color: #fbbf24; font-weight: 700;">差距: 1081.5w</span>
         </div>
 
@@ -1946,38 +2122,38 @@
           <button type="button" class="btn-icon" data-action="close-fandom" style="padding: 4px 8px; flex-shrink: 0;">✕</button>
         </div>
 
-        <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; padding-right: 2px;">
+        <div style="flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; gap: 9px; padding-right: 2px;">
           <!-- 粉丝名与应援色条 -->
-          <div id="fandomProfileHeader" class="card-subpanel" style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px;"></div>
+          <div id="fandomProfileHeader" class="card-subpanel" style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 7px 10px;"></div>
 
-          <!-- Before → After 素人到女神可视化蜕变对比框 -->
-          <div class="evo-compare-grid">
-            <div class="evo-stage-slot">
-              <div style="font-size: 10px; color: #94a3b8; font-weight: 700;">海选素颜 · Lv.1</div>
-              <div id="fandomBeforeAvatar"></div>
-              <div id="fandomBeforeLabel" style="font-size: 10.5px; color: #cbd5e1;">素颜素人</div>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
-              <span style="font-size: 18px; color: #f472b6; font-weight: 900;">➔</span>
-              <span id="fandomCharmDelta" style="font-size: 10px; font-weight: 800; color: #fbbf24; white-space: nowrap;">颜值 68</span>
-            </div>
-            <div class="evo-stage-slot">
-              <div id="fandomAfterTag" style="font-size: 10px; color: #fbcfe8; font-weight: 800;">当前阶段</div>
-              <div id="fandomAfterAvatar"></div>
-              <div id="fandomAfterLabel" style="font-size: 10.5px; color: #fde68a; font-weight: 800;">Lv.1 素颜素人</div>
-            </div>
-          </div>
+          <!-- 二次元 SSR 立绘级大幅角色海报卡 (致敬《篮球少女》高颜值满屏立绘 + 素颜一键对比) -->
+          <div id="fandomHeroPosterBox" class="anime-hero-poster"></div>
 
           <!-- 5阶蜕变时间轴预览按钮 (点击任意阶预览未来女神形态) -->
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 10.5px; color: #94a3b8; margin-bottom: 4px;">
-              <span style="white-space: nowrap;">✨ 5阶进化（点击预览）</span>
+              <span style="white-space: nowrap;">✨ 5阶神颜进化（点此切换阶段）</span>
               <span id="fandomExpText" style="color: #fbbf24; font-weight: 700; white-space: nowrap;">0 / 100</span>
             </div>
             <div class="stage-timeline" id="fandomStageTimeline"></div>
             <div style="height: 6px; background: #1e293b; border-radius: 999px; overflow: hidden; margin-top: 5px;">
               <div id="fandomExpBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #ec4899, #f59e0b); transition: width 0.25s ease;"></div>
             </div>
+          </div>
+
+          <!-- 4维高定形象管理衣橱 (战袍穿搭 / 发型发色 / 妆容美瞳 / 海报场景) -->
+          <div class="card-subpanel" style="padding: 8px 10px; border-color: rgba(244, 114, 182, 0.45); background: rgba(15, 23, 42, 0.92);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 12px; font-weight: 800; color: #fbcfe8;">👗 高定形象管理定制台</span>
+              <span id="wardrobeSummaryText" style="font-size: 10.5px; color: #fbbf24; font-weight: 700;">已解锁 4/20 件</span>
+            </div>
+            <div class="wardrobe-cat-bar" id="wardrobeCatBar">
+              <button type="button" class="wardrobe-cat-btn active" data-action="switch-wardrobe-cat" data-cat="outfit">👗 战袍穿搭</button>
+              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="hair">💇‍♀️ 发型发色</button>
+              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="makeup">💄 妆容美瞳</button>
+              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="scene">✨ 海报场景</button>
+            </div>
+            <div class="wardrobe-items-grid" id="wardrobeItemsGrid"></div>
           </div>
 
           <!-- 颜值即正义被动说明 + 三大粉丝派系结构 -->
@@ -2316,7 +2492,7 @@
         sales: 78,
         stamina: 100,
         resilience: 68,
-        desc: '原天娱美妆一姐，随你负气出走。成单转化率极高。',
+        desc: '原星霸互娱美妆一姐，随你负气出走。成单转化率极高。',
         ultName: '红颜绝杀 (全屏秒成单)',
         cost: 0,
         tag: '初始元老'
@@ -2652,8 +2828,8 @@
       yang:   { fanClub: '狂飙家人们', color: '#eab308', colorName: '闪电黄', slogan: '反向带货整活王，今晚直播间不散！', isBeauty: false, baseCharm: 56, initVotes: 800 },
       zhui:   { fanClub: '龙王亲卫队', color: '#f97316', colorName: '霸总金', slogan: '歪嘴一笑全网沸腾，爽文之神降临！', isBeauty: false, baseCharm: 61, initVotes: 750 },
       ai01:   { fanClub: '赛博硅基团', color: '#06b6d4', colorName: '量子青', slogan: '零失误永动机，算力铸就神颜！', isBeauty: false, baseCharm: 64, initVotes: 720 },
-      luo:    { fanClub: '理想交友团', color: '#6366f1', colorName: '极客靛', slogan: '真还传商业标杆，交个朋友不踩坑！', isBeauty: false, baseCharm: 55, initVotes: 680 },
-      liu:    { fanClub: '毽子操铁军', color: '#22c55e', colorName: '燃脂绿', slogan: '腰间肥肉咔咔掉，全网男孩女孩冲！', isBeauty: false, baseCharm: 58, initVotes: 620 },
+      luo:    { fanClub: '理想挚友团', color: '#6366f1', colorName: '极客靛', slogan: '硬核科技标杆，诚意严选不踩坑！', isBeauty: false, baseCharm: 55, initVotes: 680 },
+      liu:    { fanClub: '燃脂暴汗团', color: '#22c55e', colorName: '燃脂绿', slogan: '腰间肥肉咔咔掉，全网男孩女孩冲！', isBeauty: false, baseCharm: 58, initVotes: 620 },
       qiang:  { fanClub: '碳水快乐营', color: '#fb923c', colorName: '烤串橙', slogan: '半夜吃播顶流，烟火气天下第一！', isBeauty: false, baseCharm: 52, initVotes: 560 },
       he:     { fanClub: '极客实验室', color: '#0284c7', colorName: '星云蓝', slogan: '硬核拆解不吹牛，工科生信仰之光！', isBeauty: false, baseCharm: 57, initVotes: 540 },
       kun:    { fanClub: '野球场铁粉', color: '#8b5cf6', colorName: '紫金梦', slogan: '街头绝杀后仰跳投，虎扑实战之王！', isBeauty: false, baseCharm: 60, initVotes: 660 },
@@ -2704,6 +2880,48 @@
       return '银超';
     }
 
+    // =========================================================================
+    // 2.3 颜值党专属：4维高定形象管理衣橱系统 (战袍穿搭 / 发型发色 / 妆容美瞳 / 写真场景)
+    // =========================================================================
+    var IMAGE_WARDROBE = {
+      outfit: [
+        { id: 'casual_hoodie', icon: '🧥', name: '海选灰卫衣',   cost: 0,  charmBonus: 0,  buffDesc: '海选初始素颜常服',           tag1: '海选素人', tag2: '璞玉待琢', roleTag: '练习生 · 素颜' },
+        { id: 'basket_jersey', icon: '🏀', name: '苍骑20号球衣', cost: 6,  charmBonus: 12, buffDesc: '直播耗体-20% · 虎扑JRs暴击', tag1: '冲框甜心', tag2: '内外全能', roleTag: '分卫 · 篮球女神' },
+        { id: 'jk_uniform',    icon: '🎀', name: '白月光水手服', cost: 8,  charmBonus: 14, buffDesc: '涨粉速度+20% · 校花初恋感',  tag1: '校园初恋', tag2: '清纯绝杀', roleTag: '校花 · 白月光' },
+        { id: 'idol_stage',    icon: '🎤', name: '绯红C位打歌服', cost: 12, charmBonus: 18, buffDesc: '选秀得票+25% · 直拍万转',    tag1: '直拍杀手', tag2: '唱跳全能', roleTag: '主舞 · 舞台C位' },
+        { id: 'hanfu_goddess', icon: '🪭', name: '洛神流仙华服', cost: 15, charmBonus: 21, buffDesc: 'JRs口碑+25% · 国风破圈',     tag1: '一眼万年', tag2: '国风神颜', roleTag: '古风 · 倾城仙姿' },
+        { id: 'haute_couture', icon: '💎', name: '星河璀璨晚礼', cost: 20, charmBonus: 26, buffDesc: '榜一大哥打赏+35% · 顶流排面', tag1: '颜值即正义', tag2: '国民女神', roleTag: '顶流 · 钻超女神' }
+      ],
+      hair: [
+        { id: 'plain_bob',       icon: '✂️', name: '海选齐刘海',     cost: 0,  charmBonus: 0,  buffDesc: '未打理学生短发',   mainColor: '#334155', shadowColor: '#1e293b', hiColor: '#64748b' },
+        { id: 'milk_tea_wave',   icon: '🌬️', name: '蜜茶微风长卷',   cost: 5,  charmBonus: 10, buffDesc: '飘逸灰棕发+运动发箍', mainColor: '#9e887e', shadowColor: '#6b574e', hiColor: '#efe6e1' },
+        { id: 'sakura_twintail', icon: '🌸', name: '樱粉元气双马尾', cost: 6,  charmBonus: 12, buffDesc: '甜度爆表二次元偶像', mainColor: '#ec4899', shadowColor: '#9d174d', hiColor: '#fce7f3' },
+        { id: 'jade_updo',       icon: '🌙', name: '乌金流苏黑长直', cost: 8,  charmBonus: 14, buffDesc: '东方古典姬发黑长直', mainColor: '#1e1b4b', shadowColor: '#0f172a', hiColor: '#818cf8' },
+        { id: 'galaxy_queen',    icon: '👑', name: '星河鎏金大波浪', cost: 10, charmBonus: 17, buffDesc: '女王级微醺挑染卷发', mainColor: '#581c87', shadowColor: '#3b0764', hiColor: '#fde047' }
+      ],
+      makeup: [
+        { id: 'bare_glasses',   icon: '👓', name: '黑框纯素颜',     cost: 0, charmBonus: 0,  buffDesc: '厚重黑框眼镜封印颜值', irisTop: '#334155', irisBot: '#64748b', blush: 0,    tearMole: false, glasses: true,  lip: '#a87b7b' },
+        { id: 'peach_clear',    icon: '🍑', name: '摘镜伪素颜妆',   cost: 4, charmBonus: 9,  buffDesc: '摘镜觉醒+清透琥珀瞳',  irisTop: '#78350f', irisBot: '#f59e0b', blush: 0.42, tearMole: false, glasses: false, lip: '#fb7185' },
+        { id: 'sport_vitality', icon: '⚡', name: '球场元气微汗妆', cost: 6, charmBonus: 12, buffDesc: '红棕星瞳+英气微醺腮红', irisTop: '#7c2d12', irisBot: '#fb923c', blush: 0.52, tearMole: false, glasses: false, lip: '#f43f5e' },
+        { id: 'idol_tearmole',  icon: '💧', name: '碎钻泪痣女团妆', cost: 7, charmBonus: 15, buffDesc: '眼下绝美泪痣+紫晶星瞳', irisTop: '#581c87', irisBot: '#e879f9', blush: 0.58, tearMole: true,  glasses: false, lip: '#e11d48' },
+        { id: 'ur_empress',     icon: '✨', name: '绯红钻闪女王妆', cost: 9, charmBonus: 18, buffDesc: '鎏金宝石星瞳+玫瑰红唇', irisTop: '#9d174d', irisBot: '#fde047', blush: 0.66, tearMole: true,  glasses: false, lip: '#be123c' }
+      ],
+      scene: [
+        { id: 'studio_day',     icon: '🏢', name: '练习室初光',   cost: 0,  charmBonus: 0,  buffDesc: '地下练习室日光灯', bg: 'linear-gradient(145deg, #1e293b 0%, #334155 60%, #475569 100%)', accent: '#94a3b8' },
+        { id: 'court_sunlight', icon: '🌤️', name: '盛夏球场树影', cost: 5,  charmBonus: 9,  buffDesc: '晴空绿荫+阳光逆光斑', bg: 'linear-gradient(145deg, #064e3b 0%, #0d9488 45%, #bbf7d0 82%, #fef08a 100%)', accent: '#facc15' },
+        { id: 'sakura_stage',   icon: '🌸', name: '落樱直拍舞台', cost: 8,  charmBonus: 12, buffDesc: '漫天樱花瓣+粉紫追光', bg: 'linear-gradient(135deg, #2e1065 0%, #831843 52%, #f472b6 90%, #fbcfe8 100%)', accent: '#f472b6' },
+        { id: 'ur_pantheon',    icon: '🌌', name: '钻超星海神坛', cost: 12, charmBonus: 16, buffDesc: '全息极光+金色星环圣境', bg: 'linear-gradient(135deg, #1e1b4b 0%, #701a75 42%, #be185d 74%, #f59e0b 100%)', accent: '#fde047' }
+      ]
+    };
+
+    function getWardrobeItem(cat, itemId) {
+      var list = IMAGE_WARDROBE[cat] || [];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].id === itemId) return list[i];
+      }
+      return list[0];
+    }
+
     function ensureStreamerFandomDefaults(s) {
       if (!s) return;
       var prof = getFandomProfile(s.id);
@@ -2718,6 +2936,62 @@
       if (!isFinite(s.debutVotes) || s.debutVotes < 0) s.debutVotes = prof.initVotes;
       if (!isFinite(s.supertopicHeat) || s.supertopicHeat < 0) s.supertopicHeat = Math.round(prof.initVotes * 1.4);
       if (!Array.isArray(s.milestones)) s.milestones = [];
+
+      // 4维高定形象管理数据初始化（每位颜值主播默认赠送1套招牌青春高定，开箱即可体验惊艳立绘与素颜一键对比！）
+      if (!s.styling || typeof s.styling !== 'object') {
+        var defOutfit = s.id === 'meina' ? 'basket_jersey' : (s.id === 'zhao' ? 'hanfu_goddess' : (s.id === 'ling' ? 'idol_stage' : (s.id === 'daxue' ? 'jk_uniform' : 'basket_jersey')));
+        var defHair = s.id === 'zhao' ? 'jade_updo' : (s.id === 'ling' ? 'sakura_twintail' : 'milk_tea_wave');
+        var defMakeup = s.id === 'su' ? 'sport_vitality' : (s.id === 'meina' ? 'sport_vitality' : 'peach_clear');
+        var defScene = (s.id === 'su' || s.id === 'meina') ? 'court_sunlight' : 'sakura_stage';
+        s.styling = {
+          outfit: s.isBeauty ? defOutfit : 'casual_hoodie',
+          hair: s.isBeauty ? defHair : 'plain_bob',
+          makeup: s.isBeauty ? defMakeup : 'peach_clear',
+          scene: s.isBeauty ? defScene : 'studio_day',
+          unlockedOutfits: s.isBeauty ? ['casual_hoodie', defOutfit] : ['casual_hoodie'],
+          unlockedHairs: s.isBeauty ? ['plain_bob', defHair] : ['plain_bob'],
+          unlockedMakeups: s.isBeauty ? ['bare_glasses', defMakeup] : ['bare_glasses', 'peach_clear'],
+          unlockedScenes: s.isBeauty ? ['studio_day', defScene] : ['studio_day']
+        };
+      } else {
+        if (!Array.isArray(s.styling.unlockedOutfits)) s.styling.unlockedOutfits = ['casual_hoodie'];
+        if (!Array.isArray(s.styling.unlockedHairs)) s.styling.unlockedHairs = ['plain_bob'];
+        if (!Array.isArray(s.styling.unlockedMakeups)) s.styling.unlockedMakeups = ['bare_glasses'];
+        if (!Array.isArray(s.styling.unlockedScenes)) s.styling.unlockedScenes = ['studio_day'];
+      }
+    }
+
+    function getResolvedStylingForStage(s, overrideStage, forceBare) {
+      ensureStreamerFandomDefaults(s);
+      if (forceBare || overrideStage === 1) {
+        return {
+          outfit: getWardrobeItem('outfit', 'casual_hoodie'),
+          hair: getWardrobeItem('hair', 'plain_bob'),
+          makeup: getWardrobeItem('makeup', 'bare_glasses'),
+          scene: getWardrobeItem('scene', 'studio_day')
+        };
+      }
+      if (overrideStage && overrideStage >= 2) {
+        var stageMap = {
+          2: { o: 'basket_jersey', h: 'milk_tea_wave', m: 'sport_vitality', sc: 'court_sunlight' },
+          3: { o: 'idol_stage',    h: 'sakura_twintail', m: 'idol_tearmole', sc: 'sakura_stage' },
+          4: { o: 'hanfu_goddess', h: 'jade_updo', m: 'idol_tearmole', sc: 'sakura_stage' },
+          5: { o: 'haute_couture', h: 'galaxy_queen', m: 'ur_empress', sc: 'ur_pantheon' }
+        };
+        var cfg = stageMap[overrideStage] || stageMap[2];
+        return {
+          outfit: getWardrobeItem('outfit', cfg.o),
+          hair: getWardrobeItem('hair', cfg.h),
+          makeup: getWardrobeItem('makeup', cfg.m),
+          scene: getWardrobeItem('scene', cfg.sc)
+        };
+      }
+      return {
+        outfit: getWardrobeItem('outfit', s.styling.outfit),
+        hair: getWardrobeItem('hair', s.styling.hair),
+        makeup: getWardrobeItem('makeup', s.styling.makeup),
+        scene: getWardrobeItem('scene', s.styling.scene)
+      };
     }
 
     Object.keys(streamersMaster).forEach(function(k) {
@@ -2725,7 +2999,7 @@
       ensureStreamerFandomDefaults(streamersMaster[k]);
     });
 
-    // 拟人化主播 5阶养成进化矢量立绘引擎 (支持素颜素人 -> 国民神颜UR可视化蜕变)
+    // 二次元美少女/潮男精细矢量立绘头像引擎 (V脸骨相 + 双层渐变星瞳 + 飘逸刘海耳发 + 实时换装联动)
     function getPersonifiedAvatarSVG(s, size, overrideStage) {
       if (!s) return '';
       ensureStreamerFandomDefaults(s);
@@ -2735,6 +3009,106 @@
       var stage = Math.max(1, Math.min(5, overrideStage || s.idolStage || 1));
       var prof = getFandomProfile(id);
       var isBeauty = prof.isBeauty;
+      var st = getResolvedStylingForStage(s, overrideStage, isBeauty && overrideStage === 1);
+      var uid = id + '_' + stage + '_' + size;
+
+      if (isBeauty) {
+        var isBare = st.makeup.glasses;
+        var hMain = isBare ? '#334155' : st.hair.mainColor;
+        var hHi = isBare ? '#64748b' : st.hair.hiColor;
+        var ringCol = isBare ? '#64748b' : (stage >= 4 ? '#fde047' : '#f472b6');
+
+        // 后发与双马尾/大波浪
+        var backHair = '<path d="M 18 40 C 12 68, 16 92, 26 100 L 74 100 C 84 92, 88 68, 82 40 C 74 14, 26 14, 18 40 Z" fill="' + hMain + '"/>';
+        if (!isBare && st.hair.id === 'sakura_twintail') {
+          backHair += '<path d="M 20 34 C 4 42, 2 78, 14 96 C 20 82, 20 56, 24 42 Z M 80 34 C 96 42, 98 78, 86 96 C 80 82, 80 56, 76 42 Z" fill="' + hMain + '"/>';
+        }
+
+        // 服装细节 (海选灰卫衣 / 苍骑20号球衣 / JK水手服 / 打歌服 / 汉服 / 高定晚礼)
+        var outfitSVG = '';
+        if (isBare || st.outfit.id === 'casual_hoodie') {
+          outfitSVG = '<path d="M 18 100 C 20 75, 34 71, 50 71 C 66 71, 80 75, 82 100 Z" fill="#475569"/><path d="M 38 72 Q 50 80 62 72" stroke="#334155" stroke-width="2" fill="none"/>';
+        } else if (st.outfit.id === 'basket_jersey') {
+          outfitSVG = '<path d="M 20 100 C 22 75, 35 71, 50 71 C 65 71, 78 75, 80 100 Z" fill="#f8fafc"/><path d="M 20 100 L 28 73 L 36 73 L 32 100 Z M 80 100 L 72 73 L 64 73 L 68 100 Z" fill="#1e293b"/><path d="M 38 72 L 50 83 L 62 72" fill="none" stroke="#1e293b" stroke-width="2.5"/><path d="M 43 65 Q 50 68 57 65" stroke="#312e81" stroke-width="2.5" fill="none"/><text x="50" y="95" font-size="11" font-weight="900" fill="#1e293b" text-anchor="middle">20</text>';
+        } else if (st.outfit.id === 'jk_uniform') {
+          outfitSVG = '<path d="M 18 100 C 20 75, 34 71, 50 71 C 66 71, 80 75, 82 100 Z" fill="#f8fafc"/><path d="M 30 73 L 50 87 L 70 73 Z" fill="#1e3a8a"/><polygon points="50,84 44,95 50,92 56,95" fill="#e11d48"/>';
+        } else if (st.outfit.id === 'hanfu_goddess') {
+          outfitSVG = '<path d="M 18 100 C 20 75, 34 71, 50 71 C 66 71, 80 75, 82 100 Z" fill="#065f46"/><path d="M 32 72 L 56 96 M 68 72 L 44 96" stroke="#a7f3d0" stroke-width="3"/><circle cx="50" cy="66" r="2.2" fill="#fde047"/>';
+        } else {
+          outfitSVG = '<path d="M 20 100 C 24 77, 36 74, 50 74 C 64 74, 76 77, 80 100 Z" fill="' + (st.outfit.id === 'haute_couture' ? '#831843' : '#be123c') + '"/><path d="M 28 77 Q 50 87 72 77" fill="none" stroke="#fde047" stroke-width="2.2"/><path d="M 41 67 Q 50 74 59 67" stroke="#fef08a" stroke-width="1.6" fill="none"/><polygon points="50,72 47.5,76 50,79 52.5,76" fill="#38bdf8"/>';
+        }
+
+        // 二次元精致 V 脸 + 锁骨阴影 + 渐变大眼
+        var eyesSVG = '';
+        if (isBare) {
+          eyesSVG =
+            '<ellipse cx="39" cy="45" rx="3.2" ry="3.5" fill="#1e293b"/>' +
+            '<ellipse cx="61" cy="45" rx="3.2" ry="3.5" fill="#1e293b"/>' +
+            '<rect x="30" y="38" width="17" height="13" rx="2.5" fill="rgba(226,232,240,0.22)" stroke="#0f172a" stroke-width="2.6"/>' +
+            '<rect x="53" y="38" width="17" height="13" rx="2.5" fill="rgba(226,232,240,0.22)" stroke="#0f172a" stroke-width="2.6"/>' +
+            '<line x1="47" y1="44" x2="53" y2="44" stroke="#0f172a" stroke-width="2.4"/>';
+        } else {
+          eyesSVG =
+            '<defs><linearGradient id="iris_' + uid + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + st.makeup.irisTop + '"/><stop offset="100%" stop-color="' + st.makeup.irisBot + '"/></linearGradient></defs>' +
+            // 左眼眼白+虹膜+瞳孔+双高光+睫毛
+            '<ellipse cx="38.5" cy="45" rx="6.2" ry="6.8" fill="#ffffff"/>' +
+            '<ellipse cx="39" cy="45.5" rx="4.8" ry="5.6" fill="url(#iris_' + uid + ')"/>' +
+            '<ellipse cx="39" cy="45.8" rx="2.2" ry="2.6" fill="#1e1b4b"/>' +
+            '<circle cx="36.8" cy="43" r="1.9" fill="#ffffff"/>' +
+            '<circle cx="41.2" cy="47.8" r="1.0" fill="#ffffff"/>' +
+            '<path d="M 31 42.5 Q 38.5 36.5 45.5 42.5" stroke="#1e1b4b" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+            '<path d="M 31 42.5 L 28.5 40.5 M 34 39.5 L 32.5 37.5" stroke="#1e1b4b" stroke-width="1.5" stroke-linecap="round"/>' +
+            // 右眼
+            '<ellipse cx="61.5" cy="45" rx="6.2" ry="6.8" fill="#ffffff"/>' +
+            '<ellipse cx="61" cy="45.5" rx="4.8" ry="5.6" fill="url(#iris_' + uid + ')"/>' +
+            '<ellipse cx="61" cy="45.8" rx="2.2" ry="2.6" fill="#1e1b4b"/>' +
+            '<circle cx="59.2" cy="43" r="1.9" fill="#ffffff"/>' +
+            '<circle cx="63.2" cy="47.8" r="1.0" fill="#ffffff"/>' +
+            '<path d="M 54.5 42.5 Q 61.5 36.5 69 42.5" stroke="#1e1b4b" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+            '<path d="M 69 42.5 L 71.5 40.5 M 66 39.5 L 67.5 37.5" stroke="#1e1b4b" stroke-width="1.5" stroke-linecap="round"/>' +
+            // 腮红与泪痣
+            '<ellipse cx="32" cy="53" rx="4.5" ry="2.2" fill="#fb7185" opacity="' + st.makeup.blush + '"/>' +
+            '<ellipse cx="68" cy="53" rx="4.5" ry="2.2" fill="#fb7185" opacity="' + st.makeup.blush + '"/>' +
+            (st.makeup.tearMole ? '<circle cx="65.5" cy="51.5" r="0.95" fill="#4c0519"/>' : '');
+        }
+
+        // 二次元多束碎刘海 + 高光天使环 + 两侧姬发耳发
+        var frontHair =
+          '<path d="M 22 38 C 20 55, 22 72, 27 82 C 28 65, 27 48, 29 36 Z M 78 38 C 80 55, 78 72, 73 82 C 72 65, 73 48, 71 36 Z" fill="' + hMain + '"/>' +
+          '<path d="M 22 38 C 24 15, 76 15, 78 38 L 72 42 L 66 31 L 59 43 L 52 29 L 45 43 L 38 31 L 30 42 Z" fill="' + hMain + '"/>' +
+          '<path d="M 32 27 Q 50 21 68 27" stroke="' + hHi + '" stroke-width="2.2" fill="none" opacity="0.75" stroke-linecap="round"/>';
+
+        var headwear = '';
+        if (!isBare && st.hair.id === 'milk_tea_wave') {
+          headwear = '<path d="M 27 30 Q 50 16 73 30" stroke="#1e293b" stroke-width="3.5" fill="none"/><path d="M 26 30 L 18 37 M 26 30 L 21 41" stroke="#312e81" stroke-width="2" stroke-linecap="round"/>';
+        } else if (!isBare && (stage === 5 || st.hair.id === 'galaxy_queen')) {
+          headwear = '<polygon points="36,19 41,8 50,14 59,8 64,19" fill="#fde047" stroke="#b45309" stroke-width="1.1"/><circle cx="50" cy="13" r="2.2" fill="#ec4899"/>';
+        }
+
+        var beautySvg =
+          '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" style="background:' + st.scene.bg + '; border: ' + (stage === 5 ? '2px' : '1.5px') + ' solid ' + ringCol + ';">' +
+            backHair +
+            '<rect x="44" y="58" width="12" height="17" rx="4" fill="#ffe4d6"/>' +
+            '<path d="M 44 63 Q 50 67 56 63" fill="none" stroke="#f4b8a0" stroke-width="1.2"/>' +
+            outfitSVG +
+            // 二次元柔和尖下巴脸型
+            '<path d="M 27 36 C 26 54, 37 64, 50 66 C 63 64, 74 54, 73 36 C 72 20, 28 20, 27 36 Z" fill="#fff0e6"/>' +
+            eyesSVG +
+            '<path d="M 49.5 49.5 L 48.5 51.5 L 50.8 51.8" stroke="#d99b84" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+            '<path d="' + (isBare ? 'M 46 57 Q 50 58 54 57' : 'M 45 56.5 Q 50 60.5 55 56.5') + '" stroke="' + st.makeup.lip + '" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+            frontHair +
+            headwear +
+          '</svg>';
+
+        var stTag = stage === 5 ? 'UR' : ('Lv.' + stage);
+        return (
+          '<div class="avatar-personified' + (stage === 5 ? ' avatar-stage-ur' : '') + '" style="width:' + size + 'px; height:' + size + 'px;">' +
+            beautySvg +
+            '<span class="avatar-tier-badge tier-' + tier.toLowerCase() + '">' + tier + '</span>' +
+            (size >= 38 ? '<span class="avatar-stage-badge stage-pill-' + stage + '">' + stTag + '</span>' : '') +
+          '</div>'
+        );
+      }
 
       var charVisuals = {
         su:     { skin: '#ffd8c2', hair: '#4a2818', clothes: '#c91b1b', extra: '💄', eye: '#2c1810', hairStyle: 'long' },
@@ -2904,34 +3278,34 @@
     }
 
     // =========================================================================
-    // 全网 MCN 综合天梯榜数据与排名引擎 (Top 100 Leaderboard)
+    // 全网 MCN 综合天梯榜数据与排名引擎 (Top 100 Leaderboard · 100%原创虚构商战宇宙)
     // =========================================================================
     var competitorLadder = [
-      { rank: 1, name: '无忧传媒', power: 8500, desc: '全网超头部航母级机构' },
-      { rank: 2, name: '美ONE', power: 7200, desc: '顶流超头矩阵核心' },
-      { rank: 3, name: '三只羊网络', power: 6100, desc: '下沉与私域流量霸主' },
-      { rank: 4, name: '东方甄选', power: 5400, desc: '文化知识破圈标杆' },
-      { rank: 5, name: '辛选集团', power: 4800, desc: '超级源头供应链巨鳄' },
-      { rank: 6, name: '遥望科技', power: 3900, desc: '明星带货全域中枢' },
-      { rank: 7, name: '交个朋友', power: 3200, desc: '标准工业化机构' },
-      { rank: 8, name: '虎扑星创传媒', power: 2800, desc: 'JRs直属体育潮流矩阵' },
-      { rank: 9, name: '谦寻文化', power: 2400, desc: '老牌泛品类带货领航者' },
-      { rank: 10, name: '大禹网络', power: 2100, desc: '原创泛娱乐孵化器' },
-      { rank: 15, name: '宸帆电商', power: 1800, desc: '红人孵化与服装供应链' },
-      { rank: 20, name: '愿景娱乐', power: 1500, desc: '娱乐与直播工会领头羊' },
-      { rank: 25, name: '天娱星耀', power: 1200, desc: '【宿敌】前东家！处处打压你的老牌资本', isRival: true },
-      { rank: 35, name: '无极星芒', power: 850, desc: '短剧与游戏直播黑马' },
-      { rank: 50, name: '锐星互娱', power: 450, desc: '区域头部MCN代表' },
-      { rank: 65, name: '万象星澜', power: 320, desc: '腰部垂类科技工坊' },
-      { rank: 75, name: '极光闪耀传媒', power: 250, desc: '本地生活带货黑马' },
-      { rank: 85, name: '步行街青年创投', power: 190, desc: '草根创业者聚集地' },
-      { rank: 90, name: '晨光萌芽工作室', power: 165, desc: '初出茅庐三两个人' },
-      { rank: 95, name: '绿叶微风网络', power: 138, desc: '依靠接小广告维持生计' },
-      { rank: 96, name: '弄潮儿星选', power: 130, desc: '几位大学生合伙工作室' },
-      { rank: 97, name: '飞鱼文化传媒', power: 125, desc: '本地带货初创团队' },
-      { rank: 98, name: '破晓互娱', power: 118.5, desc: '玩家从零重起炉灶的主理机构', isPlayer: true },
-      { rank: 99, name: '街角微利小作坊', power: 105, desc: '濒临发不出薪资的杂货间' },
-      { rank: 100, name: '草台班子传媒', power: 85, desc: '设备老旧、随时可能注销' }
+      { rank: 1, name: '星海圣殿互娱', power: 8500, desc: '全网超头部航母级泛娱机构', topStreamer: '凌霜女神' },
+      { rank: 2, name: '魅影壹号工坊', power: 7200, desc: '顶流超头美妆矩阵核心', topStreamer: '安琪拉' },
+      { rank: 3, name: '狂飙三兄弟网络', power: 6100, desc: '下沉与私域切片流量霸主', topStreamer: '狂飙阿杰' },
+      { rank: 4, name: '九州文脉严选', power: 5400, desc: '文化知识双语破圈标杆', topStreamer: '清风先生' },
+      { rank: 5, name: '瀚海源头集团', power: 4800, desc: '超级源头工厂供应链巨鳄', topStreamer: '铁腕老辛' },
+      { rank: 6, name: '苍穹全域科技', power: 3900, desc: '明星达人全域带货中枢', topStreamer: '星辰姐' },
+      { rank: 7, name: '挚友严选社', power: 3200, desc: '硬核数码与标准工业化机构', topStreamer: '老罗锤科' },
+      { rank: 8, name: '步行街星创传媒', power: 2800, desc: 'JRs直属体育潮流矩阵', topStreamer: '街球坤哥' },
+      { rank: 9, name: '千寻星澜文化', power: 2400, desc: '老牌泛品类带货领航者', topStreamer: '薇薇安' },
+      { rank: 10, name: '山海创想网络', power: 2100, desc: '原创二次元与美妆孵化器', topStreamer: '卧云真昼' },
+      { rank: 15, name: '霓裳红人电商', power: 1800, desc: '颜值达人孵化与高定服装链', topStreamer: '夏沫儿' },
+      { rank: 20, name: '幻境泛娱工会', power: 1500, desc: '唱跳选秀与直播工会领头羊', topStreamer: '星瞳少女' },
+      { rank: 25, name: '星霸互娱', power: 1200, desc: '【宿敌】前东家！处处打压你的老牌资本', isRival: true, topStreamer: '林娇娇' },
+      { rank: 35, name: '无极星芒', power: 850, desc: '短剧与游戏直播黑马', topStreamer: '歪嘴龙王' },
+      { rank: 50, name: '锐星互娱', power: 450, desc: '区域头部MCN代表', topStreamer: '阿凯' },
+      { rank: 65, name: '万象星澜', power: 320, desc: '腰部垂类科技工坊', topStreamer: '极客小周' },
+      { rank: 75, name: '极光闪耀传媒', power: 250, desc: '本地生活带货黑马', topStreamer: '探店小鹿' },
+      { rank: 85, name: '步行街青年创投', power: 190, desc: '草根创业者聚集地', topStreamer: '球场老炮' },
+      { rank: 90, name: '晨光萌芽工作室', power: 165, desc: '初出茅庐三两个人', topStreamer: '萌新小雨' },
+      { rank: 95, name: '绿叶微风网络', power: 138, desc: '依靠接小广告维持生计', topStreamer: '阿木' },
+      { rank: 96, name: '弄潮儿星选', power: 130, desc: '几位大学生合伙工作室', topStreamer: '学姐小甜' },
+      { rank: 97, name: '飞鱼文化传媒', power: 125, desc: '本地带货初创团队', topStreamer: '飞鱼哥' },
+      { rank: 98, name: '破晓互娱', power: 118.5, desc: '玩家从零重起炉灶的主理机构', isPlayer: true, topStreamer: '苏晚晴' },
+      { rank: 99, name: '街角微利小作坊', power: 105, desc: '濒临发不出薪资的杂货间', topStreamer: '老张' },
+      { rank: 100, name: '草台班子传媒', power: 85, desc: '设备老旧、随时可能注销', topStreamer: '路人甲' }
     ];
 
     // =========================================================================
@@ -3049,6 +3423,14 @@
       if (hasMomShield) {
         fx.scandalMult *= 0.7;
         fx.momShield = true;
+      }
+      // 👗 高定形象管理战袍实时加成 (穿戴球衣减耗体 / 水手服加涨粉 / 晚礼服暴击大哥打赏 / 汉服加周口碑)
+      var actS = streamersMaster[state.selectedStreamerId] || streamersMaster.su;
+      if (actS && actS.styling) {
+        if (actS.styling.outfit === 'basket_jersey') fx.staminaSave += 0.20;
+        else if (actS.styling.outfit === 'jk_uniform') fx.fansMult += 0.20;
+        else if (actS.styling.outfit === 'haute_couture') fx.whaleMult += 0.35;
+        else if (actS.styling.outfit === 'hanfu_goddess') fx.weeklyPR += 4;
       }
       return fx;
     }
@@ -3219,7 +3601,7 @@
       var stripLeft = document.getElementById("lbStripLeft");
       var rivalGapEl = document.getElementById("lbRivalGap");
       var rival = competitorLadder.find(function(c) { return c.isRival; }) || { power: 1200 };
-      if (stripLeft) stripLeft.innerText = cloudState.online ? ("🌐 全服真实玩家天梯 (" + Math.max(1, cloudState.totalPlayers) + " 家机构)") : "🎯 宿敌目标：前东家【天娱星耀】(NO.25)";
+      if (stripLeft) stripLeft.innerText = cloudState.online ? ("🌐 全服真实玩家天梯 (" + Math.max(1, cloudState.totalPlayers) + " 家机构)") : "🎯 宿敌目标：前东家【星霸互娱】(NO.25)";
       if (rivalGapEl) {
         var gap = (rival.power - currentPower);
         if (cloudState.online && cloudState.globalRank) {
@@ -3278,7 +3660,7 @@
 
         var sep = document.createElement("div");
         sep.style.cssText = "font-size:11px;color:#94a3b8;font-weight:700;padding:8px 4px 2px 4px;border-top:1px dashed #24314c;margin-top:4px;";
-        sep.textContent = "🏢 行业传奇里程碑（含前东家天娱星耀）";
+        sep.textContent = "🏢 行业传奇里程碑（含前东家星霸互娱）";
         box.appendChild(sep);
       }
 
@@ -3496,10 +3878,10 @@
         week: 1,
         tag: "创业初启",
         title: "第 1 周：办公选址与初创姿态",
-        desc: "离开前东家天娱传媒后，你手里握着100万启动资金。办公选址将定义你的初创姿态。",
+        desc: "离开前东家星霸互娱后，你手里握着100万启动资金。办公选址将定义你的初创姿态。",
         options: [
           {
-            title: "1. 租下天娱大厦正对面的写字楼",
+            title: "1. 租下星霸互娱大厦正对面的写字楼",
             sub: "【商战修罗路线】资金-15w，复仇战意+5，抢夺前东家自然流量",
             action: function() {
               state.cash -= 15;
@@ -3523,7 +3905,7 @@
         week: 2,
         tag: "恶性抹黑",
         title: "第 2 周：前东家买水军黑粉爆破苏晚晴直播间",
-        desc: "首播大获成功引发天娱传媒妒忌，数十万恶意差评弹幕涌入直播间质疑带货质量！",
+        desc: "首播大获成功引发星霸互娱妒忌，数十万恶意差评弹幕涌入直播间质疑带货质量！",
         options: [
           {
             title: "1. 连夜公开质检报告与授权链路，强硬硬刚",
@@ -3736,11 +4118,11 @@
         week: 10,
         tag: "致命一击",
         title: "第 10 周：掌握前东家财务造假与偷税漏税核心内幕",
-        desc: "前东家深陷债务危机，当初投奔你的核心当家整理出了天娱长达三年的暗账明细。",
+        desc: "前东家深陷债务危机，当初投奔你的核心当家整理出了星霸互娱长达三年的暗账明细。",
         options: [
           {
             title: "1. 全盘提交证监会与税务稽查部门，发起致命清算",
-            sub: "【终极商战】彻底击溃前东家天娱，天娱宣告破产！",
+            sub: "【终极商战】彻底击溃前东家星霸互娱，星霸互娱宣告破产！",
             action: function() {
               state.revengeScore += 15;
               state.cash += 100;
@@ -5016,8 +5398,8 @@
         id: 'bomb_su_poach',
         priority: 95,
         tag: '💔 延迟因果爆发',
-        title: '前东家天娱开出 500 万签字费，密约苏晚晴跳槽！',
-        desc: '之前你画的大饼让她彻底心寒。狗仔拍到天娱高管在咖啡厅递出解约代付协议，她等你最后一通电话。',
+        title: '前东家星霸互娱开出 500 万签字费，密约苏晚晴跳槽！',
+        desc: '之前你画的大饼让她彻底心寒。狗仔拍到星霸互娱高管在咖啡厅递出解约代付协议，她等你最后一通电话。',
         condition: function() { return state.storyFlags && state.storyFlags.su_resentment && (state.week - state.storyFlags.su_resentment >= 1); },
         options: [
           {
@@ -5027,7 +5409,7 @@
               state.cash -= 35;
               if (streamersMaster.su) { streamersMaster.su.sales += 12; streamersMaster.su.stamina = 100; }
               delete state.storyFlags.su_resentment;
-              recordHighlight('35w重金留住苏晚晴粉碎天娱挖角阴谋');
+              recordHighlight('35w重金留住苏晚晴粉碎星霸互娱挖角阴谋');
             }
           },
           {
@@ -5174,8 +5556,8 @@
         id: 'st_price_war',
         priority: 50,
         tag: '⚔️ 全网最低价之争',
-        title: '前东家天娱联合品牌方逼签“全网最低价排他协议”',
-        desc: '如果签了，其他品牌会把你拉黑；如果不签，天娱就要买断你的爆款货源。',
+        title: '前东家星霸互娱联合品牌方逼签“全网最低价排他协议”',
+        desc: '如果签了，其他品牌会把你拉黑；如果不签，星霸互娱就要买断你的爆款货源。',
         condition: function() { return state.usedStoryletIds.indexOf('st_price_war') === -1; },
         options: [
           {
@@ -5502,7 +5884,7 @@
         id: 'dm_su_midnight',
         streamerId: 'su',
         time: '凌晨 02:14',
-        text: '老板睡了吗？这周我看公司都在忙新主播和盲盒，我以前可是为了你才从天娱出来的……下周的头牌档期还是我的吧？',
+        text: '老板睡了吗？这周我看公司都在忙新主播和盲盒，我以前可是为了你才从星霸互娱出来的……下周的头牌档期还是我的吧？',
         options: [
           {
             label: '转账 8w 奖金+书面确认C位（忠诚拉满，带货力+6）',
@@ -5637,7 +6019,7 @@
                   streamersMaster[sid].stamina = Math.min(100, streamersMaster[sid].stamina + 25);
                 }
               });
-              return '群里瞬间刷屏“老板大气！明天继续拼命干翻天娱！”';
+              return '群里瞬间刷屏“老板大气！明天继续拼命干翻星霸互娱！”';
             }
           },
           {
@@ -5910,7 +6292,7 @@
 
     var ENDING_CATALOG = [
       { id: 'goat_99', icon: '👑', rating: '9.9分', title: '商业 GOAT · 纳斯达克敲钟', rep: 180, desc: '横跨电商与影视的全球第一传媒帝国，前东家被全资收购！' },
-      { id: 'revenge_96', icon: '⚔️', rating: '9.6分', title: '复仇清算者 · 吞并天娱', rep: 150, desc: '商战修罗线大获全胜，昔日打压你的前老板如今给你端茶倒水！' },
+      { id: 'revenge_96', icon: '⚔️', rating: '9.6分', title: '复仇清算者 · 吞并星霸互娱', rep: 150, desc: '商战修罗线大获全胜，昔日打压你的前老板如今给你端茶倒水！' },
       { id: 'tech_95', icon: '🤖', rating: '9.5分', title: '硅基资本教父', rep: 145, desc: 'AI数字人矩阵24小时统治全网货架，实现真正睡后印钞！' },
       { id: 'scandal_tycoon', icon: '🔥', rating: '9.3分', title: '黑红流量暴君', rep: 135, desc: '刀尖舔血！在高黑红争议中暴赚 300w+，越骂越火，堪称商业奇观！' },
       { id: 'famous_92', icon: '🏆', rating: '9.2分', title: '步行街名宿 · 港交所上市', rep: 120, desc: '高口碑与充沛现金流双丰收，当代青年白手起家的商业范本！' },
@@ -6673,6 +7055,18 @@
                   if (isFinite(ps.debutVotes)) streamersMaster[sid].debutVotes = Math.max(0, Number(ps.debutVotes));
                   if (isFinite(ps.supertopicHeat)) streamersMaster[sid].supertopicHeat = Math.max(0, Number(ps.supertopicHeat));
                   if (Array.isArray(ps.milestones)) streamersMaster[sid].milestones = ps.milestones.slice(0, 6);
+                  if (ps.styling && typeof ps.styling === 'object') {
+                    streamersMaster[sid].styling = {
+                      outfit: typeof ps.styling.outfit === 'string' ? ps.styling.outfit : streamersMaster[sid].styling.outfit,
+                      hair: typeof ps.styling.hair === 'string' ? ps.styling.hair : streamersMaster[sid].styling.hair,
+                      makeup: typeof ps.styling.makeup === 'string' ? ps.styling.makeup : streamersMaster[sid].styling.makeup,
+                      scene: typeof ps.styling.scene === 'string' ? ps.styling.scene : streamersMaster[sid].styling.scene,
+                      unlockedOutfits: Array.isArray(ps.styling.unlockedOutfits) ? ps.styling.unlockedOutfits : streamersMaster[sid].styling.unlockedOutfits,
+                      unlockedHairs: Array.isArray(ps.styling.unlockedHairs) ? ps.styling.unlockedHairs : streamersMaster[sid].styling.unlockedHairs,
+                      unlockedMakeups: Array.isArray(ps.styling.unlockedMakeups) ? ps.styling.unlockedMakeups : streamersMaster[sid].styling.unlockedMakeups,
+                      unlockedScenes: Array.isArray(ps.styling.unlockedScenes) ? ps.styling.unlockedScenes : streamersMaster[sid].styling.unlockedScenes
+                    };
+                  }
                 }
               });
             }
@@ -6741,30 +7135,64 @@
       });
     }
 
-    function initCloudClient() {
-      try {
-        var saved = localStorage.getItem("mcn_cloud_auth_v3");
-        if (saved) {
-          var p = JSON.parse(saved);
-          if (p && p.playerId && p.authToken) {
-            cloudState.playerId = p.playerId;
-            cloudState.authToken = p.authToken;
+    // 国内直连拟真镜像兜底（当国内移动网络屏蔽 *.workers.dev 时，保障异步商战/热搜/打榜 100% 畅玩零封锁！）
+    function ensureSimulatedCloudData() {
+      if (!Array.isArray(cloudState.simPvpLogs) || cloudState.simPvpLogs.length === 0) {
+        cloudState.simPvpLogs = [
+          {
+            id: 901,
+            attacker_id: 'sim_rival_25',
+            attacker_name: '星霸互娱',
+            defender_id: 'self',
+            action_type: 'smear',
+            amount: 14.0,
+            taunt_msg: '前东家【星霸互娱】深夜买水军在步行街发黑通稿《深扒某初创MCN选品翻车》，试图抢走 14.0w 流量！',
+            status: 'unread'
+          },
+          {
+            id: 902,
+            attacker_id: 'sim_rival_8',
+            attacker_name: '步行街星创传媒',
+            defender_id: 'self',
+            action_type: 'collab',
+            amount: 8.0,
+            taunt_msg: '【步行街星创传媒】向你发起“JRs颜值女神×球星卡”跨界联名专场，互送 +8.0w 粉丝红利！',
+            status: 'unread'
           }
-        }
-      } catch (e) {}
+        ];
+      }
+      if (!Array.isArray(cloudState.feed) || cloudState.feed.length === 0) {
+        cloudState.feed = [
+          { id: 801, type: 'debut_group', agency_name: '山海创想网络', message: '重磅官宣！旗下二次元天团【苍骑飞跃101】（C位：卧云真昼，均颜96分）在《破晓101》荣耀出道！', likes: 3420 },
+          { id: 802, type: 'ssr_pull', agency_name: '步行街星创传媒', message: '在人才盲盒一发入魂，豪揽 SSR 顶流【董先生】，直播间双语文化带货直接拉爆！', likes: 2150 },
+          { id: 803, type: 'pvp_revenge', agency_name: '千寻星澜文化', message: '连夜甩出权威质检报告，将【星霸互娱】的黑水军按在地上摩擦，反杀索赔 21.0w！', likes: 1890 },
+          { id: 804, type: 'beauty_glowup', agency_name: '魅影壹号工坊', message: '旗下颜值王牌【苏晚晴】解锁「星河璀璨晚礼」晋升 UR 国民神颜，步行街老哥集体打出 9.9 分！', likes: 2760 }
+        ];
+      }
+    }
 
-      var bootstrap = function() {
+    function ensureCloudConnected(showFeedback) {
+      ensureSimulatedCloudData();
+      if (showFeedback) {
+        showToast("🔄 正在尝试连接 Cloudflare 全服实时节点...", "info");
+      }
+      var doSync = function() {
         return syncToCloud(true).then(function(ok) {
           if (ok) {
             pollGlobalFeed(true);
-            checkOfflineEarnings(true);
+            fetchCloudLeaderboard();
+            if (showFeedback) showToast("🟢 已成功连入 Cloudflare D1 全服实时天梯！", "success");
+          } else if (showFeedback) {
+            showToast("⚡ 当前网络访问 workers.dev 受限，已无缝启用【全服镜像商战模式】（所有商战/反杀/打榜均可正常畅玩）！", "info");
           }
+          return ok;
         });
       };
 
       if (!cloudState.playerId || !cloudState.authToken) {
-        apiFetch('/api/player/register', {
+        return apiFetch('/api/player/register', {
           method: 'POST',
+          timeoutMs: 5500,
           body: { agencyName: state.agencyName || '破晓互娱' }
         }).then(function(res) {
           if (res.ok && res.data && res.data.playerId) {
@@ -6776,15 +7204,36 @@
                 authToken: cloudState.authToken
               }));
             } catch (e) {}
-            bootstrap();
+            return doSync();
           } else {
             cloudState.online = false;
             updateCloudPillUI();
+            if (showFeedback) {
+              showToast("⚡ 当前国内网络直连 workers.dev 受限，已为您开启【全服镜像商战模式】，所有商战功能 100% 畅玩！", "info");
+            }
+            return false;
           }
         });
-      } else {
-        bootstrap();
       }
+      return doSync();
+    }
+
+    function initCloudClient() {
+      ensureSimulatedCloudData();
+      try {
+        var saved = localStorage.getItem("mcn_cloud_auth_v3");
+        if (saved) {
+          var p = JSON.parse(saved);
+          if (p && p.playerId && p.authToken) {
+            cloudState.playerId = p.playerId;
+            cloudState.authToken = p.authToken;
+          }
+        }
+      } catch (e) {}
+
+      ensureCloudConnected(false).then(function(ok) {
+        if (ok) checkOfflineEarnings(true);
+      });
 
       // 每 45 秒静默轮询全服大喇叭与步行街热搜
       setInterval(function() {
@@ -6875,6 +7324,7 @@
     }
 
     function renderPvpCenter() {
+      ensureSimulatedCloudData();
       var box = document.getElementById("leaderboardList");
       if (!box) return;
       box.innerHTML = "";
@@ -6888,12 +7338,20 @@
       }
 
       if (!cloudState.online) {
-        box.innerHTML = '<div class="card-subpanel" style="text-align:center;color:#94a3b8;font-size:12px;padding:18px;">当前处于离线单机模式，联网后可与全服真实 MCN 互相发起黑通稿、联名与反杀！</div>';
-        return;
+        var netBar = document.createElement("div");
+        netBar.className = "card-subpanel";
+        netBar.style.cssText = "display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 10px;border-color:rgba(56,189,248,0.45);background:rgba(14,116,144,0.18);";
+        netBar.innerHTML =
+          '<span style="font-size:11px;color:#bae6fd;">⚡ 已启用全服镜像商战（国内直连免等待，全功能可玩）</span>' +
+          '<button type="button" class="btn-icon" data-action="reconnect-cloud" style="padding:3px 8px;font-size:10.5px;color:#38bdf8;white-space:nowrap;">🔄 重连云端</button>';
+        box.appendChild(netBar);
       }
 
-      // 1. 待处理商战战报 (支持一键反杀 / 领联名红利)
-      var incoming = (cloudState.pvpLogs || []).filter(function(l) { return l.defender_id === cloudState.playerId; });
+      // 1. 待处理商战战报 (支持一键反杀 / 领联名红利，云端或镜像无缝切换)
+      var incoming = cloudState.online
+        ? (cloudState.pvpLogs || []).filter(function(l) { return l.defender_id === cloudState.playerId; })
+        : (cloudState.simPvpLogs || []);
+
       if (incoming.length > 0) {
         var h1 = document.createElement("div");
         h1.style.cssText = "font-size:11.5px;font-weight:800;color:#fca5a5;padding:2px 4px;";
@@ -6922,21 +7380,27 @@
         });
       }
 
-      // 2. 主动选择全服真实对手发起异步商战
+      // 2. 主动选择全服对手发起异步商战（若云端在线且有其他玩家则优先展示真实玩家，并补充行业宿敌与传奇MCN供随时宣战！）
       var h2 = document.createElement("div");
       h2.style.cssText = "font-size:11.5px;font-weight:800;color:#fbbf24;padding:6px 4px 2px 4px;";
-      h2.textContent = "🎯 选择全服真实同行发起异步商战";
+      h2.textContent = "🎯 选择同行机构发起异步商战（发黑通稿 / 挖角 / 联名）";
       box.appendChild(h2);
 
-      var rivals = (cloudState.leaders || []).filter(function(p) { return p.id !== cloudState.playerId; });
-      if (rivals.length === 0) {
-        var empty = document.createElement("div");
-        empty.className = "card-subpanel";
-        empty.style.cssText = "text-align:center;color:#94a3b8;font-size:12px;padding:16px;";
-        empty.textContent = "你目前是全服首位拓荒巨鳄！分享链接邀请朋友加入即可开启商战互怼！";
-        box.appendChild(empty);
-        return;
+      var rivals = [];
+      if (cloudState.online && Array.isArray(cloudState.leaders)) {
+        rivals = cloudState.leaders.filter(function(p) { return p.id !== cloudState.playerId; }).slice();
       }
+      // 补充原创商战宇宙对手，确保任何网络环境下都有充足对手可战！
+      competitorLadder.forEach(function(c) {
+        if (!c.isPlayer && rivals.length < 10) {
+          rivals.push({
+            id: 'sim_' + c.rank,
+            agency_name: c.name + (c.isRival ? ' [前东家宿敌]' : ''),
+            top_streamer_name: c.topStreamer || '当家王牌',
+            power_score: c.power
+          });
+        }
+      });
 
       rivals.slice(0, 12).forEach(function(r) {
         var card = document.createElement("div");
@@ -6956,15 +7420,73 @@
       });
     }
 
+    function executeLocalSimPvp(defenderId, actionType) {
+      var targetName = '星霸互娱';
+      var targetPower = 1200;
+      competitorLadder.forEach(function(c) {
+        if ('sim_' + c.rank === defenderId) {
+          targetName = c.name;
+          targetPower = c.power;
+        }
+      });
+      var cashGain = 0;
+      var fansGain = 0;
+      var prDelta = 0;
+      var scandalDelta = 0;
+      var summary = '';
+
+      if (actionType === 'smear') {
+        cashGain = Math.round(Math.min(25, Math.max(8, targetPower * 0.02)) * 10) / 10;
+        scandalDelta = 8;
+        summary = "💣 黑通稿引爆热搜！趁乱收割【" + targetName + "】转化流水 +" + cashGain + "w（黑红度+8）";
+      } else if (actionType === 'collab') {
+        fansGain = 8.0;
+        prDelta = 3;
+        summary = "🤝 与【" + targetName + "】商业联名大获成功！涨粉 +8.0w、口碑 +3，格局拉满！";
+      } else {
+        if (Math.random() < 0.72) {
+          cashGain = Math.round(Math.min(22, Math.max(9, targetPower * 0.018)) * 10) / 10;
+          fansGain = 5.5;
+          scandalDelta = 9;
+          summary = "🕵️ 暗度陈仓成功！从【" + targetName + "】撬走高定商单 +" + cashGain + "w、粉丝 +5.5w！";
+        } else {
+          prDelta = -3;
+          summary = "😅 挖角被【" + targetName + "】主播截图挂上步行街，口碑 -3";
+        }
+      }
+
+      state.cash = Math.max(0, state.cash + cashGain);
+      state.fans = Math.max(0, state.fans + fansGain);
+      state.pr = Math.max(0, Math.min(getSynergyEffects().prCap, state.pr + prDelta));
+      if (scandalDelta) adjustScandal(scandalDelta);
+      cloudState.pvpRemaining = Math.max(0, cloudState.pvpRemaining - 1);
+      recordHighlight(summary);
+      ensureSimulatedCloudData();
+      cloudState.feed.unshift({
+        id: Date.now(),
+        type: 'pvp_revenge',
+        agency_name: state.agencyName,
+        message: summary,
+        likes: 168
+      });
+      playCheerSound();
+      showToast(summary, "success");
+      updateMCNRank(true);
+      renderHeaderStats();
+      renderHall();
+      renderPvpCenter();
+      saveLocalData();
+    }
+
     function launchPvpAction(defenderId, actionType) {
       safeInitAudio();
-      if (!cloudState.online) {
-        showToast("联网后即可发起真实全服异步商战！", "alert");
-        return;
-      }
       if (cloudState.pvpRemaining <= 0) {
         showToast("今日 5 次商战行动点已用完，明日 0 点自动刷新！", "alert");
         playAlertSound();
+        return;
+      }
+      if (!cloudState.online || String(defenderId).indexOf('sim_') === 0) {
+        executeLocalSimPvp(defenderId, actionType);
         return;
       }
       apiFetch('/api/pvp/action', {
@@ -6986,17 +7508,50 @@
           saveLocalData();
           fetchCloudPvpInbox();
         } else {
-          showToast("商战发起失败：" + (res.data && res.data.error ? res.data.error : "网络波动"), "alert");
-          playAlertSound();
+          // 网络抖动时无缝降级本地商战结算，绝不卡死玩家！
+          executeLocalSimPvp(defenderId, actionType);
         }
       });
     }
 
     function counterPvpAttack(logId) {
       safeInitAudio();
+      var numId = Number(logId);
+      // 检查是否为本地镜像商战事件
+      ensureSimulatedCloudData();
+      var simItem = (cloudState.simPvpLogs || []).find(function(x) { return x.id === numId && x.status === 'unread'; });
+      if (!cloudState.online || simItem) {
+        if (!simItem) {
+          showToast("该战报已处理完毕", "info");
+          return;
+        }
+        if (simItem.action_type === 'collab') {
+          simItem.status = 'read';
+          state.fans += 8.0;
+          state.pr = Math.min(getSynergyEffects().prCap, state.pr + 3);
+          playCheerSound();
+          showToast("🤝 成功收下【" + simItem.attacker_name + "】的联名红利：粉丝 +8.0w、口碑 +3！", "success");
+        } else {
+          simItem.status = 'countered';
+          var revCash = Math.round(Math.max(12, (simItem.amount || 14) * 1.5) * 10) / 10;
+          state.cash += revCash;
+          state.fans += 6.0;
+          state.pr = Math.min(getSynergyEffects().prCap, state.pr + 5);
+          playCheerSound();
+          triggerGlobalCustomHorn("🛡️【绝地反杀喜报】" + state.agencyName + " 甩出权威质检铁证，反杀【" + simItem.attacker_name + "】索赔 +" + revCash + "w！");
+          showToast("🛡️ 绝地反杀成功！反噬【" + simItem.attacker_name + "】获赔 +" + revCash + "w、涨粉 +6.0w！", "success");
+        }
+        updateMCNRank(true);
+        renderHeaderStats();
+        renderHall();
+        renderPvpCenter();
+        saveLocalData();
+        return;
+      }
+
       apiFetch('/api/pvp/counter', {
         method: 'POST',
-        body: { logId: Number(logId) }
+        body: { logId: numId }
       }).then(function(res) {
         if (res.ok && res.data && res.data.ok) {
           var d = res.data;
@@ -7071,6 +7626,7 @@
     }
 
     function renderGlobalFeedList() {
+      ensureSimulatedCloudData();
       var box = document.getElementById("leaderboardList");
       if (!box) return;
       box.innerHTML = "";
@@ -7080,10 +7636,6 @@
       if (rivalGapEl) { rivalGapEl.innerText = "点 👍 为老哥亮评"; rivalGapEl.style.color = "#fbbf24"; }
 
       var items = cloudState.feed || [];
-      if (items.length === 0) {
-        box.innerHTML = '<div class="card-subpanel" style="text-align:center;color:#94a3b8;font-size:12px;padding:20px;">正在拉取全服热搜动态...</div>';
-        return;
-      }
       items.forEach(function(item) {
         var tagMap = {
           ssr_pull: '<span class="badge badge-gold">🎁 SSR出货</span>',
@@ -7110,13 +7662,16 @@
     function likeBroadcast(id) {
       safeInitAudio();
       playCoinSound();
-      apiFetch('/api/broadcast/' + id + '/like', { method: 'POST' }).then(function(res) {
-        if (res.ok && res.data && res.data.ok) {
-          var el = document.getElementById("bcLike-" + id);
-          if (el) el.innerText = res.data.likes;
-          showToast("👍 亮了 +1！步行街气氛组到位！", "success");
-        }
-      });
+      var el = document.getElementById("bcLike-" + id);
+      if (el) el.innerText = String((parseInt(el.innerText, 10) || 100) + 1);
+      showToast("👍 亮了 +1！步行街气氛组到位！", "success");
+      if (cloudState.online) {
+        apiFetch('/api/broadcast/' + id + '/like', { method: 'POST' }).then(function(res) {
+          if (res.ok && res.data && res.data.ok && el) {
+            el.innerText = res.data.likes;
+          }
+        });
+      }
     }
 
     // 服务端权威离线挂机收益核验与领取
@@ -7399,11 +7954,15 @@
       }
     }
 
+    var activeWardrobeCat = 'outfit';
+    var isFandomBareCompare = false;
+
     function openFandomModal(sid) {
       safeInitAudio();
       var targetId = (sid && streamersMaster[sid]) ? sid : (ownedStreamers[0] || 'su');
       state.activeFandomStreamerId = targetId;
       state.activeFandomPreviewStage = null;
+      isFandomBareCompare = false;
       renderFandomModal();
       document.getElementById("fandomModal").classList.remove("hidden");
     }
@@ -7414,8 +7973,376 @@
 
     function previewFandomStage(stageNum) {
       safeInitAudio();
-      state.activeFandomPreviewStage = Math.max(1, Math.min(5, parseInt(stageNum, 10) || 1));
+      var st = Math.max(1, Math.min(5, parseInt(stageNum, 10) || 1));
+      state.activeFandomPreviewStage = st;
+      isFandomBareCompare = (st === 1);
+      playCoinSound();
       renderFandomModal();
+    }
+
+    function toggleFandomBareCompare() {
+      safeInitAudio();
+      isFandomBareCompare = !isFandomBareCompare;
+      if (isFandomBareCompare) {
+        state.activeFandomPreviewStage = 1;
+      } else {
+        state.activeFandomPreviewStage = null;
+      }
+      playCoinSound();
+      renderFandomModal();
+    }
+
+    function switchWardrobeCategory(cat) {
+      safeInitAudio();
+      activeWardrobeCat = cat || 'outfit';
+      playCoinSound();
+      renderFandomModal();
+    }
+
+    function equipOrUnlockWardrobeItem(cat, itemId) {
+      safeInitAudio();
+      var s = streamersMaster[state.activeFandomStreamerId] || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
+      var item = getWardrobeItem(cat, itemId);
+      if (!item) return;
+
+      var unlockKey = cat === 'outfit' ? 'unlockedOutfits' : (cat === 'hair' ? 'unlockedHairs' : (cat === 'makeup' ? 'unlockedMakeups' : 'unlockedScenes'));
+      var unlockedArr = s.styling[unlockKey] || [];
+      var isUnlocked = unlockedArr.indexOf(item.id) !== -1;
+
+      if (!isUnlocked) {
+        if (state.cash < item.cost) {
+          showToast("流动资金不足 " + item.cost + "w，无法定制【" + item.name + "】！", "alert");
+          playAlertSound();
+          return;
+        }
+        state.cash -= item.cost;
+        unlockedArr.push(item.id);
+        s.styling[unlockKey] = unlockedArr;
+        s.styling[cat] = item.id;
+        isFandomBareCompare = false;
+        state.activeFandomPreviewStage = null;
+
+        // 永久提升颜值、带货力与养成经验！
+        var oldStage = s.idolStage;
+        var charmAdd = Math.max(3, Math.round(item.charmBonus * 0.45));
+        s.charm = Math.min(100, s.charm + charmAdd);
+        s.sales += 3;
+        s.idolExp += 110;
+        s.debutVotes += 420;
+        s.supertopicHeat += 780;
+        state.fans += 4.8;
+
+        var newStage = computeStageFromExp(s.idolExp);
+        if (newStage > oldStage) {
+          onStreamerStageUp(s, newStage);
+        } else {
+          playCheerSound();
+          var prof = getFandomProfile(s.id);
+          launchSupportConfetti([prof.color, '#fbbf24', '#38bdf8']);
+          showToast("👗 成功解锁并换装【" + item.name + "】！颜值 +" + charmAdd + "、养成值 +110、涨粉 +4.8w！", "success");
+          fetchAiFandomCopy(s.id, 'glowup', 'fandomDualCopyContent');
+        }
+      } else {
+        s.styling[cat] = item.id;
+        isFandomBareCompare = (cat === 'makeup' && item.id === 'bare_glasses');
+        state.activeFandomPreviewStage = null;
+        playCoinSound();
+        showToast("✨ 已为【" + s.name + "】切换形象配置：【" + item.name + "】！", "info");
+      }
+
+      checkFandomMilestones(s);
+      renderHeaderStats();
+      renderStreamersList();
+      renderFandomModal();
+      saveLocalData();
+    }
+
+    // 二次元 SSR 立绘海报级渲染器（致敬《篮球少女：飞跃巅峰》满屏立绘+斜切标签+素颜对比）
+    function renderAnimeHeroPosterHTML(s, viewStage, forceBare) {
+      ensureStreamerFandomDefaults(s);
+      var prof = getFandomProfile(s.id);
+      var st = getResolvedStylingForStage(s, viewStage, forceBare);
+      var isBare = Boolean(forceBare || st.makeup.glasses);
+      var hMain = isBare ? '#334155' : st.hair.mainColor;
+      var hShadow = isBare ? '#1e293b' : (st.hair.shadowColor || '#3b251e');
+      var hHi = isBare ? '#64748b' : st.hair.hiColor;
+
+      // 背景氛围光效（阳光耀斑 / 落樱花瓣 / 星海光环）
+      var bgFx = '';
+      if (isBare) {
+        bgFx = '<circle cx="240" cy="70" r="65" fill="rgba(148,163,184,0.08)"/>';
+      } else if (st.scene.id === 'court_sunlight') {
+        bgFx =
+          '<polygon points="150,0 320,0 320,170 80,236" fill="rgba(254,249,195,0.22)"/>' +
+          '<polygon points="210,0 320,0 320,110 140,236" fill="rgba(253,224,71,0.18)"/>' +
+          '<circle cx="285" cy="36" r="42" fill="rgba(254,240,138,0.35)"/>' +
+          '<circle cx="115" cy="175" r="18" fill="rgba(187,247,208,0.22)"/>' +
+          '<circle cx="265" cy="125" r="10" fill="rgba(254,240,138,0.4)"/>';
+      } else if (st.scene.id === 'sakura_stage') {
+        bgFx =
+          '<polygon points="120,0 260,0 310,236 70,236" fill="rgba(244,114,182,0.18)"/>' +
+          '<ellipse cx="95" cy="45" rx="6" ry="3.2" transform="rotate(-25 95 45)" fill="#fbcfe8" opacity="0.8"/>' +
+          '<ellipse cx="275" cy="65" rx="7" ry="3.5" transform="rotate(18 275 65)" fill="#f9a8d4" opacity="0.85"/>' +
+          '<ellipse cx="135" cy="145" rx="5.5" ry="2.8" transform="rotate(-40 135 145)" fill="#fce7f3" opacity="0.75"/>' +
+          '<ellipse cx="288" cy="155" rx="6" ry="3" transform="rotate(32 288 155)" fill="#fbcfe8" opacity="0.8"/>';
+      } else {
+        bgFx =
+          '<circle cx="195" cy="95" r="78" fill="none" stroke="rgba(253,224,71,0.45)" stroke-width="1.8" stroke-dasharray="6 4"/>' +
+          '<circle cx="195" cy="95" r="92" fill="none" stroke="rgba(244,114,182,0.35)" stroke-width="1.2"/>' +
+          '<text x="115" y="48" font-size="14" fill="#fde047">✦</text>' +
+          '<text x="278" y="54" font-size="16" fill="#fef08a">✦</text>' +
+          '<text x="285" y="138" font-size="13" fill="#fbcfe8">✨</text>';
+      }
+
+      // 飘逸动态长发后层（微风吹拂发束感）
+      var backHairHero = '';
+      if (isBare) {
+        backHairHero = '<path d="M 152 66 C 145 102, 148 138, 158 158 L 228 158 C 236 138, 238 102, 232 66 C 222 30, 162 30, 152 66 Z" fill="#334155"/>';
+      } else if (st.hair.id === 'sakura_twintail') {
+        backHairHero =
+          '<path d="M 150 56 C 108 68, 92 132, 114 195 C 128 162, 134 114, 154 78 Z" fill="' + hMain + '"/>' +
+          '<path d="M 232 54 C 278 62, 306 124, 294 196 C 272 158, 256 108, 228 76 Z" fill="' + hMain + '"/>' +
+          '<path d="M 152 60 C 146 104, 152 146, 162 172 L 226 172 C 236 146, 240 104, 232 60 Z" fill="' + hShadow + '"/>';
+      } else {
+        // 图3同款随风向右飘逸的多束长发！
+        backHairHero =
+          '<path d="M 150 56 C 134 98, 126 154, 138 206 C 152 176, 156 138, 164 108 L 222 108 C 244 136, 276 156, 312 146 C 288 126, 272 104, 256 86 C 282 96, 304 108, 318 102 C 292 74, 260 52, 228 46 Z" fill="' + hShadow + '"/>' +
+          '<path d="M 154 52 C 142 94, 138 148, 148 196 L 232 186 C 254 162, 282 144, 308 132 C 278 114, 254 82, 232 50 Z" fill="' + hMain + '"/>' +
+          '<path d="M 230 68 C 258 88, 284 106, 310 112" stroke="' + hHi + '" stroke-width="2.2" fill="none" opacity="0.65" stroke-linecap="round"/>';
+      }
+
+      // 半身动态躯干、手臂与高定战袍（重点还原图3《篮球少女》苍骑20号球衣+持球动态 & 各阶女神华服）
+      var bodyAndOutfitSVG = '';
+      if (isBare || st.outfit.id === 'casual_hoodie') {
+        bodyAndOutfitSVG =
+          '<path d="M 134 236 C 138 164, 156 142, 192 142 C 228 142, 246 164, 250 236 Z" fill="#475569"/>' +
+          '<path d="M 164 142 Q 192 162 220 142" fill="#334155"/>' +
+          '<line x1="180" y1="154" x2="178" y2="192" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>' +
+          '<line x1="204" y1="154" x2="206" y2="192" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>' +
+          '<text x="192" y="206" font-size="11" fill="#cbd5e1" font-weight="700" text-anchor="middle">PRACTICE</text>';
+      } else if (st.outfit.id === 'basket_jersey') {
+        // 致敬图3《篮球少女：飞跃巅峰》：修长手臂 + 黑白紫撞色「苍骑 20」无袖篮球服 + 蕾丝颈环 + 右手控球！
+        bodyAndOutfitSVG =
+          // 左右活力手臂
+          '<path d="M 158 144 C 136 162, 124 188, 116 218 L 132 224 C 142 198, 152 176, 166 160 Z" fill="#ffe6d8"/>' +
+          '<path d="M 224 144 C 246 158, 264 176, 274 198 L 258 208 C 246 188, 234 170, 218 158 Z" fill="#ffe6d8"/>' +
+          // 球衣主体（清爽白底 + 黑紫撞色肩带与侧边收腰）
+          '<path d="M 148 236 L 156 142 C 172 138, 212 138, 228 142 L 238 236 Z" fill="#f8fafc"/>' +
+          '<path d="M 156 142 L 170 140 L 164 174 L 150 164 Z M 228 142 L 214 140 L 220 174 L 234 164 Z" fill="#1e293b"/>' +
+          '<path d="M 148 236 L 153 185 L 163 190 L 160 236 Z M 238 236 L 233 185 L 223 190 L 226 236 Z" fill="#312e81"/>' +
+          '<path d="M 170 140 L 192 162 L 214 140" fill="none" stroke="#1e293b" stroke-width="4" stroke-linejoin="round"/>' +
+          '<path d="M 173 140 L 192 158 L 211 140" fill="none" stroke="#818cf8" stroke-width="1.6" stroke-linejoin="round"/>' +
+          // 胸前「苍骑」与「20」字样
+          '<text x="192" y="180" font-size="12" font-weight="900" fill="#1e293b" text-anchor="middle" letter-spacing="3">苍骑</text>' +
+          '<text x="192" y="208" font-size="24" font-weight="900" font-style="italic" fill="#1e293b" stroke="#818cf8" stroke-width="0.8" text-anchor="middle">20</text>' +
+          // 紫黑波浪choker颈环
+          '<path d="M 181 124 Q 192 129 203 124" stroke="#312e81" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+          // 立体高光篮球道具
+          '<defs><radialGradient id="bballGrad" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fdba74"/><stop offset="55%" stop-color="#ea580c"/><stop offset="100%" stop-color="#9a3412"/></radialGradient></defs>' +
+          '<circle cx="258" cy="192" r="28" fill="url(#bballGrad)" stroke="#431407" stroke-width="1.8"/>' +
+          '<path d="M 231 186 Q 258 174 285 194 M 242 168 Q 262 192 248 218 M 236 206 Q 262 194 282 176" stroke="#431407" stroke-width="1.8" fill="none"/>';
+      } else if (st.outfit.id === 'jk_uniform') {
+        bodyAndOutfitSVG =
+          '<path d="M 140 236 C 144 162, 160 140, 192 140 C 224 140, 240 162, 244 236 Z" fill="#f8fafc"/>' +
+          '<path d="M 152 142 L 192 178 L 232 142 L 222 138 L 192 162 L 162 138 Z" fill="#1e3a8a"/>' +
+          '<path d="M 156 145 L 192 174 L 228 145" fill="none" stroke="#ffffff" stroke-width="1.6"/>' +
+          '<polygon points="192,172 178,196 192,188 206,196" fill="#e11d48"/>' +
+          '<circle cx="192" cy="173" r="4" fill="#be123c"/>';
+      } else if (st.outfit.id === 'hanfu_goddess') {
+        bodyAndOutfitSVG =
+          // 飘逸仙气披帛丝带
+          '<path d="M 142 156 C 106 142, 96 184, 122 222 M 242 156 C 278 142, 288 184, 262 222" stroke="rgba(167,243,208,0.75)" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+          '<path d="M 136 236 C 142 162, 158 140, 192 140 C 226 140, 242 162, 248 236 Z" fill="#065f46"/>' +
+          '<path d="M 156 140 L 210 212 M 228 140 L 174 212" stroke="#ecfdf5" stroke-width="6" stroke-linecap="round"/>' +
+          '<rect x="154" y="194" width="76" height="42" rx="4" fill="#10b981" stroke="#fde047" stroke-width="1.8"/>' +
+          '<circle cx="192" cy="134" r="3.5" fill="#fde047"/>';
+      } else {
+        // 绯红C位打歌服 / 星河璀璨高定晚礼服
+        var isCouture = st.outfit.id === 'haute_couture';
+        bodyAndOutfitSVG =
+          // 露肩美肌与锁骨手臂
+          '<path d="M 134 236 C 142 166, 158 144, 192 144 C 226 144, 242 166, 250 236 Z" fill="#ffe6d8"/>' +
+          // 抹胸高定礼服
+          '<path d="M 146 236 L 154 158 Q 173 148 192 160 Q 211 148 230 158 L 238 236 Z" fill="' + (isCouture ? '#701a75' : '#be123c') + '"/>' +
+          '<path d="M 154 158 Q 173 148 192 160 Q 211 148 230 158" fill="none" stroke="#fde047" stroke-width="3"/>' +
+          // 奢华钻石项链
+          '<path d="M 174 134 Q 192 146 210 134" stroke="#fef08a" stroke-width="2" fill="none"/>' +
+          '<polygon points="192,143 187,151 192,157 197,151" fill="#38bdf8" stroke="#ffffff" stroke-width="1"/>' +
+          '<circle cx="182" cy="141" r="2" fill="#fde047"/><circle cx="202" cy="141" r="2" fill="#fde047"/>';
+      }
+
+      // 二次元美少女五官与渐变大眼 (poster 级高精度)
+      var faceAndEyesHero = '';
+      if (isBare) {
+        faceAndEyesHero =
+          '<ellipse cx="176" cy="84" rx="4.5" ry="5" fill="#1e293b"/>' +
+          '<ellipse cx="208" cy="84" rx="4.5" ry="5" fill="#1e293b"/>' +
+          '<rect x="162" y="74" width="25" height="18" rx="3.5" fill="rgba(226,232,240,0.25)" stroke="#0f172a" stroke-width="3.4"/>' +
+          '<rect x="197" y="74" width="25" height="18" rx="3.5" fill="rgba(226,232,240,0.25)" stroke="#0f172a" stroke-width="3.4"/>' +
+          '<line x1="187" y1="82" x2="197" y2="82" stroke="#0f172a" stroke-width="3"/>' +
+          '<path d="M 167 68 Q 176 66 184 69 M 200 69 Q 208 66 217 68" stroke="#334155" stroke-width="2" fill="none"/>';
+      } else {
+        faceAndEyesHero =
+          '<defs><linearGradient id="heroIris" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + st.makeup.irisTop + '"/><stop offset="100%" stop-color="' + st.makeup.irisBot + '"/></linearGradient></defs>' +
+          // 灵动英气双眉
+          '<path d="M 164 68 Q 175 63 185 67 M 199 67 Q 209 63 220 68" stroke="' + hShadow + '" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+          // 左眼：眼白 + 渐变虹膜 + 深邃瞳孔 + 双层星芒高光 + 飞扬睫毛
+          '<ellipse cx="175" cy="83" rx="9.2" ry="10.2" fill="#ffffff"/>' +
+          '<ellipse cx="175.5" cy="84" rx="7.2" ry="8.5" fill="url(#heroIris)"/>' +
+          '<ellipse cx="175.5" cy="84.5" rx="3.5" ry="4.2" fill="#1e1b4b"/>' +
+          '<circle cx="172.2" cy="79.8" r="2.8" fill="#ffffff"/>' +
+          '<circle cx="178.8" cy="87.5" r="1.5" fill="#ffffff"/>' +
+          '<path d="M 164 79.5 Q 175 70.5 185.5 79.5" stroke="#1e1b4b" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
+          '<path d="M 164 79.5 L 159.5 76.5 M 168 75 L 165.5 72" stroke="#1e1b4b" stroke-width="2" stroke-linecap="round"/>' +
+          // 右眼
+          '<ellipse cx="209" cy="83" rx="9.2" ry="10.2" fill="#ffffff"/>' +
+          '<ellipse cx="208.5" cy="84" rx="7.2" ry="8.5" fill="url(#heroIris)"/>' +
+          '<ellipse cx="208.5" cy="84.5" rx="3.5" ry="4.2" fill="#1e1b4b"/>' +
+          '<circle cx="205.2" cy="79.8" r="2.8" fill="#ffffff"/>' +
+          '<circle cx="211.8" cy="87.5" r="1.5" fill="#ffffff"/>' +
+          '<path d="M 198.5 79.5 Q 209 70.5 220 79.5" stroke="#1e1b4b" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
+          '<path d="M 220 79.5 L 224.5 76.5 M 216 75 L 218.5 72" stroke="#1e1b4b" stroke-width="2" stroke-linecap="round"/>' +
+          // 蜜桃腮红与泪痣
+          '<ellipse cx="164" cy="95" rx="6.5" ry="3.2" fill="#fb7185" opacity="' + st.makeup.blush + '"/>' +
+          '<ellipse cx="220" cy="95" rx="6.5" ry="3.2" fill="#fb7185" opacity="' + st.makeup.blush + '"/>' +
+          (st.makeup.tearMole ? '<circle cx="215.5" cy="93.5" r="1.35" fill="#4c0519"/>' : '') +
+          // 耳坠饰品
+          '<circle cx="151" cy="93" r="3" fill="#fde047" stroke="#ffffff" stroke-width="1"/>' +
+          '<circle cx="233" cy="93" r="3" fill="#fde047" stroke="#ffffff" stroke-width="1"/>';
+      }
+
+      // 前额多束空气刘海 + 姬发侧发 + 高光发带 + 头饰/皇冠
+      var frontHairHero =
+        '<path d="M 152 66 C 148 94, 150 124, 158 148 C 160 120, 158 90, 162 66 Z M 232 66 C 236 94, 234 124, 226 148 C 224 120, 226 90, 222 66 Z" fill="' + hMain + '"/>' +
+        '<path d="M 152 68 C 156 32, 228 32, 232 68 L 222 76 L 214 57 L 203 78 L 192 54 L 181 78 L 170 57 L 160 76 Z" fill="' + hMain + '"/>' +
+        '<path d="M 166 50 Q 192 40 218 50" stroke="' + hHi + '" stroke-width="3.2" fill="none" opacity="0.8" stroke-linecap="round"/>';
+
+      var headwearHero = '';
+      if (!isBare && st.hair.id === 'milk_tea_wave') {
+        headwearHero =
+          '<path d="M 158 55 Q 192 33 226 55" stroke="#1e293b" stroke-width="5.5" fill="none" stroke-linecap="round"/>' +
+          '<path d="M 156 56 L 140 68 M 156 56 L 145 76" stroke="#312e81" stroke-width="3.2" stroke-linecap="round"/>';
+      } else if (!isBare && st.hair.id === 'jade_updo') {
+        headwearHero =
+          '<circle cx="160" cy="44" r="6" fill="#10b981" stroke="#fde047" stroke-width="1.8"/>' +
+          '<line x1="160" y1="50" x2="156" y2="70" stroke="#fde047" stroke-width="1.8"/>';
+      } else if (!isBare && (viewStage === 5 || st.hair.id === 'galaxy_queen')) {
+        headwearHero =
+          '<polygon points="172,38 180,18 192,29 204,18 212,38" fill="#fde047" stroke="#b45309" stroke-width="1.5"/>' +
+          '<circle cx="192" cy="27" r="3.5" fill="#ec4899"/>';
+      }
+
+      var rarityLabel = (!isBare && (viewStage === 5 || s.charm >= 92)) ? 'UR' : s.tier;
+      var stageInfo = getIdolStageInfo(s, isBare ? 1 : viewStage);
+
+      var svgHero =
+        '<svg width="100%" height="100%" viewBox="0 0 320 236" preserveAspectRatio="xMidYMid slice" style="background:' + (isBare ? 'linear-gradient(145deg, #1e293b, #334155)' : st.scene.bg) + ';">' +
+          bgFx +
+          // 左上角巨幅倾斜二次元角色名艺术字（致敬图3「卧云真昼」海报排版，完整居中偏左不裁切）
+          '<g transform="translate(28, 96) rotate(-7) skewX(-12)">' +
+            '<text x="0" y="0" font-size="29" font-weight="900" fill="none" stroke="#0f172a" stroke-width="5.5" stroke-linejoin="round">' + escapeHTML(s.name) + '</text>' +
+            '<text x="0" y="0" font-size="29" font-weight="900" fill="' + (isBare ? '#94a3b8' : '#e0e7ff') + '">' + escapeHTML(s.name) + '</text>' +
+          '</g>' +
+          backHairHero +
+          // 修长脖颈与锁骨高光
+          '<rect x="184" y="106" width="16" height="34" rx="6" fill="#ffe6d8"/>' +
+          '<path d="M 184 114 Q 192 120 200 114" fill="none" stroke="#f3bfa8" stroke-width="1.5"/>' +
+          '<path d="M 176 133 Q 192 140 208 133" fill="none" stroke="#f3bfa8" stroke-width="1.4"/>' +
+          bodyAndOutfitSVG +
+          // 精致二次元美少女 V 脸轮廓
+          '<path d="M 157 64 C 156 93, 173 111, 192 115 C 211 111, 228 93, 227 64 C 225 38, 159 38, 157 64 Z" fill="#fff2ea"/>' +
+          faceAndEyesHero +
+          // 精致日系微点鼻尖与灵动樱花小嘴
+          '<path d="M 191.8 91 L 190.6 93.8" stroke="#d99b84" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
+          (isBare
+            ? '<path d="M 188 102 Q 192 103 196 102" stroke="#a87b7b" stroke-width="1.8" fill="none" stroke-linecap="round"/>'
+            : '<path d="M 187.5 100.5 Q 192 101.8 196.5 100.5 Q 195.2 105.5 192 105.5 Q 188.8 105.5 187.5 100.5 Z" fill="' + st.makeup.lip + '"/><path d="M 189.5 102.2 Q 192 103.2 194.5 102.2" stroke="#ffe4e6" stroke-width="0.9" fill="none" stroke-linecap="round"/>') +
+          frontHairHero +
+          headwearHero +
+        '</svg>';
+
+      return (
+        svgHero +
+        // 左上角素颜小窗对比角标
+        '<div class="poster-before-mini" data-action="toggle-fandom-bare" title="点击切换海选素颜 vs 当前高定立绘">' +
+          getPersonifiedAvatarSVG(s, 30, 1) +
+          '<div style="line-height:1.2;">' +
+            '<div style="font-size:9.5px;color:#94a3b8;font-weight:700;">海选素颜 Lv.1</div>' +
+            '<div style="font-size:10.5px;color:#fde047;font-weight:800;">✨颜值 ' + s.charm + ' (' + escapeHTML(stageInfo.shortName) + ')</div>' +
+          '</div>' +
+        '</div>' +
+        // 右上角 SSR / UR 金属徽章 + 定位标签
+        '<div class="poster-top-right-rarity">' +
+          '<span class="poster-ssr-emblem">' + escapeHTML(rarityLabel) + '</span>' +
+          '<span class="poster-role-pill">' + escapeHTML(st.outfit.roleTag || '颜值担当 · C位') + '</span>' +
+        '</div>' +
+        // 左下角双斜切战力标签（致敬图3「冲框高手 / 内外全能」）
+        '<div class="poster-slant-tags">' +
+          '<span class="poster-slant-tag tag-gold">' + escapeHTML(isBare ? '海选素人' : st.outfit.tag1) + '</span>' +
+          '<span class="poster-slant-tag tag-navy">' + escapeHTML(isBare ? '黑框封印' : st.outfit.tag2) + '</span>' +
+        '</div>' +
+        // 右下角一键切换素颜/女神对比按钮
+        '<button type="button" class="poster-compare-btn' + (isBare ? ' active' : '') + '" data-action="toggle-fandom-bare">' +
+          (isBare ? '✨ 切回高定女神立绘' : '👁️ 对比海选素颜') +
+        '</button>'
+      );
+    }
+
+    function renderWardrobeStudio(s) {
+      ensureStreamerFandomDefaults(s);
+      var catBar = document.getElementById("wardrobeCatBar");
+      if (catBar) {
+        var btns = catBar.querySelectorAll('[data-action="switch-wardrobe-cat"]');
+        for (var i = 0; i < btns.length; i++) {
+          var c = btns[i].getAttribute('data-cat');
+          if (c === activeWardrobeCat) btns[i].classList.add('active');
+          else btns[i].classList.remove('active');
+        }
+      }
+
+      var totalUnlocked =
+        (s.styling.unlockedOutfits ? s.styling.unlockedOutfits.length : 1) +
+        (s.styling.unlockedHairs ? s.styling.unlockedHairs.length : 1) +
+        (s.styling.unlockedMakeups ? s.styling.unlockedMakeups.length : 1) +
+        (s.styling.unlockedScenes ? s.styling.unlockedScenes.length : 1);
+      var sumEl = document.getElementById("wardrobeSummaryText");
+      if (sumEl) sumEl.innerText = "已收集 " + totalUnlocked + " / 20 件高定";
+
+      var grid = document.getElementById("wardrobeItemsGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      var items = IMAGE_WARDROBE[activeWardrobeCat] || [];
+      var unlockKey = activeWardrobeCat === 'outfit' ? 'unlockedOutfits' : (activeWardrobeCat === 'hair' ? 'unlockedHairs' : (activeWardrobeCat === 'makeup' ? 'unlockedMakeups' : 'unlockedScenes'));
+      var unlockedArr = s.styling[unlockKey] || [];
+      var currentEquipped = s.styling[activeWardrobeCat];
+
+      items.forEach(function(item) {
+        var isUnlocked = unlockedArr.indexOf(item.id) !== -1;
+        var isEquipped = currentEquipped === item.id && !isFandomBareCompare;
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "wardrobe-item-card" + (isEquipped ? " equipped" : (isUnlocked ? " unlocked" : ""));
+        btn.setAttribute("data-action", "wardrobe-item-click");
+        btn.setAttribute("data-cat", activeWardrobeCat);
+        btn.setAttribute("data-item-id", item.id);
+
+        var statusPill = isEquipped
+          ? '<span class="badge badge-gold" style="font-size:9.5px;">✓ 已穿戴</span>'
+          : (isUnlocked
+              ? '<span class="badge badge-green" style="font-size:9.5px;">免费换装</span>'
+              : '<span class="badge badge-red" style="font-size:9.5px;">🔓 ' + item.cost + 'w定制</span>');
+
+        btn.innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:center;gap:4px;width:100%;">' +
+            '<span style="font-size:11.5px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + item.icon + ' ' + escapeHTML(item.name) + '</span>' +
+            statusPill +
+          '</div>' +
+          '<div style="font-size:10px;color:#94a3b8;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHTML(item.buffDesc) + '</div>' +
+          '<div style="font-size:10px;color:#fbcfe8;font-weight:700;">' + (item.charmBonus > 0 ? ('✨ 魅力颜值 +' + item.charmBonus) : '海选初始造型') + '</div>';
+        grid.appendChild(btn);
+      });
     }
 
     function renderFandomModal() {
@@ -7425,13 +8352,11 @@
       var prof = getFandomProfile(s.id);
       var curStage = s.idolStage;
       var viewStage = state.activeFandomPreviewStage || curStage;
-      var curStageInfo = getIdolStageInfo(s, curStage);
       var viewStageInfo = getIdolStageInfo(s, viewStage);
-      var lv1Info = getIdolStageInfo(s, 1);
       var superTier = getSupertopicTierName(s.supertopicHeat);
 
       var titleEl = document.getElementById("fandomModalTitle");
-      if (titleEl) titleEl.innerText = "💖 " + s.name + " · 养成超话";
+      if (titleEl) titleEl.innerText = "💖 " + s.name + " · 形象管理与超话";
 
       var tierBadge = document.getElementById("fandomSuperTierBadge");
       if (tierBadge) {
@@ -7448,7 +8373,7 @@
               '<strong style="font-size:12.5px;color:#fff;">粉丝名：' + escapeHTML(prof.fanClub) + '</strong>' +
               '<span style="font-size:10.5px;color:#cbd5e1;">(' + escapeHTML(prof.colorName) + ')</span>' +
             '</div>' +
-            '<div style="font-size:11px;color:#fbcfe8;margin-top:3px;">📣 “' + escapeHTML(prof.slogan) + '”</div>' +
+            '<div style="font-size:11px;color:#fbcfe8;margin-top:2px;">📣 “' + escapeHTML(prof.slogan) + '”</div>' +
           '</div>' +
           '<div style="text-align:right;flex-shrink:0;">' +
             '<div style="font-size:10px;color:#94a3b8;">选秀累计票数</div>' +
@@ -7456,28 +8381,16 @@
           '</div>';
       }
 
-      // Before (Lv.1) -> After (当前 / 预览阶段)
-      var beforeAv = document.getElementById("fandomBeforeAvatar");
-      var afterAv = document.getElementById("fandomAfterAvatar");
-      if (beforeAv) beforeAv.innerHTML = getPersonifiedAvatarSVG(s, 78, 1);
-      if (afterAv) afterAv.innerHTML = getPersonifiedAvatarSVG(s, 78, viewStage);
-
-      var beforeLbl = document.getElementById("fandomBeforeLabel");
-      if (beforeLbl) beforeLbl.innerText = lv1Info.title;
-      var afterTag = document.getElementById("fandomAfterTag");
-      if (afterTag) {
-        afterTag.innerText = viewStage === curStage
-          ? ("当前形态 · Lv." + curStage)
-          : (viewStage > curStage ? ("🔮 未来形态预览 · Lv." + viewStage) : ("📸 历史回顾 · Lv." + viewStage));
+      // 渲染二次元 SSR 满屏立绘海报卡
+      var posterBox = document.getElementById("fandomHeroPosterBox");
+      if (posterBox) {
+        if (isFandomBareCompare) posterBox.classList.add("is-bare-preview");
+        else posterBox.classList.remove("is-bare-preview");
+        posterBox.innerHTML = renderAnimeHeroPosterHTML(s, viewStage, isFandomBareCompare);
       }
-      var afterLbl = document.getElementById("fandomAfterLabel");
-      if (afterLbl) afterLbl.innerText = viewStageInfo.title;
 
-      var charmDelta = document.getElementById("fandomCharmDelta");
-      if (charmDelta) {
-        var gain = Math.max(0, s.charm - prof.baseCharm);
-        charmDelta.innerText = (s.isBeauty ? "✨颜值 " : "气场 ") + s.charm + (gain > 0 ? " (+" + gain + ")" : "");
-      }
+      // 渲染 4 维高定形象管理定制台
+      renderWardrobeStudio(s);
 
       // 5阶时间轴按钮
       var tl = document.getElementById("fandomStageTimeline");
@@ -8536,6 +9449,14 @@
       } else if (action === 'quick-recruit-for-debut') {
         closeDebutModal();
         openRecruitModal();
+      } else if (action === 'toggle-fandom-bare') {
+        toggleFandomBareCompare();
+      } else if (action === 'switch-wardrobe-cat') {
+        switchWardrobeCategory(el.getAttribute('data-cat'));
+      } else if (action === 'wardrobe-item-click') {
+        equipOrUnlockWardrobeItem(el.getAttribute('data-cat'), el.getAttribute('data-item-id'));
+      } else if (action === 'reconnect-cloud') {
+        ensureCloudConnected(true);
       }
     }
 
