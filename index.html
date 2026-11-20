@@ -1632,7 +1632,7 @@
             <span class="mcn-rank-title">全服MCN天梯</span>
             <span id="cloudStatusPill" class="cloud-pill offline">○ 离线</span>
             <span id="pvpUnreadPill" class="badge badge-red hidden" style="font-size: 9px; padding: 1px 5px; white-space: nowrap;">⚔️ 0</span>
-            <span id="rankChangeBadge" class="rank-badge-change hidden">▲ 0</span>
+            <span id="rankChangeBadge" class="rank-badge-change hidden" style="white-space: nowrap; flex-shrink: 0;">▲ 0</span>
           </div>
           <div class="mcn-rank-target" id="rankTargetText">距第97名【飞鱼文化】差 6.5w 战力</div>
         </div>
@@ -3575,9 +3575,24 @@
         ? '#64748b'
         : (stage === 5 ? '#fde047' : (stage === 4 ? '#f472b6' : (tier === 'SSR' ? '#f59e0b' : (tier === 'S' ? '#a855f7' : '#38bdf8'))));
 
-      var cgPath = (isBeauty && (overrideStage === 1 || (st.makeup && st.makeup.glasses)))
-        ? CG_PORTRAIT_FILES.bare_trainee
-        : CG_PORTRAIT_FILES[id];
+      var cgPath = null;
+      if (isBeauty && (overrideStage === 1 || (st.makeup && st.makeup.glasses))) {
+        cgPath = CG_PORTRAIT_FILES.bare_trainee;
+      } else if (CG_PORTRAIT_FILES[id]) {
+        cgPath = CG_PORTRAIT_FILES[id];
+      } else if (isBeauty) {
+        var beautyPool = s.grade === 'amateur'
+          ? [CG_PORTRAIT_FILES.bare_trainee, CG_PORTRAIT_FILES.daxue]
+          : [CG_PORTRAIT_FILES.su, CG_PORTRAIT_FILES.meina, CG_PORTRAIT_FILES.zhao, CG_PORTRAIT_FILES.ling, CG_PORTRAIT_FILES.daxue];
+        var bHash = 0;
+        for (var bi = 0; bi < id.length; bi++) bHash = (bHash * 31 + id.charCodeAt(bi)) | 0;
+        cgPath = beautyPool[Math.abs(bHash) % beautyPool.length];
+      } else if (tier === 'SSR' || tier === 'S') {
+        var starPool = [CG_PORTRAIT_FILES.dong, CG_PORTRAIT_FILES.yang, CG_PORTRAIT_FILES.zhui, CG_PORTRAIT_FILES.ai01, CG_PORTRAIT_FILES.liu, CG_PORTRAIT_FILES.he];
+        var sHash = 0;
+        for (var si = 0; si < id.length; si++) sHash = (sHash * 31 + id.charCodeAt(si)) | 0;
+        cgPath = starPool[Math.abs(sHash) % starPool.length];
+      }
 
       if (cgPath) {
         return (
