@@ -543,8 +543,13 @@
       background: #0f172a;
       box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
-    .avatar-personified svg {
+    .avatar-personified svg,
+    .avatar-personified .avatar-cg-img {
       display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 16%;
       border-radius: 10px;
     }
     .avatar-tier-badge {
@@ -1002,7 +1007,8 @@
       0%, 100% { transform: scale(1); opacity: 0.95; }
       50% { transform: scale(1.04); opacity: 1; }
     }
-    .avatar-stage-ur svg {
+    .avatar-stage-ur svg,
+    .avatar-stage-ur .avatar-cg-img {
       @media (prefers-reduced-motion: no-preference) {
         animation: urFloatGlow 2.8s ease-in-out infinite;
       }
@@ -1085,21 +1091,29 @@
       gap: 4px;
     }
     .stage-step-btn {
-      padding: 5px 2px;
-      min-block-size: 36px;
+      padding: 4px 1px;
+      min-block-size: 34px;
       border-radius: 8px;
       border: 1px solid #2e3d60;
       background: #0f172a;
       color: #94a3b8;
-      font-size: 10px;
-      font-weight: 700;
+      font-size: 9px;
+      font-weight: 800;
       cursor: pointer;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .stage-step-btn.unlocked {
       border-color: rgba(244, 114, 182, 0.55);
       color: #fbcfe8;
       background: rgba(157, 23, 77, 0.22);
+    }
+    .stage-step-btn.locked {
+      border-style: dashed;
+      border-color: rgba(148, 163, 184, 0.35);
+      color: #64748b;
+      background: rgba(15, 23, 42, 0.72);
     }
     .stage-step-btn.active-preview {
       border-color: #fbbf24;
@@ -1193,6 +1207,103 @@
     .anime-hero-poster.is-bare-preview {
       border-color: #64748b;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    }
+    .poster-cg-backdrop {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .poster-cg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 18%;
+      transition: transform 0.35s ease, filter 0.35s ease;
+    }
+    .poster-cg-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(11, 15, 25, 0.65) 0%, rgba(11, 15, 25, 0.12) 48%, rgba(11, 15, 25, 0.28) 100%),
+                  linear-gradient(180deg, rgba(11, 15, 25, 0.25) 0%, transparent 38%, rgba(11, 15, 25, 0.58) 100%);
+      pointer-events: none;
+    }
+    .poster-hero-name-art {
+      position: absolute;
+      left: 16px;
+      top: 66px;
+      transform: rotate(-7deg) skewX(-12deg);
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #f8fafc;
+      text-shadow: -2px -2px 0 #0f172a, 2px -2px 0 #0f172a, -2px 2px 0 #0f172a, 2px 2px 0 #0f172a, 0 5px 14px rgba(0, 0, 0, 0.85);
+      pointer-events: none;
+      z-index: 3;
+      max-width: 52%;
+      line-height: 1.05;
+    }
+    .poster-locked-watermark {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      background: rgba(9, 13, 24, 0.48);
+      backdrop-filter: blur(1.5px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      overflow: hidden;
+      pointer-events: auto;
+    }
+    .poster-locked-watermark::before {
+      content: "待锁定 · UNLOCKED PREVIEW · 待解锁穿搭 · LOCKED · 待锁定 · LOCKED · 待解锁穿搭 · LOCKED";
+      position: absolute;
+      width: 190%;
+      left: -45%;
+      top: 46%;
+      transform: rotate(-22deg);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.16);
+      border-top: 1px dashed rgba(251, 191, 36, 0.28);
+      border-bottom: 1px dashed rgba(251, 191, 36, 0.28);
+      padding: 4px 0;
+      background: rgba(15, 23, 42, 0.35);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .poster-locked-center-pill {
+      position: relative;
+      z-index: 2;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1.5px dashed rgba(251, 191, 36, 0.78);
+      border-radius: 12px;
+      padding: 8px 14px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+    }
+    .poster-unlock-cta {
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(135deg, #f59e0b, #ec4899);
+      color: #ffffff;
+      border: 1px solid rgba(254, 240, 138, 0.85);
+      font-size: 11px;
+      font-weight: 900;
+      padding: 5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.45);
     }
     .poster-slant-tags {
       position: absolute;
@@ -1310,7 +1421,7 @@
       border: 1px solid #2e3d60;
       background: #0f172a;
       color: #94a3b8;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       cursor: pointer;
       white-space: nowrap;
@@ -1328,26 +1439,92 @@
       margin-top: 6px;
     }
     .wardrobe-item-card {
+      position: relative;
       min-width: 0;
       overflow: hidden;
       background: #0b1120;
       border: 1px solid #24314c;
       border-radius: 10px;
-      padding: 7px 8px;
+      padding: 6px 7px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 4px;
       cursor: pointer;
       text-align: left;
-      transition: border-color 0.15s ease;
+      transition: border-color 0.15s ease, transform 0.12s ease;
     }
     .wardrobe-item-card.equipped {
       border-color: #fbbf24;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(15, 23, 42, 0.95));
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(15, 23, 42, 0.96));
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
     }
     .wardrobe-item-card.unlocked:not(.equipped) {
-      border-color: rgba(244, 114, 182, 0.45);
+      border-color: rgba(244, 114, 182, 0.48);
+    }
+    .wardrobe-item-card.previewing {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.45);
+    }
+    .wardrobe-item-card.locked {
+      border-style: dashed;
+      border-color: rgba(148, 163, 184, 0.35);
+      background: repeating-linear-gradient(
+        -32deg,
+        rgba(15, 23, 42, 0.94),
+        rgba(15, 23, 42, 0.94) 10px,
+        rgba(30, 41, 59, 0.72) 10px,
+        rgba(30, 41, 59, 0.72) 20px
+      );
+    }
+    .wardrobe-card-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      width: 100%;
+    }
+    .wardrobe-card-thumb {
+      position: relative;
+      width: 34px;
+      height: 44px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: #1e293b;
+    }
+    .wardrobe-card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 15%;
+      display: block;
+    }
+    .wardrobe-item-card.locked .wardrobe-card-thumb img,
+    .wardrobe-item-card.locked .wardrobe-card-thumb .wardrobe-thumb-tint {
+      filter: grayscale(0.45) brightness(0.68);
+    }
+    .wardrobe-locked-stamp {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.42);
+      pointer-events: none;
+    }
+    .wardrobe-locked-stamp span {
+      transform: rotate(-18deg);
+      font-size: 7.5px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      color: #fde68a;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px dashed rgba(251, 191, 36, 0.8);
+      padding: 1px 3px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
 
     /* ================================================================
@@ -1743,7 +1920,7 @@
             <div style="display: flex; align-items: center; gap: 8px;">
               <span id="battleStreamerAvatar" style="font-size: 22px;">💄</span>
               <div>
-                <div id="battleStreamerName" style="font-size: 13px; font-weight: 700; color: #fff;">苏晚晴</div>
+                <div id="battleStreamerName" style="font-size: 13px; font-weight: 700; color: #fff;">待选主播</div>
                 <div style="font-size: 11px; color: #fbbf24; font-weight: 700;">连击: <span id="comboVal">0</span>x</div>
               </div>
             </div>
@@ -1922,12 +2099,12 @@
 
     <!-- 模态框 2: 签约市场弹窗 -->
     <div id="recruitModal" class="modal-overlay hidden">
-      <div class="modal-card" style="max-height: 420px;">
+      <div class="modal-card" style="max-height: 78vh;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
-          <span style="font-size: 14px; font-weight: 700; color: #fff;">🌟 人才经纪市场</span>
+          <span style="font-size: 14px; font-weight: 800; color: #fff;">🌟 人才经纪市场（主播池）</span>
           <button type="button" class="btn-icon" data-action="close-recruit" style="padding: 4px 8px;">✕</button>
         </div>
-        <div id="marketList" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 320px;"></div>
+        <div id="marketList" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 62vh; padding-right: 2px;"></div>
       </div>
     </div>
 
@@ -2238,10 +2415,10 @@
               <span id="wardrobeSummaryText" style="font-size: 10.5px; color: #fbbf24; font-weight: 700;">已解锁 4/20 件</span>
             </div>
             <div class="wardrobe-cat-bar" id="wardrobeCatBar">
-              <button type="button" class="wardrobe-cat-btn active" data-action="switch-wardrobe-cat" data-cat="outfit">👗 战袍穿搭</button>
-              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="hair">💇‍♀️ 发型发色</button>
-              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="makeup">💄 妆容美瞳</button>
-              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="scene">✨ 海报场景</button>
+              <button type="button" class="wardrobe-cat-btn active" data-action="switch-wardrobe-cat" data-cat="outfit">👗 战袍</button>
+              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="hair">💇‍♀️ 发型</button>
+              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="makeup">💄 妆容</button>
+              <button type="button" class="wardrobe-cat-btn" data-action="switch-wardrobe-cat" data-cat="scene">✨ 场景</button>
             </div>
             <div class="wardrobe-items-grid" id="wardrobeItemsGrid"></div>
           </div>
@@ -2479,11 +2656,13 @@
       : location.origin;
 
     var state = {
+      saveVersion: 34,
       agencyName: '星河造物互娱',
       agencyNamed: false,
       officeSelected: false,
       tutorialLiveDone: false,
       tutorialDismissed: false,
+      freeSRecruitToken: 0,
       week: 1,
       maxWeek: 12,
       cash: 100.0,
@@ -3033,7 +3212,7 @@
 
       // 4维高定形象管理数据初始化（每位颜值主播默认赠送1套招牌青春高定，开箱即可体验惊艳立绘与素颜一键对比！）
       if (!s.styling || typeof s.styling !== 'object') {
-        var defOutfit = s.id === 'meina' ? 'basket_jersey' : (s.id === 'zhao' ? 'hanfu_goddess' : (s.id === 'ling' ? 'idol_stage' : (s.id === 'daxue' ? 'jk_uniform' : 'basket_jersey')));
+        var defOutfit = s.id === 'meina' ? 'basket_jersey' : (s.id === 'zhao' ? 'hanfu_goddess' : (s.id === 'ling' ? 'idol_stage' : (s.id === 'daxue' ? 'jk_uniform' : 'idol_stage')));
         var defHair = s.id === 'zhao' ? 'jade_updo' : (s.id === 'ling' ? 'sakura_twintail' : 'milk_tea_wave');
         var defMakeup = s.id === 'su' ? 'sport_vitality' : (s.id === 'meina' ? 'sport_vitality' : 'peach_clear');
         var defScene = (s.id === 'su' || s.id === 'meina') ? 'court_sunlight' : 'sakura_stage';
@@ -3093,7 +3272,102 @@
       ensureStreamerFandomDefaults(streamersMaster[k]);
     });
 
-    // 二次元美少女/潮男精细矢量立绘头像引擎 (V脸骨相 + 双层渐变星瞳 + 飘逸刘海耳发 + 实时换装联动)
+    var CG_PORTRAIT_FILES = {
+      su: './assets/cg/su.webp',
+      meina: './assets/cg/meina.webp',
+      zhao: './assets/cg/zhao.webp',
+      ling: './assets/cg/ling.webp',
+      daxue: './assets/cg/daxue.webp',
+      dong: './assets/cg/dong.webp',
+      yang: './assets/cg/yang.webp',
+      zhui: './assets/cg/zhui.webp',
+      ai01: './assets/cg/ai01.webp',
+      liu: './assets/cg/liu.webp',
+      he: './assets/cg/he.webp',
+      bare_trainee: './assets/cg/bare_trainee.webp'
+    };
+
+    var OUTFIT_CG_FILES = {
+      casual_hoodie: './assets/cg/bare_trainee.webp',
+      basket_jersey: './assets/cg/meina.webp',
+      jk_uniform: './assets/cg/daxue.webp',
+      idol_stage: './assets/cg/ling.webp',
+      hanfu_goddess: './assets/cg/zhao.webp',
+      haute_couture: './assets/cg/su.webp'
+    };
+
+    // 拟人化高颜值动漫 CG 矢量兜底引擎（供非写真主视觉角色与离线回退使用，拒绝简陋火柴头）
+    function renderStylizedAnimeCGSVG(s, size, stage, v, st, isBare) {
+      var id = s.id || 'luo';
+      var tier = s.tier || 'A';
+      var isBeauty = s.isBeauty;
+      var ringColor = isBare ? '#64748b' : (stage >= 4 ? '#fbbf24' : (tier === 'SSR' ? '#f59e0b' : (tier === 'S' ? '#a855f7' : (tier === 'A' ? '#38bdf8' : '#34d399'))));
+      var bgGradient = isBare
+        ? 'linear-gradient(135deg, #1e293b, #334155)'
+        : (isBeauty ? st.scene.bg : (tier === 'SSR' ? 'linear-gradient(145deg, #312e81, #7c2d12)' : (tier === 'S' ? 'linear-gradient(145deg, #1e1b4b, #4c1d95)' : (tier === 'A' ? 'linear-gradient(145deg, #0f172a, #1e3a8a)' : 'linear-gradient(145deg, #064e3b, #0f172a)'))));
+      var skinTop = isBare ? '#f5d6c3' : (v.skin || '#ffe6d5');
+      var skinBot = '#ebb89b';
+      var hColor = isBare ? '#334155' : (v.hair || '#1e293b');
+      var cColor = isBare ? '#475569' : (v.clothes || '#2563eb');
+      var irisC = v.eye || '#38bdf8';
+      var uid = 'cg_' + id + '_' + stage + '_' + size + '_' + Math.floor(Math.random() * 999);
+
+      var propSVG = '';
+      if (v.hairStyle === 'glasses' || id === 'luo') {
+        propSVG = '<rect x="33" y="39" width="14" height="10" rx="2.5" fill="rgba(255,255,255,0.12)" stroke="#fbbf24" stroke-width="1.8"/><rect x="53" y="39" width="14" height="10" rx="2.5" fill="rgba(255,255,255,0.12)" stroke="#fbbf24" stroke-width="1.8"/><line x1="47" y1="43.5" x2="53" y2="43.5" stroke="#fbbf24" stroke-width="1.6"/>';
+      } else if (id === 'kun') {
+        propSVG = '<path d="M 27 33 Q 50 24 73 33 L 71 38 Q 50 30 29 38 Z" fill="#6d28d9" stroke="#fde047" stroke-width="1.1"/>';
+      } else if (id === 'cap' || id === 'chen') {
+        propSVG = '<path d="M 26 28 Q 50 14 74 28 L 76 34 Q 50 28 24 34 Z" fill="#1e3a8a"/><circle cx="50" cy="23" r="3.2" fill="#fde047"/>';
+      } else if (id === 'wei') {
+        propSVG = '<path d="M 22 33 Q 50 18 78 33 L 84 37 Q 50 30 16 37 Z" fill="#d97706" stroke="#fde68a" stroke-width="1"/>';
+      } else if (id === 'mao') {
+        propSVG = '<path d="M 27 29 Q 50 15 73 29 L 75 34 L 25 34 Z" fill="#581c87"/><rect x="40" y="21" width="20" height="5" rx="2" fill="#e879f9"/>';
+      } else if (id === 'xiuche') {
+        propSVG = '<circle cx="60" cy="44" r="6.8" fill="rgba(56,189,248,0.16)" stroke="#fbbf24" stroke-width="1.8"/>';
+      }
+
+      var crown = (stage === 5) ? '<polygon points="36,19 41,9 50,14 59,9 64,19" fill="#fde047" stroke="#b45309" stroke-width="1"/>' : '';
+
+      return (
+        '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" style="background:' + bgGradient + ';border:' + (stage === 5 ? '2px' : '1.5px') + ' solid ' + ringColor + ';">' +
+          '<defs>' +
+            '<linearGradient id="sk_' + uid + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + skinTop + '"/><stop offset="100%" stop-color="' + skinBot + '"/></linearGradient>' +
+            '<linearGradient id="ir_' + uid + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0f172a"/><stop offset="60%" stop-color="' + irisC + '"/><stop offset="100%" stop-color="#fde68a"/></linearGradient>' +
+          '</defs>' +
+          '<circle cx="50" cy="42" r="36" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>' +
+          // 轮廓后发与肩部立体阴影
+          '<path d="M 20 40 C 16 62, 18 82, 24 94 L 76 94 C 82 82, 84 62, 80 40 C 74 14, 26 14, 20 40 Z" fill="' + hColor + '"/>' +
+          '<path d="M 12 100 C 16 74, 31 68, 50 68 C 69 68, 84 74, 88 100 Z" fill="' + cColor + '"/>' +
+          '<path d="M 35 69 L 50 86 L 65 69 L 58 68 L 50 79 L 42 68 Z" fill="#f8fafc" opacity="0.92"/>' +
+          '<path d="M 43 56 L 43 72 Q 50 78 57 72 L 57 56 Z" fill="url(#sk_' + uid + ')"/>' +
+          '<path d="M 43 60 Q 50 65 57 60 L 57 64 Q 50 68 43 64 Z" fill="rgba(180,95,65,0.28)"/>' +
+          // 骨相 Anime 脸型
+          '<path d="M 28 36 C 28 53, 38 63, 50 66 C 62 63, 72 53, 72 36 C 71 20, 29 20, 28 36 Z" fill="url(#sk_' + uid + ')"/>' +
+          // 锐利眉眼与高光渐变虹膜
+          '<path d="M 32 38 Q 39 35 45 38.5 M 55 38.5 Q 61 35 68 38" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+          '<ellipse cx="39" cy="44.5" rx="5.2" ry="4.8" fill="#ffffff"/>' +
+          '<ellipse cx="39.5" cy="44.8" rx="3.8" ry="4.2" fill="url(#ir_' + uid + ')"/>' +
+          '<circle cx="38" cy="43" r="1.4" fill="#ffffff"/><circle cx="41" cy="46.2" r="0.8" fill="#ffffff"/>' +
+          '<path d="M 33 42 Q 39 38.5 45 42.5" stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+          '<ellipse cx="61" cy="44.5" rx="5.2" ry="4.8" fill="#ffffff"/>' +
+          '<ellipse cx="60.5" cy="44.8" rx="3.8" ry="4.2" fill="url(#ir_' + uid + ')"/>' +
+          '<circle cx="59" cy="43" r="1.4" fill="#ffffff"/><circle cx="62" cy="46.2" r="0.8" fill="#ffffff"/>' +
+          '<path d="M 55 42.5 Q 61 38.5 67 42" stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+          '<ellipse cx="33" cy="51.5" rx="4" ry="1.8" fill="#fb7185" opacity="0.28"/>' +
+          '<ellipse cx="67" cy="51.5" rx="4" ry="1.8" fill="#fb7185" opacity="0.28"/>' +
+          '<path d="M 49.5 48.5 L 48.5 51 L 50.6 51.3" stroke="#c88a70" stroke-width="1.1" fill="none" stroke-linecap="round"/>' +
+          '<path d="M 45.5 56.5 Q 50 59.5 54.5 56.5" stroke="#b95858" stroke-width="1.8" fill="none" stroke-linecap="round"/>' +
+          // 空气感前额刘海与天使高光
+          '<path d="M 24 38 C 25 14, 75 14, 76 38 L 70 43 L 64 29 L 57 42 L 50 28 L 43 43 L 36 30 L 30 42 Z" fill="' + hColor + '"/>' +
+          '<path d="M 32 25 Q 50 19 68 25" stroke="rgba(255,255,255,0.45)" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+          propSVG +
+          crown +
+        '</svg>'
+      );
+    }
+
+    // 二次元美少女/潮男高颜值拟人 CG 头像引擎 (真CG高清原画优先 + 精细动漫CG矢量兜底 + 阶段框徽章)
     function getPersonifiedAvatarSVG(s, size, overrideStage) {
       if (!s) return '';
       ensureStreamerFandomDefaults(s);
@@ -3104,9 +3378,28 @@
       var prof = getFandomProfile(id);
       var isBeauty = prof.isBeauty;
       var st = getResolvedStylingForStage(s, overrideStage, isBeauty && overrideStage === 1);
-      var uid = id + '_' + stage + '_' + size;
+      var stTag = stage === 5 ? 'UR' : ('Lv.' + stage);
+      var showStagePill = size >= 38;
+      var ringCol = (isBeauty && (overrideStage === 1 || st.makeup.glasses))
+        ? '#64748b'
+        : (stage === 5 ? '#fde047' : (stage === 4 ? '#f472b6' : (tier === 'SSR' ? '#f59e0b' : (tier === 'S' ? '#a855f7' : '#38bdf8'))));
+
+      var cgPath = (isBeauty && (overrideStage === 1 || (st.makeup && st.makeup.glasses)))
+        ? CG_PORTRAIT_FILES.bare_trainee
+        : CG_PORTRAIT_FILES[id];
+
+      if (cgPath) {
+        return (
+          '<div class="avatar-personified' + (stage === 5 ? ' avatar-stage-ur' : '') + '" style="width:' + size + 'px; height:' + size + 'px;">' +
+            '<img class="avatar-cg-img" src="' + cgPath + '" alt="' + escapeHTML(s.name) + '" style="border:' + (stage === 5 ? '2px' : '1.5px') + ' solid ' + ringCol + ';" />' +
+            '<span class="avatar-tier-badge tier-' + tier.toLowerCase() + '">' + tier + '</span>' +
+            (showStagePill ? '<span class="avatar-stage-badge stage-pill-' + stage + '">' + stTag + '</span>' : '') +
+          '</div>'
+        );
+      }
 
       if (isBeauty) {
+        var uid = id + '_' + stage + '_' + size;
         var isBare = st.makeup.glasses;
         var hMain = isBare ? '#334155' : st.hair.mainColor;
         var hHi = isBare ? '#64748b' : st.hair.hiColor;
@@ -3232,133 +3525,8 @@
       };
 
       var v = charVisuals[id] || { skin: '#fed7aa', hair: '#1f2937', clothes: '#3b82f6', extra: '🎙️', eye: '#111827', hairStyle: 'short' };
-
-      // 按养成阶段动态切换舞台背景与边框气场
-      var bgGradient = tier === 'SSR' ? 'linear-gradient(135deg, #78350f, #991b1b)' :
-                       (tier === 'S' ? 'linear-gradient(135deg, #4c1d95, #312e81)' :
-                       (tier === 'A' ? 'linear-gradient(135deg, #1e3a8a, #0e7490)' : 'linear-gradient(135deg, #064e3b, #047857)'));
-      var ringColor = tier === 'SSR' ? '#f59e0b' : (tier === 'S' ? '#a855f7' : (tier === 'A' ? '#38bdf8' : '#34d399'));
-
-      if (isBeauty) {
-        if (stage === 1) {
-          bgGradient = 'linear-gradient(135deg, #334155, #1e293b)';
-          ringColor = '#64748b';
-        } else if (stage === 2) {
-          bgGradient = 'linear-gradient(135deg, #475569, #831843)';
-          ringColor = '#f9a8d4';
-        } else if (stage === 3) {
-          bgGradient = 'linear-gradient(135deg, #4c1d95, ' + prof.color + ')';
-          ringColor = prof.color;
-        } else if (stage === 4) {
-          bgGradient = 'linear-gradient(135deg, #831843, #7c2d12, #4c1d95)';
-          ringColor = '#fbbf24';
-        } else {
-          bgGradient = 'linear-gradient(135deg, #be185d, #7e22ce, #f59e0b)';
-          ringColor = '#fde047';
-        }
-      } else if (stage >= 4) {
-        bgGradient = stage === 5
-          ? 'linear-gradient(135deg, #991b1b, #6d28d9, #d97706)'
-          : 'linear-gradient(135deg, #312e81, #78350f)';
-        ringColor = stage === 5 ? '#fde047' : '#fbbf24';
-      }
-
-      // 颜值赛道 Lv.1 素颜素人：朴素卫衣 + 素颜淡色 + 厚黑框眼镜；Lv.2+ 逐步蜕变女神高定！
-      var clothesFill = (isBeauty && stage === 1) ? '#475569' : (isBeauty && stage >= 4 ? prof.color : v.clothes);
-      var skinFill = (isBeauty && stage === 1) ? '#f3d2be' : (isBeauty && stage >= 3 ? '#ffe8dc' : v.skin);
-      var clothesSVG = '<path d="M 20 100 C 20 72, 35 68, 50 68 C 65 68, 80 72, 80 100 Z" fill="' + clothesFill + '"/>';
-      if (isBeauty && stage === 1) {
-        // 素人圆领灰卫衣 + 抽绳
-        clothesSVG += '<path d="M 41 69 Q 50 75 59 69" stroke="#334155" stroke-width="2" fill="none"/><line x1="45" y1="73" x2="44" y2="85" stroke="#94a3b8" stroke-width="1.5"/><line x1="55" y1="73" x2="56" y2="85" stroke="#94a3b8" stroke-width="1.5"/>';
-      } else if (isBeauty && stage === 2) {
-        // 校花学院白翻领 + 小蝴蝶结
-        clothesSVG += '<path d="M 38 69 L 50 82 L 62 69" fill="#ffffff" opacity="0.92"/><circle cx="50" cy="80" r="3.2" fill="#f472b6"/>';
-      } else if (isBeauty && stage === 3) {
-        // 偶像舞台打歌服 V领金边 + 珍珠项圈
-        clothesSVG += '<path d="M 35 70 L 50 86 L 65 70" fill="none" stroke="#fde68a" stroke-width="2.5"/><path d="M 40 68 Q 50 74 60 68" stroke="#ffffff" stroke-width="2.2" stroke-dasharray="2.5 2" fill="none"/>';
-      } else if (isBeauty && stage >= 4) {
-        // 高定星光礼服 + 钻石项链
-        clothesSVG += '<path d="M 28 76 Q 50 88 72 76 L 78 100 L 22 100 Z" fill="' + (stage === 5 ? '#9d174d' : prof.color) + '"/><path d="M 28 76 Q 50 88 72 76" fill="none" stroke="#fde047" stroke-width="2.4"/><path d="M 39 67 Q 50 76 61 67" stroke="#fef08a" stroke-width="2" fill="none"/><polygon points="50,74 47,79 50,83 53,79" fill="#e0f2fe" stroke="#fde047" stroke-width="1"/>';
-      }
-
-      // 发型绘制 (颜值赛道 Lv.1 朴素齐刘海，Lv.2+ 解锁绝美飘逸发型)
-      var hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 C 60 24, 40 24, 30 32 Z" fill="' + v.hair + '"/>';
-      if (isBeauty && stage === 1) {
-        hairSVG = '<path d="M 28 36 C 28 17, 72 17, 72 36 L 68 33 L 32 33 Z" fill="#334155"/>';
-      } else if (v.hairStyle === 'long') {
-        hairSVG = '<path d="M 28 40 C 25 18, 75 18, 72 40 C 68 30, 32 30, 28 40 Z" fill="' + v.hair + '"/><path d="M 24 36 Q 20 68 30 78 Q 34 55 30 38 Z M 76 36 Q 80 68 70 78 Q 66 55 70 38 Z" fill="' + v.hair + '"/>';
-      } else if (v.hairStyle === 'glasses') {
-        hairSVG = '<path d="M 30 32 C 30 16, 70 16, 70 32 C 60 25, 40 25, 30 32 Z" fill="' + v.hair + '"/><rect x="36" y="34" width="12" height="11" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="52" y="34" width="12" height="11" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><line x1="48" y1="39" x2="52" y2="39" stroke="#fbbf24" stroke-width="2"/>';
-      } else if (v.hairStyle === 'wild') {
-        hairSVG = '<path d="M 24 35 L 32 15 L 42 22 L 50 10 L 58 22 L 68 15 L 76 35 Z" fill="' + v.hair + '"/><rect x="36" y="36" width="28" height="8" rx="3" fill="#18181b"/>';
-      } else if (v.hairStyle === 'twintail') {
-        hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><circle cx="23" cy="36" r="9" fill="' + v.hair + '"/><circle cx="77" cy="36" r="9" fill="' + v.hair + '"/>';
-      } else if (v.hairStyle === 'bun') {
-        hairSVG = '<path d="M 29 36 C 29 18, 71 18, 71 36 C 60 26, 40 26, 29 36 Z" fill="' + v.hair + '"/><circle cx="32" cy="18" r="7" fill="' + v.hair + '"/><circle cx="68" cy="18" r="7" fill="' + v.hair + '"/><path d="M 26 38 Q 22 65 29 74 M 74 38 Q 78 65 71 74" stroke="' + v.hair + '" stroke-width="5" stroke-linecap="round"/>';
-      } else if (v.hairStyle === 'bunny') {
-        hairSVG = '<path d="M 29 35 C 29 18, 71 18, 71 35 Z" fill="' + v.hair + '"/><ellipse cx="36" cy="14" rx="5" ry="11" fill="' + v.hair + '"/><ellipse cx="64" cy="14" rx="5" ry="11" fill="' + v.hair + '"/>';
-      } else if (v.hairStyle === 'cyber') {
-        hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><rect x="34" y="36" width="32" height="7" rx="3" fill="#38bdf8" opacity="0.9"/>';
-      } else if (v.hairStyle === 'headband') {
-        hairSVG = '<path d="M 30 32 C 30 18, 70 18, 70 32 Z" fill="' + v.hair + '"/><rect x="28" y="28" width="44" height="6" fill="#ef4444"/>';
-      }
-
-      // 眼妆、腮红、耳饰、黑框眼镜与皇冠星环特效
-      var auraSVG = '';
-      if (stage >= 4) {
-        auraSVG += '<circle cx="50" cy="44" r="34" fill="none" stroke="' + (stage === 5 ? '#fde047' : '#f472b6') + '" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.75"/>';
-      }
-      if (stage >= 3) {
-        auraSVG += '<text x="16" y="24" font-size="11" fill="#fde047">✦</text><text x="82" y="26" font-size="10" fill="#fbcfe8">✦</text>';
-      }
-      if (stage === 5) {
-        auraSVG += '<circle cx="50" cy="44" r="41" fill="none" stroke="#fbcfe8" stroke-width="1" opacity="0.55"/><text x="14" y="64" font-size="10" fill="#fde047">✨</text>';
-      }
-
-      var faceExtraSVG = '';
-      if (isBeauty && stage === 1) {
-        // 厚黑框素人眼镜 + 朴素唇色
-        faceExtraSVG += '<rect x="34" y="34" width="14" height="12" rx="3" fill="rgba(226,232,240,0.22)" stroke="#0f172a" stroke-width="2.8"/><rect x="52" y="34" width="14" height="12" rx="3" fill="rgba(226,232,240,0.22)" stroke="#0f172a" stroke-width="2.8"/><line x1="48" y1="39" x2="52" y2="39" stroke="#0f172a" stroke-width="2.6"/>';
-      } else if (isBeauty) {
-        // Lv.2+ 腮红 + 眼眸高光 + 卷翘睫毛
-        var blushOp = stage === 2 ? '0.35' : (stage === 3 ? '0.5' : '0.62');
-        faceExtraSVG += '<ellipse cx="35" cy="48" rx="4.5" ry="2.4" fill="#fb7185" opacity="' + blushOp + '"/><ellipse cx="65" cy="48" rx="4.5" ry="2.4" fill="#fb7185" opacity="' + blushOp + '"/>';
-        if (stage >= 3) {
-          // 眼尾飞扬眼线 + 珍珠耳环
-          faceExtraSVG += '<path d="M 38 37 L 35 35 M 62 37 L 65 35" stroke="#1e1b4b" stroke-width="1.5" stroke-linecap="round"/><circle cx="27" cy="49" r="2.6" fill="#fef08a" stroke="#fff" stroke-width="0.8"/><circle cx="73" cy="49" r="2.6" fill="#fef08a" stroke="#fff" stroke-width="0.8"/>';
-        }
-        if (stage >= 4) {
-          // 星星瞳孔高光 + 发丝天使光环
-          faceExtraSVG += '<circle cx="41" cy="41.5" r="1.2" fill="#fde047"/><circle cx="57" cy="41.5" r="1.2" fill="#fde047"/><path d="M 35 24 Q 50 18 65 24" stroke="#ffffff" stroke-width="1.6" fill="none" opacity="0.7"/>';
-        }
-      }
-
-      // Lv.5 UR 国民神颜皇冠
-      var crownSVG = '';
-      if (stage === 5) {
-        crownSVG = '<polygon points="36,20 41,9 50,15 59,9 64,20" fill="#fde047" stroke="#b45309" stroke-width="1.2"/><circle cx="50" cy="14" r="2.2" fill="#ec4899"/>';
-      }
-
-      var mouthColor = (isBeauty && stage === 1) ? '#946b6b' : (isBeauty && stage >= 3 ? '#e11d48' : '#b91c1c');
-      var mouthPath = (isBeauty && stage === 1) ? 'M 46 53 Q 50 54.5 54 53' : 'M 44 52 Q 50 57 56 52';
-      var cornerEmoji = (isBeauty && stage === 1) ? '📷' : (stage === 5 ? '👑' : (stage === 4 ? '💎' : v.extra));
-
-      var svgBust =
-        '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" style="background:' + bgGradient + '; border: ' + (stage === 5 ? '2px' : '1.5px') + ' solid ' + ringColor + ';">' +
-          auraSVG +
-          clothesSVG +
-          '<rect x="44" y="52" width="12" height="18" rx="4" fill="' + skinFill + '"/>' +
-          '<ellipse cx="50" cy="42" rx="22" ry="24" fill="' + skinFill + '"/>' +
-          '<ellipse cx="42" cy="40" rx="' + (isBeauty && stage >= 3 ? '3.5' : '3') + '" ry="' + (isBeauty && stage >= 3 ? '4' : '3.5') + '" fill="' + v.eye + '"/>' +
-          '<ellipse cx="58" cy="40" rx="' + (isBeauty && stage >= 3 ? '3.5' : '3') + '" ry="' + (isBeauty && stage >= 3 ? '4' : '3.5') + '" fill="' + v.eye + '"/>' +
-          (isBeauty && stage === 1 ? '' : '<circle cx="43.2" cy="38.8" r="1.2" fill="#ffffff"/><circle cx="59.2" cy="38.8" r="1.2" fill="#ffffff"/>') +
-          '<path d="' + mouthPath + '" stroke="' + mouthColor + '" stroke-width="' + (isBeauty && stage >= 3 ? '2.5' : '2') + '" fill="none" stroke-linecap="round"/>' +
-          hairSVG +
-          faceExtraSVG +
-          crownSVG +
-          '<circle cx="78" cy="78" r="14.5" fill="#0f172a" stroke="' + ringColor + '" stroke-width="1.5"/>' +
-          '<text x="78" y="83" font-size="12.5" text-anchor="middle">' + cornerEmoji + '</text>' +
-        '</svg>';
+      var isBareFallback = isBeauty && (overrideStage === 1 || (st.makeup && st.makeup.glasses));
+      var svgBust = renderStylizedAnimeCGSVG(s, size, stage, v, st, isBareFallback);
 
       var stageTag = stage === 5 ? 'UR' : ('Lv.' + stage);
       var showStagePill = size >= 40;
@@ -5251,15 +5419,33 @@
       var box = document.getElementById("marketList");
       box.innerHTML = "";
 
+      if (ownedStreamers.length === 0) {
+        var guideTip = document.createElement("div");
+        guideTip.className = "card-subpanel";
+        guideTip.style.cssText = "border-color:rgba(251,191,36,0.55);background:linear-gradient(135deg, rgba(245,158,11,0.16), rgba(236,72,153,0.12));font-size:11.5px;color:#fde68a;line-height:1.45;padding:8px 10px;";
+        guideTip.innerHTML = "🧭 <strong>主播池挖角引导：</strong>当前旗下 0 名主播！你手里有 <strong>" + state.cash.toFixed(0) + "w</strong> 资金，可挑选任意高颜值 CG 主播签约（如 28w 苏晚晴、15w 校园练习生、40w 市井强哥），或关闭后去开 35w 盲盒碰手气！" +
+          (state.freeSRecruitToken > 0 ? '<div style="margin-top:4px;color:#6ee7b7;font-weight:800;">🕵️ 持有【0元S级猎头直签券 ×' + state.freeSRecruitToken + '】：下方 S 级主播可免费直接带走！</div>' : '');
+        box.appendChild(guideTip);
+      } else if (state.freeSRecruitToken > 0) {
+        var tokenTip = document.createElement("div");
+        tokenTip.className = "card-subpanel";
+        tokenTip.style.cssText = "border-color:rgba(52,211,153,0.55);background:rgba(16,185,129,0.14);font-size:11.5px;color:#6ee7b7;font-weight:700;padding:7px 10px;";
+        tokenTip.innerHTML = "🕵️ 你持有【0元S级猎头直签券 ×" + state.freeSRecruitToken + "】，可免费签走任意 1 名 S 级主播！";
+        box.appendChild(tokenTip);
+      }
+
       var unowned = Object.keys(streamersMaster).filter(function(id) {
         return ownedStreamers.indexOf(id) === -1;
       });
 
       if (unowned.length === 0) {
-        box.innerHTML = '<div style="color: #94a3b8; font-size: 13px; text-align: center; padding: 24px;">全网顶尖达人已全部归入破晓麾下！</div>';
+        box.innerHTML = '<div style="color: #94a3b8; font-size: 13px; text-align: center; padding: 24px;">全网顶尖达人已全部归入麾下！</div>';
       } else {
         unowned.forEach(function(id) {
           var s = streamersMaster[id];
+          var useFreeS = (state.freeSRecruitToken > 0 && s.tier === 'S');
+          var effCost = useFreeS ? 0 : s.cost;
+
           var item = document.createElement("div");
           item.className = "card-subpanel";
           item.style.display = "flex";
@@ -5271,21 +5457,23 @@
           leftInfo.style.display = "flex";
           leftInfo.style.alignItems = "center";
           leftInfo.style.gap = "8px";
+          leftInfo.style.minWidth = "0";
           leftInfo.innerHTML = 
-            getPersonifiedAvatarSVG(s, 42) +
-            '<div>' +
-              '<div style="font-size: 13px; font-weight: 700; color: #fff;">' + escapeHTML(s.name) + ' <span class="badge badge-gold">' + escapeHTML(s.tag) + '</span></div>' +
-              '<div style="font-size: 11px; color: #94a3b8;">' + escapeHTML(s.desc) + '</div>' +
+            getPersonifiedAvatarSVG(s, 48) +
+            '<div style="min-width:0;">' +
+              '<div style="font-size: 13px; font-weight: 700; color: #fff; display:flex; align-items:center; gap:4px; flex-wrap:wrap;">' + escapeHTML(s.name) + ' <span class="badge badge-gold">' + escapeHTML(s.tag) + '</span></div>' +
+              '<div style="font-size: 11px; color: #94a3b8; line-height: 1.35;">' + escapeHTML(s.desc) + '</div>' +
             '</div>';
 
           var recruitBtn = document.createElement("button");
           recruitBtn.className = "btn-small-upgrade";
-          recruitBtn.style.background = "#c91b1b";
-          recruitBtn.innerText = "签约 " + s.cost + "w";
+          recruitBtn.style.background = useFreeS ? "#059669" : "#c91b1b";
+          recruitBtn.style.flexShrink = "0";
+          recruitBtn.innerText = useFreeS ? "🕵️ 0w直签" : ("签约 " + effCost + "w");
           recruitBtn.setAttribute("data-action", "recruit-streamer");
           recruitBtn.setAttribute("data-id", s.id);
 
-          if (state.cash < s.cost) {
+          if (state.cash < effCost) {
             recruitBtn.disabled = true;
             recruitBtn.classList.add("btn-disabled");
           }
@@ -5307,18 +5495,21 @@
       safeInitAudio();
       var s = streamersMaster[id];
       if (!s) return;
-      if (state.cash < s.cost) {
-        showToast("流动资金不足，无法支付 " + s.cost + " 万签约金！", "alert");
+      var useFreeS = (state.freeSRecruitToken > 0 && s.tier === 'S');
+      var effCost = useFreeS ? 0 : s.cost;
+      if (state.cash < effCost) {
+        showToast("流动资金不足，无法支付 " + effCost + " 万签约金！", "alert");
         playAlertSound();
         return;
       }
-      state.cash -= s.cost;
+      if (useFreeS) state.freeSRecruitToken -= 1;
+      else state.cash -= effCost;
       if (ownedStreamers.indexOf(id) === -1) ownedStreamers.push(id);
       if (!state.selectedStreamerId || ownedStreamers.indexOf(state.selectedStreamerId) === -1) {
         state.selectedStreamerId = id;
       }
       playCheerSound();
-      showToast("签约成功！顶流达人 " + s.name + " 正式加盟！", "success");
+      showToast((useFreeS ? "🕵️ 猎头券生效！0元免签 " : "签约成功！顶流达人 ") + s.name + " 正式加盟！", "success");
       closeRecruitModal();
       updateMCNRank(true);
       renderStreamersList();
@@ -6588,7 +6779,7 @@
       { id: 'energy_boost', tier: 'blue', icon: '⚡', name: '精力永动机', cost: 0, desc: '所有带货直播冷却额外 -4 秒，节奏拉满' },
       { id: 'pr_master', tier: 'purple', icon: '🛡️', name: '公关祖师爷', cost: 0, desc: '全篇所有黑红争议增幅减半，稳如老狗' },
       { id: 'troll_hunter', tier: 'purple', icon: '🥊', name: '步行街水军头子', cost: 0, desc: '周末带货每踢出 1 个黑粉额外反赚 +6.0w 流量费' },
-      { id: 'inside_mole', tier: 'gold', icon: '🕵️', name: '前东家内鬼(SSR)', cost: 120, desc: '开局直接拐走 1 名随机 S 级王牌主播加盟！' },
+      { id: 'inside_mole', tier: 'gold', icon: '🕵️', name: '前东家内鬼(SSR)', cost: 120, desc: '开局获赠 1 张【S级0元直签券】，可去主播池免费签走任意 S 级王牌！' },
       { id: 'blindbox_eye', tier: 'gold', icon: '👁️', name: '盲盒透视眼(SSR)', cost: 150, desc: '本局首次盲盒抽卡 100% 必出 S 或 SSR 顶流！' },
       { id: 'vc_angel', tier: 'gold', icon: '💰', name: '华尔街风投(SSR)', cost: 180, desc: '开局流动资金暴涨 +80w，前期直接梭哈盲盒！' }
     ];
@@ -6683,15 +6874,8 @@
       } else if (t.id === 'vc_angel') {
         state.cash += 80;
       } else if (t.id === 'inside_mole') {
-        var sPool = Object.keys(streamersMaster).filter(function(id) {
-          return streamersMaster[id].tier === 'S' && ownedStreamers.indexOf(id) === -1;
-        });
-        if (sPool.length > 0) {
-          var pickedId = sPool[Math.floor(Math.random() * sPool.length)];
-          ownedStreamers.push(pickedId);
-          if (!state.selectedStreamerId) state.selectedStreamerId = pickedId;
-          showToast("🕵️ 内鬼生效！开局直接带走 S 级王牌【" + streamersMaster[pickedId].name + "】！", "success");
-        }
+        state.freeSRecruitToken = (state.freeSRecruitToken || 0) + 1;
+        showToast("🕵️ 内鬼卧底生效！获得 1 张【0元S级猎头直签券】，快去主播池自选签约！", "success");
       }
 
       document.getElementById("talentPickModal").classList.add("hidden");
@@ -7296,8 +7480,10 @@
       state.storyFlags = {};
       state.usedStoryletIds = [];
       state.currentEventId = null;
+      state.saveVersion = 34;
       state.activeTalentId = null;
       state.talentPickedThisRun = false;
+      state.freeSRecruitToken = 0;
       state.blindBoxDraws = 0;
       state.dmInbox = [];
       state.usedDmIds = [];
@@ -7447,7 +7633,9 @@
             state.usedStoryletIds = Array.isArray(parsed.state.usedStoryletIds) ? parsed.state.usedStoryletIds : [];
             state.currentEventId = parsed.state.currentEventId || null;
             state.activeTalentId = parsed.state.activeTalentId || null;
+            state.saveVersion = parseInt(parsed.state.saveVersion, 10) || 0;
             state.talentPickedThisRun = Boolean(parsed.state.talentPickedThisRun);
+            state.freeSRecruitToken = Math.max(0, parseInt(parsed.state.freeSRecruitToken, 10) || 0);
             state.agencyNamed = (parsed.state.agencyNamed !== undefined) ? Boolean(parsed.state.agencyNamed) : (state.agencyName !== '破晓互娱' || state.week > 1);
             state.officeSelected = (parsed.state.officeSelected !== undefined) ? Boolean(parsed.state.officeSelected) : (state.week > 1);
             state.tutorialLiveDone = (parsed.state.tutorialLiveDone !== undefined) ? Boolean(parsed.state.tutorialLiveDone) : (state.week > 1 || state.revenueTotal > 0);
@@ -7475,10 +7663,22 @@
             }
             if (Array.isArray(parsed.ownedStreamers)) {
               ownedStreamers = parsed.ownedStreamers.filter(function(sid) { return streamersMaster[sid]; });
-              if (ownedStreamers.length > 0 && !state.selectedStreamerId) {
+              // v3.4 干净迁移：若旧版本第1周尚未正式开播且自动带入默认苏晚晴，则清空让玩家自己去主播池挖掘签约
+              if (state.saveVersion < 34 && state.week === 1 && !state.tutorialLiveDone && (state.revenueTotal || 0) === 0 && ownedStreamers.indexOf('su') !== -1) {
+                ownedStreamers = [];
+                state.selectedStreamerId = '';
+                state.cash = 100.0;
+                state.fans = 20.0;
+                state.pr = 80.0;
+                state.officeSelected = false;
+                state.currentEventId = null;
+                state.saveVersion = 34;
+                setTimeout(saveLocalData, 50);
+              } else if (ownedStreamers.length > 0 && !state.selectedStreamerId) {
                 state.selectedStreamerId = ownedStreamers[0];
               }
             }
+            state.saveVersion = 34;
             if (parsed.streamersMaster && typeof parsed.streamersMaster === 'object') {
               Object.keys(parsed.streamersMaster).forEach(function(sid) {
                 if (streamersMaster[sid] && typeof parsed.streamersMaster[sid] === 'object') {
@@ -8418,6 +8618,7 @@
 
     var activeWardrobeCat = 'outfit';
     var isFandomBareCompare = false;
+    var previewWardrobeSelection = null;
 
     function openFandomModal(sid) {
       safeInitAudio();
@@ -8429,18 +8630,21 @@
       var targetId = (sid && streamersMaster[sid]) ? sid : (ownedStreamers[0] || 'su');
       state.activeFandomStreamerId = targetId;
       state.activeFandomPreviewStage = null;
+      previewWardrobeSelection = null;
       isFandomBareCompare = false;
       renderFandomModal();
       document.getElementById("fandomModal").classList.remove("hidden");
     }
 
     function closeFandomModal() {
+      previewWardrobeSelection = null;
       document.getElementById("fandomModal").classList.add("hidden");
     }
 
     function previewFandomStage(stageNum) {
       safeInitAudio();
       var st = Math.max(1, Math.min(5, parseInt(stageNum, 10) || 1));
+      previewWardrobeSelection = null;
       state.activeFandomPreviewStage = st;
       isFandomBareCompare = (st === 1);
       playCoinSound();
@@ -8449,6 +8653,7 @@
 
     function toggleFandomBareCompare() {
       safeInitAudio();
+      previewWardrobeSelection = null;
       isFandomBareCompare = !isFandomBareCompare;
       if (isFandomBareCompare) {
         state.activeFandomPreviewStage = 1;
@@ -8466,6 +8671,48 @@
       renderFandomModal();
     }
 
+    function unlockWardrobeItemNow(s, cat, item, unlockKey) {
+      if (state.cash < item.cost) {
+        showToast("流动资金不足 " + item.cost + "w，无法定制解锁【" + item.name + "】！", "alert");
+        playAlertSound();
+        return false;
+      }
+      var unlockedArr = s.styling[unlockKey] || [];
+      if (unlockedArr.indexOf(item.id) === -1) unlockedArr.push(item.id);
+      state.cash -= item.cost;
+      s.styling[unlockKey] = unlockedArr;
+      s.styling[cat] = item.id;
+      previewWardrobeSelection = null;
+      isFandomBareCompare = false;
+      state.activeFandomPreviewStage = null;
+
+      var oldStage = s.idolStage;
+      var charmAdd = Math.max(3, Math.round(item.charmBonus * 0.45));
+      s.charm = Math.min(100, s.charm + charmAdd);
+      s.sales += 3;
+      s.idolExp += 110;
+      s.debutVotes += 420;
+      s.supertopicHeat += 780;
+      state.fans += 4.8;
+
+      var newStage = computeStageFromExp(s.idolExp);
+      if (newStage > oldStage) {
+        onStreamerStageUp(s, newStage);
+      } else {
+        playCheerSound();
+        var prof = getFandomProfile(s.id);
+        launchSupportConfetti([prof.color, '#fbbf24', '#38bdf8']);
+        showToast("👗 已解锁【" + item.name + "】并移除待锁定水印！颜值 +" + charmAdd + "、涨粉 +4.8w！", "success");
+        fetchAiFandomCopy(s.id, 'glowup', 'fandomDualCopyContent');
+      }
+      checkFandomMilestones(s);
+      renderHeaderStats();
+      renderStreamersList();
+      renderFandomModal();
+      saveLocalData();
+      return true;
+    }
+
     function equipOrUnlockWardrobeItem(cat, itemId) {
       safeInitAudio();
       var s = streamersMaster[state.activeFandomStreamerId] || streamersMaster['su'];
@@ -8478,45 +8725,27 @@
       var isUnlocked = unlockedArr.indexOf(item.id) !== -1;
 
       if (!isUnlocked) {
-        if (state.cash < item.cost) {
-          showToast("流动资金不足 " + item.cost + "w，无法定制【" + item.name + "】！", "alert");
-          playAlertSound();
+        // 首次点击未解锁穿搭：先上屏预览带「待锁定」水印效果，再次点击或点解锁按钮立即定制解锁！
+        var alreadyPreviewing = previewWardrobeSelection && previewWardrobeSelection.cat === cat && previewWardrobeSelection.id === item.id;
+        if (!alreadyPreviewing) {
+          previewWardrobeSelection = { cat: cat, id: item.id, name: item.name, cost: item.cost };
+          isFandomBareCompare = false;
+          state.activeFandomPreviewStage = null;
+          playCoinSound();
+          renderFandomModal();
+          showToast("👁️ 正在预览未解锁形象【" + item.name + "】（含待解锁水印），点海报上解锁按钮或再点一次即可定制！", "info");
           return;
         }
-        state.cash -= item.cost;
-        unlockedArr.push(item.id);
-        s.styling[unlockKey] = unlockedArr;
-        s.styling[cat] = item.id;
-        isFandomBareCompare = false;
-        state.activeFandomPreviewStage = null;
-
-        // 永久提升颜值、带货力与养成经验！
-        var oldStage = s.idolStage;
-        var charmAdd = Math.max(3, Math.round(item.charmBonus * 0.45));
-        s.charm = Math.min(100, s.charm + charmAdd);
-        s.sales += 3;
-        s.idolExp += 110;
-        s.debutVotes += 420;
-        s.supertopicHeat += 780;
-        state.fans += 4.8;
-
-        var newStage = computeStageFromExp(s.idolExp);
-        if (newStage > oldStage) {
-          onStreamerStageUp(s, newStage);
-        } else {
-          playCheerSound();
-          var prof = getFandomProfile(s.id);
-          launchSupportConfetti([prof.color, '#fbbf24', '#38bdf8']);
-          showToast("👗 成功解锁并换装【" + item.name + "】！颜值 +" + charmAdd + "、养成值 +110、涨粉 +4.8w！", "success");
-          fetchAiFandomCopy(s.id, 'glowup', 'fandomDualCopyContent');
-        }
-      } else {
-        s.styling[cat] = item.id;
-        isFandomBareCompare = (cat === 'makeup' && item.id === 'bare_glasses');
-        state.activeFandomPreviewStage = null;
-        playCoinSound();
-        showToast("✨ 已为【" + s.name + "】切换形象配置：【" + item.name + "】！", "info");
+        unlockWardrobeItemNow(s, cat, item, unlockKey);
+        return;
       }
+
+      previewWardrobeSelection = null;
+      s.styling[cat] = item.id;
+      isFandomBareCompare = (cat === 'makeup' && item.id === 'bare_glasses');
+      state.activeFandomPreviewStage = null;
+      playCoinSound();
+      showToast("✨ 已为【" + s.name + "】切换形象配置：【" + item.name + "】！", "info");
 
       checkFandomMilestones(s);
       renderHeaderStats();
@@ -8525,212 +8754,112 @@
       saveLocalData();
     }
 
-    // 二次元 SSR 立绘海报级渲染器（致敬《篮球少女：飞跃巅峰》满屏立绘+斜切标签+素颜对比）
+    function confirmUnlockPreviewedWardrobe(cat, itemId) {
+      safeInitAudio();
+      var s = streamersMaster[state.activeFandomStreamerId] || streamersMaster['su'];
+      ensureStreamerFandomDefaults(s);
+      var item = getWardrobeItem(cat, itemId);
+      if (!item) return;
+      var unlockKey = cat === 'outfit' ? 'unlockedOutfits' : (cat === 'hair' ? 'unlockedHairs' : (cat === 'makeup' ? 'unlockedMakeups' : 'unlockedScenes'));
+      unlockWardrobeItemNow(s, cat, item, unlockKey);
+    }
+
+    // 二次元 SSR 高颜值 CG 满屏立绘海报渲染器（支持真实 CG 写真、素颜对比、未解锁穿搭待锁定水印预览）
     function renderAnimeHeroPosterHTML(s, viewStage, forceBare) {
       ensureStreamerFandomDefaults(s);
       var prof = getFandomProfile(s.id);
-      var st = getResolvedStylingForStage(s, viewStage, forceBare);
+      var st = getResolvedStylingForStage(s, state.activeFandomPreviewStage, forceBare);
+
+      // 若正在试穿预览某个未解锁穿搭组件，动态覆盖到当前预览造型上
+      var previewLockedItem = null;
+      if (previewWardrobeSelection && previewWardrobeSelection.cat && previewWardrobeSelection.id) {
+        var pvItem = getWardrobeItem(previewWardrobeSelection.cat, previewWardrobeSelection.id);
+        if (pvItem) {
+          st[previewWardrobeSelection.cat] = pvItem;
+          previewLockedItem = pvItem;
+        }
+      }
+
       var isBare = Boolean(forceBare || st.makeup.glasses);
-      var hMain = isBare ? '#334155' : st.hair.mainColor;
-      var hShadow = isBare ? '#1e293b' : (st.hair.shadowColor || '#3b251e');
-      var hHi = isBare ? '#64748b' : st.hair.hiColor;
+      var isStageLocked = !previewLockedItem && (viewStage > s.idolStage) && !isBare;
+      var isPreviewLocked = Boolean(previewLockedItem || isStageLocked);
 
-      // 背景氛围光效（阳光耀斑 / 落樱花瓣 / 星海光环）
-      var bgFx = '';
-      if (isBare) {
-        bgFx = '<circle cx="240" cy="70" r="65" fill="rgba(148,163,184,0.08)"/>';
-      } else if (st.scene.id === 'court_sunlight') {
-        bgFx =
-          '<polygon points="150,0 320,0 320,170 80,236" fill="rgba(254,249,195,0.22)"/>' +
-          '<polygon points="210,0 320,0 320,110 140,236" fill="rgba(253,224,71,0.18)"/>' +
-          '<circle cx="285" cy="36" r="42" fill="rgba(254,240,138,0.35)"/>' +
-          '<circle cx="115" cy="175" r="18" fill="rgba(187,247,208,0.22)"/>' +
-          '<circle cx="265" cy="125" r="10" fill="rgba(254,240,138,0.4)"/>';
-      } else if (st.scene.id === 'sakura_stage') {
-        bgFx =
-          '<polygon points="120,0 260,0 310,236 70,236" fill="rgba(244,114,182,0.18)"/>' +
-          '<ellipse cx="95" cy="45" rx="6" ry="3.2" transform="rotate(-25 95 45)" fill="#fbcfe8" opacity="0.8"/>' +
-          '<ellipse cx="275" cy="65" rx="7" ry="3.5" transform="rotate(18 275 65)" fill="#f9a8d4" opacity="0.85"/>' +
-          '<ellipse cx="135" cy="145" rx="5.5" ry="2.8" transform="rotate(-40 135 145)" fill="#fce7f3" opacity="0.75"/>' +
-          '<ellipse cx="288" cy="155" rx="6" ry="3" transform="rotate(32 288 155)" fill="#fbcfe8" opacity="0.8"/>';
-      } else {
-        bgFx =
-          '<circle cx="195" cy="95" r="78" fill="none" stroke="rgba(253,224,71,0.45)" stroke-width="1.8" stroke-dasharray="6 4"/>' +
-          '<circle cx="195" cy="95" r="92" fill="none" stroke="rgba(244,114,182,0.35)" stroke-width="1.2"/>' +
-          '<text x="115" y="48" font-size="14" fill="#fde047">✦</text>' +
-          '<text x="278" y="54" font-size="16" fill="#fef08a">✦</text>' +
-          '<text x="285" y="138" font-size="13" fill="#fbcfe8">✨</text>';
+      // 优先挑选高颜值拟人 CG 图源
+      var heroCgSrc = null;
+      if (isBare || (st.outfit.id === 'casual_hoodie' && (s.isBeauty || previewLockedItem))) {
+        heroCgSrc = CG_PORTRAIT_FILES.bare_trainee;
+      } else if (previewWardrobeSelection && previewWardrobeSelection.cat === 'outfit' && OUTFIT_CG_FILES[st.outfit.id]) {
+        heroCgSrc = OUTFIT_CG_FILES[st.outfit.id];
+      } else if (state.activeFandomPreviewStage && state.activeFandomPreviewStage >= 2 && s.isBeauty && OUTFIT_CG_FILES[st.outfit.id]) {
+        heroCgSrc = OUTFIT_CG_FILES[st.outfit.id];
+      } else if (CG_PORTRAIT_FILES[s.id]) {
+        heroCgSrc = CG_PORTRAIT_FILES[s.id];
+      } else if (s.isBeauty && OUTFIT_CG_FILES[st.outfit.id]) {
+        heroCgSrc = OUTFIT_CG_FILES[st.outfit.id];
       }
 
-      // 飘逸动态长发后层（微风吹拂发束感）
-      var backHairHero = '';
-      if (isBare) {
-        backHairHero = '<path d="M 152 66 C 145 102, 148 138, 158 158 L 228 158 C 236 138, 238 102, 232 66 C 222 30, 162 30, 152 66 Z" fill="#334155"/>';
-      } else if (st.hair.id === 'sakura_twintail') {
-        backHairHero =
-          '<path d="M 150 56 C 108 68, 92 132, 114 195 C 128 162, 134 114, 154 78 Z" fill="' + hMain + '"/>' +
-          '<path d="M 232 54 C 278 62, 306 124, 294 196 C 272 158, 256 108, 228 76 Z" fill="' + hMain + '"/>' +
-          '<path d="M 152 60 C 146 104, 152 146, 162 172 L 226 172 C 236 146, 240 104, 232 60 Z" fill="' + hShadow + '"/>';
-      } else {
-        // 图3同款随风向右飘逸的多束长发！
-        backHairHero =
-          '<path d="M 150 56 C 134 98, 126 154, 138 206 C 152 176, 156 138, 164 108 L 222 108 C 244 136, 276 156, 312 146 C 288 126, 272 104, 256 86 C 282 96, 304 108, 318 102 C 292 74, 260 52, 228 46 Z" fill="' + hShadow + '"/>' +
-          '<path d="M 154 52 C 142 94, 138 148, 148 196 L 232 186 C 254 162, 282 144, 308 132 C 278 114, 254 82, 232 50 Z" fill="' + hMain + '"/>' +
-          '<path d="M 230 68 C 258 88, 284 106, 310 112" stroke="' + hHi + '" stroke-width="2.2" fill="none" opacity="0.65" stroke-linecap="round"/>';
+      var auraOverlay = '';
+      if (!isBare && st.scene.id === 'sakura_stage') {
+        auraOverlay = '<div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 25%, rgba(244,114,182,0.28), transparent 60%);pointer-events:none;z-index:2;"></div>';
+      } else if (!isBare && st.scene.id === 'ur_pantheon') {
+        auraOverlay = '<div style="position:absolute;inset:0;background:radial-gradient(circle at 75% 22%, rgba(251,191,36,0.26), transparent 62%);pointer-events:none;z-index:2;"></div>';
+      } else if (!isBare && st.scene.id === 'court_sunlight') {
+        auraOverlay = '<div style="position:absolute;inset:0;background:radial-gradient(circle at 82% 16%, rgba(254,240,138,0.25), transparent 58%);pointer-events:none;z-index:2;"></div>';
       }
 
-      // 半身动态躯干、手臂与高定战袍（重点还原图3《篮球少女》苍骑20号球衣+持球动态 & 各阶女神华服）
-      var bodyAndOutfitSVG = '';
-      if (isBare || st.outfit.id === 'casual_hoodie') {
-        bodyAndOutfitSVG =
-          '<path d="M 134 236 C 138 164, 156 142, 192 142 C 228 142, 246 164, 250 236 Z" fill="#475569"/>' +
-          '<path d="M 164 142 Q 192 162 220 142" fill="#334155"/>' +
-          '<line x1="180" y1="154" x2="178" y2="192" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>' +
-          '<line x1="204" y1="154" x2="206" y2="192" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round"/>' +
-          '<text x="192" y="206" font-size="11" fill="#cbd5e1" font-weight="700" text-anchor="middle">PRACTICE</text>';
-      } else if (st.outfit.id === 'basket_jersey') {
-        // 致敬图3《篮球少女：飞跃巅峰》：修长手臂 + 黑白紫撞色「苍骑 20」无袖篮球服 + 蕾丝颈环 + 右手控球！
-        bodyAndOutfitSVG =
-          // 左右活力手臂
-          '<path d="M 158 144 C 136 162, 124 188, 116 218 L 132 224 C 142 198, 152 176, 166 160 Z" fill="#ffe6d8"/>' +
-          '<path d="M 224 144 C 246 158, 264 176, 274 198 L 258 208 C 246 188, 234 170, 218 158 Z" fill="#ffe6d8"/>' +
-          // 球衣主体（清爽白底 + 黑紫撞色肩带与侧边收腰）
-          '<path d="M 148 236 L 156 142 C 172 138, 212 138, 228 142 L 238 236 Z" fill="#f8fafc"/>' +
-          '<path d="M 156 142 L 170 140 L 164 174 L 150 164 Z M 228 142 L 214 140 L 220 174 L 234 164 Z" fill="#1e293b"/>' +
-          '<path d="M 148 236 L 153 185 L 163 190 L 160 236 Z M 238 236 L 233 185 L 223 190 L 226 236 Z" fill="#312e81"/>' +
-          '<path d="M 170 140 L 192 162 L 214 140" fill="none" stroke="#1e293b" stroke-width="4" stroke-linejoin="round"/>' +
-          '<path d="M 173 140 L 192 158 L 211 140" fill="none" stroke="#818cf8" stroke-width="1.6" stroke-linejoin="round"/>' +
-          // 胸前「苍骑」与「20」字样
-          '<text x="192" y="180" font-size="12" font-weight="900" fill="#1e293b" text-anchor="middle" letter-spacing="3">苍骑</text>' +
-          '<text x="192" y="208" font-size="24" font-weight="900" font-style="italic" fill="#1e293b" stroke="#818cf8" stroke-width="0.8" text-anchor="middle">20</text>' +
-          // 紫黑波浪choker颈环
-          '<path d="M 181 124 Q 192 129 203 124" stroke="#312e81" stroke-width="4" fill="none" stroke-linecap="round"/>' +
-          // 立体高光篮球道具
-          '<defs><radialGradient id="bballGrad" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fdba74"/><stop offset="55%" stop-color="#ea580c"/><stop offset="100%" stop-color="#9a3412"/></radialGradient></defs>' +
-          '<circle cx="258" cy="192" r="28" fill="url(#bballGrad)" stroke="#431407" stroke-width="1.8"/>' +
-          '<path d="M 231 186 Q 258 174 285 194 M 242 168 Q 262 192 248 218 M 236 206 Q 262 194 282 176" stroke="#431407" stroke-width="1.8" fill="none"/>';
-      } else if (st.outfit.id === 'jk_uniform') {
-        bodyAndOutfitSVG =
-          '<path d="M 140 236 C 144 162, 160 140, 192 140 C 224 140, 240 162, 244 236 Z" fill="#f8fafc"/>' +
-          '<path d="M 152 142 L 192 178 L 232 142 L 222 138 L 192 162 L 162 138 Z" fill="#1e3a8a"/>' +
-          '<path d="M 156 145 L 192 174 L 228 145" fill="none" stroke="#ffffff" stroke-width="1.6"/>' +
-          '<polygon points="192,172 178,196 192,188 206,196" fill="#e11d48"/>' +
-          '<circle cx="192" cy="173" r="4" fill="#be123c"/>';
-      } else if (st.outfit.id === 'hanfu_goddess') {
-        bodyAndOutfitSVG =
-          // 飘逸仙气披帛丝带
-          '<path d="M 142 156 C 106 142, 96 184, 122 222 M 242 156 C 278 142, 288 184, 262 222" stroke="rgba(167,243,208,0.75)" stroke-width="7" fill="none" stroke-linecap="round"/>' +
-          '<path d="M 136 236 C 142 162, 158 140, 192 140 C 226 140, 242 162, 248 236 Z" fill="#065f46"/>' +
-          '<path d="M 156 140 L 210 212 M 228 140 L 174 212" stroke="#ecfdf5" stroke-width="6" stroke-linecap="round"/>' +
-          '<rect x="154" y="194" width="76" height="42" rx="4" fill="#10b981" stroke="#fde047" stroke-width="1.8"/>' +
-          '<circle cx="192" cy="134" r="3.5" fill="#fde047"/>';
+      var visualStageHTML = '';
+      if (heroCgSrc) {
+        var imgFilter = isPreviewLocked ? 'filter: brightness(0.84) saturate(0.82);' : '';
+        visualStageHTML =
+          '<div class="poster-cg-backdrop" style="background:' + (isBare ? 'linear-gradient(145deg, #1e293b, #334155)' : st.scene.bg) + ';">' +
+            '<img class="poster-cg-img" src="' + heroCgSrc + '" alt="' + escapeHTML(s.name) + '" style="' + imgFilter + '" />' +
+            auraOverlay +
+            '<div class="poster-cg-scrim"></div>' +
+            '<div class="poster-hero-name-art">' + escapeHTML(s.name) + '</div>' +
+          '</div>';
       } else {
-        // 绯红C位打歌服 / 星河璀璨高定晚礼服
-        var isCouture = st.outfit.id === 'haute_couture';
-        bodyAndOutfitSVG =
-          // 露肩美肌与锁骨手臂
-          '<path d="M 134 236 C 142 166, 158 144, 192 144 C 226 144, 242 166, 250 236 Z" fill="#ffe6d8"/>' +
-          // 抹胸高定礼服
-          '<path d="M 146 236 L 154 158 Q 173 148 192 160 Q 211 148 230 158 L 238 236 Z" fill="' + (isCouture ? '#701a75' : '#be123c') + '"/>' +
-          '<path d="M 154 158 Q 173 148 192 160 Q 211 148 230 158" fill="none" stroke="#fde047" stroke-width="3"/>' +
-          // 奢华钻石项链
-          '<path d="M 174 134 Q 192 146 210 134" stroke="#fef08a" stroke-width="2" fill="none"/>' +
-          '<polygon points="192,143 187,151 192,157 197,151" fill="#38bdf8" stroke="#ffffff" stroke-width="1"/>' +
-          '<circle cx="182" cy="141" r="2" fill="#fde047"/><circle cx="202" cy="141" r="2" fill="#fde047"/>';
-      }
-
-      // 二次元美少女五官与渐变大眼 (poster 级高精度)
-      var faceAndEyesHero = '';
-      if (isBare) {
-        faceAndEyesHero =
-          '<ellipse cx="176" cy="84" rx="4.5" ry="5" fill="#1e293b"/>' +
-          '<ellipse cx="208" cy="84" rx="4.5" ry="5" fill="#1e293b"/>' +
-          '<rect x="162" y="74" width="25" height="18" rx="3.5" fill="rgba(226,232,240,0.25)" stroke="#0f172a" stroke-width="3.4"/>' +
-          '<rect x="197" y="74" width="25" height="18" rx="3.5" fill="rgba(226,232,240,0.25)" stroke="#0f172a" stroke-width="3.4"/>' +
-          '<line x1="187" y1="82" x2="197" y2="82" stroke="#0f172a" stroke-width="3"/>' +
-          '<path d="M 167 68 Q 176 66 184 69 M 200 69 Q 208 66 217 68" stroke="#334155" stroke-width="2" fill="none"/>';
-      } else {
-        faceAndEyesHero =
-          '<defs><linearGradient id="heroIris" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + st.makeup.irisTop + '"/><stop offset="100%" stop-color="' + st.makeup.irisBot + '"/></linearGradient></defs>' +
-          // 灵动英气双眉
-          '<path d="M 164 68 Q 175 63 185 67 M 199 67 Q 209 63 220 68" stroke="' + hShadow + '" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
-          // 左眼：眼白 + 渐变虹膜 + 深邃瞳孔 + 双层星芒高光 + 飞扬睫毛
-          '<ellipse cx="175" cy="83" rx="9.2" ry="10.2" fill="#ffffff"/>' +
-          '<ellipse cx="175.5" cy="84" rx="7.2" ry="8.5" fill="url(#heroIris)"/>' +
-          '<ellipse cx="175.5" cy="84.5" rx="3.5" ry="4.2" fill="#1e1b4b"/>' +
-          '<circle cx="172.2" cy="79.8" r="2.8" fill="#ffffff"/>' +
-          '<circle cx="178.8" cy="87.5" r="1.5" fill="#ffffff"/>' +
-          '<path d="M 164 79.5 Q 175 70.5 185.5 79.5" stroke="#1e1b4b" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
-          '<path d="M 164 79.5 L 159.5 76.5 M 168 75 L 165.5 72" stroke="#1e1b4b" stroke-width="2" stroke-linecap="round"/>' +
-          // 右眼
-          '<ellipse cx="209" cy="83" rx="9.2" ry="10.2" fill="#ffffff"/>' +
-          '<ellipse cx="208.5" cy="84" rx="7.2" ry="8.5" fill="url(#heroIris)"/>' +
-          '<ellipse cx="208.5" cy="84.5" rx="3.5" ry="4.2" fill="#1e1b4b"/>' +
-          '<circle cx="205.2" cy="79.8" r="2.8" fill="#ffffff"/>' +
-          '<circle cx="211.8" cy="87.5" r="1.5" fill="#ffffff"/>' +
-          '<path d="M 198.5 79.5 Q 209 70.5 220 79.5" stroke="#1e1b4b" stroke-width="3.4" fill="none" stroke-linecap="round"/>' +
-          '<path d="M 220 79.5 L 224.5 76.5 M 216 75 L 218.5 72" stroke="#1e1b4b" stroke-width="2" stroke-linecap="round"/>' +
-          // 蜜桃腮红与泪痣
-          '<ellipse cx="164" cy="95" rx="6.5" ry="3.2" fill="#fb7185" opacity="' + st.makeup.blush + '"/>' +
-          '<ellipse cx="220" cy="95" rx="6.5" ry="3.2" fill="#fb7185" opacity="' + st.makeup.blush + '"/>' +
-          (st.makeup.tearMole ? '<circle cx="215.5" cy="93.5" r="1.35" fill="#4c0519"/>' : '') +
-          // 耳坠饰品
-          '<circle cx="151" cy="93" r="3" fill="#fde047" stroke="#ffffff" stroke-width="1"/>' +
-          '<circle cx="233" cy="93" r="3" fill="#fde047" stroke="#ffffff" stroke-width="1"/>';
-      }
-
-      // 前额多束空气刘海 + 姬发侧发 + 高光发带 + 头饰/皇冠
-      var frontHairHero =
-        '<path d="M 152 66 C 148 94, 150 124, 158 148 C 160 120, 158 90, 162 66 Z M 232 66 C 236 94, 234 124, 226 148 C 224 120, 226 90, 222 66 Z" fill="' + hMain + '"/>' +
-        '<path d="M 152 68 C 156 32, 228 32, 232 68 L 222 76 L 214 57 L 203 78 L 192 54 L 181 78 L 170 57 L 160 76 Z" fill="' + hMain + '"/>' +
-        '<path d="M 166 50 Q 192 40 218 50" stroke="' + hHi + '" stroke-width="3.2" fill="none" opacity="0.8" stroke-linecap="round"/>';
-
-      var headwearHero = '';
-      if (!isBare && st.hair.id === 'milk_tea_wave') {
-        headwearHero =
-          '<path d="M 158 55 Q 192 33 226 55" stroke="#1e293b" stroke-width="5.5" fill="none" stroke-linecap="round"/>' +
-          '<path d="M 156 56 L 140 68 M 156 56 L 145 76" stroke="#312e81" stroke-width="3.2" stroke-linecap="round"/>';
-      } else if (!isBare && st.hair.id === 'jade_updo') {
-        headwearHero =
-          '<circle cx="160" cy="44" r="6" fill="#10b981" stroke="#fde047" stroke-width="1.8"/>' +
-          '<line x1="160" y1="50" x2="156" y2="70" stroke="#fde047" stroke-width="1.8"/>';
-      } else if (!isBare && (viewStage === 5 || st.hair.id === 'galaxy_queen')) {
-        headwearHero =
-          '<polygon points="172,38 180,18 192,29 204,18 212,38" fill="#fde047" stroke="#b45309" stroke-width="1.5"/>' +
-          '<circle cx="192" cy="27" r="3.5" fill="#ec4899"/>';
+        // 非真CG配角主播，使用升级版全彩动漫CG矢量大立绘渲染（带背景艺术字与高光）
+        var v = { skin: '#ffe6d5', hair: '#1f2937', clothes: '#2563eb', eye: '#38bdf8', hairStyle: 'short' };
+        visualStageHTML =
+          '<div class="poster-cg-backdrop" style="background:' + (isBare ? 'linear-gradient(145deg, #1e293b, #334155)' : st.scene.bg) + ';display:flex;align-items:center;justify-content:center;">' +
+            renderStylizedAnimeCGSVG(s, 236, viewStage, v, st, isBare) +
+            auraOverlay +
+            '<div class="poster-cg-scrim"></div>' +
+            '<div class="poster-hero-name-art">' + escapeHTML(s.name) + '</div>' +
+          '</div>';
       }
 
       var rarityLabel = (!isBare && (viewStage === 5 || s.charm >= 92)) ? 'UR' : s.tier;
       var stageInfo = getIdolStageInfo(s, isBare ? 1 : viewStage);
 
-      var svgHero =
-        '<svg width="100%" height="100%" viewBox="0 0 320 236" preserveAspectRatio="xMidYMid slice" style="background:' + (isBare ? 'linear-gradient(145deg, #1e293b, #334155)' : st.scene.bg) + ';">' +
-          bgFx +
-          // 左上角巨幅倾斜二次元角色名艺术字（致敬图3「卧云真昼」海报排版，完整居中偏左不裁切）
-          '<g transform="translate(28, 96) rotate(-7) skewX(-12)">' +
-            '<text x="0" y="0" font-size="29" font-weight="900" fill="none" stroke="#0f172a" stroke-width="5.5" stroke-linejoin="round">' + escapeHTML(s.name) + '</text>' +
-            '<text x="0" y="0" font-size="29" font-weight="900" fill="' + (isBare ? '#94a3b8' : '#e0e7ff') + '">' + escapeHTML(s.name) + '</text>' +
-          '</g>' +
-          backHairHero +
-          // 修长脖颈与锁骨高光
-          '<rect x="184" y="106" width="16" height="34" rx="6" fill="#ffe6d8"/>' +
-          '<path d="M 184 114 Q 192 120 200 114" fill="none" stroke="#f3bfa8" stroke-width="1.5"/>' +
-          '<path d="M 176 133 Q 192 140 208 133" fill="none" stroke="#f3bfa8" stroke-width="1.4"/>' +
-          bodyAndOutfitSVG +
-          // 精致二次元美少女 V 脸轮廓
-          '<path d="M 157 64 C 156 93, 173 111, 192 115 C 211 111, 228 93, 227 64 C 225 38, 159 38, 157 64 Z" fill="#fff2ea"/>' +
-          faceAndEyesHero +
-          // 精致日系微点鼻尖与灵动樱花小嘴
-          '<path d="M 191.8 91 L 190.6 93.8" stroke="#d99b84" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
-          (isBare
-            ? '<path d="M 188 102 Q 192 103 196 102" stroke="#a87b7b" stroke-width="1.8" fill="none" stroke-linecap="round"/>'
-            : '<path d="M 187.5 100.5 Q 192 101.8 196.5 100.5 Q 195.2 105.5 192 105.5 Q 188.8 105.5 187.5 100.5 Z" fill="' + st.makeup.lip + '"/><path d="M 189.5 102.2 Q 192 103.2 194.5 102.2" stroke="#ffe4e6" stroke-width="0.9" fill="none" stroke-linecap="round"/>') +
-          frontHairHero +
-          headwearHero +
-        '</svg>';
+      var lockedWatermarkHTML = '';
+      if (previewLockedItem) {
+        lockedWatermarkHTML =
+          '<div class="poster-locked-watermark">' +
+            '<div class="poster-locked-center-pill">' +
+              '<div style="font-size:12.5px;font-weight:900;color:#fde68a;">🔒 待解锁穿搭 · ' + escapeHTML(previewLockedItem.name) + '</div>' +
+              '<div style="font-size:10.5px;color:#cbd5e1;">' + escapeHTML(previewLockedItem.buffDesc) + '（魅力 +' + previewLockedItem.charmBonus + '）</div>' +
+              '<button type="button" class="poster-unlock-cta" data-action="unlock-previewed-wardrobe" data-cat="' + escapeHTML(previewWardrobeSelection.cat) + '" data-item-id="' + escapeHTML(previewLockedItem.id) + '">' +
+                '🔓 立即定制解锁（' + previewLockedItem.cost + 'w）' +
+              '</button>' +
+            '</div>' +
+          '</div>';
+      } else if (isStageLocked) {
+        var reqThresholds = [0, 0, 100, 260, 500, 850];
+        var reqExp = reqThresholds[viewStage] || 850;
+        lockedWatermarkHTML =
+          '<div class="poster-locked-watermark" style="pointer-events:none;">' +
+            '<div class="poster-locked-center-pill">' +
+              '<div style="font-size:12.5px;font-weight:900;color:#fde68a;">🔒 待解锁进化形态 · ' + escapeHTML(stageInfo.shortName) + '</div>' +
+              '<div style="font-size:10.5px;color:#cbd5e1;">需养成经验达 ' + reqExp + ' 解锁（当前 ' + s.idolExp + ' / ' + reqExp + '）</div>' +
+              '<div style="font-size:10px;color:#fbcfe8;">💡 定制高定穿搭或送应援棒可快速升阶！</div>' +
+            '</div>' +
+          '</div>';
+      }
 
       return (
-        svgHero +
+        visualStageHTML +
+        lockedWatermarkHTML +
         // 左上角素颜小窗对比角标
         '<div class="poster-before-mini" data-action="toggle-fandom-bare" title="点击切换海选素颜 vs 当前高定立绘">' +
           getPersonifiedAvatarSVG(s, 30, 1) +
@@ -8744,7 +8873,7 @@
           '<span class="poster-ssr-emblem">' + escapeHTML(rarityLabel) + '</span>' +
           '<span class="poster-role-pill">' + escapeHTML(st.outfit.roleTag || '颜值担当 · C位') + '</span>' +
         '</div>' +
-        // 左下角双斜切战力标签（致敬图3「冲框高手 / 内外全能」）
+        // 左下角双斜切战力标签
         '<div class="poster-slant-tags">' +
           '<span class="poster-slant-tag tag-gold">' + escapeHTML(isBare ? '海选素人' : st.outfit.tag1) + '</span>' +
           '<span class="poster-slant-tag tag-navy">' + escapeHTML(isBare ? '黑框封印' : st.outfit.tag2) + '</span>' +
@@ -8774,7 +8903,7 @@
         (s.styling.unlockedMakeups ? s.styling.unlockedMakeups.length : 1) +
         (s.styling.unlockedScenes ? s.styling.unlockedScenes.length : 1);
       var sumEl = document.getElementById("wardrobeSummaryText");
-      if (sumEl) sumEl.innerText = "已收集 " + totalUnlocked + " / 20 件高定";
+      if (sumEl) sumEl.innerText = "已解锁 " + totalUnlocked + " / 20 件高定";
 
       var grid = document.getElementById("wardrobeItemsGrid");
       if (!grid) return;
@@ -8787,27 +8916,48 @@
 
       items.forEach(function(item) {
         var isUnlocked = unlockedArr.indexOf(item.id) !== -1;
-        var isEquipped = currentEquipped === item.id && !isFandomBareCompare;
+        var isEquipped = isUnlocked && currentEquipped === item.id && !isFandomBareCompare && !previewWardrobeSelection;
+        var isPreviewing = Boolean(!isUnlocked && previewWardrobeSelection && previewWardrobeSelection.cat === activeWardrobeCat && previewWardrobeSelection.id === item.id);
+
         var btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "wardrobe-item-card" + (isEquipped ? " equipped" : (isUnlocked ? " unlocked" : ""));
+        btn.className = "wardrobe-item-card" + (isEquipped ? " equipped" : (isUnlocked ? " unlocked" : " locked")) + (isPreviewing ? " previewing" : "");
         btn.setAttribute("data-action", "wardrobe-item-click");
         btn.setAttribute("data-cat", activeWardrobeCat);
         btn.setAttribute("data-item-id", item.id);
 
+        // 生成穿搭卡片缩略 CG 图 + 未解锁「待锁定」水印章
+        var thumbSrc = (activeWardrobeCat === 'outfit' && OUTFIT_CG_FILES[item.id])
+          ? OUTFIT_CG_FILES[item.id]
+          : ((activeWardrobeCat === 'makeup' && item.id === 'bare_glasses') ? CG_PORTRAIT_FILES.bare_trainee : CG_PORTRAIT_FILES[s.id]);
+        var thumbInner = thumbSrc
+          ? '<img src="' + thumbSrc + '" alt="' + escapeHTML(item.name) + '" />'
+          : '<div class="wardrobe-thumb-tint" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;background:' + (item.bg || 'linear-gradient(135deg,#1e293b,#334155)') + ';">' + item.icon + '</div>';
+
+        var lockedStamp = !isUnlocked
+          ? '<div class="wardrobe-locked-stamp"><span>待锁定</span></div>'
+          : '';
+
         var statusPill = isEquipped
-          ? '<span class="badge badge-gold" style="font-size:9.5px;">✓ 已穿戴</span>'
+          ? '<span class="badge badge-gold" style="font-size:8.5px;padding:1px 4px;white-space:nowrap;">✓ 穿戴</span>'
           : (isUnlocked
-              ? '<span class="badge badge-green" style="font-size:9.5px;">免费换装</span>'
-              : '<span class="badge badge-red" style="font-size:9.5px;">🔓 ' + item.cost + 'w定制</span>');
+              ? '<span class="badge badge-green" style="font-size:8.5px;padding:1px 4px;white-space:nowrap;">换装</span>'
+              : (isPreviewing
+                  ? '<span class="badge badge-blue" style="font-size:8.5px;padding:1px 4px;white-space:nowrap;">解锁' + item.cost + 'w</span>'
+                  : '<span class="badge badge-red" style="font-size:8.5px;padding:1px 4px;white-space:nowrap;">🔒' + item.cost + 'w</span>'));
 
         btn.innerHTML =
-          '<div style="display:flex;justify-content:space-between;align-items:center;gap:4px;width:100%;">' +
-            '<span style="font-size:11.5px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + item.icon + ' ' + escapeHTML(item.name) + '</span>' +
-            statusPill +
-          '</div>' +
-          '<div style="font-size:10px;color:#94a3b8;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHTML(item.buffDesc) + '</div>' +
-          '<div style="font-size:10px;color:#fbcfe8;font-weight:700;">' + (item.charmBonus > 0 ? ('✨ 魅力颜值 +' + item.charmBonus) : '海选初始造型') + '</div>';
+          '<div class="wardrobe-card-row">' +
+            '<div class="wardrobe-card-thumb">' + thumbInner + lockedStamp + '</div>' +
+            '<div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:2px;">' +
+              '<div style="font-size:10.5px;font-weight:800;color:' + (isUnlocked ? '#fff' : '#cbd5e1') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + item.icon + ' ' + escapeHTML(item.name) + '</div>' +
+              '<div style="font-size:9px;color:#94a3b8;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHTML(item.buffDesc) + '</div>' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;gap:3px;width:100%;">' +
+                '<span style="font-size:9px;color:' + (isUnlocked ? '#fbcfe8' : '#fde68a') + ';font-weight:700;white-space:nowrap;">' + (item.charmBonus > 0 ? ('✨+' + item.charmBonus) : '初始') + '</span>' +
+                statusPill +
+              '</div>' +
+            '</div>' +
+          '</div>';
         grid.appendChild(btn);
       });
     }
@@ -8865,12 +9015,13 @@
         tl.innerHTML = "";
         for (var st = 1; st <= 5; st++) {
           var stInf = getIdolStageInfo(s, st);
+          var stUnlocked = st <= curStage;
           var btn = document.createElement("button");
           btn.type = "button";
-          btn.className = "stage-step-btn" + (st <= curStage ? " unlocked" : "") + (st === viewStage ? " active-preview" : "");
+          btn.className = "stage-step-btn" + (stUnlocked ? " unlocked" : " locked") + (st === viewStage ? " active-preview" : "");
           btn.setAttribute("data-action", "preview-fandom-stage");
           btn.setAttribute("data-stage", String(st));
-          btn.innerText = stInf.shortName;
+          btn.innerText = (stUnlocked ? "" : "🔒") + stInf.shortName;
           tl.appendChild(btn);
         }
       }
@@ -9922,6 +10073,8 @@
         switchWardrobeCategory(el.getAttribute('data-cat'));
       } else if (action === 'wardrobe-item-click') {
         equipOrUnlockWardrobeItem(el.getAttribute('data-cat'), el.getAttribute('data-item-id'));
+      } else if (action === 'unlock-previewed-wardrobe') {
+        confirmUnlockPreviewedWardrobe(el.getAttribute('data-cat'), el.getAttribute('data-item-id'));
       } else if (action === 'reconnect-cloud') {
         ensureCloudConnected(true);
       } else if (action === 'randomize-startup-name') {
