@@ -6,6 +6,7 @@ interface Env {
   AI: Ai;
   ASSETS?: Fetcher;
   ALLOWED_ORIGINS?: string;
+  ADMIN_PASSWORD?: string;
 }
 
 interface PlayerRow {
@@ -33,6 +34,7 @@ interface PlayerRow {
   ai_gen_window_ts: number;
   daily_glowsticks_used?: number;
   daily_glowsticks_date?: string;
+  is_banned?: number;
   updated_at: number;
   created_at: number;
 }
@@ -73,8 +75,8 @@ app.use('/api/*', async (c, next) => {
 
   const corsMiddleware = cors({
     origin: isAllowed && origin ? origin : reqHostOrigin,
-    allowMethods: ['GET', 'POST', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'X-Player-Id', 'X-Player-Token'],
+    allowMethods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'X-Player-Id', 'X-Player-Token', 'Authorization'],
     maxAge: 86400,
   });
 
@@ -218,36 +220,71 @@ const AGENCY_CORES = [
 ];
 const AGENCY_SUFFIXES = ['互娱', '传媒', '社', '工坊', '矩阵', 'MCN', '工作室', '文化'];
 
+const RESERVED_NPC_NAMES = new Set<string>([
+  '破晓互娱', '星海圣殿互娱', '魅影壹号工坊', '狂飙三兄弟网络', '九州文脉严选',
+  '瀚海源头集团', '星霸互娱', '无极星芒', '天娱星耀', '步行街严选MCN', '紫金湖密互娱', '五棵松带货战舰'
+]);
+
+async function isAgencyNameAvailable(
+  db: D1Database,
+  name: string,
+  excludePlayerId?: string
+): Promise<{ available: boolean; reason?: string }> {
+  const cleaned = sanitizeText(name, 16, '');
+  if (!cleaned || cleaned.length < 2) {
+    return { available: false, reason: 'INVALID_LENGTH' };
+  }
+  if (RESERVED_NPC_NAMES.has(cleaned)) {
+    return { available: false, reason: 'RESERVED_NPC_NAME' };
+  }
+  const dup = excludePlayerId
+    ? await db
+        .prepare('SELECT id FROM players WHERE agency_name = ? AND id != ? LIMIT 1')
+        .bind(cleaned, excludePlayerId)
+        .first<{ id: string }>()
+    : await db
+        .prepare('SELECT id FROM players WHERE agency_name = ? LIMIT 1')
+        .bind(cleaned)
+        .first<{ id: string }>();
+  if (dup) return { available: false, reason: 'ALREADY_EXISTS' };
+  return { available: true };
+}
+
 async function generateUniqueAgencyName(db: D1Database, preferred?: string): Promise<string> {
   const candidate = sanitizeText(preferred, 16, '');
-  if (candidate && candidate !== '破晓互娱' && candidate.length >= 2) {
-    const dup = await db
-      .prepare('SELECT id FROM players WHERE agency_name = ? LIMIT 1')
-      .bind(candidate)
-      .first<{ id: string }>();
-    if (!dup) return candidate;
-    const tag = Math.floor(10 + (crypto.getRandomValues(new Uint32Array(1))[0] % 90));
-    return (candidate.slice(0, 10) + '#' + tag).slice(0, 14);
+  if (candidate && candidate.length >= 2) {
+    const chk = await isAgencyNameAvailable(db, candidate);
+    if (chk.available) return candidate;
+    for (let k = 0; k < 6; k++) {
+      const tag = Math.floor(10 + (crypto.getRandomValues(new Uint32Array(1))[0] % 890));
+      const alt = (candidate.slice(0, 10) + '#' + tag).slice(0, 14);
+      const chkAlt = await isAgencyNameAvailable(db, alt);
+      if (chkAlt.available) return alt;
+    }
   }
 
-  for (let attempt = 0; attempt < 15; attempt++) {
+  for (let attempt = 0; attempt < 24; attempt++) {
     const r = crypto.getRandomValues(new Uint32Array(3));
     const name =
       AGENCY_PREFIXES[r[0] % AGENCY_PREFIXES.length] +
       AGENCY_CORES[r[1] % AGENCY_CORES.length] +
       AGENCY_SUFFIXES[r[2] % AGENCY_SUFFIXES.length];
-    const dup = await db
-      .prepare('SELECT id FROM players WHERE agency_name = ? LIMIT 1')
-      .bind(name)
-      .first<{ id: string }>();
-    if (!dup) return name.slice(0, 14);
+    const chk = await isAgencyNameAvailable(db, name);
+    if (chk.available) return name.slice(0, 14);
   }
-  return '星芒互娱' + (100 + (crypto.getRandomValues(new Uint32Array(1))[0] % 899));
+  return '星芒互娱#' + (100 + (crypto.getRandomValues(new Uint32Array(1))[0] % 899));
 }
 
 app.get('/api/player/suggest-name', async (c) => {
   const name = await generateUniqueAgencyName(c.env.DB);
   return c.json({ ok: true, agencyName: name });
+});
+
+app.get('/api/player/check-name', async (c) => {
+  const raw = c.req.query('name') || '';
+  const excludeId = c.req.query('playerId') || undefined;
+  const chk = await isAgencyNameAvailable(c.env.DB, raw, excludeId);
+  return c.json({ ok: true, name: sanitizeText(raw, 16, ''), ...chk });
 });
 
 app.post('/api/player/register', async (c) => {
@@ -258,24 +295,41 @@ app.post('/api/player/register', async (c) => {
     body = {};
   }
 
-  const agencyName = await generateUniqueAgencyName(c.env.DB, typeof body.agencyName === 'string' ? body.agencyName : '');
+  const preferred = typeof body.agencyName === 'string' ? sanitizeText(body.agencyName, 16, '') : '';
+  const strictName = Boolean(body.strictName);
+  if (strictName && preferred) {
+    const chk = await isAgencyNameAvailable(c.env.DB, preferred);
+    if (!chk.available) {
+      return c.json({ ok: false, error: 'AGENCY_NAME_TAKEN', reason: chk.reason }, 409);
+    }
+  }
+
+  let agencyName = await generateUniqueAgencyName(c.env.DB, preferred);
   const playerId = 'jr_' + randomHex(8);
   const authToken = randomHex(24);
   const tokenHash = await sha256Hex(authToken);
   const ts = nowSec();
   const today = getBeijingDateStr();
 
-  await c.env.DB.prepare(
-    `INSERT INTO players (
-      id, token_hash, agency_name, power_score, cash, fans, pr, week,
-      streamer_count, top_streamer_id, top_streamer_name, destiny, scandal_risk,
-      reputation_pts, unlocked_endings, unlocked_talents,
-      daily_pvp_used, daily_pvp_date, last_claim_ts, pending_raid_loss,
-      ai_gen_count, ai_gen_window_ts, updated_at, created_at
-    ) VALUES (?, ?, ?, 45.0, 100.0, 20.0, 80.0, 1, 0, '', '虚位以待', 'none', 0, 0, '[]', '[]', 0, ?, ?, 0, 0, 0, ?, ?)`
-  )
-    .bind(playerId, tokenHash, agencyName, today, ts, ts, ts)
-    .run();
+  for (let retry = 0; retry < 3; retry++) {
+    try {
+      await c.env.DB.prepare(
+        `INSERT INTO players (
+          id, token_hash, agency_name, power_score, cash, fans, pr, week,
+          streamer_count, top_streamer_id, top_streamer_name, destiny, scandal_risk,
+          reputation_pts, unlocked_endings, unlocked_talents,
+          daily_pvp_used, daily_pvp_date, last_claim_ts, pending_raid_loss,
+          ai_gen_count, ai_gen_window_ts, is_banned, updated_at, created_at
+        ) VALUES (?, ?, ?, 45.0, 100.0, 20.0, 80.0, 1, 0, '', '虚位以待', 'none', 0, 0, '[]', '[]', 0, ?, ?, 0, 0, 0, 0, ?, ?)`
+      )
+        .bind(playerId, tokenHash, agencyName, today, ts, ts, ts)
+        .run();
+      break;
+    } catch (err) {
+      if (retry === 2) throw err;
+      agencyName = await generateUniqueAgencyName(c.env.DB);
+    }
+  }
 
   await ensureSeedBroadcasts(c.env.DB);
 
@@ -286,6 +340,35 @@ app.post('/api/player/register', async (c) => {
     agencyName,
     serverTime: ts,
   });
+});
+
+app.post('/api/player/rename', async (c) => {
+  const player = await authenticatePlayer(
+    c.env.DB,
+    c.req.header('X-Player-Id'),
+    c.req.header('X-Player-Token')
+  );
+  if (!player) return c.json({ ok: false, error: 'UNAUTHORIZED' }, 401);
+  if (player.is_banned) return c.json({ ok: false, error: 'ACCOUNT_BANNED' }, 403);
+
+  let body: Record<string, unknown> = {};
+  try {
+    body = (await c.req.json()) as Record<string, unknown>;
+  } catch {
+    return c.json({ ok: false, error: 'INVALID_JSON' }, 400);
+  }
+  const nextName = sanitizeText(body.agencyName, 16, '');
+  const chk = await isAgencyNameAvailable(c.env.DB, nextName, player.id);
+  if (!chk.available) {
+    return c.json({ ok: false, error: 'AGENCY_NAME_TAKEN', reason: chk.reason }, 409);
+  }
+
+  const ts = nowSec();
+  await c.env.DB.prepare('UPDATE players SET agency_name = ?, updated_at = ? WHERE id = ?')
+    .bind(nextName, ts, player.id)
+    .run();
+
+  return c.json({ ok: true, agencyName: nextName, serverTime: ts });
 });
 
 // =========================================================================
@@ -301,6 +384,10 @@ app.post('/api/player/sync', async (c) => {
     return c.json({ ok: false, error: 'UNAUTHORIZED' }, 401);
   }
 
+  if (player.is_banned) {
+    return c.json({ ok: false, error: 'ACCOUNT_BANNED' }, 403);
+  }
+
   let body: Record<string, unknown>;
   try {
     body = (await c.req.json()) as Record<string, unknown>;
@@ -308,12 +395,22 @@ app.post('/api/player/sync', async (c) => {
     return c.json({ ok: false, error: 'INVALID_JSON' }, 400);
   }
 
-  const agencyName = sanitizeText(body.agencyName, 16, player.agency_name);
+  const requestedName = sanitizeText(body.agencyName, 16, player.agency_name);
+  let agencyName = player.agency_name;
+  let nameConflict = false;
+  if (requestedName && requestedName !== player.agency_name) {
+    const chk = await isAgencyNameAvailable(c.env.DB, requestedName, player.id);
+    if (chk.available) {
+      agencyName = requestedName;
+    } else {
+      nameConflict = true;
+    }
+  }
   const cash = Math.round(clampNum(body.cash, 0, 500000, player.cash) * 10) / 10;
   const fans = Math.round(clampNum(body.fans, 0, 500000, player.fans) * 10) / 10;
   const pr = Math.round(clampNum(body.pr, 0, 150, player.pr));
   const week = Math.floor(clampNum(body.week, 1, 999, player.week));
-  const streamerCount = Math.floor(clampNum(body.streamerCount, 0, 24, player.streamer_count));
+  const streamerCount = Math.floor(clampNum(body.streamerCount, 0, 200, player.streamer_count));
   const topStreamerId = typeof body.topStreamerId === 'string' && body.topStreamerId.trim() === ''
     ? ''
     : sanitizeText(body.topStreamerId, 20, player.top_streamer_id);
@@ -376,10 +473,10 @@ app.post('/api/player/sync', async (c) => {
     .run();
 
   const [rankRow, totalRow, unreadRow] = await Promise.all([
-    c.env.DB.prepare('SELECT COUNT(*) + 1 as rank FROM players WHERE power_score > ?')
+    c.env.DB.prepare('SELECT COUNT(*) + 1 as rank FROM players WHERE is_banned = 0 AND power_score > ?')
       .bind(powerScore)
       .first<{ rank: number }>(),
-    c.env.DB.prepare('SELECT COUNT(*) as total FROM players').first<{ total: number }>(),
+    c.env.DB.prepare('SELECT COUNT(*) as total FROM players WHERE is_banned = 0').first<{ total: number }>(),
     c.env.DB.prepare(
       "SELECT COUNT(*) as cnt FROM pvp_logs WHERE defender_id = ? AND status = 'unread'"
     )
@@ -390,6 +487,7 @@ app.post('/api/player/sync', async (c) => {
   return c.json({
     ok: true,
     agencyName,
+    nameConflict,
     powerScore,
     globalRank: rankRow?.rank ?? 1,
     totalPlayers: totalRow?.total ?? 1,
@@ -399,7 +497,7 @@ app.post('/api/player/sync', async (c) => {
 });
 
 // =========================================================================
-// 4. 全服真实天梯榜 + 异步商战匹配名单
+// 4. 全服统一天梯榜数据 + 异步商战匹配名单
 // =========================================================================
 app.get('/api/leaderboard', async (c) => {
   const player = await authenticatePlayer(
@@ -412,11 +510,12 @@ app.get('/api/leaderboard', async (c) => {
     `SELECT id, agency_name, power_score, fans, pr, week, streamer_count,
             top_streamer_name, destiny, scandal_risk, updated_at
      FROM players
+     WHERE is_banned = 0
      ORDER BY power_score DESC
-     LIMIT 50`
+     LIMIT 100`
   ).all();
 
-  const totalRow = await c.env.DB.prepare('SELECT COUNT(*) as total FROM players').first<{
+  const totalRow = await c.env.DB.prepare('SELECT COUNT(*) as total FROM players WHERE is_banned = 0').first<{
     total: number;
   }>();
 
@@ -426,7 +525,7 @@ app.get('/api/leaderboard', async (c) => {
 
   if (player) {
     const r = await c.env.DB.prepare(
-      'SELECT COUNT(*) + 1 as rank FROM players WHERE power_score > ?'
+      'SELECT COUNT(*) + 1 as rank FROM players WHERE is_banned = 0 AND power_score > ?'
     )
       .bind(player.power_score)
       .first<{ rank: number }>();
@@ -1635,8 +1734,314 @@ app.post('/api/ai/fandom-copy', async (c) => {
 });
 
 // =========================================================================
-// 9. 静态前端资源托管兜底 (当绑定自定义域名时实现同源极速访问)
+// 9. 管理后端 API (HMAC-SHA256 鉴权) & 动态主播配置热更新 (/api/admin/*)
 // =========================================================================
+async function signAdminToken(secret: string, expTs: number): Promise<string> {
+  const payload = String(expTs) + '.' + randomHex(8);
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sigBuf = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+  const sigHex = Array.from(new Uint8Array(sigBuf), (b) => b.toString(16).padStart(2, '0')).join('');
+  return `${payload}.${sigHex}`;
+}
+
+async function verifyAdminToken(secret: string, token: string): Promise<boolean> {
+  if (!secret || !token) return false;
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+  const expTs = Number(parts[0]);
+  if (!Number.isFinite(expTs) || expTs <= nowSec()) return false;
+  const payload = `${parts[0]}.${parts[1]}`;
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const sigBuf = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+  const expectedHex = Array.from(new Uint8Array(sigBuf), (b) => b.toString(16).padStart(2, '0')).join('');
+  return timingSafeEqual(parts[2], expectedHex);
+}
+
+async function requireAdmin(c: { env: Env; req: { header: (name: string) => string | undefined } }): Promise<string | null> {
+  const secret = (c.env.ADMIN_PASSWORD || '').trim();
+  if (!secret) return 'ADMIN_NOT_CONFIGURED';
+  const auth = c.req.header('Authorization') || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
+  const ok = await verifyAdminToken(secret, token);
+  return ok ? null : 'UNAUTHORIZED';
+}
+
+app.get('/api/config/streamers', async (c) => {
+  try {
+    const { results } = await c.env.DB.prepare(
+      'SELECT * FROM admin_streamers WHERE enabled = 1 ORDER BY updated_at DESC LIMIT 200'
+    ).all();
+    return c.json({ ok: true, items: results || [], serverTime: nowSec() });
+  } catch {
+    return c.json({ ok: true, items: [], serverTime: nowSec() });
+  }
+});
+
+app.post('/api/admin/login', async (c) => {
+  const secret = (c.env.ADMIN_PASSWORD || '').trim();
+  if (!secret) {
+    return c.json({ ok: false, error: 'ADMIN_NOT_CONFIGURED' }, 503);
+  }
+  let body: Record<string, unknown> = {};
+  try {
+    body = (await c.req.json()) as Record<string, unknown>;
+  } catch {
+    return c.json({ ok: false, error: 'INVALID_JSON' }, 400);
+  }
+  const inputPw = typeof body.password === 'string' ? body.password : '';
+  const [inHash, secHash] = await Promise.all([sha256Hex(inputPw), sha256Hex(secret)]);
+  if (!timingSafeEqual(inHash, secHash)) {
+    return c.json({ ok: false, error: 'INVALID_PASSWORD' }, 401);
+  }
+  const expiresAt = nowSec() + 12 * 3600;
+  const token = await signAdminToken(secret, expiresAt);
+  return c.json({ ok: true, token, expiresAt });
+});
+
+app.get('/api/admin/overview', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+
+  const dayAgo = nowSec() - 86400;
+  const [totalRow, bannedRow, activeRow, bcRow, pvpRow, stRow, dupRows] = await Promise.all([
+    c.env.DB.prepare('SELECT COUNT(*) as cnt FROM players').first<{ cnt: number }>(),
+    c.env.DB.prepare('SELECT COUNT(*) as cnt FROM players WHERE is_banned = 1').first<{ cnt: number }>(),
+    c.env.DB.prepare('SELECT COUNT(*) as cnt FROM players WHERE updated_at >= ?').bind(dayAgo).first<{ cnt: number }>(),
+    c.env.DB.prepare('SELECT COUNT(*) as cnt FROM broadcasts').first<{ cnt: number }>(),
+    c.env.DB.prepare('SELECT COUNT(*) as cnt FROM pvp_logs').first<{ cnt: number }>(),
+    c.env.DB.prepare('SELECT COUNT(*) as cnt FROM admin_streamers').first<{ cnt: number }>(),
+    c.env.DB.prepare('SELECT agency_name, COUNT(*) as c FROM players GROUP BY agency_name HAVING c > 1').all(),
+  ]);
+
+  return c.json({
+    ok: true,
+    totalPlayers: totalRow?.cnt ?? 0,
+    bannedPlayers: bannedRow?.cnt ?? 0,
+    active24h: activeRow?.cnt ?? 0,
+    totalBroadcasts: bcRow?.cnt ?? 0,
+    totalPvpLogs: pvpRow?.cnt ?? 0,
+    customStreamersCount: stRow?.cnt ?? 0,
+    duplicateNamesCount: dupRows.results?.length ?? 0,
+    serverTime: nowSec(),
+  });
+});
+
+app.get('/api/admin/players', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+
+  const q = sanitizeText(c.req.query('q'), 32, '');
+  const { results } = q
+    ? await c.env.DB.prepare(
+        `SELECT id, agency_name, power_score, cash, fans, pr, week, streamer_count,
+                top_streamer_name, scandal_risk, is_banned, updated_at, created_at
+         FROM players
+         WHERE agency_name LIKE ? OR id LIKE ?
+         ORDER BY power_score DESC LIMIT 120`
+      )
+        .bind(`%${q}%`, `%${q}%`)
+        .all()
+    : await c.env.DB.prepare(
+        `SELECT id, agency_name, power_score, cash, fans, pr, week, streamer_count,
+                top_streamer_name, scandal_risk, is_banned, updated_at, created_at
+         FROM players
+         ORDER BY power_score DESC LIMIT 120`
+      ).all();
+
+  return c.json({ ok: true, items: results || [], serverTime: nowSec() });
+});
+
+app.post('/api/admin/players/cleanup-zombies', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+
+  // 清理超过 1 小时未活跃且 0 主播的初始僵尸号
+  const cutoff = nowSec() - 3600;
+  const res = await c.env.DB.prepare(
+    'DELETE FROM players WHERE streamer_count = 0 AND week = 1 AND power_score <= 90 AND updated_at < ?'
+  )
+    .bind(cutoff)
+    .run();
+
+  return c.json({ ok: true, deletedCount: res.meta.changes ?? 0 });
+});
+
+app.post('/api/admin/players/:id/action', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+
+  const id = sanitizeText(c.req.param('id'), 64, '');
+  if (!id) return c.json({ ok: false, error: 'INVALID_ID' }, 400);
+
+  let body: Record<string, unknown> = {};
+  try {
+    body = (await c.req.json()) as Record<string, unknown>;
+  } catch {
+    return c.json({ ok: false, error: 'INVALID_JSON' }, 400);
+  }
+  const action = sanitizeText(body.action, 24, '');
+  const ts = nowSec();
+
+  if (action === 'ban' || action === 'unban') {
+    await c.env.DB.prepare('UPDATE players SET is_banned = ?, updated_at = ? WHERE id = ?')
+      .bind(action === 'ban' ? 1 : 0, ts, id)
+      .run();
+    return c.json({ ok: true, action });
+  }
+  if (action === 'delete') {
+    await c.env.DB.prepare('DELETE FROM players WHERE id = ?').bind(id).run();
+    return c.json({ ok: true, action });
+  }
+  if (action === 'rename') {
+    const nextName = sanitizeText(body.agencyName, 16, '');
+    const chk = await isAgencyNameAvailable(c.env.DB, nextName, id);
+    if (!chk.available) return c.json({ ok: false, error: 'AGENCY_NAME_TAKEN', reason: chk.reason }, 409);
+    await c.env.DB.prepare('UPDATE players SET agency_name = ?, updated_at = ? WHERE id = ?')
+      .bind(nextName, ts, id)
+      .run();
+    return c.json({ ok: true, action, agencyName: nextName });
+  }
+  if (action === 'set_power') {
+    const pw = Math.round(clampNum(body.powerScore, 10, 99999, 100) * 10) / 10;
+    await c.env.DB.prepare('UPDATE players SET power_score = ?, updated_at = ? WHERE id = ?')
+      .bind(pw, ts, id)
+      .run();
+    return c.json({ ok: true, action, powerScore: pw });
+  }
+  return c.json({ ok: false, error: 'UNSUPPORTED_ACTION' }, 400);
+});
+
+app.get('/api/admin/broadcasts', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+  const { results } = await c.env.DB.prepare(
+    'SELECT id, type, player_id, agency_name, message, likes, created_at FROM broadcasts ORDER BY created_at DESC LIMIT 50'
+  ).all();
+  return c.json({ ok: true, items: results || [] });
+});
+
+app.post('/api/admin/broadcast', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+
+  let body: Record<string, unknown> = {};
+  try {
+    body = (await c.req.json()) as Record<string, unknown>;
+  } catch {
+    return c.json({ ok: false, error: 'INVALID_JSON' }, 400);
+  }
+  const message = sanitizeText(body.message, 120, '');
+  const senderName = sanitizeText(body.agencyName, 16, '全服运营中心');
+  if (!message) return c.json({ ok: false, error: 'EMPTY_MESSAGE' }, 400);
+  const ts = nowSec();
+  const res = await c.env.DB.prepare(
+    "INSERT INTO broadcasts (type, player_id, agency_name, message, likes, created_at) VALUES ('system_notice', 'admin_system', ?, ?, 888, ?)"
+  )
+    .bind(senderName, message, ts)
+    .run();
+  return c.json({ ok: true, id: res.meta.last_row_id, createdAt: ts });
+});
+
+app.delete('/api/admin/broadcasts/:id', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+  const id = Math.floor(clampNum(c.req.param('id'), 1, 999999999, 0));
+  if (!id) return c.json({ ok: false, error: 'INVALID_ID' }, 400);
+  await c.env.DB.prepare('DELETE FROM broadcasts WHERE id = ?').bind(id).run();
+  return c.json({ ok: true });
+});
+
+app.get('/api/admin/streamers', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+  const { results } = await c.env.DB.prepare(
+    'SELECT * FROM admin_streamers ORDER BY updated_at DESC LIMIT 200'
+  ).all();
+  return c.json({ ok: true, items: results || [] });
+});
+
+app.post('/api/admin/streamers', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+
+  let body: Record<string, unknown> = {};
+  try {
+    body = (await c.req.json()) as Record<string, unknown>;
+  } catch {
+    return c.json({ ok: false, error: 'INVALID_JSON' }, 400);
+  }
+  const id = sanitizeText(body.id, 32, '') || ('adm_' + randomHex(4));
+  const name = sanitizeText(body.name, 16, '');
+  if (!name) return c.json({ ok: false, error: 'NAME_REQUIRED' }, 400);
+  const category = sanitizeText(body.category, 20, 'beauty');
+  const grade = sanitizeText(body.grade, 20, 'rookie');
+  const tier = sanitizeText(body.tier, 8, 'A');
+  const title = sanitizeText(body.title, 16, '带货红人');
+  const cost = Math.round(clampNum(body.cost, 1, 500, 20));
+  const sales = Math.floor(clampNum(body.sales, 20, 120, 55));
+  const stamina = Math.floor(clampNum(body.stamina, 50, 100, 90));
+  const resilience = Math.floor(clampNum(body.resilience, 30, 100, 75));
+  const charm = Math.floor(clampNum(body.charm, 40, 100, 72));
+  const tag = sanitizeText(body.tag, 16, '严选达人');
+  const ultName = sanitizeText(body.ult_name, 40, '高能清屏带货');
+  const desc = sanitizeText(body.desc, 100, '运营后端直签高潜力主播');
+  const cgUrl = sanitizeText(body.cg_url, 120, '');
+  const isBeauty = body.is_beauty ? 1 : 0;
+  const enabled = body.enabled === false || body.enabled === 0 ? 0 : 1;
+  const ts = nowSec();
+
+  await c.env.DB.prepare(
+    `INSERT INTO admin_streamers (
+      id, name, category, grade, tier, title, cost, sales, stamina, resilience,
+      charm, tag, ult_name, desc, cg_url, is_beauty, enabled, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      name = excluded.name, category = excluded.category, grade = excluded.grade,
+      tier = excluded.tier, title = excluded.title, cost = excluded.cost,
+      sales = excluded.sales, stamina = excluded.stamina, resilience = excluded.resilience,
+      charm = excluded.charm, tag = excluded.tag, ult_name = excluded.ult_name,
+      desc = excluded.desc, cg_url = excluded.cg_url, is_beauty = excluded.is_beauty,
+      enabled = excluded.enabled, updated_at = excluded.updated_at`
+  )
+    .bind(id, name, category, grade, tier, title, cost, sales, stamina, resilience, charm, tag, ultName, desc, cgUrl, isBeauty, enabled, ts)
+    .run();
+
+  return c.json({ ok: true, id, updatedAt: ts });
+});
+
+app.delete('/api/admin/streamers/:id', async (c) => {
+  const err = await requireAdmin(c);
+  if (err) return c.json({ ok: false, error: err }, err === 'ADMIN_NOT_CONFIGURED' ? 503 : 401);
+  const id = sanitizeText(c.req.param('id'), 32, '');
+  if (!id) return c.json({ ok: false, error: 'INVALID_ID' }, 400);
+  await c.env.DB.prepare('DELETE FROM admin_streamers WHERE id = ?').bind(id).run();
+  return c.json({ ok: true });
+});
+
+// =========================================================================
+// 10. 静态前端资源与 /admin 页面路由托管兜底
+// =========================================================================
+app.get('/admin', async (c) => {
+  if (c.env.ASSETS) {
+    const u = new URL(c.req.url);
+    u.pathname = '/admin.html';
+    return c.env.ASSETS.fetch(new Request(u.toString(), c.req.raw));
+  }
+  return c.text('Admin page unavailable without ASSETS binding', 404);
+});
+
 app.all('*', async (c) => {
   if (c.env.ASSETS) {
     return c.env.ASSETS.fetch(c.req.raw);

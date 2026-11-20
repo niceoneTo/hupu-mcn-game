@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none';" />
+  <title>MCN王牌经纪人 · 全服运营管理后台</title>
+  <style>
+    :root { --bg:#090d16; --card:#12192b; --sub:#192238; --border:#2b3a5c; --text:#f8fafc; --muted:#94a3b8; --gold:#fbbf24; --red:#ef4444; --green:#34d399; --blue:#38bdf8; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding:16px; }
+    .container { max-width:1120px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+    .topbar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 16px; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:10px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:10px; }
+    .kpi { background:var(--sub); border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
+    .kpi-lbl { font-size:11px; color:var(--muted); }
+    .kpi-val { font-size:20px; font-weight:900; margin-top:2px; color:var(--gold); }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; }
+    .tab-btn { padding:8px 14px; border-radius:8px; border:1px solid var(--border); background:var(--sub); color:var(--muted); font-weight:700; cursor:pointer; font-size:13px; }
+    .tab-btn.active { background:linear-gradient(135deg,#c91b1b,#9d174d); color:#fff; border-color:#f43f5e; }
+    input, select, textarea { background:#0b1120; border:1px solid var(--border); color:#fff; border-radius:8px; padding:8px 10px; font-size:13px; outline:none; }
+    input:focus, select:focus { border-color:var(--blue); }
+    .btn { padding:7px 12px; border-radius:8px; border:1px solid var(--border); background:var(--sub); color:#fff; font-weight:700; font-size:12px; cursor:pointer; }
+    .btn-primary { background:linear-gradient(135deg,#c91b1b,#ea580c); border-color:#f87171; }
+    .btn-blue { background:#1d4ed8; border-color:#60a5fa; }
+    .btn-green { background:#059669; border-color:#34d399; }
+    .btn-danger { background:#991b1b; border-color:#ef4444; }
+    table { width:100%; border-collapse:collapse; font-size:12.5px; }
+    th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #1e293b; }
+    th { color:var(--muted); font-weight:700; font-size:11.5px; }
+    .table-wrap { overflow-x:auto; }
+    .pill { display:inline-block; padding:2px 6px; border-radius:5px; font-size:10.5px; font-weight:800; }
+    .pill-ok { background:rgba(16,185,129,0.2); color:#6ee7b7; }
+    .pill-ban { background:rgba(239,68,68,0.22); color:#fca5a5; }
+    .hidden { display:none !important; }
+    .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:8px; }
+    .toast { position:fixed; top:16px; right:16px; z-index:99; background:#1e293b; border:1px solid var(--gold); color:#fff; padding:10px 14px; border-radius:10px; font-size:12.5px; font-weight:700; box-shadow:0 8px 24px rgba(0,0,0,0.5); }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast hidden"></div>
+  <div class="container">
+    <header class="topbar">
+      <div>
+        <h1 style="font-size:17px;font-weight:900;color:#fbbf24;">🏛️ MCN王牌经纪人 · 全服运营管理后台</h1>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:2px;">D1 机构唯一性监管 · 全服总榜调控 · 广播审核 · 120+主播热更台</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <a href="/" class="btn" style="text-decoration:none;">🎮 返回游戏前台</a>
+        <button id="btnLogout" class="btn btn-danger hidden" type="button">退出登录</button>
+      </div>
+    </header>
+
+    <section id="loginPanel" class="card" style="max-width:420px;margin:40px auto;width:100%;">
+      <h2 style="font-size:15px;">🔐 管理员认证登录</h2>
+      <p style="font-size:12px;color:var(--muted);line-height:1.5;">使用 Cloudflare Worker Secret <code>ADMIN_PASSWORD</code> 校验，签发 12 小时 HMAC 会话令牌。</p>
+      <input id="adminPasswordInput" type="password" placeholder="输入管理后台口令" />
+      <button id="btnAdminLogin" type="button" class="btn btn-primary" style="padding:10px;">🚀 登录运营台</button>
+    </section>
+
+    <main id="adminApp" class="hidden" style="display:flex;flex-direction:column;gap:12px;">
+      <section class="kpi-grid" id="kpiGrid"></section>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="players">🏢 机构总榜与玩家管理</button>
+        <button class="tab-btn" data-tab="broadcasts">📢 全服广播与热搜审核</button>
+        <button class="tab-btn" data-tab="streamers">🎙️ 云端主播池配置</button>
+      </div>
+
+      <section id="panel-players" class="card">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">
+          <div style="display:flex;gap:8px;flex:1;min-width:220px;">
+            <input id="playerSearchInput" type="text" placeholder="按机构名或 Player ID 搜索..." style="flex:1;" />
+            <button id="btnSearchPlayers" class="btn btn-blue" type="button">🔍 查询</button>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button id="btnCleanupZombies" class="btn btn-danger" type="button">🧹 清理1小时前0主播僵尸号</button>
+            <button id="btnRefreshAll" class="btn" type="button">🔄 刷新</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>机构名称（唯一）</th>
+                <th>战力</th>
+                <th>周数/主播</th>
+                <th>资金/粉丝</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="playersTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="panel-broadcasts" class="card hidden">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <input id="bcSenderInput" type="text" value="全服运营中心" style="width:150px;" placeholder="发布署名" />
+          <input id="bcMsgInput" type="text" style="flex:1;min-width:220px;" placeholder="输入全服官方公告 / 活动大喇叭内容..." />
+          <button id="btnSendBroadcast" class="btn btn-primary" type="button">📢 发送全服大喇叭</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>类型</th><th>发送机构</th><th>内容</th><th>亮了</th><th>操作</th></tr>
+            </thead>
+            <tbody id="broadcastsTbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="panel-streamers" class="card hidden">
+        <div style="font-size:12px;color:var(--muted);">新增或覆盖云端主播配置，全服玩家刷新/重连后自动拉取合并至「主播池」。</div>
+        <div class="form-grid">
+          <input id="stId" placeholder="ID (留空自动生成)" />
+          <input id="stName" placeholder="主播艺名 *" />
+          <select id="stCategory">
+            <option value="beauty">颜值偶像</option>
+            <option value="cosmetic">美妆时尚</option>
+            <option value="comedy">搞笑整活</option>
+            <option value="tech">硬核数码</option>
+            <option value="food">美食生鲜</option>
+            <option value="culture">文化知识</option>
+            <option value="sports">运动潮牌</option>
+            <option value="farm">助农非遗</option>
+          </select>
+          <select id="stGrade">
+            <option value="amateur">素人 (C)</option>
+            <option value="rookie">新星 (B)</option>
+            <option value="mid">腰部 (A)</option>
+            <option value="head">头部 (S)</option>
+            <option value="super">超头 (SSR)</option>
+          </select>
+          <input id="stTitle" placeholder="头衔 (如: 国风花旦)" value="潜力达人" />
+          <input id="stCost" type="number" placeholder="签约金(万)" value="24" />
+          <input id="stSales" type="number" placeholder="带货力(20-120)" value="62" />
+          <input id="stCharm" type="number" placeholder="颜值(40-100)" value="82" />
+          <input id="stDesc" placeholder="一句话人设介绍" style="grid-column:span 2;" />
+        </div>
+        <div>
+          <button id="btnSaveStreamer" class="btn btn-green" type="button">💾 保存并热更新下发全服</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>艺名</th><th>分类 / 分级</th><th>签约金 / 带货 / 颜值</th><th>操作</th></tr>
+            </thead>
+            <tbody id="streamersTbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    var token = sessionStorage.getItem('mcn_admin_token') || '';
+    function toast(msg) {
+      var el = document.getElementById('toast');
+      el.innerText = msg;
+      el.classList.remove('hidden');
+      setTimeout(function() { el.classList.add('hidden'); }, 3000);
+    }
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+        return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+      });
+    }
+    async function api(path, opts) {
+      opts = opts || {};
+      var headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      var res = await fetch(path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined });
+      var data = await res.json().catch(function() { return {}; });
+      if (res.status === 401 && path !== '/api/admin/login') {
+        logout();
+      }
+      return { ok: res.ok, status: res.status, data: data };
+    }
+    function logout() {
+      token = '';
+      sessionStorage.removeItem('mcn_admin_token');
+      document.getElementById('loginPanel').classList.remove('hidden');
+      document.getElementById('adminApp').classList.add('hidden');
+      document.getElementById('btnLogout').classList.add('hidden');
+    }
+    async function login() {
+      var pw = document.getElementById('adminPasswordInput').value;
+      var res = await api('/api/admin/login', { method: 'POST', body: { password: pw } });
+      if (!res.ok) {
+        toast(res.status === 503 ? '服务端尚未配置 ADMIN_PASSWORD Secret' : '口令错误，请重试');
+        return;
+      }
+      token = res.data.token;
+      sessionStorage.setItem('mcn_admin_token', token);
+      enterApp();
+    }
+    async function enterApp() {
+      document.getElementById('loginPanel').classList.add('hidden');
+      document.getElementById('adminApp').classList.remove('hidden');
+      document.getElementById('btnLogout').classList.remove('hidden');
+      await refreshAll();
+    }
+    async function refreshAll() {
+      await Promise.all([loadOverview(), loadPlayers(), loadBroadcasts(), loadStreamers()]);
+    }
+    async function loadOverview() {
+      var res = await api('/api/admin/overview');
+      if (!res.ok) return;
+      var d = res.data;
+      document.getElementById('kpiGrid').innerHTML =
+        '<div class="kpi"><div class="kpi-lbl">全服唯一机构总数</div><div class="kpi-val">' + d.totalPlayers + '</div></div>' +
+        '<div class="kpi"><div class="kpi-lbl">24h 活跃机构</div><div class="kpi-val" style="color:#38bdf8;">' + d.active24h + '</div></div>' +
+        '<div class="kpi"><div class="kpi-lbl">重名冲突数</div><div class="kpi-val" style="color:' + (d.duplicateNamesCount ? '#ef4444' : '#34d399') + ';">' + d.duplicateNamesCount + '</div></div>' +
+        '<div class="kpi"><div class="kpi-lbl">封禁账号</div><div class="kpi-val" style="color:#f87171;">' + d.bannedPlayers + '</div></div>' +
+        '<div class="kpi"><div class="kpi-lbl">全服大喇叭数</div><div class="kpi-val">' + d.totalBroadcasts + '</div></div>' +
+        '<div class="kpi"><div class="kpi-lbl">云端热更主播</div><div class="kpi-val" style="color:#fbcfe8;">' + d.customStreamersCount + '</div></div>';
+    }
+    async function loadPlayers() {
+      var q = document.getElementById('playerSearchInput').value.trim();
+      var res = await api('/api/admin/players' + (q ? ('?q=' + encodeURIComponent(q)) : ''));
+      if (!res.ok) return;
+      var tb = document.getElementById('playersTbody');
+      tb.innerHTML = (res.data.items || []).map(function(p, idx) {
+        var banCls = p.is_banned ? 'pill-ban' : 'pill-ok';
+        var banTxt = p.is_banned ? '已封禁' : '正常';
+        return '<tr>' +
+          '<td>#' + (idx + 1) + '</td>' +
+          '<td><strong>' + esc(p.agency_name) + '</strong><div style="font-size:10px;color:#64748b;">' + esc(p.id) + '</div></td>' +
+          '<td style="color:#38bdf8;font-weight:800;">' + Number(p.power_score).toFixed(1) + 'w</td>' +
+          '<td>第' + p.week + '周 · ' + p.streamer_count + '人</td>' +
+          '<td>' + Number(p.cash).toFixed(0) + 'w / ' + Number(p.fans).toFixed(0) + 'w</td>' +
+          '<td><span class="pill ' + banCls + '">' + banTxt + '</span></td>' +
+          '<td style="display:flex;gap:4px;flex-wrap:wrap;">' +
+            '<button class="btn" onclick="renamePlayer(\'' + esc(p.id) + '\',\'' + esc(p.agency_name) + '\')">改名</button>' +
+            '<button class="btn" onclick="playerAct(\'' + esc(p.id) + '\',\'' + (p.is_banned ? 'unban' : 'ban') + '\')">' + (p.is_banned ? '解封' : '封禁') + '</button>' +
+            '<button class="btn btn-danger" onclick="delPlayer(\'' + esc(p.id) + '\')">删</button>' +
+          '</td></tr>';
+      }).join('');
+    }
+    window.renamePlayer = async function(id, oldName) {
+      var next = prompt('请输入新的唯一机构名称：', oldName);
+      if (!next || next.trim() === oldName) return;
+      var res = await api('/api/admin/players/' + encodeURIComponent(id) + '/action', { method: 'POST', body: { action: 'rename', agencyName: next.trim() } });
+      if (!res.ok) { toast('改名失败：可能与全服已有机构重名'); return; }
+      toast('✅ 已改名为 ' + res.data.agencyName);
+      refreshAll();
+    };
+    window.playerAct = async function(id, action) {
+      await api('/api/admin/players/' + encodeURIComponent(id) + '/action', { method: 'POST', body: { action: action } });
+      toast('✅ 操作完成');
+      refreshAll();
+    };
+    window.delPlayer = async function(id) {
+      if (!confirm('确认删除账号 ' + id + '？不可恢复！')) return;
+      await api('/api/admin/players/' + encodeURIComponent(id) + '/action', { method: 'POST', body: { action: 'delete' } });
+      toast('🗑️ 已删除');
+      refreshAll();
+    };
+    async function loadBroadcasts() {
+      var res = await api('/api/admin/broadcasts');
+      if (!res.ok) return;
+      document.getElementById('broadcastsTbody').innerHTML = (res.data.items || []).map(function(b) {
+        return '<tr><td>' + b.id + '</td><td>' + esc(b.type) + '</td><td>' + esc(b.agency_name) + '</td><td>' + esc(b.message) + '</td><td>' + b.likes + '</td>' +
+          '<td><button class="btn btn-danger" onclick="delBc(' + b.id + ')">删除</button></td></tr>';
+      }).join('');
+    }
+    window.delBc = async function(id) {
+      await api('/api/admin/broadcasts/' + id, { method: 'DELETE' });
+      toast('已移除播报');
+      loadBroadcasts();
+    };
+    async function loadStreamers() {
+      var res = await api('/api/admin/streamers');
+      if (!res.ok) return;
+      document.getElementById('streamersTbody').innerHTML = (res.data.items || []).map(function(s) {
+        return '<tr><td>' + esc(s.id) + '</td><td><strong>' + esc(s.name) + '</strong></td><td>' + esc(s.category) + ' / ' + esc(s.grade) + '(' + esc(s.tier) + ')</td>' +
+          '<td>' + s.cost + 'w / 带货' + s.sales + ' / 颜' + s.charm + '</td>' +
+          '<td><button class="btn btn-danger" onclick="delSt(\'' + esc(s.id) + '\')">移除</button></td></tr>';
+      }).join('');
+    }
+    window.delSt = async function(id) {
+      await api('/api/admin/streamers/' + encodeURIComponent(id), { method: 'DELETE' });
+      toast('已移除云端主播');
+      loadStreamers();
+    };
+
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        ['players', 'broadcasts', 'streamers'].forEach(function(k) {
+          document.getElementById('panel-' + k).classList.toggle('hidden', btn.getAttribute('data-tab') !== k);
+        });
+      });
+    });
+    document.getElementById('btnAdminLogin').addEventListener('click', login);
+    document.getElementById('btnLogout').addEventListener('click', logout);
+    document.getElementById('btnSearchPlayers').addEventListener('click', loadPlayers);
+    document.getElementById('btnRefreshAll').addEventListener('click', refreshAll);
+    document.getElementById('btnCleanupZombies').addEventListener('click', async function() {
+      var res = await api('/api/admin/players/cleanup-zombies', { method: 'POST' });
+      toast('🧹 已清理 ' + (res.data.deletedCount || 0) + ' 个0主播僵尸号');
+      refreshAll();
+    });
+    document.getElementById('btnSendBroadcast').addEventListener('click', async function() {
+      var agencyName = document.getElementById('bcSenderInput').value.trim();
+      var message = document.getElementById('bcMsgInput').value.trim();
+      if (!message) return;
+      await api('/api/admin/broadcast', { method: 'POST', body: { agencyName: agencyName, message: message } });
+      document.getElementById('bcMsgInput').value = '';
+      toast('📢 全服官方广播已推送');
+      loadBroadcasts();
+    });
+    document.getElementById('btnSaveStreamer').addEventListener('click', async function() {
+      var grade = document.getElementById('stGrade').value;
+      var tierMap = { amateur: 'C', rookie: 'B', mid: 'A', head: 'S', super: 'SSR' };
+      var body = {
+        id: document.getElementById('stId').value.trim(),
+        name: document.getElementById('stName').value.trim(),
+        category: document.getElementById('stCategory').value,
+        grade: grade,
+        tier: tierMap[grade] || 'B',
+        title: document.getElementById('stTitle').value.trim(),
+        cost: Number(document.getElementById('stCost').value) || 20,
+        sales: Number(document.getElementById('stSales').value) || 55,
+        charm: Number(document.getElementById('stCharm').value) || 72,
+        desc: document.getElementById('stDesc').value.trim(),
+        is_beauty: document.getElementById('stCategory').value === 'beauty' || document.getElementById('stCategory').value === 'cosmetic' ? 1 : 0
+      };
+      if (!body.name) { toast('请填写主播艺名'); return; }
+      var res = await api('/api/admin/streamers', { method: 'POST', body: body });
+      if (!res.ok) { toast('保存失败'); return; }
+      toast('✅ 主播【' + body.name + '】已发布到云端池！');
+      document.getElementById('stId').value = '';
+      document.getElementById('stName').value = '';
+      loadStreamers();
+      loadOverview();
+    });
+
+    if (token) enterApp();
+  </script>
+</body>
+</html>

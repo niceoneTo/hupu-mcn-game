@@ -568,6 +568,33 @@
     .tier-s { background: linear-gradient(135deg, #a855f7, #6366f1); color: #fff; }
     .tier-a { background: linear-gradient(135deg, #3b82f6, #06b6d4); color: #fff; }
     .tier-b { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+    .tier-c { background: linear-gradient(135deg, #475569, #334155); color: #e2e8f0; }
+
+    .pool-filter-row {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .pool-filter-row::-webkit-scrollbar { display: none; }
+    .pool-chip {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #2e3d60;
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 10.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .pool-chip.active {
+      background: rgba(236, 72, 153, 0.24);
+      border-color: #f472b6;
+      color: #fff;
+    }
 
     /* 天梯榜列表条目 */
     .lb-item {
@@ -2097,14 +2124,20 @@
       </div>
     </div>
 
-    <!-- 模态框 2: 签约市场弹窗 -->
+    <!-- 模态框 2: 签约市场弹窗 (120+ 分类分级主播池) -->
     <div id="recruitModal" class="modal-overlay hidden">
-      <div class="modal-card" style="max-height: 78vh;">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 8px;">
-          <span style="font-size: 14px; font-weight: 800; color: #fff;">🌟 人才经纪市场（主播池）</span>
+      <div class="modal-card" style="max-height: 84vh; gap: 7px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2e3d60; padding-bottom: 7px;">
+          <div>
+            <span style="font-size: 14px; font-weight: 800; color: #fff;">🌟 全网人才经纪市场</span>
+            <span id="recruitPoolSummary" style="font-size: 10.5px; color: #fbbf24; margin-left: 5px; font-weight: 700;">120位储备</span>
+          </div>
           <button type="button" class="btn-icon" data-action="close-recruit" style="padding: 4px 8px;">✕</button>
         </div>
-        <div id="marketList" style="display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 62vh; padding-right: 2px;"></div>
+        <input id="recruitSearchInput" type="text" placeholder="🔍 搜索主播艺名 / 标签 / 赛道..." style="width: 100%; padding: 6px 10px; border-radius: 8px; border: 1px solid #2e3d60; background: #0b1120; color: #fff; font-size: 11.5px; outline: none;" />
+        <div id="recruitCatBar" class="pool-filter-row"></div>
+        <div id="recruitGradeBar" class="pool-filter-row"></div>
+        <div id="marketList" style="display: flex; flex-direction: column; gap: 7px; overflow-y: auto; max-height: 52vh; padding-right: 2px;"></div>
       </div>
     </div>
 
@@ -3072,6 +3105,145 @@
     };
 
     // =========================================================================
+    // 2.1 120+ 主播全网分类分级人才池（8大赛道 × 素人→超头 5阶分级）
+    // =========================================================================
+    var STREAMER_CATEGORIES = [
+      { id: 'all',      label: '全部赛道' },
+      { id: 'beauty',   label: '颜值偶像' },
+      { id: 'cosmetic', label: '美妆时尚' },
+      { id: 'comedy',   label: '搞笑整活' },
+      { id: 'tech',     label: '硬核数码' },
+      { id: 'food',     label: '美食生鲜' },
+      { id: 'culture',  label: '文化知识' },
+      { id: 'sports',   label: '运动潮牌' },
+      { id: 'farm',     label: '助农非遗' }
+    ];
+
+    var STREAMER_GRADES = [
+      { id: 'all',     tier: 'all', label: '全部分级' },
+      { id: 'amateur', tier: 'C',   label: '素人 · C' },
+      { id: 'rookie',  tier: 'B',   label: '新星 · B' },
+      { id: 'mid',     tier: 'A',   label: '腰部 · A' },
+      { id: 'head',    tier: 'S',   label: '头部 · S' },
+      { id: 'super',   tier: 'SSR', label: '超头 · SSR' }
+    ];
+
+    var GRADE_META_BY_TIER = {
+      C:   { grade: 'amateur', gradeName: '素人' },
+      B:   { grade: 'rookie',  gradeName: '新星' },
+      A:   { grade: 'mid',     gradeName: '腰部' },
+      S:   { grade: 'head',    gradeName: '头部' },
+      SSR: { grade: 'super',   gradeName: '超头' }
+    };
+
+    var BASE_STREAMER_CAT_MAP = {
+      su: 'cosmetic', meina: 'beauty', zhao: 'beauty', ling: 'beauty', daxue: 'beauty',
+      dong: 'culture', yang: 'comedy', zhui: 'comedy', ai01: 'tech', luo: 'culture',
+      liu: 'sports', qiang: 'food', he: 'tech', kun: 'sports', chen: 'culture',
+      wei: 'food', mao: 'sports', che: 'tech', guang: 'food', suona: 'farm',
+      baoshi: 'comedy', qishou: 'sports', nong: 'farm', xiuche: 'farm'
+    };
+
+    Object.keys(streamersMaster).forEach(function(id) {
+      var st = streamersMaster[id];
+      st.category = BASE_STREAMER_CAT_MAP[id] || 'comedy';
+      var gm = GRADE_META_BY_TIER[st.tier] || GRADE_META_BY_TIER.B;
+      st.grade = gm.grade;
+      st.gradeName = gm.gradeName;
+    });
+
+    (function expandStreamerPoolTo120Plus() {
+      var catalogNames = {
+        beauty:   ['林汐汐','苏念念','夏末璃','温颜初','顾清浅','白桃汽水','江晚柠','南风小鹿','虞姬七七','楚瑶光','星瞳酱','许星河'],
+        cosmetic: ['卡卡试色','早八粉底妹','成分党阿雅','晚安护肤酱','调香师若初','口红试色君','修容魔法师','敏肌急救生','小蛮腰穿搭','法式复古琳','千金妆造师','御姐薇安'],
+        comedy:   ['宿舍整活王','夜市砍价哥','社恐喜剧人','梗王阿呆','工位摸鱼侠','反向带货小朱','方言rapper','相声小满','整蛊天师','剧情反转帝','抽象老铁','喜剧大拿'],
+        tech:     ['宿舍修电脑','二手捡漏小张','焊武帝实习生','图吧垃圾佬','外设发烧友','极客小周','跑分狂魔','摄影器材控','智能家居阿凯','芯片科普官','开源极客王','AI造梦师'],
+        food:     ['巷口肠粉弟','早市挑瓜妹','卤味小摊主','东北烧烤王','深夜食堂阿明','烘焙甜点师','潮汕牛肉丸','山珍野菌妹','海味小鲜生','川菜火辣姐','寻味大师傅','米其林探店官'],
+        culture:  ['考研自习生','旧书摊青年','博物馆讲解员','古诗词少女','财经晨读生','心理树洞姐','职场面试官','双语播音阿泽','法律讲堂小周','历史说书人','国学大先生','全球文化使者'],
+        sports:   ['操场晨跑弟','体育系学妹','夜骑追风侠','羽毛球小将','滑板街区少年','瑜伽塑形琳','路人王新秀','滑雪教练K','健身房巨无霸','马拉松铁人','格斗燃魂哥','奥运冠军严选'],
+        farm:     ['竹林挖笋妹','茶山采茶郎','手作竹编阿婆','蜂巢小哥','沙漠苹果农','苗绣传人朵朵','景德镇陶艺生','草原牧歌汉','非遗油纸伞','老字号酱坊','助农兴乡带头人','国潮非遗宗师']
+      };
+      var titlesByGrade = {
+        amateur: ['萌新素人','草根新人','街拍练习生','试播学员'],
+        rookie:  ['潜力新星','上升萌芽','黑马达人','活力新人'],
+        mid:     ['垂类腰部','稳健红人','口碑中坚','圈层名角'],
+        head:    ['赛道头部','人气王牌','金标名宿','品类大咖'],
+        super:   ['全网超头','现象级顶流','镇店传奇','破圈核武']
+      };
+      var gradeSlots = [
+        // tier, grade, gradeName, costRange, salesRange, resRange, charmRange, countPerCat
+        { tier: 'C',   grade: 'amateur', gName: '素人', cMin: 6,   cMax: 14,  sMin: 34, sMax: 45, rMin: 58, rMax: 80, chMin: 58, chMax: 72, count: 4 },
+        { tier: 'B',   grade: 'rookie',  gName: '新星', cMin: 16,  cMax: 27,  sMin: 46, sMax: 57, rMin: 65, rMax: 84, chMin: 64, chMax: 78, count: 3 },
+        { tier: 'A',   grade: 'mid',     gName: '腰部', cMin: 32,  cMax: 54,  sMin: 58, sMax: 70, rMin: 72, rMax: 90, chMin: 70, chMax: 84, count: 3 },
+        { tier: 'S',   grade: 'head',    gName: '头部', cMin: 62,  cMax: 92,  sMin: 72, sMax: 84, rMin: 78, rMax: 95, chMin: 78, chMax: 92, count: 1 },
+        { tier: 'SSR', grade: 'super',   gName: '超头', cMin: 108, cMax: 168, sMin: 86, sMax: 95, rMin: 85, rMax: 98, chMin: 86, chMax: 96, count: 1 }
+      ];
+      var catDescs = {
+        beauty:   '镜头表现力极强的高颜值达人，粉丝粘性与打赏爆发力突出。',
+        cosmetic: '精通护肤成分与实测妆效的种草专家，高转化美妆复购利器。',
+        comedy:   '节奏感爆炸的直播鬼才，随时制造名场面拉高全网自然流量。',
+        tech:     '参数党信赖的硬核评测玩家，高客单数码电器带货稳如磐石。',
+        food:     '自带烟火气与诱人吃相的美食主播，复购率与夜场转化极佳。',
+        culture:  '金句频出的知识型主播，大幅稳定直播间弹幕与 JRs 口碑。',
+        sports:   '荷尔蒙与活力拉满的运动先锋，运动鞋服与户外装备带货王。',
+        farm:     '扎根源产地与非遗匠心的实诚主播，口碑护航与助农光环兼具。'
+      };
+      var catUlts = {
+        beauty:   '惊艳镜头杀 (高颜值暴击爆单)',
+        cosmetic: '全网断货王 (美妆客单飙升)',
+        comedy:   '爆梗连击风暴 (弹幕狂热翻倍)',
+        tech:     '硬核拆解实测 (高客单秒清空)',
+        food:     '深夜放毒暴击 (复购连单不停)',
+        culture:  '儒雅金句破圈 (口碑与流水双升)',
+        sports:   '燃脂热血冲锋 (体力消耗大幅降低)',
+        farm:     '原产地直供狂潮 (口碑飙升零差评)'
+      };
+      var catLabelMap = {
+        beauty: '颜值偶像', cosmetic: '美妆时尚', comedy: '搞笑整活', tech: '硬核数码',
+        food: '美食生鲜', culture: '文化知识', sports: '运动潮牌', farm: '助农非遗'
+      };
+
+      var catKeys = Object.keys(catalogNames);
+      catKeys.forEach(function(cat, cIdx) {
+        var names = catalogNames[cat];
+        var nameCursor = 0;
+        gradeSlots.forEach(function(slot) {
+          for (var i = 0; i < slot.count; i++) {
+            var nm = names[nameCursor % names.length];
+            nameCursor++;
+            var id = 'p_' + cat.slice(0, 3) + '_' + slot.grade.slice(0, 2) + '_' + nameCursor;
+            var seed = cIdx * 31 + nameCursor * 17 + slot.sMin;
+            var cost = slot.cMin + (seed % (slot.cMax - slot.cMin + 1));
+            var sales = slot.sMin + ((seed * 3) % (slot.sMax - slot.sMin + 1));
+            var res = slot.rMin + ((seed * 5) % (slot.rMax - slot.rMin + 1));
+            var charm = slot.chMin + ((seed * 7) % (slot.chMax - slot.chMin + 1));
+            var titleList = titlesByGrade[slot.grade];
+            var ttl = catLabelMap[cat].slice(0, 2) + titleList[seed % titleList.length];
+
+            streamersMaster[id] = {
+              id: id,
+              name: nm,
+              tier: slot.tier,
+              grade: slot.grade,
+              gradeName: slot.gName,
+              category: cat,
+              title: ttl,
+              sales: sales,
+              stamina: 85 + (seed % 16),
+              resilience: res,
+              desc: '【' + slot.gName + ' · ' + catLabelMap[cat] + '】' + catDescs[cat],
+              ultName: catUlts[cat],
+              cost: cost,
+              tag: slot.gName + '·' + catLabelMap[cat].slice(0, 2),
+              initCharm: charm,
+              isBeautyCat: (cat === 'beauty' || cat === 'cosmetic')
+            };
+          }
+        });
+      });
+    })();
+
+    // =========================================================================
     // 2.2 饭圈文化与「颜值即正义」5阶养成蜕变数据库 (全24位主播完整适配)
     // =========================================================================
     var FANDOM_STAGES = {
@@ -3125,9 +3297,28 @@
     ];
 
     function getFandomProfile(id) {
-      return FANDOM_PROFILES[id] || {
-        fanClub: '星光后援会', color: '#ec4899', colorName: '星光粉',
-        slogan: '破晓出道，一路走花路！', isBeauty: false, baseCharm: 58, initVotes: 500
+      if (FANDOM_PROFILES[id]) return FANDOM_PROFILES[id];
+      var s = streamersMaster[id];
+      var catColors = {
+        beauty:   ['#ec4899', '星光粉'],
+        cosmetic: ['#f43f5e', '玫瑰红'],
+        comedy:   ['#f59e0b', '热梗金'],
+        tech:     ['#06b6d4', '量子青'],
+        food:     ['#fb923c', '烟火橙'],
+        culture:  ['#3b82f6', '墨香蓝'],
+        sports:   ['#8b5cf6', '竞燃紫'],
+        farm:     ['#10b981', '青禾绿']
+      };
+      var pair = (s && catColors[s.category]) || ['#ec4899', '星光粉'];
+      var baseC = (s && s.initCharm) ? s.initCharm : (s && s.tier === 'SSR' ? 86 : (s && s.tier === 'S' ? 76 : 64));
+      return {
+        fanClub: (s ? s.name.slice(0, 3) : '星光') + '守护团',
+        color: pair[0],
+        colorName: pair[1],
+        slogan: (s ? s.name : '新锐主播') + '闪耀带货现场，全网打 call！',
+        isBeauty: Boolean(s && (s.isBeautyCat || s.isBeauty)),
+        baseCharm: baseC,
+        initVotes: s && s.tier === 'SSR' ? 1100 : (s && s.tier === 'S' ? 780 : 420)
       };
     }
 
@@ -3524,7 +3715,23 @@
         xiuche: { skin: '#e2e8f0', hair: '#64748b', clothes: '#334155', extra: '⌚', eye: '#1e293b', hairStyle: 'loupe' }
       };
 
-      var v = charVisuals[id] || { skin: '#fed7aa', hair: '#1f2937', clothes: '#3b82f6', extra: '🎙️', eye: '#111827', hairStyle: 'short' };
+      var v = charVisuals[id];
+      if (!v) {
+        var hash = 0;
+        for (var hi = 0; hi < id.length; hi++) hash = ((hash << 5) - hash + id.charCodeAt(hi)) | 0;
+        hash = Math.abs(hash);
+        var hairPal = ['#1e293b','#4a2818','#7c2d12','#1e1b4b','#831843','#0f766e','#312e81','#581c87','#be123c','#0369a1'];
+        var clothPal = ['#c91b1b','#2563eb','#7c3aed','#059669','#d97706','#db2777','#0891b2','#334155'];
+        var eyePal = ['#38bdf8','#f43f5e','#f59e0b','#10b981','#a855f7','#1e293b'];
+        var propStyles = ['short','glasses','kun','wei','mao','xiuche'];
+        v = {
+          skin: '#ffe6d5',
+          hair: hairPal[hash % hairPal.length],
+          clothes: clothPal[(hash >> 2) % clothPal.length],
+          eye: eyePal[(hash >> 3) % eyePal.length],
+          hairStyle: propStyles[(hash >> 4) % propStyles.length]
+        };
+      }
       var isBareFallback = isBeauty && (overrideStage === 1 || (st.makeup && st.makeup.glasses));
       var svgBust = renderStylizedAnimeCGSVG(s, size, stage, v, st, isBareFallback);
 
@@ -3810,11 +4017,89 @@
       return Math.max(6, Math.round(48 * rankRatio) - synFx.cooldownReduce);
     }
 
+    function getUnifiedTotalLeaderboard() {
+      var currentPower = state.powerScore || calculatePowerScore();
+      var myTopS = getTopStreamer();
+      var merged = [];
+      var seenNames = {};
+
+      // 1. 先放入真实注册的玩家机构（若已在云端榜，去重名称并标记当前自己）
+      var selfIncluded = false;
+      if (cloudState.online && Array.isArray(cloudState.leaders)) {
+        cloudState.leaders.forEach(function(p) {
+          var isSelf = (p.id === cloudState.playerId);
+          var nm = (isSelf ? state.agencyName : (p.agency_name || '新锐互娱'));
+          if (seenNames[nm]) return;
+          seenNames[nm] = true;
+          if (isSelf) selfIncluded = true;
+          merged.push({
+            id: p.id,
+            name: nm,
+            power: isSelf ? currentPower : Number(p.power_score || 0),
+            week: isSelf ? state.week : Number(p.week || 1),
+            topStreamer: isSelf ? (myTopS.name || '虚位以待') : (p.top_streamer_name || '虚位以待'),
+            streamerCount: isSelf ? ownedStreamers.length : Number(p.streamer_count || 0),
+            scandalRisk: isSelf ? (state.scandalRisk || 0) : Number(p.scandal_risk || 0),
+            isSelf: isSelf,
+            isRealPlayer: !isSelf,
+            isRival: false
+          });
+        });
+      }
+
+      if (!selfIncluded) {
+        seenNames[state.agencyName] = true;
+        merged.push({
+          id: cloudState.playerId || 'self',
+          name: state.agencyName,
+          power: currentPower,
+          week: state.week,
+          topStreamer: myTopS.name || '虚位以待',
+          streamerCount: ownedStreamers.length,
+          scandalRisk: state.scandalRisk || 0,
+          isSelf: true,
+          isRealPlayer: false,
+          isRival: false
+        });
+      }
+
+      // 2. 合并全行业 360 家 MCN 到同一张总榜按战力统一排序
+      competitorLadder.forEach(function(c) {
+        if (seenNames[c.name]) return;
+        seenNames[c.name] = true;
+        merged.push({
+          id: 'npc_' + c.rank,
+          name: c.name,
+          power: Number(c.power || 0),
+          desc: c.desc,
+          topStreamer: c.topStreamer,
+          isSelf: false,
+          isRealPlayer: false,
+          isRival: Boolean(c.isRival)
+        });
+      });
+
+      merged.sort(function(a, b) {
+        if (b.power !== a.power) return b.power - a.power;
+        return a.isSelf ? -1 : (b.isSelf ? 1 : 0);
+      });
+
+      var myRank = 1;
+      for (var i = 0; i < merged.length; i++) {
+        merged[i].rank = i + 1;
+        if (merged[i].isSelf) myRank = i + 1;
+      }
+      var extraCount = Math.max(0, (cloudState.online ? (cloudState.totalPlayers || 0) : 0) - (cloudState.leaders ? cloudState.leaders.length : 0));
+      return { items: merged, myRank: myRank, totalCount: merged.length + extraCount };
+    }
+
     function updateMCNRank(animate) {
       var currentPower = calculatePowerScore();
       state.powerScore = currentPower;
-      var newRank = calculateRankFromPower(currentPower);
-      var oldRank = state.mcnRank || TOTAL_INDUSTRY_AGENCIES;
+      var board = getUnifiedTotalLeaderboard();
+      var newRank = board.myRank;
+      var totalCount = board.totalCount;
+      var oldRank = state.mcnRank || totalCount;
 
       if (newRank < oldRank) {
         var climb = oldRank - newRank;
@@ -3835,7 +4120,7 @@
             setTimeout(function() { bar.classList.remove("rank-shimmer"); }, 1000);
           }
           playComboSound(5);
-          showToast("🏆 综合战力提升至 " + currentPower.toFixed(1) + "w，跨越 " + climb + " 家机构跃升至 NO." + newRank + "！", "success");
+          showToast("🏆 综合战力提升至 " + currentPower.toFixed(1) + "w，跨越 " + climb + " 家机构跃升至总榜 NO." + newRank + "！", "success");
         }
       } else {
         state.mcnRank = newRank;
@@ -3843,28 +4128,17 @@
 
       var rankLabelEl = document.getElementById("mcnRankLabel");
       var rankValEl = document.getElementById("mcnRankVal");
-      if (cloudState.online && cloudState.globalRank) {
-        if (rankLabelEl) rankLabelEl.innerText = "全服实时";
-        if (rankValEl) rankValEl.innerText = "NO." + state.mcnRank + " / " + (TOTAL_INDUSTRY_AGENCIES + cloudState.totalPlayers);
-      } else {
-        if (rankLabelEl) rankLabelEl.innerText = "全网排名";
-        if (rankValEl) rankValEl.innerText = "NO. " + state.mcnRank + " / " + TOTAL_INDUSTRY_AGENCIES;
-      }
+      if (rankLabelEl) rankLabelEl.innerText = "全服总榜";
+      if (rankValEl) rankValEl.innerText = "NO." + state.mcnRank + " / " + totalCount;
 
       var powerValEl = document.getElementById("mcnPowerScore");
       if (powerValEl) powerValEl.innerText = currentPower.toFixed(1) + "w";
 
-      var targetText = "稳坐榜首 · 全球第一MCN";
-      for (var i = competitorLadder.length - 1; i >= 0; i--) {
-        var comp = competitorLadder[i];
-        if (comp.rank < state.mcnRank) {
-          var gap = Math.max(0.1, (comp.power - currentPower)).toFixed(1);
-          targetText = "距第 " + comp.rank + "【" + comp.name + "】差 " + gap + "w";
-          break;
-        }
-      }
-      if (cloudState.online && cloudState.totalPlayers > 0) {
-        targetText = "全服 " + (TOTAL_INDUSTRY_AGENCIES + cloudState.totalPlayers) + " 家机构混战中 · " + targetText;
+      var targetText = "稳坐全服总榜第一！";
+      if (newRank > 1 && board.items[newRank - 2]) {
+        var above = board.items[newRank - 2];
+        var gap = Math.max(0.1, above.power - currentPower).toFixed(1);
+        targetText = "全服 " + totalCount + " 家机构总榜 · 距第 " + above.rank + "【" + above.name + "】差 " + gap + "w";
       }
       var targetEl = document.getElementById("rankTargetText");
       if (targetEl) targetEl.innerText = targetText;
@@ -3912,122 +4186,81 @@
       box.innerHTML = "";
 
       var currentPower = state.powerScore || calculatePowerScore();
-      var currentRank = state.mcnRank || TOTAL_INDUSTRY_AGENCIES;
-      var totalPoolCount = TOTAL_INDUSTRY_AGENCIES + (cloudState.online ? Math.max(0, cloudState.totalPlayers) : 0);
+      var board = getUnifiedTotalLeaderboard();
+      var currentRank = board.myRank;
+      var totalPoolCount = board.totalCount;
 
       var stripLeft = document.getElementById("lbStripLeft");
       var rivalGapEl = document.getElementById("lbRivalGap");
-      var rival = competitorLadder.find(function(c) { return c.isRival; }) || { power: 1200 };
-      if (stripLeft) stripLeft.innerText = "🌐 全服及全行业活跃机构榜（共 " + totalPoolCount + " 家 MCN）";
+      var rival = board.items.find(function(c) { return c.isRival; }) || { power: 1200, rank: 25 };
+      if (stripLeft) stripLeft.innerText = "🌐 全服机构总榜（共 " + totalPoolCount + " 家 MCN）";
       if (rivalGapEl) {
         var gap = (rival.power - currentPower);
-        if (cloudState.online && cloudState.globalRank) {
-          rivalGapEl.innerText = "真人榜 #" + cloudState.globalRank + " · 总榜 #" + currentRank;
-          rivalGapEl.style.color = "#34d399";
-        } else if (gap > 0) {
-          rivalGapEl.innerText = "落后前东家 " + gap.toFixed(1) + "w";
-          rivalGapEl.style.color = "#f87171";
+        if (gap > 0) {
+          rivalGapEl.innerText = "总榜 #" + currentRank + " · 距宿敌差 " + gap.toFixed(1) + "w";
+          rivalGapEl.style.color = "#fbbf24";
         } else {
-          rivalGapEl.innerText = "已反超 " + Math.abs(gap).toFixed(1) + "w!";
+          rivalGapEl.innerText = "总榜 #" + currentRank + " · 已超宿敌 " + Math.abs(gap).toFixed(1) + "w!";
           rivalGapEl.style.color = "#34d399";
         }
       }
 
       var perkHint = document.getElementById("lbPerkHint");
       if (perkHint) {
-        perkHint.innerText = "💡 总榜 NO." + currentRank + "/" + totalPoolCount + " · 开播冷却 " + getLiveCooldownSeconds() + "s";
+        perkHint.innerText = "💡 全服总榜 NO." + currentRank + "/" + totalPoolCount + " · 开播冷却 " + getLiveCooldownSeconds() + "s";
       }
 
-      // 1. 优先展示云端真实注册玩家机构（每家均持有独特厂牌名与真实王牌！）
-      if (cloudState.online && cloudState.leaders && cloudState.leaders.length > 0) {
-        var hdr = document.createElement("div");
-        hdr.style.cssText = "font-size:11px;color:#34d399;font-weight:700;padding:2px 4px;";
-        hdr.textContent = "🟢 全服真人玩家 MCN 实时榜（" + cloudState.totalPlayers + " 家真实玩家）";
-        box.appendChild(hdr);
-
-        cloudState.leaders.forEach(function(p, idx) {
-          var rank = idx + 1;
-          var isSelf = (p.id === cloudState.playerId);
-          var div = document.createElement("div");
-          div.className = "lb-item" + (isSelf ? " lb-item-self" : "");
-          var rankCls = rank === 1 ? "lb-rank-top1" : (rank === 2 ? "lb-rank-top2" : (rank === 3 ? "lb-rank-top3" : ""));
-          var rankIcon = rank === 1 ? "🥇" : (rank === 2 ? "🥈" : (rank === 3 ? "🥉" : "#" + rank));
-
-          div.innerHTML =
-            '<div style="display:flex;align-items:center;gap:8px;min-width:0;">' +
-              '<span class="lb-rank-tag ' + rankCls + '">' + rankIcon + '</span>' +
-              '<div style="min-width:0;">' +
-                '<div style="font-weight:700;color:' + (isSelf ? '#fbbf24' : '#fff') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
-                  escapeHTML(p.agency_name || '新锐互娱') +
-                  (isSelf ? ' <span class="badge badge-gold">你</span>' : ' <span class="badge badge-blue">真人</span>') +
-                  (Number(p.scandal_risk) >= 50 ? ' <span class="badge badge-red">黑红</span>' : '') +
-                '</div>' +
-                '<div style="font-size:10px;color:#94a3b8;">第' + Number(p.week || 1) + '周 · 王牌:' + escapeHTML(p.top_streamer_name || '虚位以待') + ' · ' + Number(p.streamer_count || 0) + '人</div>' +
-              '</div>' +
-            '</div>' +
-            '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
-              '<div style="text-align:right;">' +
-                '<div style="font-weight:800;color:#38bdf8;font-family:monospace;">' + Number(p.power_score || 0).toFixed(1) + 'w</div>' +
-                '<div style="font-size:9.5px;color:#64748b;">战力</div>' +
-              '</div>' +
-              (!isSelf ? '<button type="button" class="btn-icon" data-action="quick-pvp-target" data-target-id="' + escapeHTML(p.id) + '" style="padding:4px 7px;font-size:10.5px;color:#fca5a5;border-color:rgba(239,68,68,0.45);">⚔️ 商战</button>' : '') +
-            '</div>';
-          box.appendChild(div);
-        });
-      }
-
-      // 2. 展示全行业 360 家 MCN 机构大池（Top 5 豪门 + 宿敌 #25 星霸互娱 + 玩家周边15家真实竞争梯队）
-      var sep = document.createElement("div");
-      sep.style.cssText = "font-size:11px;color:#fbbf24;font-weight:700;padding:8px 4px 2px 4px;border-top:1px dashed #24314c;margin-top:4px;";
-      sep.textContent = "🏢 全行业 360 家竞争机构天梯（Top豪门 · 宿敌 · 你的当前卡位）";
-      box.appendChild(sep);
-
-      var displayItems = [];
-      competitorLadder.forEach(function(c) {
-        if (c.rank <= 5 || c.isRival || c.rank === 50 || c.rank === 100 || c.rank === 200 || c.rank === 360) {
-          displayItems.push(c);
-        } else if (Math.abs(c.rank - currentRank) <= 5) {
-          displayItems.push(c);
+      var visible = [];
+      board.items.forEach(function(item) {
+        if (
+          item.rank <= 5 ||
+          item.isRival ||
+          item.rank === 50 ||
+          item.rank === 100 ||
+          item.rank === 200 ||
+          Math.abs(item.rank - currentRank) <= 7
+        ) {
+          visible.push(item);
         }
       });
 
-      var seen = {};
-      var uniqueItems = [];
-      displayItems.forEach(function(item) {
-        if (!seen[item.rank]) {
-          seen[item.rank] = true;
-          uniqueItems.push(item);
+      visible.forEach(function(item, idx) {
+        if (idx > 0 && visible[idx - 1].rank + 1 < item.rank) {
+          var dots = document.createElement("div");
+          dots.style.cssText = "text-align:center;font-size:10px;color:#64748b;padding:2px 0;";
+          dots.textContent = "⋮ （略过 " + (item.rank - visible[idx - 1].rank - 1) + " 家梯队机构）";
+          box.appendChild(dots);
         }
-      });
-      uniqueItems.sort(function(a, b) { return a.rank - b.rank; });
 
-      uniqueItems.forEach(function(item) {
-        var isPlayer = (item.rank === currentRank);
         var div = document.createElement("div");
-        div.className = "lb-item" + (isPlayer ? " lb-item-self" : (item.isRival ? " lb-item-rival" : ""));
+        div.className = "lb-item" + (item.isSelf ? " lb-item-self" : (item.isRival ? " lb-item-rival" : ""));
 
         var rankCls = item.rank === 1 ? "lb-rank-top1" : (item.rank === 2 ? "lb-rank-top2" : (item.rank === 3 ? "lb-rank-top3" : ""));
         var rankIcon = item.rank === 1 ? "🥇 " : (item.rank === 2 ? "🥈 " : (item.rank === 3 ? "🥉 " : "#" + item.rank + " "));
+        var subText = (item.isRealPlayer || item.isSelf)
+          ? ('第' + item.week + '周 · 王牌:' + escapeHTML(item.topStreamer) + ' · ' + item.streamerCount + '人')
+          : ('王牌:' + escapeHTML(item.topStreamer || '新星主播') + ' · ' + escapeHTML(item.desc || 'MCN机构'));
 
         div.innerHTML =
-          '<div style="display: flex; align-items: center; gap: 8px; min-width: 0;">' +
+          '<div style="display:flex;align-items:center;gap:8px;min-width:0;">' +
             '<span class="lb-rank-tag ' + rankCls + '">' + rankIcon + '</span>' +
-            '<div style="min-width: 0;">' +
-              '<div style="font-weight: 700; color: ' + (isPlayer ? '#fbbf24' : '#fff') + '; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' +
-                escapeHTML(isPlayer ? (state.agencyName + ' (你)') : item.name) +
-                (isPlayer ? ' <span class="badge badge-gold">你的卡位</span>' : (item.isRival ? ' <span class="badge badge-red">前东家宿敌</span>' : '')) +
+            '<div style="min-width:0;">' +
+              '<div style="font-weight:700;color:' + (item.isSelf ? '#fbbf24' : '#fff') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+                escapeHTML(item.name) +
+                (item.isSelf ? ' <span class="badge badge-gold">你</span>' : '') +
+                (item.isRival ? ' <span class="badge badge-red">前东家宿敌</span>' : '') +
+                (item.scandalRisk >= 50 ? ' <span class="badge badge-red">黑红</span>' : '') +
               '</div>' +
-              '<div style="font-size: 10px; color: #94a3b8;">王牌:' + escapeHTML(isPlayer ? getTopStreamer().name : (item.topStreamer || '新星主播')) + ' · ' + escapeHTML(item.desc) + '</div>' +
+              '<div style="font-size:10px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + subText + '</div>' +
             '</div>' +
           '</div>' +
-          '<div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">' +
-            '<div style="text-align: right;">' +
-              '<div style="font-weight: 800; color: #38bdf8; font-family: monospace;">' + (isPlayer ? currentPower.toFixed(1) : item.power.toFixed(1)) + 'w</div>' +
-              '<div style="font-size: 9.5px; color: #64748b;">战力</div>' +
+          '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">' +
+            '<div style="text-align:right;">' +
+              '<div style="font-weight:800;color:#38bdf8;font-family:monospace;">' + Number(item.power).toFixed(1) + 'w</div>' +
+              '<div style="font-size:9.5px;color:#64748b;">战力</div>' +
             '</div>' +
-            (!isPlayer ? '<button type="button" class="btn-icon" data-action="quick-pvp-target" style="padding:3px 6px;font-size:10px;color:#fca5a5;">⚔️</button>' : '') +
+            (item.isRealPlayer ? '<button type="button" class="btn-icon" data-action="quick-pvp-target" data-target-id="' + escapeHTML(item.id) + '" style="padding:4px 7px;font-size:10.5px;color:#fca5a5;border-color:rgba(239,68,68,0.45);">⚔️ 商战</button>' : '') +
           '</div>';
-
         box.appendChild(div);
       });
     }
@@ -5414,76 +5647,164 @@
       updateCooldownUI();
     }
 
-    function openRecruitModal() {
-      safeInitAudio();
+    var recruitFilterCat = 'all';
+    var recruitFilterGrade = 'all';
+    var recruitSearchQuery = '';
+
+    function renderRecruitFilters() {
+      var catBar = document.getElementById("recruitCatBar");
+      if (catBar) {
+        catBar.innerHTML = "";
+        STREAMER_CATEGORIES.forEach(function(c) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "pool-chip" + (recruitFilterCat === c.id ? " active" : "");
+          b.setAttribute("data-action", "filter-recruit-cat");
+          b.setAttribute("data-cat", c.id);
+          b.innerText = c.label;
+          catBar.appendChild(b);
+        });
+      }
+      var grBar = document.getElementById("recruitGradeBar");
+      if (grBar) {
+        grBar.innerHTML = "";
+        STREAMER_GRADES.forEach(function(g) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "pool-chip" + (recruitFilterGrade === g.id ? " active" : "");
+          b.setAttribute("data-action", "filter-recruit-grade");
+          b.setAttribute("data-grade", g.id);
+          b.innerText = g.label;
+          grBar.appendChild(b);
+        });
+      }
+    }
+
+    function renderRecruitMarketList() {
       var box = document.getElementById("marketList");
+      if (!box) return;
       box.innerHTML = "";
 
       if (ownedStreamers.length === 0) {
         var guideTip = document.createElement("div");
         guideTip.className = "card-subpanel";
         guideTip.style.cssText = "border-color:rgba(251,191,36,0.55);background:linear-gradient(135deg, rgba(245,158,11,0.16), rgba(236,72,153,0.12));font-size:11.5px;color:#fde68a;line-height:1.45;padding:8px 10px;";
-        guideTip.innerHTML = "🧭 <strong>主播池挖角引导：</strong>当前旗下 0 名主播！你手里有 <strong>" + state.cash.toFixed(0) + "w</strong> 资金，可挑选任意高颜值 CG 主播签约（如 28w 苏晚晴、15w 校园练习生、40w 市井强哥），或关闭后去开 35w 盲盒碰手气！" +
-          (state.freeSRecruitToken > 0 ? '<div style="margin-top:4px;color:#6ee7b7;font-weight:800;">🕵️ 持有【0元S级猎头直签券 ×' + state.freeSRecruitToken + '】：下方 S 级主播可免费直接带走！</div>' : '');
+        guideTip.innerHTML = "🧭 <strong>主播池挖角引导：</strong>当前旗下 0 名主播！你手里有 <strong>" + state.cash.toFixed(0) + "w</strong> 资金，可按赛道/分级从 <strong>素人(6w起)</strong> 到 <strong>超头顶流</strong> 挑选首位王牌！" +
+          (state.freeSRecruitToken > 0 ? '<div style="margin-top:4px;color:#6ee7b7;font-weight:800;">🕵️ 持有【0元S级猎头直签券 ×' + state.freeSRecruitToken + '】：头部 S 级主播可免费直接带走！</div>' : '');
         box.appendChild(guideTip);
       } else if (state.freeSRecruitToken > 0) {
         var tokenTip = document.createElement("div");
         tokenTip.className = "card-subpanel";
         tokenTip.style.cssText = "border-color:rgba(52,211,153,0.55);background:rgba(16,185,129,0.14);font-size:11.5px;color:#6ee7b7;font-weight:700;padding:7px 10px;";
-        tokenTip.innerHTML = "🕵️ 你持有【0元S级猎头直签券 ×" + state.freeSRecruitToken + "】，可免费签走任意 1 名 S 级主播！";
+        tokenTip.innerHTML = "🕵️ 你持有【0元S级猎头直签券 ×" + state.freeSRecruitToken + "】，可免费签走任意 1 名头部 S 级主播！";
         box.appendChild(tokenTip);
       }
 
+      var q = (recruitSearchQuery || '').trim().toLowerCase();
       var unowned = Object.keys(streamersMaster).filter(function(id) {
-        return ownedStreamers.indexOf(id) === -1;
+        if (ownedStreamers.indexOf(id) !== -1) return false;
+        var s = streamersMaster[id];
+        if (recruitFilterCat !== 'all' && s.category !== recruitFilterCat) return false;
+        if (recruitFilterGrade !== 'all' && s.grade !== recruitFilterGrade) return false;
+        if (q) {
+          var hay = (s.name + ' ' + s.title + ' ' + s.tag + ' ' + s.desc).toLowerCase();
+          if (hay.indexOf(q) === -1) return false;
+        }
+        return true;
       });
 
+      var totalAll = Object.keys(streamersMaster).length;
+      var sumEl = document.getElementById("recruitPoolSummary");
+      if (sumEl) sumEl.innerText = "匹配 " + unowned.length + " / 共 " + totalAll + " 位";
+
       if (unowned.length === 0) {
-        box.innerHTML = '<div style="color: #94a3b8; font-size: 13px; text-align: center; padding: 24px;">全网顶尖达人已全部归入麾下！</div>';
-      } else {
-        unowned.forEach(function(id) {
-          var s = streamersMaster[id];
-          var useFreeS = (state.freeSRecruitToken > 0 && s.tier === 'S');
-          var effCost = useFreeS ? 0 : s.cost;
-
-          var item = document.createElement("div");
-          item.className = "card-subpanel";
-          item.style.display = "flex";
-          item.style.justifyContent = "space-between";
-          item.style.alignItems = "center";
-          item.style.gap = "8px";
-
-          var leftInfo = document.createElement("div");
-          leftInfo.style.display = "flex";
-          leftInfo.style.alignItems = "center";
-          leftInfo.style.gap = "8px";
-          leftInfo.style.minWidth = "0";
-          leftInfo.innerHTML = 
-            getPersonifiedAvatarSVG(s, 48) +
-            '<div style="min-width:0;">' +
-              '<div style="font-size: 13px; font-weight: 700; color: #fff; display:flex; align-items:center; gap:4px; flex-wrap:wrap;">' + escapeHTML(s.name) + ' <span class="badge badge-gold">' + escapeHTML(s.tag) + '</span></div>' +
-              '<div style="font-size: 11px; color: #94a3b8; line-height: 1.35;">' + escapeHTML(s.desc) + '</div>' +
-            '</div>';
-
-          var recruitBtn = document.createElement("button");
-          recruitBtn.className = "btn-small-upgrade";
-          recruitBtn.style.background = useFreeS ? "#059669" : "#c91b1b";
-          recruitBtn.style.flexShrink = "0";
-          recruitBtn.innerText = useFreeS ? "🕵️ 0w直签" : ("签约 " + effCost + "w");
-          recruitBtn.setAttribute("data-action", "recruit-streamer");
-          recruitBtn.setAttribute("data-id", s.id);
-
-          if (state.cash < effCost) {
-            recruitBtn.disabled = true;
-            recruitBtn.classList.add("btn-disabled");
-          }
-
-          item.appendChild(leftInfo);
-          item.appendChild(recruitBtn);
-          box.appendChild(item);
-        });
+        var emptyEl = document.createElement("div");
+        emptyEl.style.cssText = "color:#94a3b8;font-size:12.5px;text-align:center;padding:24px;";
+        emptyEl.innerText = Object.keys(streamersMaster).length === ownedStreamers.length
+          ? "全网 120+ 位达人已全部归入麾下！"
+          : "当前筛选条件下暂无待签主播，请切换赛道或分级查看！";
+        box.appendChild(emptyEl);
+        return;
       }
 
+      // 分级排序：新手0人时优先展示可负担的素人/新星/核心起步王牌，其余按战力/成本有序呈现
+      unowned.sort(function(a, b) {
+        var sa = streamersMaster[a], sb = streamersMaster[b];
+        if (ownedStreamers.length === 0) {
+          var aOk = sa.cost <= state.cash ? 0 : 1;
+          var bOk = sb.cost <= state.cash ? 0 : 1;
+          if (aOk !== bOk) return aOk - bOk;
+        }
+        var order = { super: 0, head: 1, mid: 2, rookie: 3, amateur: 4 };
+        var oa = order[sa.grade] !== undefined ? order[sa.grade] : 5;
+        var ob = order[sb.grade] !== undefined ? order[sb.grade] : 5;
+        if (oa !== ob) return ob - oa;
+        return sa.cost - sb.cost;
+      });
+
+      // 限制单屏首render最多 60 张卡片（防120张同时建DOM卡顿，提示可筛选）
+      var renderSlice = unowned.slice(0, 60);
+      renderSlice.forEach(function(id) {
+        var s = streamersMaster[id];
+        var useFreeS = (state.freeSRecruitToken > 0 && s.tier === 'S');
+        var effCost = useFreeS ? 0 : s.cost;
+        var gLabel = s.gradeName || (GRADE_META_BY_TIER[s.tier] ? GRADE_META_BY_TIER[s.tier].gradeName : '新星');
+
+        var item = document.createElement("div");
+        item.className = "card-subpanel";
+        item.style.display = "flex";
+        item.style.justifyContent = "space-between";
+        item.style.alignItems = "center";
+        item.style.gap = "8px";
+
+        var leftInfo = document.createElement("div");
+        leftInfo.style.display = "flex";
+        leftInfo.style.alignItems = "center";
+        leftInfo.style.gap = "8px";
+        leftInfo.style.minWidth = "0";
+        leftInfo.innerHTML =
+          getPersonifiedAvatarSVG(s, 48) +
+          '<div style="min-width:0;">' +
+            '<div style="font-size: 13px; font-weight: 700; color: #fff; display:flex; align-items:center; gap:4px; flex-wrap:wrap;">' +
+              escapeHTML(s.name) +
+              ' <span class="badge tier-' + s.tier.toLowerCase() + '" style="font-size:9.5px;">' + escapeHTML(gLabel) + '·' + s.tier + '</span>' +
+              ' <span class="badge badge-gold">' + escapeHTML(s.tag) + '</span>' +
+            '</div>' +
+            '<div style="font-size: 11px; color: #94a3b8; line-height: 1.35;">带货' + s.sales + ' · 韧性' + s.resilience + ' · ' + escapeHTML(s.desc) + '</div>' +
+          '</div>';
+
+        var recruitBtn = document.createElement("button");
+        recruitBtn.className = "btn-small-upgrade";
+        recruitBtn.style.background = useFreeS ? "#059669" : "#c91b1b";
+        recruitBtn.style.flexShrink = "0";
+        recruitBtn.innerText = useFreeS ? "🕵️ 0w直签" : ("签约 " + effCost + "w");
+        recruitBtn.setAttribute("data-action", "recruit-streamer");
+        recruitBtn.setAttribute("data-id", s.id);
+
+        if (state.cash < effCost) {
+          recruitBtn.disabled = true;
+          recruitBtn.classList.add("btn-disabled");
+        }
+
+        item.appendChild(leftInfo);
+        item.appendChild(recruitBtn);
+        box.appendChild(item);
+      });
+
+      if (unowned.length > renderSlice.length) {
+        var moreHint = document.createElement("div");
+        moreHint.style.cssText = "text-align:center;font-size:11px;color:#fbbf24;padding:8px;";
+        moreHint.innerText = "💡 还有 " + (unowned.length - renderSlice.length) + " 位主播，可使用上方赛道分类、分级标签或关键词精准检索！";
+        box.appendChild(moreHint);
+      }
+    }
+
+    function openRecruitModal() {
+      safeInitAudio();
+      var inp = document.getElementById("recruitSearchInput");
+      if (inp) inp.value = recruitSearchQuery;
+      renderRecruitFilters();
+      renderRecruitMarketList();
       document.getElementById("recruitModal").classList.remove("hidden");
     }
 
@@ -5591,7 +5912,7 @@
       });
 
       if (unowned.length === 0) {
-        showToast("您已集齐签约全网所有 24 位顶级主播！", "info");
+        showToast("您已集齐签约全网所有 " + Object.keys(streamersMaster).length + " 位主播！", "info");
         return;
       }
 
@@ -5600,8 +5921,8 @@
       state.blindBoxDraws = (state.blindBoxDraws || 0) + 1;
       renderHeaderStats();
 
-      // 按梯队分类未签约人才池
-      var tierPools = { SSR: [], S: [], A: [], B: [] };
+      // 按梯队分类未签约人才池 (素人C -> 新星B -> 腰部A -> 头部S -> 超头SSR)
+      var tierPools = { SSR: [], S: [], A: [], B: [], C: [] };
       unowned.forEach(function(id) {
         var s = streamersMaster[id];
         if (tierPools[s.tier]) tierPools[s.tier].push(s);
@@ -5609,18 +5930,19 @@
       });
 
       var roll = Math.random() * 100;
-      var targetTier = 'B';
+      var targetTier = 'C';
       if (state.activeTalentId === 'blindbox_eye' && state.blindBoxDraws === 1) {
         targetTier = roll < 40 ? 'SSR' : 'S';
-      } else if (roll < 10) targetTier = 'SSR';
-      else if (roll < 35) targetTier = 'S';
-      else if (roll < 70) targetTier = 'A';
-      else targetTier = 'B';
+      } else if (roll < 8) targetTier = 'SSR';
+      else if (roll < 28) targetTier = 'S';
+      else if (roll < 60) targetTier = 'A';
+      else if (roll < 85) targetTier = 'B';
+      else targetTier = 'C';
 
       // 回退兜底：如果选中的目标层级已无未签约主播，寻找可用的最近层级
       var candidateTier = targetTier;
       if (tierPools[candidateTier].length === 0) {
-        var priorityOrder = ['SSR', 'S', 'A', 'B'];
+        var priorityOrder = ['SSR', 'S', 'A', 'B', 'C'];
         for (var i = 0; i < priorityOrder.length; i++) {
           if (tierPools[priorityOrder[i]].length > 0) {
             candidateTier = priorityOrder[i];
@@ -7310,15 +7632,14 @@
       modal.classList.remove("hidden");
     }
 
-    function confirmStartupNaming() {
-      safeInitAudio();
-      var inp = document.getElementById("startupAgencyInput");
-      var val = inp ? inp.value.replace(/[<>&"'`]/g, '').trim().slice(0, 12) : '';
-      if (val.length < 2) {
-        showToast("机构名称至少需要 2 个字哦！", "alert");
-        playAlertSound();
-        return;
+    function isNameUsedByIndustryNPC(name) {
+      for (var i = 0; i < competitorLadder.length; i++) {
+        if (competitorLadder[i].name === name) return true;
       }
+      return name === '破晓互娱' || name === '星霸互娱';
+    }
+
+    function applyConfirmedStartupName(val) {
       state.agencyName = val;
       state.agencyNamed = true;
       var lbl = document.getElementById("agencyNameLabel");
@@ -7332,6 +7653,30 @@
       } else {
         updateNewbieGuideUI();
       }
+    }
+
+    function confirmStartupNaming() {
+      safeInitAudio();
+      var inp = document.getElementById("startupAgencyInput");
+      var val = inp ? inp.value.replace(/[<>&"'`]/g, '').trim().slice(0, 12) : '';
+      if (val.length < 2) {
+        showToast("机构名称至少需要 2 个字哦！", "alert");
+        playAlertSound();
+        return;
+      }
+      if (isNameUsedByIndustryNPC(val)) {
+        showToast("⚠️ 该厂牌名已被行业机构占用，请换一个独特名称或点「换个名字」！", "alert");
+        playAlertSound();
+        return;
+      }
+      apiFetch('/api/player/check-name?name=' + encodeURIComponent(val), { timeoutMs: 2800 }).then(function(res) {
+        if (res.ok && res.data && res.data.available === false) {
+          showToast("⚠️ 机构名【" + val + "】全服已被抢注，请换一个独特名字！", "alert");
+          playAlertSound();
+          return;
+        }
+        applyConfirmedStartupName(val);
+      });
     }
 
     function clearGuideHighlights() {
@@ -7432,14 +7777,33 @@
         showToast("机构名称至少需要 2 个字哦！", "alert");
         return;
       }
-      state.agencyName = val;
-      var lbl = document.getElementById("agencyNameLabel");
-      if (lbl) lbl.innerText = val;
-      closeRenameModal();
-      saveLocalData();
-      syncToCloud(true);
-      showToast("🏷️ 机构已正式更名为【" + val + "】，正在同步全服榜单！", "success");
-      playCoinSound();
+      if (isNameUsedByIndustryNPC(val)) {
+        showToast("⚠️ 该名称与行业机构重名，请更换其他名称！", "alert");
+        playAlertSound();
+        return;
+      }
+      var finishRename = function(finalName) {
+        state.agencyName = finalName;
+        var lbl = document.getElementById("agencyNameLabel");
+        if (lbl) lbl.innerText = finalName;
+        closeRenameModal();
+        saveLocalData();
+        syncToCloud(true);
+        showToast("🏷️ 机构已正式更名为【" + finalName + "】，已同步全服唯一总榜！", "success");
+        playCoinSound();
+      };
+      if (cloudState.playerId && cloudState.authToken) {
+        apiFetch('/api/player/rename', { method: 'POST', body: { agencyName: val }, timeoutMs: 3500 }).then(function(res) {
+          if (res.status === 409) {
+            showToast("⚠️ 【" + val + "】全服已被占用，不能重复命名！请点随机或换名。", "alert");
+            playAlertSound();
+            return;
+          }
+          finishRename((res.ok && res.data && res.data.agencyName) ? res.data.agencyName : val);
+        });
+      } else {
+        finishRename(val);
+      }
     }
 
     function openResetModal() {
@@ -7857,6 +8221,12 @@
           if (res.ok && res.data && res.data.playerId) {
             cloudState.playerId = res.data.playerId;
             cloudState.authToken = res.data.authToken;
+            if (res.data.agencyName && res.data.agencyName !== state.agencyName) {
+              state.agencyName = res.data.agencyName;
+              var lblSync = document.getElementById("agencyNameLabel");
+              if (lblSync) lblSync.innerText = state.agencyName;
+              saveLocalData();
+            }
             try {
               localStorage.setItem("mcn_cloud_auth_v3", JSON.stringify({
                 playerId: cloudState.playerId,
@@ -7877,8 +8247,39 @@
       return doSync();
     }
 
+    function fetchDynamicAdminStreamers() {
+      apiFetch('/api/config/streamers', { timeoutMs: 4000 }).then(function(res) {
+        if (!res.ok || !res.data || !Array.isArray(res.data.items)) return;
+        res.data.items.forEach(function(item) {
+          if (!item || !item.id || !item.name) return;
+          var gMeta = GRADE_META_BY_TIER[item.tier] || { grade: item.grade || 'rookie', gradeName: '新星' };
+          streamersMaster[item.id] = {
+            id: item.id,
+            name: item.name,
+            tier: item.tier || 'A',
+            grade: item.grade || gMeta.grade,
+            gradeName: gMeta.gradeName,
+            category: item.category || 'beauty',
+            title: item.title || '严选红人',
+            sales: Number(item.sales) || 60,
+            stamina: Number(item.stamina) || 90,
+            resilience: Number(item.resilience) || 75,
+            desc: item.desc || '运营后端下发热更主播',
+            ultName: item.ult_name || '全屏连击爆单',
+            cost: Number(item.cost) || 25,
+            tag: item.tag || '云端严选',
+            initCharm: Number(item.charm) || 76,
+            isBeautyCat: Boolean(item.is_beauty)
+          };
+          if (item.cg_url) CG_PORTRAIT_FILES[item.id] = item.cg_url;
+          ensureStreamerFandomDefaults(streamersMaster[item.id]);
+        });
+      });
+    }
+
     function initCloudClient() {
       ensureSimulatedCloudData();
+      fetchDynamicAdminStreamers();
       try {
         var saved = localStorage.getItem("mcn_cloud_auth_v3");
         if (saved) {
@@ -7937,6 +8338,15 @@
       }).then(function(res) {
         if (res.ok && res.data && res.data.ok) {
           cloudState.online = true;
+          if (res.data.agencyName && res.data.agencyName !== state.agencyName) {
+            state.agencyName = res.data.agencyName;
+            var nmLbl = document.getElementById("agencyNameLabel");
+            if (nmLbl) nmLbl.innerText = state.agencyName;
+            saveLocalData();
+            if (res.data.nameConflict) {
+              showToast("⚠️ 检测到全服重名冲突，已保留全服唯一厂牌名【" + state.agencyName + "】", "alert");
+            }
+          }
           cloudState.globalRank = res.data.globalRank;
           cloudState.totalPlayers = res.data.totalPlayers;
           cloudState.unreadPvpCount = res.data.unreadPvpCount || 0;
@@ -8306,7 +8716,8 @@
           scandal_boom: '<span class="badge badge-red">🚨 315大瓜</span>',
           debut_group: '<span class="beauty-tag">🌟 成团出道</span>',
           fandom_diamond: '<span class="badge badge-gold">💎 登顶钻超</span>',
-          beauty_glowup: '<span class="beauty-tag">✨ 神颜觉醒</span>'
+          beauty_glowup: '<span class="beauty-tag">✨ 神颜觉醒</span>',
+          system_notice: '<span class="badge badge-gold">🏛️ 官方公告</span>'
         };
         var div = document.createElement("div");
         div.className = "card-subpanel";
@@ -9934,6 +10345,14 @@
         executeReset();
       } else if (action === 'open-recruit') {
         openRecruitModal();
+      } else if (action === 'filter-recruit-cat') {
+        recruitFilterCat = el.getAttribute('data-cat') || 'all';
+        renderRecruitFilters();
+        renderRecruitMarketList();
+      } else if (action === 'filter-recruit-grade') {
+        recruitFilterGrade = el.getAttribute('data-grade') || 'all';
+        renderRecruitFilters();
+        renderRecruitMarketList();
       } else if (action === 'close-recruit') {
         closeRecruitModal();
       } else if (action === 'recruit-streamer') {
@@ -10152,6 +10571,13 @@
         openTalentPickModal();
       }
       updateNewbieGuideUI();
+      var searchInp = document.getElementById("recruitSearchInput");
+      if (searchInp) {
+        searchInp.addEventListener("input", function() {
+          recruitSearchQuery = searchInp.value || "";
+          renderRecruitMarketList();
+        });
+      }
       initCloudClient();
     }
 
